@@ -1,0 +1,647 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | digitaldias</title>
+    <meta name="description" content="Oops! The page you're looking for doesn't exist. Let's get you back on track with digitaldias.">
+    <meta name="keywords" content="404, page not found, digitaldias, error">
+    <meta name="author" content="digitaldias">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- 404 Specific Styles -->
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #252525;
+            --bg-glass: rgba(255, 255, 255, 0.1);
+            --bg-glass-strong: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --text-tertiary: #b0b0b0;
+            --text-muted: #888888;
+            --primary: #0077cc;
+            --secondary: #00aaff;
+            --accent: #ffaa00;
+            --highlight: #ffcc00;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --border-strong: rgba(255, 255, 255, 0.3);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-2xl: 32px;
+            --transition-normal: 0.3s ease;
+            --blur-sm: 4px;
+            --blur-md: 8px;
+            --blur-lg: 16px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: var(--bg-primary);
+            overflow: hidden;
+        }
+
+        .error-background {
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+        }
+
+        .error-mosaic {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 1px;
+            opacity: 0.1;
+        }
+
+        .error-tile {
+            background: var(--primary);
+            opacity: 0;
+            animation: fade-in-tile 0.6s ease-out forwards;
+        }
+
+        .error-tile:nth-child(odd) {
+            background: var(--secondary);
+        }
+
+        .error-tile:nth-child(3n) {
+            background: var(--accent);
+        }
+
+        .error-tile:nth-child(5n) {
+            background: var(--highlight);
+        }
+
+        .error-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(var(--blur-sm));
+            z-index: -1;
+        }
+
+        .error-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-8);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+            margin-bottom: var(--space-12);
+            opacity: 0;
+            animation: fade-in-up 0.8s ease-out 0.2s forwards;
+        }
+
+        .error-logo {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-glass-strong);
+            border: 2px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(var(--blur-md));
+        }
+
+        .error-logo svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--highlight);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .brand-text {
+            font-size: var(--text-2xl);
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .error-code {
+            font-size: clamp(6rem, 15vw, 12rem);
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: var(--space-8);
+            opacity: 0;
+            animation: bounce-in 1s ease-out 0.4s forwards;
+        }
+
+        .error-code .code-digit:first-child {
+            color: var(--primary);
+        }
+
+        .error-code .code-digit:nth-child(2) {
+            color: var(--secondary);
+        }
+
+        .error-code .code-digit:last-child {
+            color: var(--accent);
+        }
+
+        .error-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--space-6);
+            opacity: 0;
+            animation: fade-in-up 0.8s ease-out 0.6s forwards;
+        }
+
+        .error-description {
+            font-size: var(--text-lg);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-10);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: fade-in-up 0.8s ease-out 0.8s forwards;
+        }
+
+        .error-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-6);
+            margin-bottom: var(--space-12);
+            opacity: 0;
+            animation: fade-in-up 0.8s ease-out 1s forwards;
+        }
+
+        .error-buttons {
+            display: flex;
+            gap: var(--space-6);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .error-button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4) var(--space-8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: var(--text-base);
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-button.primary {
+            background: var(--primary);
+            color: var(--white);
+            border: 1px solid var(--primary);
+        }
+
+        .error-button.primary:hover {
+            background: transparent;
+            color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .error-button.secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-strong);
+        }
+
+        .error-button.secondary:hover {
+            background: var(--bg-glass-strong);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .button-arrow svg {
+            width: 16px;
+            height: 16px;
+            transition: transform var(--transition-normal);
+        }
+
+        .error-button:hover .button-arrow svg {
+            transform: translate(2px, -2px);
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--space-4) var(--space-6);
+            background: var(--bg-glass);
+            backdrop-filter: blur(var(--blur-lg));
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            color: var(--text-primary);
+            outline: none;
+            transition: all var(--transition-normal);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .search-input:focus {
+            border-color: var(--highlight);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+
+        .helpful-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+            opacity: 0;
+            animation: fade-in-up 0.8s ease-out 1.2s forwards;
+        }
+
+        .helpful-link {
+            padding: var(--space-6);
+            background: var(--bg-glass);
+            backdrop-filter: blur(var(--blur-lg));
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-2xl);
+            text-decoration: none;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .helpful-link:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-accent);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .helpful-link:nth-child(1):hover {
+            border-color: var(--primary);
+        }
+
+        .helpful-link:nth-child(2):hover {
+            border-color: var(--secondary);
+        }
+
+        .helpful-link:nth-child(3):hover {
+            border-color: var(--accent);
+        }
+
+        .link-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-3);
+            display: block;
+        }
+
+        .link-title {
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .link-description {
+            font-size: var(--text-sm);
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+
+        .error-footer {
+            margin-top: var(--space-12);
+            padding-top: var(--space-8);
+            border-top: 1px solid var(--border-subtle);
+            opacity: 0;
+            animation: fade-in-up 0.8s ease-out 1.4s forwards;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: var(--text-sm);
+        }
+
+        .highlight-link {
+            color: var(--highlight);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .highlight-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Animations */
+        @keyframes fade-in-tile {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce-in {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .error-container {
+                padding: 0 var(--space-6);
+            }
+
+            .error-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .error-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .helpful-links {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-container {
+                padding: 0 var(--space-4);
+            }
+
+            .helpful-link {
+                padding: var(--space-4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-background">
+            <div class="error-mosaic" id="errorMosaic"></div>
+            <div class="error-overlay"></div>
+        </div>
+        
+        <div class="error-container">
+            <div class="error-brand">
+                <div class="error-logo">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="brand-text">digitaldias</div>
+            </div>
+            
+            <div class="error-code">
+                <span class="code-digit">4</span><span class="code-digit">0</span><span class="code-digit">4</span>
+            </div>
+            
+            <h1 class="error-title">Página Não Encontrada</h1>
+            
+            <p class="error-description">
+                Ops! A página que você está procurando parece ter se perdido na selva digital. 
+                Mas não se preocupe - vamos colocá-lo de volta nos trilhos para algo incrível.
+            </p>
+
+            <div class="error-actions">
+                <div class="error-buttons">
+                    <a href="/" class="error-button primary">
+                        <span>Voltar para a Home</span>
+                        <div class="button-arrow">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z"/>
+                                <polyline points="9,22 9,12 15,12 15,22"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="/#contact" class="error-button secondary">
+                        <span>Contactar Suporte</span>
+                        <div class="button-arrow">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Pesquisar no digitaldias..." id="searchInput">
+                </div>
+            </div>
+
+            <div class="helpful-links">
+                <a href="/" class="helpful-link">
+                    <div class="link-icon">🏠</div>
+                    <div class="link-title">Início</div>
+                    <div class="link-description">
+                        Voltar para a página principal e explorar o portfólio digitaldias
+                    </div>
+                </a>
+                
+                <a href="/#work" class="helpful-link">
+                    <div class="link-icon">💼</div>
+                    <div class="link-title">Meu Trabalho</div>
+                    <div class="link-description">
+                        Descubra quatro décadas de experiência em arquitetura de software
+                    </div>
+                </a>
+                
+                <a href="/#photography" class="helpful-link">
+                    <div class="link-icon">📸</div>
+                    <div class="link-title">Fotografia</div>
+                    <div class="link-description">
+                        Veja o portfólio visual com 172 fotos no Flickr
+                    </div>
+                </a>
+            </div>
+
+            <div class="error-footer">
+                <p class="footer-text">
+                    &copy; 2025 <a href="/" class="highlight-link">digitaldias</a>. 
+                    Criando experiências digitais com ❤️ e precisão norueguesa desde 1984.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize 404 page
+        document.addEventListener('DOMContentLoaded', function() {
+            createMosaicTiles();
+            initializeSearch();
+            addInteractiveEffects();
+        });
+
+        function createMosaicTiles() {
+            const mosaic = document.getElementById('errorMosaic');
+            const tileCount = 48; // 8x6 grid
+            
+            for (let i = 0; i < tileCount; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'error-tile';
+                tile.style.animationDelay = `${i * 0.05}s`;
+                mosaic.appendChild(tile);
+            }
+        }
+
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        // Redirect to home with search functionality
+                        window.location.href = `/?search=${encodeURIComponent(query)}`;
+                    } else {
+                        window.location.href = '/';
+                    }
+                }
+            });
+        }
+
+        function addInteractiveEffects() {
+            // Add subtle parallax effect to tiles
+            document.addEventListener('mousemove', function(e) {
+                const tiles = document.querySelectorAll('.error-tile');
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                tiles.forEach((tile, index) => {
+                    const speed = (index % 5 + 1) * 0.5;
+                    const x = (mouseX - 0.5) * speed;
+                    const y = (mouseY - 0.5) * speed;
+                    
+                    tile.style.transform = `translate(${x}px, ${y}px)`;
+                });
+            });
+
+            // Add click effect to logo
+            const logo = document.querySelector('.error-logo');
+            logo.addEventListener('click', function() {
+                this.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+                
+                showToast('🎯 Navegando de volta para a segurança!');
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                background: var(--bg-glass-strong);
+                backdrop-filter: blur(16px);
+                color: var(--text-primary);
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                border: 1px solid var(--border-accent);
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideInFromRight 0.5s ease-out, slideOutToRight 0.5s ease-in 2.5s forwards;
+                box-shadow: var(--shadow-lg);
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 3000);
+        }
+
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInFromRight {
+                from { 
+                    transform: translateX(100px); 
+                    opacity: 0; 
+                }
+                to { 
+                    transform: translateX(0); 
+                    opacity: 1; 
+                }
+            }
+            
+            @keyframes slideOutToRight {
+                from { 
+                    transform: translateX(0); 
+                    opacity: 1; 
+                }
+                to { 
+                    transform: translateX(100px); 
+                    opacity: 0; 
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
