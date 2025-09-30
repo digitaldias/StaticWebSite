@@ -1,0 +1,41 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+.out/
+.tmp/
+.cache/
+*.log
+
+# Static site generators
+.public/
+_site/
+.svelte-kit/
+.next/
+.nuxt/
+.hugo_build.lock
+.DS_Store
+
+# Environment files
+.env
+.env.*.local
+
+# IDE and editor settings
+.vscode/
+.idea/
+.vs/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Misc
+*.local
