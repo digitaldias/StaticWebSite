@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+    {{- partial "head.html" . -}}
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-logo">
+            <svg viewBox="0 0 100 100" class="loading-spinner">
+                <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="6" fill="none"/>
+            </svg>
+            <span>digitaldias</span>
+        </div>
+    </div>
+
+    {{- partial "header.html" . -}}
+
+    <main id="main-content">
+        {{- block "main" . }}{{- end }}
+    </main>
+
+    {{- partial "footer.html" . -}}
+    
+    {{- $js := resources.Get "js/main.js" -}}
+    {{- if $js -}}
+        {{- $js = $js | resources.Minify | resources.Fingerprint -}}
+        <script src="{{ $js.RelPermalink }}" defer></script>
+    {{- end -}}
+</body>
+</html>

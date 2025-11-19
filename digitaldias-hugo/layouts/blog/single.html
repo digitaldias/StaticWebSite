@@ -1,0 +1,55 @@
+{{- define "main" -}}
+<main id="main-content" class="article-main">
+    <article class="article-container" aria-labelledby="article-title">
+        <header class="article-header section-container">
+            <p class="blog-card-meta">{{ .Date.Format "January 2, 2006" }}{{ with .Params.readTime }} · {{ . }}{{ end }}</p>
+            <h1 class="article-title" id="article-title">{{ .Title }}</h1>
+            {{- if .Params.excerpt -}}
+            <p class="article-subtitle">{{ .Params.excerpt }}</p>
+            {{- else if .Description -}}
+            <p class="article-subtitle">{{ .Description }}</p>
+            {{- end -}}
+        </header>
+
+        <div class="article-body section-container">
+            {{ .Content }}
+
+            <div class="article-cta">
+                <a class="cta-button primary" href="{{ .Site.BaseURL }}" data-magnetic>
+                    <span class="button-text">Back to the homepage</span>
+                    <div class="button-arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                <a class="cta-button secondary" href="/blog/" data-magnetic>
+                    <span class="button-text">Explore more posts</span>
+                    <div class="button-icon">✨</div>
+                </a>
+            </div>
+        </div>
+    </article>
+</main>
+
+<footer class="contact-section">
+    <div class="section-container">
+        <div class="footer-bottom">
+            <div class="footer-info">
+                <a class="location-badge" href="https://www.google.com/maps/place/Frogner+Lillestr%C3%B8m+Norway" target="_blank" rel="noopener noreferrer" aria-label="Open Frogner, Norway on Google Maps">
+                    <span class="location-icon">📍</span>
+                    <span class="location-text">{{ .Site.Params.location }}</span>
+                    <div class="location-pulse" aria-hidden="true"></div>
+                </a>
+                <div class="availability-status">
+                    <div class="status-indicator available"></div>
+                    <span class="status-text">Reach out!</span>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>{{ .Site.Copyright }}</p>
+            </div>
+        </div>
+    </div>
+</footer>
+{{- end -}}

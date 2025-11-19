@@ -1,0 +1,35 @@
+{{- define "main" -}}
+<section class="taxonomy-section section-container">
+    <header class="section-header">
+        <div class="section-badge">
+            <span>🏷️</span>
+            <span>{{ .Title }}</span>
+        </div>
+        <h1 class="section-title">
+            <span class="title-main">{{ .Title }}</span>
+        </h1>
+        <p class="section-description">
+            {{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }} in this category
+        </p>
+    </header>
+
+    <div class="blog-grid">
+        {{- range .Pages -}}
+        <article class="blog-card">
+            <p class="blog-card-meta">{{ .Date.Format "January 2, 2006" }}{{ with .Params.readTime }} · {{ . }}{{ end }}</p>
+            <h3 class="blog-card-title">
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h3>
+            {{- if .Params.excerpt -}}
+            <p class="blog-card-excerpt">{{ .Params.excerpt }}</p>
+            {{- else if .Description -}}
+            <p class="blog-card-excerpt">{{ .Description }}</p>
+            {{- else -}}
+            <p class="blog-card-excerpt">{{ .Summary }}</p>
+            {{- end -}}
+            <a class="blog-card-link" href="{{ .RelPermalink }}">Read more</a>
+        </article>
+        {{- end -}}
+    </div>
+</section>
+{{- end -}}

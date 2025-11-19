@@ -1,0 +1,54 @@
+<!-- Navigation -->
+<nav class="main-navigation" data-nav>
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="{{ .Site.BaseURL }}" class="brand-logo">
+                <span class="logo-text">digitaldias</span>
+                <div class="logo-indicator"></div>
+            </a>
+        </div>
+        
+        <div class="nav-menu" id="primary-navigation" data-nav-menu>
+            {{- if .IsHome }}
+            <a href="#about" class="nav-link" data-nav-link>
+                <span class="nav-text">About</span>
+                <div class="nav-indicator"></div>
+            </a>
+            <a href="#work" class="nav-link" data-nav-link>
+                <span class="nav-text">Work</span>
+                <div class="nav-indicator"></div>
+            </a>
+            <a href="#photography" class="nav-link" data-nav-link>
+                <span class="nav-text">Photography</span>
+                <div class="nav-indicator"></div>
+            </a>
+            <a href="#contact" class="nav-link" data-nav-link>
+                <span class="nav-text">Contact</span>
+                <div class="nav-indicator"></div>
+            </a>
+            {{- else }}
+            <a href="{{ .Site.BaseURL }}#about" class="nav-link">
+                <span class="nav-text">About</span>
+            </a>
+            <a href="{{ .Site.BaseURL }}#work" class="nav-link">
+                <span class="nav-text">Work</span>
+            </a>
+            <a href="{{ .Site.BaseURL }}#photography" class="nav-link">
+                <span class="nav-text">Photography</span>
+            </a>
+            <a href="{{ .Site.BaseURL }}#contact" class="nav-link">
+                <span class="nav-text">Contact</span>
+            </a>
+            {{- end }}
+            <a href="/blog/" class="nav-link nav-link-external{{ if eq .Section "blog" }} active{{ end }}">
+                <span class="nav-text">Blog</span>
+            </a>
+        </div>
+
+        <button class="nav-toggle" type="button" data-nav-toggle aria-controls="primary-navigation" aria-expanded="false" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
