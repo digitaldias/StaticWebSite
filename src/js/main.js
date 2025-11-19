@@ -1,20 +1,7 @@
 // digitaldias Website JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Initialize the page
+document.addEventListener('DOMContentLoaded', () => {
     initializePage();
-    
-    // Add event listeners
-    addEventListeners();
-    
-    // Start subtle background animations
     startSubtleAnimations();
-    
-    // Initialize skill category interactions
-    initializeSkillCategories();
-    
-    // Initialize progress animations
-    initializeProgressAnimations();
 });
 
 function initializePage() {
@@ -24,87 +11,29 @@ function initializePage() {
     trackPageLoad();
 }
 
-function addEventListeners() {
-    const logo = document.querySelector('.logo');
-    const contactLinks = document.querySelectorAll('.contact-link');
-    
-    // Logo click animation - simple and clean
-    if (logo) {
-        logo.addEventListener('click', function() {
-            showPersonalMessage();
-        });
+const motionPreferenceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function userPrefersReducedMotion() {
+    return motionPreferenceQuery.matches;
+}
+
+motionPreferenceQuery.addEventListener('change', (event) => {
+    if (!event.matches) {
+        startSubtleAnimations();
     }
-    
-    // Contact link interactions
-    contactLinks.forEach((contactLink) => {
-        contactLink.addEventListener('click', function(e) {
-            // Track contact click (placeholder for analytics)
-            trackContactClick(this.className, this.href);
-            
-            // Show subtle feedback
-            showContactFeedback(this);
-        });
-    });
-}
-
-function initializeSkillCategories() {
-    const skillCategories = document.querySelectorAll('.skill-category');
-    
-    skillCategories.forEach((category, index) => {
-        category.addEventListener('click', function() {
-            // Remove active class from all categories
-            skillCategories.forEach(cat => cat.classList.remove('active'));
-            
-            // Add active class to clicked category
-            this.classList.add('active');
-            
-            // Show category details
-            showSkillDetails(index);
-        });
-        
-        category.addEventListener('mouseenter', function() {
-            if (!this.classList.contains('active')) {
-                this.style.transform = 'translateY(-4px) scale(1.01)';
-            }
-        });
-        
-        category.addEventListener('mouseleave', function() {
-            if (!this.classList.contains('active')) {
-                this.style.transform = 'translateY(0) scale(1)';
-            }
-        });
-    });
-}
-
-function initializeProgressAnimations() {
-    const observerOptions = {
-        threshold: 0.5,
-        rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const progressBar = entry.target.querySelector('.progress-bar');
-                if (progressBar) {
-                    progressBar.style.width = progressBar.style.width || '75%';
-                }
-            }
-        });
-    }, observerOptions);
-    
-    const focusItems = document.querySelectorAll('.focus-item.primary');
-    focusItems.forEach(item => observer.observe(item));
-}
+});
 
 function startSubtleAnimations() {
-    // Create minimal floating particles effect - very subtle
+    if (userPrefersReducedMotion()) {
+        return;
+    }
+
     createMinimalParticles();
 }
 
 function createMinimalParticles() {
-    const particleCount = 6; // Reduced for cleaner look
-    
+    const particleCount = 4;
+
     for (let i = 0; i < particleCount; i++) {
         setTimeout(() => {
             const particle = document.createElement('div');
@@ -112,176 +41,27 @@ function createMinimalParticles() {
                 position: fixed;
                 width: 4px;
                 height: 4px;
-                background: rgba(255, 215, 0, 0.2);
+                background: rgba(255, 215, 0, 0.18);
                 border-radius: 50%;
                 pointer-events: none;
                 z-index: -1;
-                animation: subtleFloat ${20 + Math.random() * 15}s linear infinite;
+                animation: subtleFloat ${18 + Math.random() * 12}s linear infinite;
                 left: ${Math.random() * 100}vw;
                 top: ${Math.random() * 100}vh;
             `;
-            
+
             document.body.appendChild(particle);
-            
-            // Remove particle after animation
-            setTimeout(() => {
+
+            const removeParticle = () => {
                 if (particle.parentNode) {
                     particle.parentNode.removeChild(particle);
                 }
-            }, 35000);
-        }, i * 2000); // Slower, more spaced out
+            };
+
+            setTimeout(removeParticle, 30000);
+            window.addEventListener('pagehide', removeParticle, { once: true });
+        }, i * 2000);
     }
-}
-
-function showPersonalMessage() {
-    const messages = [
-        "?? Welcome to my digital workspace!",
-        "?? Currently building something amazing...",
-        "?? Capturing code and life moments",
-        "??????????? Family-driven developer",
-        "?? .NET architect by passion",
-        "?? Coding since 1985!"
-    ];
-    
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-    
-    // Create clean message element
-    const messageEl = document.createElement('div');
-    messageEl.textContent = randomMessage;
-    messageEl.style.cssText = `
-        position: fixed;
-        top: 2rem;
-        right: 2rem;
-        background: rgba(0, 0, 0, 0.9);
-        color: #FFD700;
-        padding: 1rem 2rem;
-        border-radius: 16px;
-        font-weight: 500;
-        z-index: 1000;
-        animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1), slideOutToRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) 3.5s forwards;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(10px);
-        max-width: 320px;
-        font-size: 0.9rem;
-        border: 1px solid rgba(255, 215, 0, 0.3);
-    `;
-    
-    document.body.appendChild(messageEl);
-    
-    setTimeout(() => {
-        if (messageEl.parentNode) {
-            messageEl.parentNode.removeChild(messageEl);
-        }
-    }, 3900);
-}
-
-function showSkillDetails(index) {
-    const skills = [
-        {
-            title: "Software Architecture",
-            description: "Designing and building enterprise-scale applications with modern .NET technologies. I focus on clean architecture patterns, microservices, and performance optimization to create maintainable solutions that scale.",
-            highlights: ["Clean Architecture", "Microservices", "Performance Optimization", "Code Quality"]
-        },
-        {
-            title: "Photography & Visual Arts", 
-            description: "The art of capturing moments through the lens. 'Dias' connects to 'Diapositive', reflecting my passion for visual storytelling. I document both technical processes and family life through photography.",
-            highlights: ["Visual Storytelling", "Technical Documentation", "Family Moments", "Artistic Expression"]
-        },
-        {
-            title: "Content Creation",
-            description: "Sharing knowledge through video content on multiple platforms. Technical tutorials on development discoveries, and family moments preserved for our extended family to enjoy and connect with.",
-            highlights: ["Technical Tutorials", "Knowledge Sharing", "Family Documentation", "Community Building"]
-        }
-    ];
-    
-    const skill = skills[index];
-    if (!skill) return;
-    
-    // Create enhanced modal
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2000;
-        animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(12px);
-        padding: 2rem;
-    `;
-    
-    const content = document.createElement('div');
-    content.style.cssText = `
-        background: #0A0A0A;
-        color: #FFFFFF;
-        padding: 3rem;
-        border-radius: 24px;
-        text-align: left;
-        max-width: 600px;
-        width: 100%;
-        animation: slideInFromBottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(186, 12, 47, 0.3);
-        position: relative;
-    `;
-    
-    const highlightsHtml = skill.highlights.map(highlight => 
-        `<span style="background: #BA0C2F; color: white; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block;">${highlight}</span>`
-    ).join('');
-    
-    content.innerHTML = `
-        <h2 style="color: #FFD700; margin-bottom: 1.5rem; font-size: 2rem; font-weight: 700;">${skill.title}</h2>
-        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; line-height: 1.7; font-size: 1.1rem;">
-            ${skill.description}
-        </p>
-        <div style="margin-bottom: 2.5rem;">
-            ${highlightsHtml}
-        </div>
-        <button id="closeSkillModal" style="
-            background: #002F8B;
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1rem;
-        ">Got it!</button>
-    `;
-    
-    modal.appendChild(content);
-    document.body.appendChild(modal);
-    
-    // Add hover effect to button
-    const closeButton = document.getElementById('closeSkillModal');
-    closeButton.addEventListener('mouseenter', function() {
-        this.style.background = '#006600';
-    });
-    closeButton.addEventListener('mouseleave', function() {
-        this.style.background = '#002F8B';
-    });
-    
-    // Close modal functionality
-    closeButton.addEventListener('click', () => {
-        modal.style.animation = 'fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-        setTimeout(() => {
-            if (modal.parentNode) {
-                modal.parentNode.removeChild(modal);
-            }
-        }, 300);
-    });
-    
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeButton.click();
-        }
-    });
 }
 
 function trackPageLoad() {
@@ -289,58 +69,6 @@ function trackPageLoad() {
     console.log('digitaldias page loaded at:', new Date().toISOString());
     console.log('User agent:', navigator.userAgent);
     console.log('Screen resolution:', screen.width + 'x' + screen.height);
-}
-
-function trackContactClick(contactType, contactUrl) {
-    // Placeholder for contact analytics tracking
-    console.log('Contact clicked:', {
-        type: contactType,
-        url: contactUrl,
-        timestamp: new Date().toISOString()
-    });
-}
-
-function showContactFeedback(contactElement) {
-    const contactName = contactElement.querySelector('span').textContent;
-    const platform = contactName.toLowerCase();
-    
-    const messages = {
-        email: '?? Opening email client...',
-        linkedin: '?? Connecting on LinkedIn...',
-        social: '?? Opening social profile...',
-        'tech channel': '?? Opening YouTube channel...',
-        photography: '?? Viewing photography portfolio...'
-    };
-    
-    const message = messages[platform] || `?? Opening ${contactName}...`;
-    
-    // Create modern feedback message
-    const feedbackEl = document.createElement('div');
-    feedbackEl.textContent = message;
-    feedbackEl.style.cssText = `
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        background: rgba(0, 0, 0, 0.9);
-        color: #FFD700;
-        padding: 1rem 2rem;
-        border-radius: 16px;
-        font-weight: 500;
-        z-index: 1500;
-        animation: slideInFromBottom 0.3s cubic-bezier(0.4, 0, 0.2, 1), fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) 2.5s forwards;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(10px);
-        font-size: 0.9rem;
-        border: 1px solid rgba(255, 215, 0, 0.3);
-    `;
-    
-    document.body.appendChild(feedbackEl);
-    
-    setTimeout(() => {
-        if (feedbackEl.parentNode) {
-            feedbackEl.parentNode.removeChild(feedbackEl);
-        }
-    }, 2800);
 }
 
 // Add modern CSS animations
@@ -416,19 +144,41 @@ addModernStyles();
 // Modern JavaScript for digitaldias portfolio
 class DigitalDiasPortfolio {
     constructor() {
+        this.motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        this.prefersReducedMotion = this.motionQuery.matches;
+
+        this.motionQuery.addEventListener('change', (event) => {
+            this.prefersReducedMotion = event.matches;
+            if (event.matches) {
+                this.showElementsWithoutAnimation();
+                this.setCountersImmediately();
+            }
+        });
+
         this.init();
     }
 
     init() {
         this.initLoading();
         this.initNavigation();
-        this.initScrollAnimations();
+
+        if (this.prefersReducedMotion) {
+            this.showElementsWithoutAnimation();
+            this.setCountersImmediately();
+        } else {
+            this.initScrollAnimations();
+        }
+
         this.initCounters();
-        this.initMagneticButtons();
-        this.initTiltCards();
+
+        if (!this.prefersReducedMotion) {
+            this.initMagneticButtons();
+            this.initTiltCards();
+            this.initParallax();
+        }
+
         this.initPhotoGallery();
         this.initThemeDetection();
-        this.initParallax();
     }
 
     // Loading screen
@@ -453,6 +203,10 @@ class DigitalDiasPortfolio {
         const navLinks = document.querySelectorAll('[data-nav-link]');
         const navToggle = document.querySelector('[data-nav-toggle]');
         const navMenu = document.querySelector('[data-nav-menu]');
+
+        if (!nav) {
+            return;
+        }
 
         // Enhanced scroll behavior - only change background opacity
         window.addEventListener('scroll', () => {
@@ -492,18 +246,30 @@ class DigitalDiasPortfolio {
         window.addEventListener('scroll', updateActiveNav);
         updateActiveNav();
 
-        // Smooth scroll
+        // Smooth scroll for same-page anchors only; allow default navigation otherwise
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                
-                if (targetSection) {
-                    targetSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                const href = link.getAttribute('href');
+
+                if (href) {
+                    const linkUrl = new URL(href, window.location.href);
+                    const targetId = linkUrl.hash ? linkUrl.hash.substring(1) : null;
+                    const isSameDocument = href.startsWith('#') || linkUrl.pathname === window.location.pathname;
+                    const targetSection = targetId ? document.getElementById(targetId) : null;
+
+                    if (targetSection && isSameDocument) {
+                        e.preventDefault();
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+
+                if (navToggle && navMenu) {
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
                 }
             });
         });
@@ -511,14 +277,22 @@ class DigitalDiasPortfolio {
         // Mobile menu toggle
         if (navToggle && navMenu) {
             navToggle.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                navToggle.classList.toggle('active');
+                const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+                navToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+                navToggle.classList.toggle('active', !isExpanded);
+                navMenu.classList.toggle('active', !isExpanded);
             });
         }
     }
 
     // Scroll animations
     initScrollAnimations() {
+        if (this.prefersReducedMotion) {
+            this.showElementsWithoutAnimation();
+            this.setCountersImmediately();
+            return;
+        }
+
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -551,20 +325,45 @@ class DigitalDiasPortfolio {
         }, observerOptions);
 
         // Observe elements
-        const animatedElements = document.querySelectorAll(`
-            .section-header,
-            .expertise-card,
-            .photo-item,
-            .timeline-item,
-            .contact-card,
-            [data-animate]
-        `);
+        const animatedElements = document.querySelectorAll(this.getAnimatedSelector());
 
         animatedElements.forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             observer.observe(el);
+        });
+    }
+
+    getAnimatedSelector() {
+        return `
+            .section-header,
+            .expertise-card,
+            .photo-item,
+            .timeline-item,
+            .contact-card,
+            [data-animate]
+        `;
+    }
+
+    showElementsWithoutAnimation() {
+        const animatedElements = document.querySelectorAll(this.getAnimatedSelector());
+        animatedElements.forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            el.style.transition = 'none';
+        });
+    }
+
+    setCountersImmediately() {
+        const counterElements = document.querySelectorAll('[data-animate] .stat-number');
+        counterElements.forEach(numberElement => {
+            const parent = numberElement.closest('[data-animate]');
+            const target = parent ? parent.getAttribute('data-target') : null;
+
+            if (parent && target) {
+                numberElement.textContent = target;
+            }
         });
     }
 
@@ -581,6 +380,13 @@ class DigitalDiasPortfolio {
         
         if (element.classList.contains('infinity-stat')) return;
 
+        if (this.prefersReducedMotion) {
+            if (numberElement) {
+                numberElement.textContent = target;
+            }
+            return;
+        }
+
         const updateCounter = (currentTime) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
@@ -589,12 +395,16 @@ class DigitalDiasPortfolio {
             const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
             const current = Math.floor(easeOutExpo * target);
             
-            numberElement.textContent = current;
+            if (numberElement) {
+                numberElement.textContent = current;
+            }
             
             if (progress < 1) {
                 requestAnimationFrame(updateCounter);
             } else {
-                numberElement.textContent = target;
+                if (numberElement) {
+                    numberElement.textContent = target;
+                }
             }
         };
         
@@ -605,12 +415,24 @@ class DigitalDiasPortfolio {
     initMagneticButtons() {
         const magneticElements = document.querySelectorAll('[data-magnetic]');
         
+        if (!magneticElements.length) {
+            return;
+        }
+
         magneticElements.forEach(element => {
             element.addEventListener('mouseenter', () => {
+                if (this.prefersReducedMotion) {
+                    element.style.transform = 'translate(0, 0)';
+                    return;
+                }
                 element.style.transition = 'transform 0.3s ease';
             });
             
             element.addEventListener('mousemove', (e) => {
+                if (this.prefersReducedMotion) {
+                    element.style.transform = 'translate(0, 0)';
+                    return;
+                }
                 const rect = element.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
@@ -634,6 +456,10 @@ class DigitalDiasPortfolio {
         
         tiltElements.forEach(element => {
             element.addEventListener('mousemove', (e) => {
+                if (this.prefersReducedMotion) {
+                    element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                    return;
+                }
                 const rect = element.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
@@ -659,6 +485,10 @@ class DigitalDiasPortfolio {
         
         photoItems.forEach(item => {
             const img = item.querySelector('img');
+
+            if (!img) {
+                return;
+            }
             
             // Lazy loading
             if (img && img.hasAttribute('loading')) {
@@ -689,7 +519,10 @@ class DigitalDiasPortfolio {
                     if (action === 'view') {
                         this.openLightbox(imgSrc);
                     } else if (action === 'external') {
-                        window.open(imgSrc, '_blank');
+                        const externalWindow = window.open(imgSrc, '_blank', 'noopener');
+                        if (externalWindow) {
+                            externalWindow.opener = null;
+                        }
                     }
                 });
             });
@@ -707,6 +540,8 @@ class DigitalDiasPortfolio {
                 <button class="lightbox-close">&times;</button>
             </div>
         `;
+        lightbox.setAttribute('role', 'dialog');
+        lightbox.setAttribute('aria-modal', 'true');
         
         // Add styles
         lightbox.style.cssText = `
@@ -736,6 +571,7 @@ class DigitalDiasPortfolio {
             transform: scale(0.8);
             transition: transform 0.3s ease;
         `;
+        content.setAttribute('role', 'document');
         
         const img = lightbox.querySelector('img');
         img.style.cssText = `
@@ -763,6 +599,7 @@ class DigitalDiasPortfolio {
             justify-content: center;
             transition: all 0.3s ease;
         `;
+        closeBtn.setAttribute('aria-label', 'Close image preview');
         
         document.body.appendChild(lightbox);
         document.body.style.overflow = 'hidden';
@@ -772,6 +609,8 @@ class DigitalDiasPortfolio {
             lightbox.style.opacity = '1';
             content.style.transform = 'scale(1)';
         });
+
+        closeBtn.focus();
         
         // Close handlers
         const closeLightbox = () => {
@@ -807,6 +646,13 @@ class DigitalDiasPortfolio {
         const parallaxElements = document.querySelectorAll('.photo-tile');
         
         window.addEventListener('scroll', () => {
+            if (this.prefersReducedMotion) {
+                parallaxElements.forEach(element => {
+                    element.style.transform = 'none';
+                });
+                return;
+            }
+
             const scrolled = window.pageYOffset;
             const parallax = scrolled * 0.3;
             
