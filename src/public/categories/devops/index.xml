@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DevOps on DigitalDias - Pedro Dias</title>
+    <link>http://localhost:58351/categories/devops/</link>
+    <description>Recent content in DevOps on DigitalDias - Pedro Dias</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <copyright>© 2025 Pedro Dias. All rights reserved.</copyright>
+    <lastBuildDate>Wed, 19 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:58351/categories/devops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>From Hand-Crafted HTML to Hugo: A Migration Story</title>
+      <link>http://localhost:58351/blog/2025-11-19-from-html-to-hugo-migration/</link>
+      <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:58351/blog/2025-11-19-from-html-to-hugo-migration/</guid>
+      <description>&lt;p&gt;For years, I&amp;rsquo;ve been that developer—the one who hand-codes everything. My portfolio site was a labor of love: custom HTML with semantic structure, 2,132 lines of carefully crafted CSS celebrating my Norwegian and Portuguese heritage, and JavaScript that brought personality to every scroll and click. But as a Chief Architect who preaches modern tooling to clients, I knew I was living in a glass house.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;It was time to practice what I preach.&lt;/strong&gt; Enter Hugo, the blazing-fast static site generator, and GitHub Copilot, my tireless co-pilot through the migration journey.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

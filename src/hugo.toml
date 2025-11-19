@@ -58,5 +58,5 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
 
 # RSS configuration
 [outputs]
-  home = ['HTML', 'RSS', 'JSON']
+  home = ['HTML', 'RSS']
   section = ['HTML', 'RSS']
