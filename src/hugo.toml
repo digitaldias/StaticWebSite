@@ -1,0 +1,62 @@
+baseURL = 'https://digitaldias.com/'
+languageCode = 'en-us'
+title = 'DigitalDias - Pedro Dias'
+author = 'Pedro Dias'
+copyright = '© 2025 Pedro Dias. All rights reserved.'
+
+# Pagination
+[pagination]
+  pagerSize = 10
+
+# Taxonomies
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
+
+# Markup settings
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true  # Allow HTML in markdown
+  [markup.highlight]
+    style = 'monokai'
+    lineNos = false
+    codeFences = true
+
+# Params
+[params]
+  description = 'Software Architect, Content Creator, and Family Man based in Frogner, Norway'
+  author = 'Pedro Dias'
+  location = 'Frogner, Norway'
+  email = 'pedro.dias@tradesolution.no'
+  
+  # Social links
+  [params.social]
+    linkedin = 'https://linkedin.com/in/digitaldias'
+    github = 'https://github.com/digitaldias'
+    youtube_digitaldias = 'https://youtube.com/@digitaldias'
+    youtube_digitalhome = 'https://youtube.com/@digitalhome'
+    flickr = 'https://flickr.com/photos/digitaldias'
+    facebook = 'https://facebook.com/pedrodiaspt'
+  
+  # Stats for hero section
+  [params.stats]
+    age = 41
+    photos = 172
+    channels = 2
+    family = '∞'
+
+# Asset processing
+[build]
+  writeStats = true
+
+# Sitemap configuration
+[sitemap]
+  changefreq = 'weekly'
+  filename = 'sitemap.xml'
+  priority = 0.5
+
+# RSS configuration
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+  section = ['HTML', 'RSS']
