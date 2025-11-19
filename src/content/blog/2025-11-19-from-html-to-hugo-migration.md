@@ -492,7 +492,7 @@ If you're considering a similar journey, here's what worked:
 2. **Preserve first, optimize later**: Get feature parity, then improve
 3. **Use version control**: Commit after each major phase for easy rollback
 4. **Visual verification**: AI can't see your site—you must verify rendering
-5. **Document decisions**: Create `.github/copilot-instructions.md` for future context
+5. **Document decisions**: Create project-specific documentation for future AI context
 
 ### Avoid This:
 1. **Blind automation**: Don't accept AI suggestions without understanding them
@@ -560,4 +560,4 @@ That's it. You're blogging with AI assistance on a secure, fast platform.
 
 ---
 
-*Curious about the technical details? Check out the [migration commit history](https://github.com/digitaldias/digitaldias.com) or the [Hugo documentation](https://gohugo.io/documentation/). Questions? [Reach out](/contact)—I'd love to hear about your migration journey.*
+*Curious about the technical details? Check out the [Hugo documentation](https://gohugo.io/documentation/). Questions? [Reach out](/#contact)—I'd love to hear about your migration journey.*
