@@ -1,27 +1,176 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Architecture on DigitalDias - Pedro Dias</title>
-    <link>http://localhost:1313/categories/architecture/</link>
-    <description>Recent content in Architecture on DigitalDias - Pedro Dias</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <copyright>© 2025 Pedro Dias. All rights reserved.</copyright>
-    <lastBuildDate>Wed, 19 Nov 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/architecture/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>From Hand-Crafted HTML to Hugo: A Migration Story</title>
-      <link>http://localhost:1313/blog/2025-11-19-from-html-to-hugo-migration/</link>
-      <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/blog/2025-11-19-from-html-to-hugo-migration/</guid>
-      <description>&lt;div class=&#34;toc-wrapper&#34;&gt;&#xD;&#xA;  &lt;div class=&#34;toc-header&#34;&gt;&#xD;&#xA;    &lt;span class=&#34;toc-icon&#34;&gt;📖&lt;/span&gt;&#xD;&#xA;    &lt;h2&gt;Table of Contents&lt;/h2&gt;&#xD;&#xA;  &lt;/div&gt;&#xD;&#xA;  &lt;nav class=&#34;toc-content&#34;&gt;&#xD;&#xA;    &lt;ol&gt;&#xD;&#xA;      &lt;li&gt;&lt;a href=&#34;#the-revelation&#34;&gt;The Revelation: Static Generators + AI = Content Freedom&lt;/a&gt;&#xD;&#xA;        &lt;ul&gt;&#xD;&#xA;          &lt;li&gt;&lt;a href=&#34;#wordpress-scars&#34;&gt;My WordPress Scars&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;          &lt;li&gt;&lt;a href=&#34;#hand-coded-interlude&#34;&gt;The Hand-Coded Interlude&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;          &lt;li&gt;&lt;a href=&#34;#youtube-epiphany&#34;&gt;The YouTube Epiphany&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;        &lt;/ul&gt;&#xD;&#xA;      &lt;/li&gt;&#xD;&#xA;      &lt;li&gt;&lt;a href=&#34;#why-hugo&#34;&gt;Why Hugo? (And How to Actually Install It)&lt;/a&gt;&#xD;&#xA;        &lt;ul&gt;&#xD;&#xA;          &lt;li&gt;&lt;a href=&#34;#selection-criteria&#34;&gt;The Selection Criteria&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;          &lt;li&gt;&lt;a href=&#34;#installing-hugo&#34;&gt;Installing Hugo on Windows&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;        &lt;/ul&gt;&#xD;&#xA;      &lt;/li&gt;&#xD;&#xA;      &lt;li&gt;&lt;a href=&#34;#migration-process&#34;&gt;The Migration Process: AI as Co-Architect&lt;/a&gt;&#xD;&#xA;        &lt;ul&gt;&#xD;&#xA;          &lt;li&gt;&lt;a href=&#34;#phase-1&#34;&gt;Phase 1: Assessment and Planning&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;          &lt;li&gt;&lt;a href=&#34;#phase-2&#34;&gt;Phase 2: Foundation Setup&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;          &lt;li&gt;&lt;a href=&#34;#phase-3&#34;&gt;Phase 3: Content Migration&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;          &lt;li&gt;&lt;a href=&#34;#phase-4&#34;&gt;Phase 4: Interactive Features&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;        &lt;/ul&gt;&#xD;&#xA;      &lt;/li&gt;&#xD;&#xA;      &lt;li&gt;&lt;a href=&#34;#results&#34;&gt;The Results: Benefits Beyond Expectations&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;      &lt;li&gt;&lt;a href=&#34;#what-i-learned&#34;&gt;What I Learned: AI as Migration Partner&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;      &lt;li&gt;&lt;a href=&#34;#recommendations&#34;&gt;Recommendations for Your Migration&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;      &lt;li&gt;&lt;a href=&#34;#bottom-line&#34;&gt;The Bottom Line&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;      &lt;li&gt;&lt;a href=&#34;#getting-started&#34;&gt;Getting Started: Your Quick-Start Guide&lt;/a&gt;&lt;/li&gt;&#xD;&#xA;    &lt;/ol&gt;&#xD;&#xA;  &lt;/nav&gt;&#xD;&#xA;&lt;/div&gt;&#xD;&#xA;&lt;style&gt;&#xD;&#xA;.toc-wrapper {&#xD;&#xA;  background: linear-gradient(135deg, rgba(186, 12, 47, 0.1) 0%, rgba(0, 47, 139, 0.1) 100%);&#xD;&#xA;  border: 1px solid rgba(186, 12, 47, 0.2);&#xD;&#xA;  border-radius: 12px;&#xD;&#xA;  padding: 2rem;&#xD;&#xA;  margin: 2rem 0 3rem 0;&#xD;&#xA;  backdrop-filter: blur(10px);&#xD;&#xA;  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-header {&#xD;&#xA;  display: flex;&#xD;&#xA;  align-items: center;&#xD;&#xA;  gap: 0.75rem;&#xD;&#xA;  margin-bottom: 1.5rem;&#xD;&#xA;  padding-bottom: 1rem;&#xD;&#xA;  border-bottom: 2px solid rgba(186, 12, 47, 0.3);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-icon {&#xD;&#xA;  font-size: 1.5rem;&#xD;&#xA;  filter: drop-shadow(0 2px 4px rgba(186, 12, 47, 0.4));&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-header h2 {&#xD;&#xA;  margin: 0;&#xD;&#xA;  font-size: 1.5rem;&#xD;&#xA;  font-weight: 700;&#xD;&#xA;  color: #BA0C2F;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content {&#xD;&#xA;  font-family: var(--font-sans);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content ol {&#xD;&#xA;  list-style: none;&#xD;&#xA;  counter-reset: toc-counter;&#xD;&#xA;  padding-left: 0;&#xD;&#xA;  margin: 0;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content ol &gt; li {&#xD;&#xA;  counter-increment: toc-counter;&#xD;&#xA;  margin-bottom: 0.75rem;&#xD;&#xA;  position: relative;&#xD;&#xA;  padding-left: 2rem;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content ol &gt; li::before {&#xD;&#xA;  content: counter(toc-counter);&#xD;&#xA;  position: absolute;&#xD;&#xA;  left: 0;&#xD;&#xA;  top: 0.15rem;&#xD;&#xA;  width: 1.5rem;&#xD;&#xA;  height: 1.5rem;&#xD;&#xA;  background: linear-gradient(135deg, #BA0C2F 0%, #002F8B 100%);&#xD;&#xA;  color: white;&#xD;&#xA;  border-radius: 50%;&#xD;&#xA;  display: flex;&#xD;&#xA;  align-items: center;&#xD;&#xA;  justify-content: center;&#xD;&#xA;  font-size: 0.75rem;&#xD;&#xA;  font-weight: 700;&#xD;&#xA;  box-shadow: 0 2px 8px rgba(186, 12, 47, 0.3);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content a {&#xD;&#xA;  color: var(--color-text);&#xD;&#xA;  text-decoration: none;&#xD;&#xA;  font-weight: 500;&#xD;&#xA;  display: inline-block;&#xD;&#xA;  position: relative;&#xD;&#xA;  border-left: 3px solid transparent;&#xD;&#xA;  padding-left: 0.5rem;&#xD;&#xA;  margin-left: -0.5rem;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content a:hover {&#xD;&#xA;  color: #BA0C2F;&#xD;&#xA;  border-left-color: #BA0C2F;&#xD;&#xA;  background: rgba(186, 12, 47, 0.05);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content ul {&#xD;&#xA;  list-style: none;&#xD;&#xA;  padding-left: 1.5rem;&#xD;&#xA;  margin: 0.5rem 0 0 0;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content ul li {&#xD;&#xA;  margin-bottom: 0.5rem;&#xD;&#xA;  padding-left: 1rem;&#xD;&#xA;  position: relative;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content ul li::before {&#xD;&#xA;  content: &#39;→&#39;;&#xD;&#xA;  position: absolute;&#xD;&#xA;  left: 0;&#xD;&#xA;  color: #BA0C2F;&#xD;&#xA;  font-weight: 700;&#xD;&#xA;  opacity: 0.7;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;.toc-content ul a {&#xD;&#xA;  font-size: 0.9rem;&#xD;&#xA;  font-weight: 400;&#xD;&#xA;  opacity: 0.9;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;@media (max-width: 768px) {&#xD;&#xA;  .toc-wrapper {&#xD;&#xA;    padding: 1.5rem;&#xD;&#xA;    margin: 1.5rem 0 2rem 0;&#xD;&#xA;  }&#xD;&#xA;  &#xD;&#xA;  .toc-header h2 {&#xD;&#xA;    font-size: 1.25rem;&#xD;&#xA;  }&#xD;&#xA;  &#xD;&#xA;  .toc-content ol &gt; li {&#xD;&#xA;    padding-left: 1.75rem;&#xD;&#xA;  }&#xD;&#xA;  &#xD;&#xA;  .toc-content ul {&#xD;&#xA;    padding-left: 1rem;&#xD;&#xA;  }&#xD;&#xA;}&#xD;&#xA;&lt;/style&gt;&#xD;&#xA;&lt;p&gt;In September 2024, I did something delightfully old-school: I hand-coded my entire portfolio website. Custom HTML, 2,132 lines of CSS, interactive JavaScript—the whole nine yards. It felt great to have complete control, but I wasn&amp;rsquo;t thinking about the future.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>How GPT5-Codex and Azure Static Websites launched digitaldias.com</title>
-      <link>http://localhost:1313/blog/2025-09-30-gpt5-codex-static-site/</link>
-      <pubDate>Tue, 30 Sep 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/blog/2025-09-30-gpt5-codex-static-site/</guid>
-      <description>&lt;p&gt;Building software for four decades gives you instincts, but partnering with &lt;strong&gt;GPT5-Codex&lt;/strong&gt; feels like inviting a fellow architect into the room—one who never sleeps, never loses context, and has a wicked sense for design details. Together we re-imagined this site from the ground up: accessibility-first, performance-tuned, and visually aligned with the dual heritage that inspires me every day.&lt;/p&gt;&#xA;&lt;h2 id=&#34;why-gpt5-codex-was-the-perfect-co-pilot&#34;&gt;Why GPT5-Codex was the perfect co-pilot&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Instant ideation:&lt;/strong&gt; Need three layout variants for the hero section? Codex delivered options faster than I could sketch them on paper.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Accessibility watchdog:&lt;/strong&gt; From skip links to aria-live counters, Codex kept us honest about inclusive design from the first commit.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Frictionless refactoring:&lt;/strong&gt; Tweaking copy, trimming unused JavaScript, or inventing a new bio section became a conversation instead of a grind.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;When the code editor feels like a jam session, you know you&amp;rsquo;ve found the right collaborator.&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Architecture on DigitalDias - Pedro Dias</title><link>https://digitaldias.com/categories/architecture/</link><description>Recent content in Architecture on DigitalDias - Pedro Dias</description><generator>Hugo</generator><language>en-us</language><copyright>© 2025 Pedro Dias. All rights reserved.</copyright><lastBuildDate>Wed, 19 Nov 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://digitaldias.com/categories/architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>From Hand-Crafted HTML to Hugo: A Migration Story</title><link>https://digitaldias.com/blog/2025-11-19-from-html-to-hugo-migration/</link><pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate><guid>https://digitaldias.com/blog/2025-11-19-from-html-to-hugo-migration/</guid><description>&lt;div class="toc-wrapper"&gt;
+ &lt;div class="toc-header"&gt;
+ &lt;span class="toc-icon"&gt;📖&lt;/span&gt;
+ &lt;h2&gt;Table of Contents&lt;/h2&gt;
+ &lt;/div&gt;
+ &lt;nav class="toc-content"&gt;
+ &lt;ol&gt;
+ &lt;li&gt;&lt;a href="#the-revelation"&gt;The Revelation: Static Generators + AI = Content Freedom&lt;/a&gt;
+ &lt;ul&gt;
+ &lt;li&gt;&lt;a href="#wordpress-scars"&gt;My WordPress Scars&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#hand-coded-interlude"&gt;The Hand-Coded Interlude&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#youtube-epiphany"&gt;The YouTube Epiphany&lt;/a&gt;&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;/li&gt;
+ &lt;li&gt;&lt;a href="#why-hugo"&gt;Why Hugo? (And How to Actually Install It)&lt;/a&gt;
+ &lt;ul&gt;
+ &lt;li&gt;&lt;a href="#selection-criteria"&gt;The Selection Criteria&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#installing-hugo"&gt;Installing Hugo on Windows&lt;/a&gt;&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;/li&gt;
+ &lt;li&gt;&lt;a href="#migration-process"&gt;The Migration Process: AI as Co-Architect&lt;/a&gt;
+ &lt;ul&gt;
+ &lt;li&gt;&lt;a href="#phase-1"&gt;Phase 1: Assessment and Planning&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#phase-2"&gt;Phase 2: Foundation Setup&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#phase-3"&gt;Phase 3: Content Migration&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#phase-4"&gt;Phase 4: Interactive Features&lt;/a&gt;&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;/li&gt;
+ &lt;li&gt;&lt;a href="#results"&gt;The Results: Benefits Beyond Expectations&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#what-i-learned"&gt;What I Learned: AI as Migration Partner&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#recommendations"&gt;Recommendations for Your Migration&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#bottom-line"&gt;The Bottom Line&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="#getting-started"&gt;Getting Started: Your Quick-Start Guide&lt;/a&gt;&lt;/li&gt;
+ &lt;/ol&gt;
+ &lt;/nav&gt;
+&lt;/div&gt;
+&lt;style&gt;
+.toc-wrapper {
+ background: linear-gradient(135deg, rgba(186, 12, 47, 0.1) 0%, rgba(0, 47, 139, 0.1) 100%);
+ border: 1px solid rgba(186, 12, 47, 0.2);
+ border-radius: 12px;
+ padding: 2rem;
+ margin: 2rem 0 3rem 0;
+ backdrop-filter: blur(10px);
+ box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.toc-header {
+ display: flex;
+ align-items: center;
+ gap: 0.75rem;
+ margin-bottom: 1.5rem;
+ padding-bottom: 1rem;
+ border-bottom: 2px solid rgba(186, 12, 47, 0.3);
+}
+
+.toc-icon {
+ font-size: 1.5rem;
+ filter: drop-shadow(0 2px 4px rgba(186, 12, 47, 0.4));
+}
+
+.toc-header h2 {
+ margin: 0;
+ font-size: 1.5rem;
+ font-weight: 700;
+ color: #BA0C2F;
+}
+
+.toc-content {
+ font-family: var(--font-sans);
+}
+
+.toc-content ol {
+ list-style: none;
+ counter-reset: toc-counter;
+ padding-left: 0;
+ margin: 0;
+}
+
+.toc-content ol &gt; li {
+ counter-increment: toc-counter;
+ margin-bottom: 0.75rem;
+ position: relative;
+ padding-left: 2rem;
+}
+
+.toc-content ol &gt; li::before {
+ content: counter(toc-counter);
+ position: absolute;
+ left: 0;
+ top: 0.15rem;
+ width: 1.5rem;
+ height: 1.5rem;
+ background: linear-gradient(135deg, #BA0C2F 0%, #002F8B 100%);
+ color: white;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 0.75rem;
+ font-weight: 700;
+ box-shadow: 0 2px 8px rgba(186, 12, 47, 0.3);
+}
+
+.toc-content a {
+ color: var(--color-text);
+ text-decoration: none;
+ font-weight: 500;
+ display: inline-block;
+ position: relative;
+ border-left: 3px solid transparent;
+ padding-left: 0.5rem;
+ margin-left: -0.5rem;
+}
+
+.toc-content a:hover {
+ color: #BA0C2F;
+ border-left-color: #BA0C2F;
+ background: rgba(186, 12, 47, 0.05);
+}
+
+.toc-content ul {
+ list-style: none;
+ padding-left: 1.5rem;
+ margin: 0.5rem 0 0 0;
+}
+
+.toc-content ul li {
+ margin-bottom: 0.5rem;
+ padding-left: 1rem;
+ position: relative;
+}
+
+.toc-content ul li::before {
+ content: '→';
+ position: absolute;
+ left: 0;
+ color: #BA0C2F;
+ font-weight: 700;
+ opacity: 0.7;
+}
+
+.toc-content ul a {
+ font-size: 0.9rem;
+ font-weight: 400;
+ opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+ .toc-wrapper {
+ padding: 1.5rem;
+ margin: 1.5rem 0 2rem 0;
+ }
+ 
+ .toc-header h2 {
+ font-size: 1.25rem;
+ }
+ 
+ .toc-content ol &gt; li {
+ padding-left: 1.75rem;
+ }
+ 
+ .toc-content ul {
+ padding-left: 1rem;
+ }
+}
+&lt;/style&gt;
+&lt;p&gt;In September 2024, I did something delightfully old-school: I hand-coded my entire portfolio website. Custom HTML, 2,132 lines of CSS, interactive JavaScript—the whole nine yards. It felt great to have complete control, but I wasn&amp;rsquo;t thinking about the future.&lt;/p&gt;</description></item><item><title>How GPT5-Codex and Azure Static Websites launched digitaldias.com</title><link>https://digitaldias.com/blog/2025-09-30-gpt5-codex-static-site/</link><pubDate>Tue, 30 Sep 2025 00:00:00 +0000</pubDate><guid>https://digitaldias.com/blog/2025-09-30-gpt5-codex-static-site/</guid><description>&lt;p&gt;Building software for four decades gives you instincts, but partnering with &lt;strong&gt;GPT5-Codex&lt;/strong&gt; feels like inviting a fellow architect into the room—one who never sleeps, never loses context, and has a wicked sense for design details. Together we re-imagined this site from the ground up: accessibility-first, performance-tuned, and visually aligned with the dual heritage that inspires me every day.&lt;/p&gt;
+&lt;h2 id="why-gpt5-codex-was-the-perfect-co-pilot"&gt;Why GPT5-Codex was the perfect co-pilot&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Instant ideation:&lt;/strong&gt; Need three layout variants for the hero section? Codex delivered options faster than I could sketch them on paper.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Accessibility watchdog:&lt;/strong&gt; From skip links to aria-live counters, Codex kept us honest about inclusive design from the first commit.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Frictionless refactoring:&lt;/strong&gt; Tweaking copy, trimming unused JavaScript, or inventing a new bio section became a conversation instead of a grind.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When the code editor feels like a jam session, you know you&amp;rsquo;ve found the right collaborator.&lt;/p&gt;</description></item></channel></rss>
