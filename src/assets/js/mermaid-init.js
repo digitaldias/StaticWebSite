@@ -1,0 +1,20 @@
+// Initialize Mermaid.js for diagram rendering
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+mermaid.initialize({ 
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+        primaryColor: '#BA0C2F',
+        primaryTextColor: '#fff',
+        primaryBorderColor: '#002F8B',
+        lineColor: '#006600',
+        secondaryColor: '#002F8B',
+        tertiaryColor: '#FFD700',
+        background: '#0a0a0a',
+        mainBkg: '#1a1a1a',
+        secondBkg: '#2a2a2a',
+        textColor: '#e0e0e0',
+        fontSize: '16px'
+    }
+});
