@@ -1,9 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Agentic Development on DigitalDias - Pedro Dias</title><link>https://digitaldias.com/tags/agentic-development/</link><description>Recent content in Agentic Development on DigitalDias - Pedro Dias</description><generator>Hugo</generator><language>en-us</language><copyright>© 2025 Pedro Dias. All rights reserved.</copyright><lastBuildDate>Tue, 30 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://digitaldias.com/tags/agentic-development/index.xml" rel="self" type="application/rss+xml"/><item><title>How GPT5-Codex and Azure Static Websites launched digitaldias.com</title><link>https://digitaldias.com/blog/2025-09-30-gpt5-codex-static-site/</link><pubDate>Tue, 30 Sep 2025 00:00:00 +0000</pubDate><guid>https://digitaldias.com/blog/2025-09-30-gpt5-codex-static-site/</guid><description>&lt;p&gt;Building software for four decades gives you instincts, but partnering with &lt;strong&gt;GPT5-Codex&lt;/strong&gt; feels like inviting a fellow architect into the room—one who never sleeps, never loses context, and has a wicked sense for design details. Together we re-imagined this site from the ground up: accessibility-first, performance-tuned, and visually aligned with the dual heritage that inspires me every day.&lt;/p&gt;
-&lt;h2 id="why-gpt5-codex-was-the-perfect-co-pilot"&gt;Why GPT5-Codex was the perfect co-pilot&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Instant ideation:&lt;/strong&gt; Need three layout variants for the hero section? Codex delivered options faster than I could sketch them on paper.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Accessibility watchdog:&lt;/strong&gt; From skip links to aria-live counters, Codex kept us honest about inclusive design from the first commit.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Frictionless refactoring:&lt;/strong&gt; Tweaking copy, trimming unused JavaScript, or inventing a new bio section became a conversation instead of a grind.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;When the code editor feels like a jam session, you know you&amp;rsquo;ve found the right collaborator.&lt;/p&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Agentic Development on DigitalDias - Pedro Dias</title>
+    <link>https://digitaldias.com/tags/agentic-development/</link>
+    <description>Recent content in Agentic Development on DigitalDias - Pedro Dias</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <copyright>© 2025 Pedro Dias. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 30 Sep 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://digitaldias.com/tags/agentic-development/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How GPT5-Codex and Azure Static Websites launched digitaldias.com</title>
+      <link>https://digitaldias.com/blog/2025-09-30-gpt5-codex-static-site/</link>
+      <pubDate>Tue, 30 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>https://digitaldias.com/blog/2025-09-30-gpt5-codex-static-site/</guid>
+      <description>&lt;p&gt;Building software for four decades gives you instincts, but partnering with &lt;strong&gt;GPT5-Codex&lt;/strong&gt; feels like inviting a fellow architect into the room—one who never sleeps, never loses context, and has a wicked sense for design details. Together we re-imagined this site from the ground up: accessibility-first, performance-tuned, and visually aligned with the dual heritage that inspires me every day.&lt;/p&gt;&#xA;&lt;h2 id=&#34;why-gpt5-codex-was-the-perfect-co-pilot&#34;&gt;Why GPT5-Codex was the perfect co-pilot&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Instant ideation:&lt;/strong&gt; Need three layout variants for the hero section? Codex delivered options faster than I could sketch them on paper.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Accessibility watchdog:&lt;/strong&gt; From skip links to aria-live counters, Codex kept us honest about inclusive design from the first commit.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Frictionless refactoring:&lt;/strong&gt; Tweaking copy, trimming unused JavaScript, or inventing a new bio section became a conversation instead of a grind.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;When the code editor feels like a jam session, you know you&amp;rsquo;ve found the right collaborator.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

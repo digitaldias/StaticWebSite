@@ -228,28 +228,20 @@ And then the second revelation: **What if I paired Hugo with AI?** Not just for 
 ## Why Hugo? (And How to Actually Install It) {#why-hugo}
 
 ### The Selection Criteria {#selection-criteria}
+Instead of showing a rendered diagram, here is the plain, human-readable breakdown of my evaluation process:
 
-{{< mermaid >}}
-graph TD
-    A[Static Site Needs] --> B{Framework Options}
-    B -->|Speed + Simplicity| C[Hugo]
-    B -->|React Ecosystem| D[Next.js]
-    B -->|Vue Ecosystem| E[Nuxt]
-    B -->|Flexibility| F[11ty]
-    
-    C --> G[✓ Single binary]
-    C --> H[✓ Sub-second builds]
-    C --> I[✓ No Node.js required]
-    C --> J[✓ Built-in taxonomies]
-    C --> K[✓ Azure-friendly]
-    
-    style C fill:#BA0C2F,color:#fff
-    style G fill:#006600,color:#fff
-    style H fill:#006600,color:#fff
-    style I fill:#006600,color:#fff
-    style J fill:#006600,color:#fff
-    style K fill:#006600,color:#fff
-{{< /mermaid >}}
+**Framework Options Considered**
+- Hugo (speed + simplicity)
+- Next.js (React ecosystem)
+- Nuxt (Vue ecosystem)
+- 11ty (flexibility)
+
+**Why Hugo Stood Out**
+- ✓ Single binary distribution
+- ✓ Sub-second builds (milliseconds, not seconds)
+- ✓ No Node.js runtime required
+- ✓ Built‑in taxonomies, sitemap, RSS
+- ✓ Azure-friendly deployment model
 
 **Hugo won for five reasons:**
 
@@ -316,25 +308,13 @@ Here's where it gets interesting. I didn't migrate this alone—I paired with **
 This wasn't just "move files around." The AI understood my *design intent*.
 
 ### Phase 2: Foundation Setup {#phase-2}
-
-{{< mermaid >}}
-sequenceDiagram
-    participant Dev as Pedro
-    participant AI as GitHub Agent
-    participant Hugo as Hugo Build
-    
-    Dev->>AI: Configure Hugo foundation
-    AI->>Hugo: Create hugo.toml with metadata
-    AI->>Hugo: Set up base layouts structure
-    AI->>Hugo: Configure taxonomies & asset pipeline
-    Hugo-->>Dev: ✓ Foundation ready
-    
-    Dev->>AI: Preserve my design system
-    AI->>Hugo: Copy 2,132 lines of CSS exactly
-    AI->>Hugo: Port all JavaScript features
-    Note over AI,Hugo: Preserved: All interactive features<br/>Glass-morphism effects<br/>Custom typography
-    Hugo-->>Dev: ✓ Design system intact
-{{< /mermaid >}}
+The collaboration flowed like a simple sequence:
+1. I asked GitHub Agent to configure the Hugo foundation.
+2. It generated `hugo.toml`, base layouts, taxonomies, and asset pipeline.
+3. I requested preservation of the design system.
+4. It copied all 2,132 lines of CSS and ported JavaScript features.
+5. I verified that interactive effects, glass‑morphism, and typography rendered correctly.
+Result: Foundation + design parity achieved rapidly.
 
 **What GitHub Agent did brilliantly:**
 - Configured `hugo.toml` with proper settings, not generic defaults
@@ -469,7 +449,7 @@ Output: Optimized static files in `public/`. Deploy to Azure Static Web Apps, Ne
 
 **4. Best Practices:** It configured Hugo with sitemap settings, RSS outputs, canonical URLs, and asset pipeline optimizations I didn't know existed.
 
-**5. AI-Powered Content Creation:** The biggest win? Now I can ask GitHub Agent to help me write blog posts. It helps structure ideas, maintain consistent tone, generate Mermaid diagrams, and keep me focused on the message instead of Markdown syntax.
+**5. AI-Powered Content Creation:** The biggest win? Now I can ask GitHub Agent to help me write blog posts. It helps structure ideas, maintain consistent tone, and keep me focused on the message instead of Markdown syntax.
 
 ### The Challenges
 
@@ -512,7 +492,6 @@ In September 2024, I hand-coded a website because I wanted control. In November 
 
 **The real win isn't the migration**—it's the workflow transformation:
 - ✅ Write in Markdown with AI assistance
-- ✅ Generate Mermaid diagrams with natural language descriptions
 - ✅ Let Hugo handle HTML, sitemap, RSS, taxonomies automatically
 - ✅ Deploy static files with zero security concerns
 - ✅ Sub-second builds (71ms for 27 pages)
@@ -554,7 +533,7 @@ hugo server
 hugo new blog/my-first-post.md
 ```
 
-Then ask GitHub Agent: "Help me write a blog post about [topic]. Include structure, examples, and a Mermaid diagram."
+Then ask GitHub Agent: "Help me write a blog post about [topic]. Include structure and examples." (Diagram generation tooling has been retired.)
 
 That's it. You're blogging with AI assistance on a secure, fast platform.
 

@@ -116,6 +116,8 @@ The site has rich JavaScript interactivity in `assets/js/main.js`:
 - **Parallax**: Background tile movement
 - **Navigation**: Active state tracking, mobile menu
 
+Mermaid diagrams were previously enabled via a shortcode and a `mermaid-init.js` module. This feature has been fully deprecated and all related assets and shortcodes have been removed. Do NOT add Mermaid (or similar diagram auto-rendering libraries) back into the project unless explicitly reinstated in future requirements.
+
 **Respect `prefers-reduced-motion`** - all animations must check for this preference.
 
 ## Coding Conventions
