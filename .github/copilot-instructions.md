@@ -100,8 +100,18 @@ digitaldias-hugo/
 │   ├── blog/                # Blog templates
 │   ├── partials/            # Reusable components
 │   └── _default/            # Base templates
-└── static/                   # Favicon, robots.txt, etc.
+└── static/                   # Favicon, robots.txt, llm.txt, etc.
 ```
+
+## LLM Integration
+
+**llm.txt File:** The site includes a `/llm.txt` file (in `static/`) following the [llm.txt convention](https://llmstxt.org/). This provides structured information about the site for AI assistants and LLMs, including:
+- Site purpose and owner details
+- Content structure and key pages
+- Technology stack
+- Licensing and usage guidelines
+
+Keep `llm.txt` updated when major site structure changes occur (new sections, content types, or technologies).
 
 ## JavaScript Features
 

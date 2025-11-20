@@ -1,0 +1,155 @@
+# digitaldias.com
+
+> Personal portfolio and technical blog of Pedro Dias, Chief Architect at Tradesolution AS
+
+## Purpose
+
+This site serves as Pedro Dias's professional portfolio, technical blog, and digital presence. It showcases software architecture expertise, photography, and personal projects spanning four decades of technology experience.
+
+## Owner
+
+Pedro Dias
+- **Role:** Chief Architect at Tradesolution AS
+- **Location:** Frogner, Norway
+- **Email:** pedro.dias@tradesolution.no
+- **LinkedIn:** https://linkedin.com/in/digitaldias
+- **GitHub:** https://github.com/digitaldias
+- **Flickr:** https://flickr.com/photos/digitaldias
+- **YouTube:** @digitaldias (tech), @digitalhome (family)
+
+## Technology Stack
+
+- **Framework:** Hugo (static site generator) v0.152.2+extended
+- **Languages:** HTML, CSS (custom), JavaScript (vanilla)
+- **Typography:** Inter (sans-serif), JetBrains Mono (monospace)
+- **Hosting:** Azure Static Web Apps / Azure Storage Static Website
+- **Deployment:** Manual (transitioning to GitHub Actions)
+- **Version Control:** Git
+
+## Site Structure
+
+### Main Sections
+
+- **Homepage** (`/`): Hero, about, statistics, photo gallery, contact
+- **Blog** (`/blog/`): Technical articles on software architecture, Azure, AI, DevOps
+- **Categories** (`/categories/<name>/`): Posts grouped by topic (Architecture, Azure, AI, DevOps, etc.)
+- **Tags** (`/tags/<name>/`): Posts tagged with specific technologies (Hugo, Blazor, GitHub Copilot, etc.)
+
+### Content Types
+
+1. **Blog Posts:** Long-form technical articles (800–2000 words)
+   - Format: Markdown with YAML front matter
+   - Topics: Software architecture, cloud computing, AI/ML, web development
+   - Style: First-person, conversational but professional
+
+2. **Portfolio:** Project showcases and case studies (future)
+
+3. **Photography:** Flickr-hosted images integrated throughout site
+
+### Key Pages
+
+- `/blog/` - Blog index with post cards
+- `/blog/2025-11-19-from-html-to-hugo-migration/` - Site migration story
+- `/blog/2025-09-30-gpt5-codex-static-site/` - GPT5-Codex collaboration post
+- `/index.xml` - Global RSS feed
+- `/blog/index.xml` - Blog-specific RSS feed
+- `/sitemap.xml` - Full site map
+- `/robots.txt` - Search engine directives
+
+## Design System
+
+### Brand Identity
+
+The site celebrates Pedro's Norwegian and Portuguese heritage through a dual-flag color palette:
+
+**Norwegian Colors:**
+- Primary: `#BA0C2F` (Norway Red)
+- Secondary: `#002F8B` (Norway Blue)
+- Neutral: `#FFFFFF` (White)
+
+**Portuguese Colors:**
+- Accent: `#006600` (Portugal Green)
+- Alert: `#FF0000` (Portugal Red)
+- Highlight: `#FFD700` (Portugal Gold)
+
+### Visual Style
+
+- Dark mode design (`#0a0a0a` background)
+- Glass-morphism effects (backdrop-blur)
+- Smooth animations (respecting `prefers-reduced-motion`)
+- Generous whitespace
+- Mobile-first responsive design
+
+## Content Guidelines
+
+### Blog Writing
+
+- **Voice:** First-person, authentic, conversational
+- **Tone:** Enthusiastic about technology, humble about expertise
+- **Topics:** Software architecture, Azure, .NET, Blazor, Avalonia, AI/ML, photography, family
+- **Length:** 800–2000 words ideal (5–10 minute read)
+- **Structure:** Clear sections with descriptive headings
+- **Code:** Use fenced blocks with language tags
+
+### SEO
+
+- Unique title and description in every post
+- Descriptive excerpts for social sharing
+- Specific tags (not generic keywords)
+- Internal linking between related posts
+- Semantic HTML structure
+
+## RSS Feeds
+
+The site provides multiple RSS feeds for subscription:
+- Global: `/index.xml`
+- Blog: `/blog/index.xml`
+- Per-category: `/categories/<category>/index.xml`
+- Per-tag: `/tags/<tag>/index.xml`
+
+## Licensing
+
+© 2025 Pedro Dias. All rights reserved.
+
+Content and code are proprietary unless otherwise noted. Photography is personal work (© Pedro Dias) hosted on Flickr.
+
+## Contact
+
+For professional inquiries, collaboration, or technical discussions:
+- Email: pedro.dias@tradesolution.no
+- LinkedIn: https://linkedin.com/in/digitaldias
+
+## LLM Usage Guidelines
+
+This site is optimized for AI assistant comprehension:
+- All blog posts use semantic HTML with clear heading hierarchy
+- Code blocks include language tags for syntax awareness
+- Front matter provides structured metadata
+- Content follows consistent voice and style patterns
+
+When helping users with this site:
+- Respect the Norwegian/Portuguese color palette (do not introduce new colors)
+- Maintain the conversational-but-professional writing tone
+- Preserve accessibility features (ARIA labels, semantic HTML)
+- Keep performance high (avoid heavy dependencies)
+- Follow Hugo conventions (content in `content/`, templates in `layouts/`)
+
+## Recent Changes
+
+- **2025-11-19:** Migrated from hand-coded HTML to Hugo
+- **2025-11-19:** Removed Mermaid diagram support (replaced with plain text or SVG)
+- **2025-11-20:** Added comprehensive planning documentation in `.todo/`
+- **2025-11-20:** Created `llm.txt` for AI assistant integration
+
+## Statistics (as of 2025-11-20)
+
+- **Experience:** 41 years in software development
+- **Photos Published:** 172+ on Flickr
+- **YouTube Channels:** 2 (@digitaldias tech, @digitalhome family)
+- **Blog Posts:** 2 (growing)
+- **Build Time:** ~50–70ms for 42 pages
+
+---
+
+For the most current information, visit https://www.digitaldias.com
+Last updated: 2025-11-20

@@ -2,88 +2,88 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on DigitalDias - Pedro Dias</title>
-    <link>https://digitaldias.com/tags/</link>
+    <link>http://localhost:1313/tags/</link>
     <description>Recent content in Tags on DigitalDias - Pedro Dias</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <copyright>© 2025 Pedro Dias. All rights reserved.</copyright>
     <lastBuildDate>Wed, 19 Nov 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://digitaldias.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AI</title>
-      <link>https://digitaldias.com/tags/ai/</link>
+      <link>http://localhost:1313/tags/ai/</link>
       <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/ai/</guid>
+      <guid>http://localhost:1313/tags/ai/</guid>
       <description></description>
     </item>
     <item>
       <title>Chocolatey</title>
-      <link>https://digitaldias.com/tags/chocolatey/</link>
+      <link>http://localhost:1313/tags/chocolatey/</link>
       <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/chocolatey/</guid>
+      <guid>http://localhost:1313/tags/chocolatey/</guid>
       <description></description>
     </item>
     <item>
       <title>GitHub Agent</title>
-      <link>https://digitaldias.com/tags/github-agent/</link>
+      <link>http://localhost:1313/tags/github-agent/</link>
       <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/github-agent/</guid>
+      <guid>http://localhost:1313/tags/github-agent/</guid>
       <description></description>
     </item>
     <item>
       <title>Hugo</title>
-      <link>https://digitaldias.com/tags/hugo/</link>
+      <link>http://localhost:1313/tags/hugo/</link>
       <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/hugo/</guid>
+      <guid>http://localhost:1313/tags/hugo/</guid>
       <description></description>
     </item>
     <item>
       <title>Migration</title>
-      <link>https://digitaldias.com/tags/migration/</link>
+      <link>http://localhost:1313/tags/migration/</link>
       <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/migration/</guid>
+      <guid>http://localhost:1313/tags/migration/</guid>
       <description></description>
     </item>
     <item>
       <title>Static Sites</title>
-      <link>https://digitaldias.com/tags/static-sites/</link>
+      <link>http://localhost:1313/tags/static-sites/</link>
       <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/static-sites/</guid>
+      <guid>http://localhost:1313/tags/static-sites/</guid>
       <description></description>
     </item>
     <item>
       <title>Web Development</title>
-      <link>https://digitaldias.com/tags/web-development/</link>
+      <link>http://localhost:1313/tags/web-development/</link>
       <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/web-development/</guid>
+      <guid>http://localhost:1313/tags/web-development/</guid>
       <description></description>
     </item>
     <item>
       <title>Agentic Development</title>
-      <link>https://digitaldias.com/tags/agentic-development/</link>
+      <link>http://localhost:1313/tags/agentic-development/</link>
       <pubDate>Tue, 30 Sep 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/agentic-development/</guid>
+      <guid>http://localhost:1313/tags/agentic-development/</guid>
       <description></description>
     </item>
     <item>
       <title>Azure Static Web Apps</title>
-      <link>https://digitaldias.com/tags/azure-static-web-apps/</link>
+      <link>http://localhost:1313/tags/azure-static-web-apps/</link>
       <pubDate>Tue, 30 Sep 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/azure-static-web-apps/</guid>
+      <guid>http://localhost:1313/tags/azure-static-web-apps/</guid>
       <description></description>
     </item>
     <item>
       <title>Codex</title>
-      <link>https://digitaldias.com/tags/codex/</link>
+      <link>http://localhost:1313/tags/codex/</link>
       <pubDate>Tue, 30 Sep 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/codex/</guid>
+      <guid>http://localhost:1313/tags/codex/</guid>
       <description></description>
     </item>
     <item>
       <title>GPT5</title>
-      <link>https://digitaldias.com/tags/gpt5/</link>
+      <link>http://localhost:1313/tags/gpt5/</link>
       <pubDate>Tue, 30 Sep 2025 00:00:00 +0000</pubDate>
-      <guid>https://digitaldias.com/tags/gpt5/</guid>
+      <guid>http://localhost:1313/tags/gpt5/</guid>
       <description></description>
     </item>
   </channel>
