@@ -36,4 +36,10 @@ jobs:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
           AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
         run: |
-          azcopy copy "src/public/*" "https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net/\$web" --recursive --overwrite=true        
+          # Use Azure CLI for authenticated upload
+          az storage blob upload-batch \
+            --account-name "${AZURE_STORAGE_ACCOUNT}" \
+            --account-key "${AZURE_STORAGE_KEY}" \
+            --source "src/public" \
+            --destination '$web' \
+            --overwrite        
