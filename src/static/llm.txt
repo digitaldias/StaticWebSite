@@ -148,6 +148,7 @@ When helping users with this site:
 - **YouTube Channels:** 2 (@digitaldias tech, @digitalhome family)
 - **Blog Posts:** 2 (growing)
 - **Build Time:** ~50–70ms for 42 pages
+- **Deployment:** Automated via GitHub Actions
 
 ---
 
