@@ -1,0 +1,39 @@
+name: Build and Deploy Hugo Site to Azure Blob
+
+on:
+  push:
+    branches:
+      - main # or your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v4
+
+      # Setup Hugo
+      - uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+
+      # Build the site (set 'src' as your hugo site root)
+      - name: Build Hugo site
+        run: hugo --source src --destination src/public
+
+      # Install Azure CLI & AzCopy
+      - name: Install Azure CLI and AzCopy
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          AZCOPY_VERSION=$(curl -s https://api.github.com/repos/Azure/azure-storage-azcopy/releases/latest | grep tag_name | cut -d '"' -f 4)
+          wget https://github.com/Azure/azure-storage-azcopy/releases/download/${AZCOPY_VERSION}/azcopy_linux_amd64_${AZCOPY_VERSION/v/}.tar.gz
+          tar -xzf azcopy_linux_amd64_${AZCOPY_VERSION/v/}.tar.gz
+          sudo cp azcopy_linux_amd64_${AZCOPY_VERSION/v/}/azcopy /usr/bin/
+
+      # Upload files to Azure Blob Storage
+      - name: Deploy to Azure Blob Storage ($web)
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+        run: |
+          azcopy copy "src/public/*" "https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net/\$web" --recursive --overwrite=true --dest-key "$AZURE_STORAGE_KEY"
