@@ -1,11 +1,11 @@
-# digitaldias.com - Hugo Migration
+# digitaldias.com - Hugo Static Site
 
-This is the Hugo version of digitaldias.com, migrated from a custom HTML/CSS/JS static site.
+Personal portfolio and technical blog built with Hugo, featuring a dual-heritage design system and modern dark-mode aesthetics.
 
-## What Was Migrated
+## Features
 
-### ✅ Complete Migration
-- **Hugo Configuration**: Full `hugo.toml` with proper settings, taxonomies, and params
+### ✅ Core Implementation
+- **Hugo Configuration**: Complete `hugo.toml` with proper settings, taxonomies, and params
 - **Design System**: All 2,132 lines of CSS preserving dual-heritage colors (Norwegian/Portuguese flags), dark glass-morphism theme, Inter + JetBrains Mono typography
 - **JavaScript Features**: All interactive features including scroll reveal, animated counters, magnetic buttons, card tilt, photo lightbox, and parallax effects
 - **Homepage Layout**: Complete with hero section, photo mosaic, bio, credentials, expertise, timeline, photography gallery, and contact sections
@@ -29,7 +29,7 @@ This is the Hugo version of digitaldias.com, migrated from a custom HTML/CSS/JS 
 ## Directory Structure
 
 ```
-digitaldias-hugo/
+digitaldias.com/
 ├── hugo.toml                 # Hugo configuration
 ├── archetypes/              # Content templates
 ├── assets/
@@ -62,7 +62,7 @@ digitaldias-hugo/
 
 ### Development Server
 ```bash
-cd digitaldias-hugo
+cd src
 hugo server
 ```
 
@@ -223,29 +223,28 @@ Edit `layouts/partials/footer.html`
 - Focus-visible styles
 - Screen reader announcements
 
-## Migration Notes
+## Technical Stack
 
-### Preserved from Original
-- ✅ All CSS (2,132 lines) with exact color values
-- ✅ All JavaScript functionality
-- ✅ Exact same visual design
-- ✅ Photo mosaic hero with Flickr
-- ✅ Animated counters
+### Design & Frontend
+- ✅ Custom CSS (2,132 lines) with dual-heritage color system
+- ✅ Vanilla JavaScript for all interactive features
+- ✅ Glass-morphism dark theme with backdrop-filter effects
+- ✅ Photo mosaic hero with Flickr integration
+- ✅ Animated stat counters and scroll-reveal effects
 - ✅ Timeline visualization
-- ✅ Photography gallery with lightbox
-- ✅ Fixed navigation
-- ✅ Custom 404 page
-- ✅ Accessibility features
+- ✅ Photography gallery with lightbox modal
+- ✅ Fixed navigation with scroll detection
+- ✅ Custom 404 page with interactive elements
+- ✅ WCAG 2.1 Level AA accessibility compliance
 
-### Hugo-Specific Improvements
-- ✨ Markdown-based blog authoring (easier than HTML)
-- ✨ Front matter for metadata
-- ✨ Built-in taxonomies (categories, tags)
-- ✨ Asset pipeline (minification, fingerprinting)
-- ✨ Template partials for reusability
-- ✨ Fast rebuilds with Hugo's speed
-- ✨ RSS feed auto-generated
-- ✨ SEO-friendly URLs
+### Hugo Benefits
+- ✨ Markdown-based blog authoring with front matter metadata
+- ✨ Built-in taxonomies (categories, tags) for content organization
+- ✨ Asset pipeline with minification and fingerprinting
+- ✨ Template partials for DRY code structure
+- ✨ Sub-second builds (typically 50-70ms for full site)
+- ✨ RSS feeds auto-generated for global, blog, categories, and tags
+- ✨ SEO-friendly URLs and automatic sitemap generation
 
 ### Future Enhancements
 - [ ] Create shortcodes for repeated elements (stat cards, tech tags)
