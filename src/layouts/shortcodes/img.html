@@ -2,14 +2,15 @@
 {{- $alt := .Get "alt" | default "" -}}
 {{- $caption := .Get "caption" -}}
 {{- $width := .Get "width" | default 800 -}}
-{{- $class := .Get "class" | default "article-image" -}}
+{{- $baseClass := .Get "class" | default "article-image" -}}
+{{- $class := printf "%s" $baseClass -}}
 
 {{- if $src -}}
   {{- /* Try to get from resources first (assets/) */ -}}
   {{- $image := resources.Get $src -}}
   {{- if $image -}}
     {{- $resized := $image.Resize (printf "%dx" $width) -}}
-    <figure class="{{ $class }}" style="max-width: {{ $width }}px;">
+    <figure class="{{ $class }}" style="max-width: min({{ $width }}px, 100%);">
       <img 
         src="{{ $resized.RelPermalink }}" 
         alt="{{ $alt }}"
@@ -24,7 +25,7 @@
     </figure>
   {{- else -}}
     {{- /* Fallback for static/ images or external URLs */ -}}
-    <figure class="{{ $class }}" style="max-width: {{ $width }}px;">
+    <figure class="{{ $class }}" style="max-width: min({{ $width }}px, 100%);">
       <img 
         src="{{ $src | relURL }}" 
         alt="{{ $alt }}"

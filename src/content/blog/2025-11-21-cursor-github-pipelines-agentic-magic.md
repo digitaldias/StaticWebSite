@@ -19,6 +19,8 @@ At Tradesolution AS, we're evaluating a migration from Azure DevOps to GitHub Ac
 
 In Azure DevOps, we had months of accumulated YAML tweaks—the "don't touch it, it's working" kind. Starting fresh in GitHub Actions meant rewriting all of that.
 
+This experiment is part of our ongoing scrutiny of Cursor. We need to justify its cost and subscription model. Can it deliver enough value to offset the subscription? This pipeline migration became a real-world test case.
+
 Or so I thought.
 
 {{< callout type="info" title="Key Insight" >}}
@@ -43,11 +45,11 @@ Cursor adjusted. Pushed. Waited 6 minutes.
 
 It kept going. Five iterations. Each cycle: wait 6 minutes → parse errors → make targeted fixes → commit → monitor.
 
+{{< img src="/images/blog/2025-11-21-cursor-github-pipelines/successful-build.png" alt="GitHub Actions dashboard showing successful multi-platform build with green checkmarks across Windows, macOS, and Linux platforms" caption="After 30 minutes of autonomous iteration: successful build across all platforms" width="1000" class="article-image featured" >}}
+
 > "Watching AI debug a pipeline through five 6-minute build cycles without human input wasn't just impressive—it was a glimpse of how infrastructure work fundamentally changes."
 
 **After 30 minutes: ✅ Build succeeded. All platforms. All checks passed.**
-
-{{< img src="/images/blog/2025-11-21-cursor-github-pipelines/successful-build.jpg" alt="GitHub Actions dashboard showing successful multi-platform build with green checkmarks across Windows, macOS, and Linux platforms" caption="Successful build after five autonomous iterations" width="800" >}}
 
 ## Why This Matters
 
@@ -72,6 +74,14 @@ Three more repositories are scheduled for migration next quarter. With Cursor + 
 **The bottom line:** Agentic development isn't just a productivity boost—it's a shift in how we approach infrastructure work. Computers now handle iterative debugging that previously consumed engineering time, enabling focus on architecture, UX, and strategic choices.
 
 **This amplifies developers rather than replacing them.**
+
+## Cost Justification
+
+Cursor's $20/month subscription isn't trivial. This experiment demonstrates tangible ROI: what would have been a day's work compressed into 30 minutes. For our team, that time savings compounds across multiple migrations and ongoing maintenance.
+
+We're tracking these metrics: time saved per task, reduction in specialist dependencies, and quality of generated code. Early results suggest the subscription pays for itself when used strategically—not as a crutch, but as a force multiplier for complex, iterative work.
+
+The verdict is still out, but autonomous pipeline debugging is a strong data point in Cursor's favor.
 
 ---
 
