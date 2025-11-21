@@ -15,11 +15,15 @@ build/
 
 # Static site generators
 .public/
+public/
+src/public/
 _site/
 .svelte-kit/
 .next/
 .nuxt/
 .hugo_build.lock
+hugo_stats.json
+src/hugo_stats.json
 .DS_Store
 
 # Environment files
