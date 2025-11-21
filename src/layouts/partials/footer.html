@@ -1,6 +1,56 @@
 <!-- Footer is minimal - main content sections contain their own footers -->
 <footer class="site-footer">
     <div class="footer-container">
-        <p class="footer-text">{{ .Site.Copyright }}</p>
+        <div class="footer-content">
+            <p class="footer-text">{{ .Site.Copyright }}</p>
+            <div class="footer-links">
+                {{- if .Site.Params.social -}}
+                <div class="footer-social">
+                    {{- with .Site.Params.social.linkedin -}}
+                    <a href="{{ . }}" class="footer-social-link" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
+                        <svg class="footer-social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16 8C18.21 8 20 9.79 20 12V20H16V12C16 11.45 15.55 11 15 11S14 11.45 14 12V20H10V8H14V9.5C14.64 8.64 15.75 8 17 8H16ZM4 6C4 7.1 4.9 8 6 8S8 7.1 8 6 7.1 4 6 4 4 4.9 4 6ZM4 10H8V20H4V10Z"/>
+                        </svg>
+                    </a>
+                    {{- end -}}
+                    {{- with .Site.Params.social.github -}}
+                    <a href="{{ . }}" class="footer-social-link" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
+                        <svg class="footer-social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0.3C5.4 0.3 0 5.7 0 12.3C0 17.6 3.4 22.1 8.2 23.7C8.8 23.8 9 23.4 9 23.1V20.9C5.7 21.6 5 19.4 5 19.4C4.5 18.1 3.7 17.7 3.7 17.7C2.5 17 3.8 17 3.8 17C5.1 17.1 5.7 18.3 5.7 18.3C6.9 20.2 8.9 19.6 9 19.4C9.1 18.6 9.4 18 9.8 17.7C7.1 17.4 4.3 16.4 4.3 11.7C4.3 10.4 4.8 9.3 5.7 8.5C5.6 8.2 5.1 6.9 5.8 5.2C5.8 5.2 6.9 4.9 9 6.2C10.1 5.9 11.1 5.8 12 5.8C12.9 5.8 13.9 5.9 15 6.2C17.1 4.9 18.2 5.2 18.2 5.2C18.9 6.9 18.4 8.2 18.3 8.5C19.2 9.3 19.7 10.4 19.7 11.7C19.7 16.4 16.9 17.4 14.2 17.7C14.7 18.1 15 18.9 15 20V23.1C15 23.4 15.2 23.8 15.8 23.7C20.6 22.1 24 17.6 24 12.3C24 5.7 18.6 0.3 12 0.3Z"/>
+                        </svg>
+                    </a>
+                    {{- end -}}
+                    {{- with .Site.Params.social.youtube_digitaldias -}}
+                    <a href="{{ . }}" class="footer-social-link" target="_blank" rel="noopener noreferrer" title="YouTube - DigitalDias" aria-label="YouTube - DigitalDias">
+                        <svg class="footer-social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                    {{- end -}}
+                    {{- with .Site.Params.social.flickr -}}
+                    <a href="{{ . }}" class="footer-social-link" target="_blank" rel="noopener noreferrer" title="Flickr" aria-label="Flickr">
+                        <svg class="footer-social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M5.5 12c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5-2.5-1.12-2.5-2.5zm9 0c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5-2.5-1.12-2.5-2.5z"/>
+                        </svg>
+                    </a>
+                    {{- end -}}
+                </div>
+                {{- end -}}
+                <div class="footer-rss">
+                    <a href="/index.xml" class="rss-link" title="Subscribe to RSS feed" aria-label="RSS Feed">
+                        <svg class="rss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+                        </svg>
+                        <span class="rss-text">RSS Feed</span>
+                    </a>
+                    <a href="/blog/index.xml" class="rss-link" title="Subscribe to blog RSS feed" aria-label="Blog RSS Feed">
+                        <svg class="rss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+                        </svg>
+                        <span class="rss-text">Blog RSS</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </footer>

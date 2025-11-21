@@ -5,7 +5,7 @@
 <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <meta name="author" content="{{ .Site.Params.author }}">
 <link rel="canonical" href="{{ .Permalink }}">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self'; script-src-elem 'self'; connect-src 'self' ws://localhost:* ws://127.0.0.1:*;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' https://static.cloudflareinsights.com; script-src-elem 'self' https://static.cloudflareinsights.com; connect-src 'self' ws://localhost:* ws://127.0.0.1:*;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-XSS-Protection" content="1; mode=block">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
