@@ -19,7 +19,10 @@ jobs:
 
       # Build the site (set 'src' as your hugo site root)
       - name: Build Hugo site
-        run: hugo --source src --destination src/public
+        run: |
+          cd src
+          hugo --minify
+          ls -la public/ | head -10  # Verify build output
 
       # Install Azure CLI & AzCopy
       - name: Install Azure CLI and AzCopy
@@ -36,6 +39,12 @@ jobs:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
           AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
         run: |
+          # Verify public directory exists before upload
+          if [ ! -d "src/public" ]; then
+            echo "ERROR: src/public directory does not exist after build!"
+            exit 1
+          fi
+          echo "Uploading $(find src/public -type f | wc -l) files from src/public/"
           # Use Azure CLI for authenticated upload
           az storage blob upload-batch \
             --account-name "${AZURE_STORAGE_ACCOUNT}" \
