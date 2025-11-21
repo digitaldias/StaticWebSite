@@ -4,6 +4,17 @@
 
 **This is a Hugo static site** for digitaldias.com - Pedro Dias's personal portfolio and blog. The site was migrated from custom HTML/CSS/JS to Hugo for better content management and faster authoring.
 
+## Available Prompts
+
+You have access to specialized workflow prompts for common tasks. Use these by typing `/` in Copilot Chat:
+
+- **`/new-blog-post`** - Complete blog post creation workflow with image planning, technical specs, front matter template, and pre-publish checklist
+- **`/optimize-image`** - Image optimization guide with dimensions, formats, compression settings, brand colors for diagrams, and AI-assisted selection
+- **`/deploy-checklist`** - Pre-deployment validation, build verification, deployment workflow, post-deployment checks, and rollback procedures
+- **`/common-tasks`** - Quick reference for updating stats, adding social links, changing navigation, managing content sections, and routine maintenance
+
+These prompts are in `.github/prompts/` and provide detailed, step-by-step guidance for specific workflows.
+
 ## Critical: This is a Hugo Site
 
 - **Framework**: Hugo (static site generator)
@@ -172,24 +183,83 @@ az storage blob upload-batch \
 
 ## Content Guidelines
 
-### Blog Writing Style
-- **Voice**: First-person, conversational but professional
-- **Tone**: Enthusiastic about technology, humble about experience
-- **Topics**: Software architecture, Azure, .NET, Blazor, Avalonia, AI/ML, photography, family
-- **Length**: 800-2000 words ideal (5-10 minute read)
+**Writing Style**: First-person, conversational but professional. Enthusiastic about tech, humble about experience. Topics: software architecture, Azure, .NET, Blazor, AI/ML, photography, family. Length: 800-2000 words (5-10 min read).
 
-### SEO Requirements
-- Unique `title` and `description` in front matter
-- Descriptive `excerpt` for social sharing
-- Categories limited to: Architecture, Azure, AI, Family, Photography, DevOps
-- Use specific tags (e.g., "Blazor", "GPT5", "Codex", not generic "web")
+**SEO Requirements**: Unique `title`/`description` in front matter. Descriptive `excerpt` for sharing. Categories: Architecture, Azure, AI, Family, Photography, DevOps. Specific tags only (e.g., "Blazor", "GPT5", not generic "web").
 
-## Image Handling
+## Blog Post Creation Workflow
 
-- **Personal photos**: Hosted on Flickr, reference with full URL
-- **Screenshots/diagrams**: Place in `static/images/blog/`
-- **Hero photos**: Photo mosaic uses 6 Flickr images (defined in `layouts/index.html`)
-- **Lazy loading**: Always include `loading="lazy" decoding="async"`
+### Image Planning (Do This FIRST)
+When starting a blog post, immediately plan visuals:
+- **Hero image**: What's the main visual concept? (landscape photo, diagram, screenshot)
+- **Inline images**: What 2-3 visuals support the narrative? (every ~600-800 words)
+- **Diagrams**: What concepts need visual explanation? (architecture, flows, comparisons)
+
+### Image Count by Word Length
+- **800-1200 words**: 1 hero + 1 inline
+- **1200-1800 words**: 1 hero + 2-3 inline
+- **1800+ words**: 1 hero + 3-4 inline + pull quote with visual
+
+### Topic → Image Type Mapping
+| Post Topic | Image Types | Mood/Style |
+|------------|-------------|------------|
+| Architecture/Technical | Diagrams (SVG), system screenshots, building geometry | Clean, geometric, professional |
+| Azure/Cloud | Sky/cloud photos, dashboard screenshots, architecture diagrams | Expansive, modern, ethereal |
+| Migration/Process | Before/after comparisons, paths/roads, timeline visuals | Progressive, transformative |
+| AI/Experimental | Abstract patterns, light trails, code editor screenshots | Futuristic, curious, innovative |
+| Personal/Family | Flickr candid photos, nature, travel moments | Warm, authentic, emotional |
+
+### Technical Specifications
+**Hero Images:**
+- Size: 1920×1080px (16:9) or 1600×900px minimum, landscape
+- Format: JPEG quality 80-85%, 72 DPI, sRGB, ~200-300KB
+- Composition: Rule of thirds, room for text overlay if needed
+
+**Inline Images:**
+- Size: 1200×800px (3:2 landscape) or 800×1200px (2:3 portrait)
+- Format: JPEG quality 82%, 72 DPI, ~150-200KB
+- Usage: Landscape for screenshots/process, Portrait for people/details
+
+**Diagrams/SVG:**
+- Use brand colors ONLY: #BA0C2F (red), #002F8B (blue), #006600 (green), #FFD700 (gold)
+- Dark backgrounds (#0a0a0a to #1a1a1a) to match theme
+- Export clean (no editor metadata), group logical elements
+
+### Storage & Front Matter
+**File locations:**
+- Per-post: `static/images/blog/<post-slug>/featured.jpg`
+- Shared/reusable: `static/images/shared/`
+- Flickr photos: Use direct CDN URLs
+
+**Required front matter:**
+```yaml
+featuredImage: "/images/blog/2025-11-19-post-slug/featured.jpg"
+featuredAlt: "Descriptive alt text (WHAT + WHY relevant)"
+imageCredit: "© Pedro Dias" # or other attribution
+```
+
+### AI-Assisted Image Selection
+When choosing between candidate images, share them with AI and ask:
+- "Which fits a [serious/casual/technical] post about [topic]?"
+- "Does this color palette align with Norway red/blue brand?"
+- "What crop/treatment optimizes this for hero use?"
+- "Should I use landscape or portrait orientation here?"
+
+**AI can provide:**
+- Composition analysis (negative space for text overlay)
+- Brand color alignment feedback
+- Mood/tone matching (technical vs emotional)
+- Lightroom treatment suggestions (contrast, crop, color grade)
+
+### Pre-Publish Image Checklist
+- [ ] Hero image selected and optimized?
+- [ ] No text walls > 600 words without visual breaks?
+- [ ] All images have descriptive `alt` text (not generic)?
+- [ ] File sizes under limits (hero <300KB, inline <200KB)?
+- [ ] Images readable on dark background?
+- [ ] Front matter includes `featuredImage`, `featuredAlt`, `imageCredit`?
+
+**Lazy loading**: Always add `loading="lazy" decoding="async"` to `<img>` tags
 
 ## Accessibility Standards
 
