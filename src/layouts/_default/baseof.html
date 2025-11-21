@@ -29,5 +29,12 @@
         {{- $js = $js | resources.Minify | resources.Fingerprint -}}
         <script src="{{ $js.RelPermalink }}" defer></script>
     {{- end -}}
+    {{- if eq .Title "Search" -}}
+    {{- $searchJs := resources.Get "js/search.js" -}}
+    {{- if $searchJs -}}
+        {{- $searchJs = $searchJs | resources.Minify | resources.Fingerprint -}}
+        <script src="{{ $searchJs.RelPermalink }}" defer></script>
+    {{- end -}}
+    {{- end -}}
 </body>
 </html>

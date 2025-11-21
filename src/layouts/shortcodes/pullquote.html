@@ -1,0 +1,11 @@
+{{- $text := .Inner | markdownify -}}
+{{- $attribution := .Get "attribution" -}}
+<blockquote class="pull-quote">
+    <p class="pull-quote-text">{{ $text }}</p>
+    {{- if $attribution -}}
+    <footer class="pull-quote-attribution">
+        <cite>— {{ $attribution }}</cite>
+    </footer>
+    {{- end -}}
+</blockquote>
+

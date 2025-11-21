@@ -739,10 +739,74 @@ class ScrollReveal {
     }
 }
 
+// Reading Progress Indicator
+function initReadingProgress() {
+    const progressBar = document.getElementById('reading-progress-bar');
+    const progressContainer = document.getElementById('reading-progress');
+    const article = document.querySelector('.article-container');
+    
+    if (!progressBar || !article || !progressContainer) {
+        // Hide progress bar if not on blog post
+        if (progressContainer) {
+            progressContainer.style.display = 'none';
+        }
+        return; // Not on a blog post page
+    }
+    
+    // Ensure progress bar is visible on blog posts
+    progressContainer.style.display = 'block';
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    function updateProgress() {
+        const articleTop = article.offsetTop;
+        const articleHeight = article.offsetHeight;
+        const windowHeight = window.innerHeight;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        const articleBottom = articleTop + articleHeight;
+        const viewportTop = scrollTop;
+        const viewportBottom = scrollTop + windowHeight;
+        
+        // Calculate how much of the article has been scrolled past
+        let scrolled = 0;
+        if (viewportTop < articleTop) {
+            scrolled = 0;
+        } else if (viewportBottom > articleBottom) {
+            scrolled = 100;
+        } else {
+            scrolled = ((viewportTop - articleTop) / articleHeight) * 100;
+        }
+        
+        const progress = Math.min(100, Math.max(0, scrolled));
+        progressBar.style.width = progress + '%';
+        progressContainer.setAttribute('aria-valuenow', Math.round(progress));
+    }
+    
+    // Throttle scroll events
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateProgress();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+    
+    // Initial calculation
+    updateProgress();
+    
+    // Update on resize
+    window.addEventListener('resize', updateProgress, { passive: true });
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new DigitalDiasPortfolio();
     new ScrollReveal();
+    initReadingProgress();
     
     // Add loading state management
     window.addEventListener('load', () => {

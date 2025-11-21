@@ -1,0 +1,16 @@
+[
+  {{- $blogSection := .Site.GetPage "section" "blog" -}}
+  {{- $posts := $blogSection.Pages.ByDate.Reverse -}}
+  {{- range $index, $post := $posts -}}
+  {{- if $index }},{{- end }}
+  {
+    "title": {{ $post.Title | jsonify }},
+    "url": "{{ $post.Permalink }}",
+    "excerpt": {{ ($post.Description | default $post.Summary | truncate 200) | jsonify }},
+    "tags": [{{ range $i, $tag := $post.Params.tags }}{{ if $i }}, {{ end }}{{ $tag | jsonify }}{{ end }}],
+    "categories": [{{ range $i, $cat := $post.Params.categories }}{{ if $i }}, {{ end }}{{ $cat | jsonify }}{{ end }}],
+    "date": "{{ $post.Date.Format "2006-01-02" }}"
+  }
+  {{- end -}}
+]
+

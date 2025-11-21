@@ -15,12 +15,32 @@
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
 <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+{{- if and (not .IsHome) .Params.featuredImage -}}
+<meta property="og:image" content="{{ .Params.featuredImage | absURL }}">
+{{- else -}}
+<meta property="og:image" content="{{ .Site.BaseURL }}og-default.jpg">
+{{- end -}}
+{{- if not .IsHome -}}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+{{- if .Lastmod -}}
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+{{- end -}}
+<meta property="article:author" content="{{ .Site.Params.author }}">
+{{- range .Params.tags -}}
+<meta property="article:tag" content="{{ . }}">
+{{- end -}}
+{{- end -}}
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="{{ .Permalink }}">
 <meta property="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
 <meta property="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+{{- if and (not .IsHome) .Params.featuredImage -}}
+<meta property="twitter:image" content="{{ .Params.featuredImage | absURL }}">
+{{- else -}}
+<meta property="twitter:image" content="{{ .Site.BaseURL }}og-default.jpg">
+{{- end -}}
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -32,7 +52,7 @@
 <!-- Preconnect for performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
 <!-- Main Stylesheet -->
 {{- $css := resources.Get "css/styles.css" -}}
@@ -47,3 +67,73 @@
 {{ with .OutputFormats.Get "rss" -}}
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
 {{ end -}}
+<!-- JSON Feed -->
+{{ with .OutputFormats.Get "json" -}}
+    {{ printf `<link rel="alternate" type="application/json" href="%s" title="%s (JSON Feed)" />` .Permalink $.Site.Title | safeHTML }}
+{{ end -}}
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  {{- if .IsHome -}}
+  "@type": "WebSite",
+  "name": "{{ .Site.Title }}",
+  "url": "{{ .Site.BaseURL }}",
+  "description": "{{ .Site.Params.description }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Site.Params.author }}",
+    "email": "{{ .Site.Params.email }}",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ .Site.BaseURL }}search?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+  {{- else if eq .Section "blog" -}}
+  "@type": "BlogPosting",
+  "headline": "{{ .Title }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- if .Lastmod -}}
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- else -}}
+  "dateModified": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- end -}}
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Site.Params.author }}",
+    "email": "{{ .Site.Params.email }}",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "{{ .Site.Params.author }}",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "description": "{{ .Description | default .Site.Params.description }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  },
+  {{- if .Params.featuredImage -}}
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ .Params.featuredImage | absURL }}",
+    "width": 1920,
+    "height": 1080
+  },
+  {{- end -}}
+  "keywords": [{{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}"{{ end }}]
+  {{- else -}}
+  "@type": "WebPage",
+  "name": "{{ .Title }}",
+  "url": "{{ .Permalink }}",
+  "description": "{{ .Description | default .Site.Params.description }}"
+  {{- end -}}
+}
+</script>
