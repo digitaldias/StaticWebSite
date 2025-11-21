@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic Development in Practice: Cursor &#43; GitHub Actions | DigitalDias - Pedro Dias</title>
+<meta name="description" content="Cursor AI autonomously resolved GitHub Actions pipeline issues through iterative builds. A practical look at agentic development patterns and their implications for DevOps migrations.">
+<meta name="author" content="Pedro Dias">
+<link rel="canonical" href="http://localhost:1313/blog/2025-11-21-cursor-github-pipelines-agentic-magic/">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self'; script-src-elem 'self'; connect-src 'self' ws://localhost:* ws://127.0.0.1:*;">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://localhost:1313/blog/2025-11-21-cursor-github-pipelines-agentic-magic/">
+<meta property="og:title" content="Agentic Development in Practice: Cursor &#43; GitHub Actions">
+<meta property="og:description" content="Cursor AI autonomously resolved GitHub Actions pipeline issues through iterative builds. A practical look at agentic development patterns and their implications for DevOps migrations.">
+
+
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="http://localhost:1313/blog/2025-11-21-cursor-github-pipelines-agentic-magic/">
+<meta property="twitter:title" content="Agentic Development in Practice: Cursor &#43; GitHub Actions">
+<meta property="twitter:description" content="Cursor AI autonomously resolved GitHub Actions pipeline issues through iterative builds. A practical look at agentic development patterns and their implications for DevOps migrations.">
+
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/styles.min.b4710a21705dd8e27189c556cc3ac0e8c6903436531902ce0f01895e70a72ec9.css">
+
+
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    
+    
+    <div class="loading-screen">
+        <div class="loading-logo">
+            <svg viewBox="0 0 100 100" class="loading-spinner">
+                <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="6" fill="none"/>
+            </svg>
+            <span>digitaldias</span>
+        </div>
+    </div>
+<nav class="main-navigation" data-nav>
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="http://localhost:1313/" class="brand-logo">
+                <span class="logo-text">digitaldias</span>
+                <div class="logo-indicator"></div>
+            </a>
+        </div>
+        
+        <div class="nav-menu" id="primary-navigation" data-nav-menu>
+            <a href="http://localhost:1313/#about" class="nav-link">
+                <span class="nav-text">About</span>
+            </a>
+            <a href="http://localhost:1313/#work" class="nav-link">
+                <span class="nav-text">Work</span>
+            </a>
+            <a href="http://localhost:1313/#photography" class="nav-link">
+                <span class="nav-text">Photography</span>
+            </a>
+            <a href="http://localhost:1313/#contact" class="nav-link">
+                <span class="nav-text">Contact</span>
+            </a>
+            <a href="/blog/" class="nav-link nav-link-external active">
+                <span class="nav-text">Blog</span>
+            </a>
+        </div>
+
+        <button class="nav-toggle" type="button" data-nav-toggle aria-controls="primary-navigation" aria-expanded="false" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+<main id="main-content"><main id="main-content" class="article-main">
+    <article class="article-container" aria-labelledby="article-title">
+        <header class="article-header section-container">
+            <p class="blog-card-meta">November 21, 2025 · 7 minute read</p>
+            <h1 class="article-title" id="article-title">Agentic Development in Practice: Cursor &#43; GitHub Actions</h1><p class="article-subtitle">Cursor AI autonomously debugged a GitHub Actions pipeline through five build cycles, making targeted modifications until success. An instructive example of agentic development applied to infrastructure work.</p></header><div class="article-hero-image section-container">
+            <figure class="hero-figure">
+                <img 
+                    src="/images/blog/2025-11-21-cursor-github-pipelines/featured.jpg" 
+                    alt="Cursor IDE interface showing GitHub MCP integration autonomously modifying pipeline configuration"
+                    loading="eager"
+                    decoding="async"
+                    class="hero-image"
+                ><figcaption class="image-credit">© Pedro Dias</figcaption></figure>
+        </div><div class="article-body section-container">
+            <h2 id="an-instructive-observation">An Instructive Observation</h2>
+<p>After decades writing code and evaluating tools, I&rsquo;m careful about enthusiasm. Most &ldquo;revolutionary&rdquo; technologies prove incremental. That said, watching Cursor AI work through a complex GitHub Actions pipeline last week was instructive—and worth documenting.</p>
+<p>The scenario: A desktop application built with AvaloniaUI requiring deployment across multiple platforms via GitHub Actions. Complex build requirements. My instruction to Cursor: &ldquo;Configure this pipeline and push directly to main.&rdquo;</p>
+<p>What followed demonstrated practical agentic development in a way I hadn&rsquo;t seen before.</p>
+<aside class="insight-box">
+<strong>💡 Key Insight:</strong> This isn't about AI replacing developers. It's about delegating the tedious iteration work—the "try this, wait 6 minutes, try again" cycles that drain mental energy—while you focus on architecture and strategy.
+</aside>
+<h2 id="the-challenge-migrating-from-azure-devops-to-github">The Challenge: Migrating from Azure DevOps to GitHub</h2>
+<p>At Tradesolution AS, we&rsquo;ve been using Azure DevOps for years. It works. It&rsquo;s familiar. But GitHub Actions has evolved into something truly powerful, and as Chief Architect, I&rsquo;ve been tasked with evaluating the migration path. The question wasn&rsquo;t <em>if</em> we should migrate, but <em>how smoothly could we make it happen?</em></p>
+<p>Our test case was an internal support tool—a desktop application built with AvaloniaUI for cross-platform compatibility. The beauty of Avalonia is that you can target Windows, macOS, and Linux from a single codebase. The challenge? Getting the build pipeline right for all those platforms.</p>
+<p>In Azure DevOps, we had months of accumulated tweaks and fixes. YAML configurations that worked but nobody really understood <em>why</em> anymore. You know the type—the &ldquo;don&rsquo;t touch it, it&rsquo;s working&rdquo; kind of setup.</p>
+<p>Starting fresh in GitHub Actions meant rewriting all of that. Or so I thought.</p>
+<h2 id="cursor--github-mcp-in-practice">Cursor + GitHub MCP in Practice</h2>
+<p>Cursor&rsquo;s agentic capabilities—AI that acts autonomously rather than merely suggesting code—have been discussed extensively in developer circles. Implementing it proved straightforward.</p>
+<p>After connecting the GitHub MCP to Cursor, I provided repository access and a single instruction:</p>
+<blockquote>
+<p>&ldquo;Set up a GitHub Actions workflow to build and deploy our AvaloniaUI app. Fix any issues you encounter. Push changes directly to main.&rdquo;</p>
+</blockquote>
+<p>Then I observed.</p>
+<h2 id="iterative-resolution-pattern">Iterative Resolution Pattern</h2>
+<p>Cursor analyzed the project structure, identified AvaloniaUI framework requirements, and generated an initial <code>.github/workflows/build.yml</code> file. Committed it. The pipeline triggered.</p>
+<p><strong>Build failed.</strong> Missing dependencies.</p>
+<p>The instructive part: Cursor didn&rsquo;t pause for input. It parsed the error logs from GitHub Actions, identified the missing components, modified the workflow to include correct .NET SDK versions, and pushed again.</p>
+<p><strong>Build failed again.</strong> Avalonia-specific build targets weren&rsquo;t configured correctly.</p>
+<p>Cursor adjusted. Pushed. Waited for the 6-minute build cycle.</p>
+<p><strong>Still failing.</strong> Platform-specific nuget packages missing.</p>
+<p>It kept going. Each iteration, it would:</p>
+<ol>
+<li>Wait for the GitHub Actions run to complete (6 minutes each time)</li>
+<li>Parse the error output</li>
+<li>Make intelligent modifications to the pipeline</li>
+<li>Commit and push</li>
+<li>Monitor the next run</li>
+</ol>
+<p>This wasn&rsquo;t blind trial-and-error. Each change was surgical, targeted, and showed understanding of both the GitHub Actions environment <em>and</em> the AvaloniaUI build requirements.</p>
+<blockquote class="pull-quote">
+"Watching AI debug a pipeline through five 6-minute build cycles without human input wasn't just impressive—it was a glimpse of how infrastructure work fundamentally changes."
+</blockquote>
+<h2 id="resolution">Resolution</h2>
+<p>After the fifth iteration—30 minutes of automated problem-solving—the outcome:</p>
+<p><strong>✅ Build succeeded. All checks passed.</strong></p>
+<p>The pipeline successfully built the AvaloniaUI app for all target platforms. Artifacts generated correctly. Full functionality achieved.</p>
+<p>Cursor had autonomously debugged a complex multi-platform build pipeline through five 6-minute cycles without requiring input. No prompts. No abandonment. Persistent, targeted iteration until success.</p>
+<p>This represents practical agentic development.</p>
+<h2 id="practical-implications">Practical Implications</h2>
+<p>Having been in technology since 1984, I&rsquo;ve observed multiple paradigm shifts: cloud computing, containerization, AI-assisted development. This feels meaningfully different, though the full implications remain to be seen.</p>
+<h3 id="migration-feasibility">Migration Feasibility</h3>
+<p>The migration from Azure DevOps to GitHub becomes more manageable. Not because the platforms are similar, but because the tedious, error-prone work of translating pipelines and resolving environment-specific issues can be delegated to an autonomous process.</p>
+<p>Deep GitHub Actions expertise becomes less critical. Define the objective clearly; Cursor handles implementation details through trial, error, and iteration.</p>
+<h3 id="time-multiplication">Time Multiplication</h3>
+<p>Those five build cycles took 30 minutes. If I&rsquo;d been doing this manually—researching each error, reading GitHub Actions docs, trial-and-error with commits—we&rsquo;re talking <em>hours</em>, maybe a full day. And that&rsquo;s assuming I catch every issue on the first diagnosis.</p>
+<p>Cursor compressed a day&rsquo;s work into half an hour. And it never got frustrated. Never second-guessed. Just kept iterating.</p>
+<h3 id="learning-by-observation">Learning by Observation</h3>
+<p>Here&rsquo;s an unexpected benefit: I <em>learned</em> from watching Cursor work. I saw patterns in how it structured workflows, how it handled platform-specific configurations, how it organized build steps. The final pipeline YAML is cleaner and more maintainable than what I would have written.</p>
+<p>It&rsquo;s like pair programming with someone who has infinite patience and instant access to best practices across thousands of projects.</p>
+<aside class="newsletter-prompt">
+<strong>📬 Want more insights like this?</strong> I'm documenting our migration journey, AI experiments, and architecture decisions as they happen. Follow along on <a href="https://linkedin.com/in/digitaldias">LinkedIn</a> or subscribe via <a href="/index.xml">RSS</a>.
+</aside>
+<img src="/images/blog/2025-11-21-cursor-github-pipelines/successful-build.png" alt="GitHub Actions dashboard showing successful multi-platform build with green checkmarks across all stages" loading="lazy" decoding="async" style="transform: perspective(1000px) rotateY(-2deg); box-shadow: 0 20px 60px rgba(186, 12, 47, 0.3);">
+<aside class="takeaway-box">
+<strong>🎯 Practical Takeaway:</strong> If you're migrating CI/CD pipelines, don't schedule weeks of specialist time. Give Cursor clear objectives, MCP access to your repo, and permission to iterate. Monitor the first migration closely—subsequent ones get faster as it learns your patterns.
+</aside>
+<h2 id="strategic-considerations">Strategic Considerations</h2>
+<p>This experience informs our GitHub migration strategy. Rather than treating it as a large, risky project requiring extensive planning and specialist knowledge, we can approach it as a series of smaller migrations with AI-assisted iteration.</p>
+<p>Each repository migration provides training data. Cursor accumulates institutional knowledge across migrations, improving its understanding of organizational patterns and preferences.</p>
+<p>Critically: this reduces the &ldquo;bus factor.&rdquo; Knowledge encoded in AI-assisted workflows rather than concentrated in individual engineers benefits the entire team.</p>
+<h2 id="forward-planning">Forward Planning</h2>
+<p>Three additional repositories are scheduled for GitHub Actions migration next quarter. The Cursor + GitHub MCP setup makes this feasible without dedicated pipeline specialist time.</p>
+<p>Broadly, this experience suggests agentic development represents more than a productivity improvement—it may constitute a shift in how we approach infrastructure work. Computers can now handle iterative debugging that previously consumed engineering time.</p>
+<p>This enables focus on architecture decisions, user experience, and strategic technical choices—the high-value work that justifies our roles.</p>
+<h2 id="closing-observations">Closing Observations</h2>
+<p>If you&rsquo;re evaluating Cursor or questioning whether agentic development delivers on its promises, I can confirm from direct experience: it functions as advertised and produces meaningful results.</p>
+<p>Watching an AI autonomously debug a pipeline through multiple build cycles—patiently waiting for 6-minute builds, learning from errors, and achieving success—demonstrates capabilities worth serious consideration.</p>
+<p>GitHub Actions proved well-suited for this workflow. Azure DevOps served us well, but the migration path is clearer now. With Cursor handling iteration-heavy work, migrations that seemed daunting become straightforward.</p>
+<p>The evolution of DevOps isn&rsquo;t merely about better tools. It&rsquo;s about AI that can apply those tools with unlimited patience and instant access to collective knowledge.</p>
+<p>This amplifies developers rather than replacing them.</p>
+<hr>
+<h2 id="your-turn">Your Turn</h2>
+<p><strong>If you&rsquo;re trying this yourself:</strong> Start with a non-critical repository. Give Cursor explicit permission to push changes. Watch the first few iterations closely to understand its decision-making patterns. Document what works for your organization.</p>
+<p><strong>If you&rsquo;ve already experimented:</strong> I&rsquo;d genuinely value hearing your results—especially failure modes and edge cases. Connect with me on <a href="https://linkedin.com/in/digitaldias">LinkedIn</a> or <a href="https://github.com/digitaldias">GitHub</a>.</p>
+<p><strong>If you found this useful:</strong> Share it with your DevOps team. We need more practical experience reports in this space, not just vendor demos.</p>
+<aside class="share-prompt">
+📢 <strong>Found this helpful?</strong> Share your thoughts on <a href="https://linkedin.com/in/digitaldias" target="_blank" rel="noopener">LinkedIn</a> or tag me on <a href="https://github.com/digitaldias" target="_blank" rel="noopener">GitHub</a>—I read and respond to every comment.
+</aside>
+
+
+            <div class="article-cta">
+                <a class="cta-button primary" href="http://localhost:1313/" data-magnetic>
+                    <span class="button-text">Back to the homepage</span>
+                    <div class="button-arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                <a class="cta-button secondary" href="/blog/" data-magnetic>
+                    <span class="button-text">Explore more posts</span>
+                    <div class="button-icon">✨</div>
+                </a>
+            </div>
+        </div>
+    </article>
+</main>
+
+<footer class="contact-section">
+    <div class="section-container">
+        <div class="footer-bottom">
+            <div class="footer-info">
+                <a class="location-badge" href="https://www.google.com/maps/place/Frogner+Lillestr%C3%B8m+Norway" target="_blank" rel="noopener noreferrer" aria-label="Open Frogner, Norway on Google Maps">
+                    <span class="location-icon">📍</span>
+                    <span class="location-text">Frogner, Norway</span>
+                    <div class="location-pulse" aria-hidden="true"></div>
+                </a>
+                <div class="availability-status">
+                    <div class="status-indicator available"></div>
+                    <span class="status-text">Reach out!</span>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2025 Pedro Dias. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+    </main>
+<footer class="site-footer">
+    <div class="footer-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+            <p class="footer-text">© 2025 Pedro Dias. All rights reserved.</p>
+            <div style="display: flex; gap: var(--space-4); align-items: center;">
+                <a href="/index.xml" class="rss-link" title="Subscribe to RSS feed">
+                    <svg class="rss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+                    </svg>
+                    RSS Feed
+                </a>
+                <a href="/blog/index.xml" class="rss-link" title="Subscribe to blog RSS feed">
+                    <svg class="rss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+                    </svg>
+                    Blog RSS
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="/js/main.min.3e6e998f0e957d20a54fe5fec6c9a0260cfdd63d9fb871c2068ba504d0a00960.js" defer></script></body>
+</html>

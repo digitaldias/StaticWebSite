@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Hand-Crafted HTML to Hugo: A Migration Story | DigitalDias - Pedro Dias</title>
+<meta name="description" content="How I migrated digitaldias.com from custom HTML/CSS/JS to Hugo with GitHub Agent assistance, discovering how AI collaboration transforms the content creation workflow.">
+<meta name="author" content="Pedro Dias">
+<link rel="canonical" href="http://localhost:1313/blog/2025-11-19-from-html-to-hugo-migration/">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self'; script-src-elem 'self'; connect-src 'self' ws://localhost:* ws://127.0.0.1:*;">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://localhost:1313/blog/2025-11-19-from-html-to-hugo-migration/">
+<meta property="og:title" content="From Hand-Crafted HTML to Hugo: A Migration Story">
+<meta property="og:description" content="How I migrated digitaldias.com from custom HTML/CSS/JS to Hugo with GitHub Agent assistance, discovering how AI collaboration transforms the content creation workflow.">
+
+
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="http://localhost:1313/blog/2025-11-19-from-html-to-hugo-migration/">
+<meta property="twitter:title" content="From Hand-Crafted HTML to Hugo: A Migration Story">
+<meta property="twitter:description" content="How I migrated digitaldias.com from custom HTML/CSS/JS to Hugo with GitHub Agent assistance, discovering how AI collaboration transforms the content creation workflow.">
+
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/styles.min.6ef19069d83cdbb9b53b9c9d25a8953d0abc980be633affcccd6a1861c34b2d0.css">
+
+
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    
+    
+    <div class="loading-screen">
+        <div class="loading-logo">
+            <svg viewBox="0 0 100 100" class="loading-spinner">
+                <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="6" fill="none"/>
+            </svg>
+            <span>digitaldias</span>
+        </div>
+    </div>
+<nav class="main-navigation" data-nav>
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="http://localhost:1313/" class="brand-logo">
+                <span class="logo-text">digitaldias</span>
+                <div class="logo-indicator"></div>
+            </a>
+        </div>
+        
+        <div class="nav-menu" id="primary-navigation" data-nav-menu>
+            <a href="http://localhost:1313/#about" class="nav-link">
+                <span class="nav-text">About</span>
+            </a>
+            <a href="http://localhost:1313/#work" class="nav-link">
+                <span class="nav-text">Work</span>
+            </a>
+            <a href="http://localhost:1313/#photography" class="nav-link">
+                <span class="nav-text">Photography</span>
+            </a>
+            <a href="http://localhost:1313/#contact" class="nav-link">
+                <span class="nav-text">Contact</span>
+            </a>
+            <a href="/blog/" class="nav-link nav-link-external active">
+                <span class="nav-text">Blog</span>
+            </a>
+        </div>
+
+        <button class="nav-toggle" type="button" data-nav-toggle aria-controls="primary-navigation" aria-expanded="false" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+<main id="main-content"><main id="main-content" class="article-main">
+    <article class="article-container" aria-labelledby="article-title">
+        <header class="article-header section-container">
+            <p class="blog-card-meta">November 19, 2025 · 8 minute read</p>
+            <h1 class="article-title" id="article-title">From Hand-Crafted HTML to Hugo: A Migration Story</h1><p class="article-subtitle">In September 2024, I hand-coded a portfolio site. Two months later, a YouTube video sparked a revelation: static site generators &#43; AI agents = the content workflow I&#39;d been missing since abandoning WordPress to hackers.</p></header><div class="article-body section-container">
+            <div class="toc-wrapper">
+  <div class="toc-header">
+    <span class="toc-icon">📖</span>
+    <h2>Table of Contents</h2>
+  </div>
+  <nav class="toc-content">
+    <ol>
+      <li><a href="#the-revelation">The Revelation: Static Generators + AI = Content Freedom</a>
+        <ul>
+          <li><a href="#wordpress-scars">My WordPress Scars</a></li>
+          <li><a href="#hand-coded-interlude">The Hand-Coded Interlude</a></li>
+          <li><a href="#youtube-epiphany">The YouTube Epiphany</a></li>
+        </ul>
+      </li>
+      <li><a href="#why-hugo">Why Hugo? (And How to Actually Install It)</a>
+        <ul>
+          <li><a href="#selection-criteria">The Selection Criteria</a></li>
+          <li><a href="#installing-hugo">Installing Hugo on Windows</a></li>
+        </ul>
+      </li>
+      <li><a href="#migration-process">The Migration Process: AI as Co-Architect</a>
+        <ul>
+          <li><a href="#phase-1">Phase 1: Assessment and Planning</a></li>
+          <li><a href="#phase-2">Phase 2: Foundation Setup</a></li>
+          <li><a href="#phase-3">Phase 3: Content Migration</a></li>
+          <li><a href="#phase-4">Phase 4: Interactive Features</a></li>
+        </ul>
+      </li>
+      <li><a href="#results">The Results: Benefits Beyond Expectations</a></li>
+      <li><a href="#what-i-learned">What I Learned: AI as Migration Partner</a></li>
+      <li><a href="#recommendations">Recommendations for Your Migration</a></li>
+      <li><a href="#bottom-line">The Bottom Line</a></li>
+      <li><a href="#getting-started">Getting Started: Your Quick-Start Guide</a></li>
+    </ol>
+  </nav>
+</div>
+<style>
+.toc-wrapper {
+  background: linear-gradient(135deg, rgba(186, 12, 47, 0.1) 0%, rgba(0, 47, 139, 0.1) 100%);
+  border: 1px solid rgba(186, 12, 47, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0 3rem 0;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(186, 12, 47, 0.3);
+}
+
+.toc-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 2px 4px rgba(186, 12, 47, 0.4));
+}
+
+.toc-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #BA0C2F;
+}
+
+.toc-content {
+  font-family: var(--font-sans);
+}
+
+.toc-content ol {
+  list-style: none;
+  counter-reset: toc-counter;
+  padding-left: 0;
+  margin: 0;
+}
+
+.toc-content ol > li {
+  counter-increment: toc-counter;
+  margin-bottom: 0.75rem;
+  position: relative;
+  padding-left: 2rem;
+}
+
+.toc-content ol > li::before {
+  content: counter(toc-counter);
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: linear-gradient(135deg, #BA0C2F 0%, #002F8B 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(186, 12, 47, 0.3);
+}
+
+.toc-content a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  position: relative;
+  border-left: 3px solid transparent;
+  padding-left: 0.5rem;
+  margin-left: -0.5rem;
+}
+
+.toc-content a:hover {
+  color: #BA0C2F;
+  border-left-color: #BA0C2F;
+  background: rgba(186, 12, 47, 0.05);
+}
+
+.toc-content ul {
+  list-style: none;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.toc-content ul li {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.toc-content ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #BA0C2F;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.toc-content ul a {
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .toc-wrapper {
+    padding: 1.5rem;
+    margin: 1.5rem 0 2rem 0;
+  }
+  
+  .toc-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .toc-content ol > li {
+    padding-left: 1.75rem;
+  }
+  
+  .toc-content ul {
+    padding-left: 1rem;
+  }
+}
+</style>
+<p>In September 2024, I did something delightfully old-school: I hand-coded my entire portfolio website. Custom HTML, 2,132 lines of CSS, interactive JavaScript—the whole nine yards. It felt great to have complete control, but I wasn&rsquo;t thinking about the future.</p>
+<p><strong>Then I watched a YouTube video about static site generators.</strong></p>
+<p>Suddenly, neurons fired. I&rsquo;d used Jekyll years ago without really understanding what it was—just another tool in the stack. But now, as a Chief Architect who works with modern tooling daily, the pieces clicked: <strong>Static site generators aren&rsquo;t limitations—they&rsquo;re liberation.</strong></p>
+<p>Enter Hugo, Chocolatey, and GitHub Agent. This is the story of how AI collaboration turned a two-month-old hand-coded site into a content machine.</p>
+<h2 id="the-revelation">The Revelation: Static Generators + AI = Content Freedom</h2>
+<h3 id="wordpress-scars">My WordPress Scars</h3>
+<p>Let me back up. Before hand-coding everything, I ran blogs on WordPress. You know the drill:</p>
+<ul>
+<li>Constant security updates</li>
+<li>Plugin vulnerabilities</li>
+<li>Database compromise attempts</li>
+<li>That sinking feeling when you log in and see &ldquo;Your site may be hacked&rdquo;</li>
+</ul>
+<p><strong>I eventually gave up blogging</strong> because the maintenance burden outweighed the joy of writing. The hackers won.</p>
+<h3 id="hand-coded-interlude">The Hand-Coded Interlude</h3>
+<p>Fast forward to September 2024. I decided to rebuild from scratch—pure HTML, CSS, and JavaScript. No CMS, no attack surface, just files. It worked beautifully&hellip; for a portfolio.</p>
+<p>But for blogging? Writing in raw HTML felt like coding with oven mitts on:</p>
+<ul>
+<li>Every paragraph wrapped in <code>&lt;p&gt;</code> tags</li>
+<li>Manual blog index updates</li>
+<li>No RSS feed</li>
+<li>No categories or tags</li>
+<li>No sitemap automation</li>
+</ul>
+<p><strong>The friction was real.</strong> I built a beautiful site, then avoided writing because the authoring experience was painful.</p>
+<h3 id="youtube-epiphany">The YouTube Epiphany</h3>
+<p>Then I stumbled upon a video explaining static site generators (I honestly can&rsquo;t remember which one—thanks, YouTube algorithm). The creator showed how Jekyll transformed Markdown into HTML.</p>
+<p><strong>Brain explosion moment:</strong> &ldquo;Wait, I used Jekyll before and didn&rsquo;t realize it was doing this?!&rdquo;</p>
+<p>The lightbulb wasn&rsquo;t just about static generators—it was about <strong>separation of concerns</strong>:</p>
+<ul>
+<li>Write content in Markdown (focus on ideas)</li>
+<li>Let the generator handle HTML (focus on structure)</li>
+<li>Deploy static files (security by simplicity)</li>
+</ul>
+<p>And then the second revelation: <strong>What if I paired Hugo with AI?</strong> Not just for migration, but for <em>ongoing content creation</em>. AI could help me write faster, stay focused, and not worry about Markdown syntax or front matter details.</p>
+<h2 id="why-hugo">Why Hugo? (And How to Actually Install It)</h2>
+<h3 id="selection-criteria">The Selection Criteria</h3>
+<p>Instead of showing a rendered diagram, here is the plain, human-readable breakdown of my evaluation process:</p>
+<p><strong>Framework Options Considered</strong></p>
+<ul>
+<li>Hugo (speed + simplicity)</li>
+<li>Next.js (React ecosystem)</li>
+<li>Nuxt (Vue ecosystem)</li>
+<li>11ty (flexibility)</li>
+</ul>
+<p><strong>Why Hugo Stood Out</strong></p>
+<ul>
+<li>✓ Single binary distribution</li>
+<li>✓ Sub-second builds (milliseconds, not seconds)</li>
+<li>✓ No Node.js runtime required</li>
+<li>✓ Built‑in taxonomies, sitemap, RSS</li>
+<li>✓ Azure-friendly deployment model</li>
+</ul>
+<p><strong>Hugo won for five reasons:</strong></p>
+<ol>
+<li><strong>Speed</strong>: Builds in milliseconds, not seconds. My 27-page site? 71ms.</li>
+<li><strong>Zero dependencies</strong>: Single binary—no npm hell, no Python virtual environments, no Ruby gems</li>
+<li><strong>Markdown-first</strong>: Write in Markdown, get HTML. Perfect for blogging.</li>
+<li><strong>Built-in features</strong>: Taxonomies, sitemap, RSS, asset pipeline—all included</li>
+<li><strong>AI-friendly workflow</strong>: Markdown is perfect for AI assistance—GitHub Agent can help write, structure, and refine content</li>
+</ol>
+<h3 id="installing-hugo">Installing Hugo on Windows (The Right Way)</h3>
+<p>Here&rsquo;s what I actually did on my Windows machine:</p>
+<p><strong>Step 1: Install Chocolatey (Windows Package Manager)</strong></p>
+<p>Open PowerShell as Administrator and run:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">winget</span> <span class="n">install</span> <span class="n">chocolatey</span><span class="p">.</span><span class="py">chocolatey</span>
+</span></span></code></pre></div><p><strong>Step 2: Install Hugo Extended</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">choco</span> <span class="n">install</span> <span class="nb">hugo-extended</span> <span class="n">-y</span>
+</span></span></code></pre></div><p>The <code>-extended</code> version includes Sass/SCSS processing, which you&rsquo;ll want for any serious site.</p>
+<p><strong>Step 3: Verify Installation</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo version
+</span></span><span class="line"><span class="cl"><span class="c1"># hugo v0.152.2-6abdacad3f3fe944ea42177844469139e81feda6+extended windows/amd64</span>
+</span></span></code></pre></div><p><strong>Step 4: Create Your Hugo Site</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new site my-site
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> my-site
+</span></span><span class="line"><span class="cl">hugo server
+</span></span></code></pre></div><p>That&rsquo;s it. No <code>npm install</code>, no <code>bundle install</code>, no virtual environments. Just a binary doing its job.</p>
+<h2 id="migration-process">The Migration Process: AI as Co-Architect</h2>
+<p>Here&rsquo;s where it gets interesting. I didn&rsquo;t migrate this alone—I paired with <strong>GitHub Agent in VS Code</strong> (powered by Claude Sonnet 4.5). Not as a code generator, but as a <em>collaborator</em>.</p>
+<p><strong>Important distinction:</strong> I&rsquo;m using GitHub Agent (the agentic AI assistant in VS Code), not GitHub Copilot (the inline code completion tool). The Agent can research, plan, execute multi-step tasks, and adapt based on feedback. For a migration like this, that&rsquo;s exactly what you need.</p>
+<h3 id="phase-1">Phase 1: Assessment and Planning</h3>
+<p><strong>Me</strong>: &ldquo;I have my website under the src folder. I recently installed hugo, and I need to transfer my existing website so that I can continue writing blogs using hugo.&rdquo;</p>
+<p><strong>GitHub Agent</strong>: <em>Launched a research subagent</em> that:</p>
+<ul>
+<li>Analyzed my entire <code>src/</code> folder structure</li>
+<li>Read all HTML, CSS, and JavaScript files</li>
+<li>Identified design patterns, color schemes, interactive features</li>
+<li>Assessed accessibility implementations</li>
+<li>Generated a comprehensive 7-phase migration plan</li>
+</ul>
+<p>This wasn&rsquo;t just &ldquo;move files around.&rdquo; The AI understood my <em>design intent</em>.</p>
+<h3 id="phase-2">Phase 2: Foundation Setup</h3>
+<p>The collaboration flowed like a simple sequence:</p>
+<ol>
+<li>I asked GitHub Agent to configure the Hugo foundation.</li>
+<li>It generated <code>hugo.toml</code>, base layouts, taxonomies, and asset pipeline.</li>
+<li>I requested preservation of the design system.</li>
+<li>It copied all 2,132 lines of CSS and ported JavaScript features.</li>
+<li>I verified that interactive effects, glass‑morphism, and typography rendered correctly.
+Result: Foundation + design parity achieved rapidly.</li>
+</ol>
+<p><strong>What GitHub Agent did brilliantly:</strong></p>
+<ul>
+<li>Configured <code>hugo.toml</code> with proper settings, not generic defaults</li>
+<li>Created partial templates (<code>head.html</code>, <code>header.html</code>, <code>footer.html</code>) that matched my existing structure</li>
+<li>Set up Hugo Pipes for CSS/JS processing while preserving my exact variable names</li>
+<li>Identified accessibility features in my HTML and ensured they carried over to Hugo templates</li>
+</ul>
+<p><strong>What I appreciated most:</strong> It <em>asked</em> about edge cases rather than assuming. &ldquo;Should navigation work differently on blog pages vs homepage?&rdquo; That&rsquo;s collaboration, not automation.</p>
+<h3 id="phase-3">Phase 3: Content Migration</h3>
+<p>The trickiest part: converting my HTML blog posts to Markdown without losing semantic richness.</p>
+<p><strong>Before (HTML):</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">article</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;article-container&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">header</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;article-header section-container&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;blog-card-meta&#34;</span><span class="p">&gt;</span>September 30, 2025 · 6 minute read<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;article-title&#34;</span><span class="p">&gt;</span>How GPT5-Codex and Azure Static Websites launched digitaldias.com<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;article-subtitle&#34;</span><span class="p">&gt;</span>It finally happened—I paired with GPT5-Codex...<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">header</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;article-body section-container&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Building software for four decades gives you instincts...<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">article</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p><strong>After (Markdown with Hugo Front Matter):</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;How GPT5-Codex and Azure Static Websites launched digitaldias.com&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="ld">2025-09-30</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Pedro Dias shares how GPT5-Codex helped build digitaldias.com...&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">excerpt</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;It finally happened—I paired with GPT5-Codex...&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">readTime</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;6 minute read&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">categories</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;Architecture&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;Azure&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;AI&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;GPT5&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;Codex&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;Azure Static Web Apps&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">Building software for four decades gives you instincts...</span><span class="w">
+</span></span></span></code></pre></div><p>GitHub Agent created Hugo templates that used this front matter to render the exact same HTML structure—preserving my CSS classes, semantic markup, and accessibility features.</p>
+<h3 id="phase-4">4. Interactive Features Preservation</h3>
+<p>My site has rich JavaScript interactions:</p>
+<ul>
+<li>Scroll-reveal animations</li>
+<li>Animated stat counters</li>
+<li>Magnetic button effects</li>
+<li>Card tilt on hover</li>
+<li>Photo gallery with lightbox</li>
+<li>Parallax background tiles</li>
+</ul>
+<p><strong>GitHub Agent understood the requirement:</strong> These weren&rsquo;t optional decorations—they were part of the experience. It ported every feature with <code>prefers-reduced-motion</code> support intact, ensuring accessibility wasn&rsquo;t compromised for aesthetics.</p>
+<h2 id="results">The Results: Benefits Beyond Expectations</h2>
+<h3 id="1-content-velocity-">1. <strong>Content Velocity</strong> 📈</h3>
+<p><strong>Before Hugo:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Create a new blog post</span>
+</span></span><span class="line"><span class="cl">1. Copy template HTML file
+</span></span><span class="line"><span class="cl">2. Update metadata manually
+</span></span><span class="line"><span class="cl">3. Write content in HTML tags
+</span></span><span class="line"><span class="cl">4. Add to blog index manually
+</span></span><span class="line"><span class="cl">5. Update sitemap manually
+</span></span><span class="line"><span class="cl">6. Deploy
+</span></span><span class="line"><span class="cl">Time: ~45 minutes overhead
+</span></span></code></pre></div><p><strong>With Hugo:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new blog/2025-11-19-my-post.md
+</span></span><span class="line"><span class="cl"><span class="c1"># Write in Markdown</span>
+</span></span><span class="line"><span class="cl">hugo
+</span></span><span class="line"><span class="cl">Time: ~5 minutes overhead
+</span></span></code></pre></div><p><strong>Result:</strong> I went from writing 1-2 blog posts per year to feeling excited about weekly publishing.</p>
+<h3 id="2-built-in-seo-excellence">2. <strong>Built-in SEO Excellence</strong></h3>
+<p>Hugo automatically generates:</p>
+<ul>
+<li>✅ <code>sitemap.xml</code> with all pages, categories, and tags</li>
+<li>✅ RSS feeds for blog and categories</li>
+<li>✅ Canonical URLs on every page</li>
+<li>✅ OpenGraph and Twitter Card metadata</li>
+<li>✅ Proper heading hierarchy</li>
+</ul>
+<p>I added <code>robots.txt</code> and configured the sitemap—boom, <strong>100% SEO baseline</strong> achieved.</p>
+<h3 id="3-taxonomy-heaven">3. <strong>Taxonomy Heaven</strong></h3>
+<p>My blog now has automatic:</p>
+<ul>
+<li><strong>Categories</strong>: Architecture, Azure, AI, DevOps, Photography</li>
+<li><strong>Tags</strong>: Blazor, Hugo, GitHub Copilot, Static Sites, etc.</li>
+<li><strong>Archive pages</strong>: Generated automatically for each category/tag</li>
+</ul>
+<p><strong>Old way:</strong> I&rsquo;d have to create and maintain these pages manually. <strong>Hugo way:</strong> They exist automatically, and clicking &ldquo;Hugo&rdquo; shows all Hugo-related posts.</p>
+<h3 id="4-development-experience">4. <strong>Development Experience</strong></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo server
+</span></span><span class="line"><span class="cl"><span class="c1"># Site rebuilds in ~20ms on file save</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Live reload in browser</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Error messages are actually helpful</span>
+</span></span></code></pre></div><p>Compare that to my old workflow of manual browser refreshes and &ldquo;inspect element&rdquo; debugging to figure out why styles broke.</p>
+<h3 id="5-deployment-simplicity">5. <strong>Deployment Simplicity</strong></h3>
+<p><strong>Build command:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo --minify
+</span></span></code></pre></div><p>Output: Optimized static files in <code>public/</code>. Deploy to Azure Static Web Apps, Netlify, GitHub Pages, or literally any static host. No server runtime required.</p>
+<h2 id="what-i-learned">What I Learned: AI as Migration Partner</h2>
+<h3 id="the-good">The Good</h3>
+<p><strong>1. Pattern Recognition:</strong> GitHub Agent identified design patterns I&rsquo;d built unconsciously (like my consistent use of glass-morphism with <code>backdrop-filter: blur(var(--blur-md))</code>) and preserved them consistently.</p>
+<p><strong>2. Accessibility Advocacy:</strong> It actively caught accessibility considerations I might have overlooked during migration—ARIA labels, focus states, semantic HTML structure.</p>
+<p><strong>3. Context Retention:</strong> Across our multi-hour session, the Agent remembered design decisions and constraints without me having to repeat them.</p>
+<p><strong>4. Best Practices:</strong> It configured Hugo with sitemap settings, RSS outputs, canonical URLs, and asset pipeline optimizations I didn&rsquo;t know existed.</p>
+<p><strong>5. AI-Powered Content Creation:</strong> The biggest win? Now I can ask GitHub Agent to help me write blog posts. It helps structure ideas, maintain consistent tone, and keep me focused on the message instead of Markdown syntax.</p>
+<h3 id="the-challenges">The Challenges</h3>
+<p><strong>1. File Path Confusion:</strong> On Windows, the AI sometimes got confused between <code>\</code> and <code>/</code> in paths. I had to intervene and correct paths manually a few times.</p>
+<p><strong>2. Over-Engineering Temptation:</strong> The AI suggested creating shortcodes for repeated elements (great idea!) but I had to pump the brakes—&ldquo;Let&rsquo;s get the migration done first, optimize later.&rdquo;</p>
+<p><strong>3. Verification Required:</strong> The AI couldn&rsquo;t actually <em>see</em> the rendered output. I had to visually verify that the site looked correct, animations worked, and responsive design behaved properly.</p>
+<p><strong>Humans excel at:</strong> Vision, taste, judgment, verification, knowing when &ldquo;good enough&rdquo; is good enough<br>
+<strong>AI excels at:</strong> Research, pattern matching, consistency, execution, tireless iteration<br>
+<strong>Together:</strong> We shipped a complex migration in hours, not weeks—and built a content workflow that makes writing enjoyable again.</p>
+<h2 id="recommendations">Recommendations for Your Migration</h2>
+<p>If you&rsquo;re considering a similar journey, here&rsquo;s what worked:</p>
+<h3 id="do-this">Do This:</h3>
+<ol>
+<li><strong>Start with research</strong>: Have the AI analyze your current site structure thoroughly</li>
+<li><strong>Preserve first, optimize later</strong>: Get feature parity, then improve</li>
+<li><strong>Use version control</strong>: Commit after each major phase for easy rollback</li>
+<li><strong>Visual verification</strong>: AI can&rsquo;t see your site—you must verify rendering</li>
+<li><strong>Document decisions</strong>: Create project-specific documentation for future AI context</li>
+</ol>
+<h3 id="avoid-this">Avoid This:</h3>
+<ol>
+<li><strong>Blind automation</strong>: Don&rsquo;t accept AI suggestions without understanding them</li>
+<li><strong>Premature optimization</strong>: Migrate first, refactor later</li>
+<li><strong>Skipping accessibility</strong>: Verify ARIA labels, focus states, and semantic HTML</li>
+<li><strong>Ignoring errors</strong>: Hugo build errors are your friend—fix them immediately</li>
+<li><strong>Forgetting backups</strong>: Keep your old site intact until you&rsquo;re 100% confident</li>
+</ol>
+<h2 id="bottom-line">The Bottom Line</h2>
+<p>In September 2024, I hand-coded a website because I wanted control. In November 2024, I migrated to Hugo because I wanted to actually <em>write</em>.</p>
+<p><strong>What changed?</strong> I realized that:</p>
+<ul>
+<li>WordPress had taught me to fear blogging (security nightmares)</li>
+<li>Hand-coding HTML had taught me to avoid blogging (authoring friction)</li>
+<li>Hugo + GitHub Agent taught me to <em>enjoy</em> blogging again (AI-assisted content flow)</li>
+</ul>
+<p><strong>The real win isn&rsquo;t the migration</strong>—it&rsquo;s the workflow transformation:</p>
+<ul>
+<li>✅ Write in Markdown with AI assistance</li>
+<li>✅ Let Hugo handle HTML, sitemap, RSS, taxonomies automatically</li>
+<li>✅ Deploy static files with zero security concerns</li>
+<li>✅ Sub-second builds (71ms for 27 pages)</li>
+<li>✅ No database, no plugins, no attack surface</li>
+</ul>
+<p><strong>The secret?</strong> Tools should amplify your intent, not constrain it. Hugo provides the structure. GitHub Agent provides the collaboration. You provide the vision.</p>
+<p>I&rsquo;m not hand-coding anymore, and I&rsquo;m not fighting WordPress hackers anymore. I&rsquo;m writing—which was the whole point to begin with.</p>
+<hr>
+<h2 id="getting-started">Getting Started: Your Quick-Start Guide</h2>
+<p>If you&rsquo;re ready to try this workflow:</p>
+<p><strong>1. Install Hugo (Windows)</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="c"># Install Chocolatey first</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span> <span class="n">winget</span> <span class="n">install</span> <span class="n">Chocolatey</span><span class="p">.</span><span class="py">Chocolatey</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Then install Hugo Extended</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span> <span class="n">choco</span> <span class="n">install</span> <span class="nb">hugo-extended</span> <span class="n">-y</span>
+</span></span></code></pre></div><p><strong>2. Create Your Site</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new site my-blog
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> my-blog
+</span></span><span class="line"><span class="cl">hugo server
+</span></span></code></pre></div><p><strong>3. Use GitHub Agent in VS Code</strong></p>
+<ul>
+<li>Install VS Code</li>
+<li>Enable GitHub Agent (Settings → GitHub Copilot)</li>
+<li>Ask it to help you migrate or create content</li>
+</ul>
+<p><strong>4. Write Your First Post</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo new blog/my-first-post.md
+</span></span></code></pre></div><p>Then ask GitHub Agent: &ldquo;Help me write a blog post about [topic]. Include structure and examples.&rdquo; (Diagram generation tooling has been retired.)</p>
+<p>That&rsquo;s it. You&rsquo;re blogging with AI assistance on a secure, fast platform.</p>
+<hr>
+<p><em>Curious about the technical details? Check out the <a href="https://gohugo.io/documentation/">Hugo documentation</a>. Questions? <a href="/#contact">Reach out</a>—I&rsquo;d love to hear about your migration journey.</em></p>
+
+
+            <div class="article-cta">
+                <a class="cta-button primary" href="http://localhost:1313/" data-magnetic>
+                    <span class="button-text">Back to the homepage</span>
+                    <div class="button-arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+                <a class="cta-button secondary" href="/blog/" data-magnetic>
+                    <span class="button-text">Explore more posts</span>
+                    <div class="button-icon">✨</div>
+                </a>
+            </div>
+        </div>
+    </article>
+</main>
+
+<footer class="contact-section">
+    <div class="section-container">
+        <div class="footer-bottom">
+            <div class="footer-info">
+                <a class="location-badge" href="https://www.google.com/maps/place/Frogner+Lillestr%C3%B8m+Norway" target="_blank" rel="noopener noreferrer" aria-label="Open Frogner, Norway on Google Maps">
+                    <span class="location-icon">📍</span>
+                    <span class="location-text">Frogner, Norway</span>
+                    <div class="location-pulse" aria-hidden="true"></div>
+                </a>
+                <div class="availability-status">
+                    <div class="status-indicator available"></div>
+                    <span class="status-text">Reach out!</span>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2025 Pedro Dias. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+    </main>
+<footer class="site-footer">
+    <div class="footer-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+            <p class="footer-text">© 2025 Pedro Dias. All rights reserved.</p>
+            <div style="display: flex; gap: var(--space-4); align-items: center;">
+                <a href="/index.xml" class="rss-link" title="Subscribe to RSS feed">
+                    <svg class="rss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+                    </svg>
+                    RSS Feed
+                </a>
+                <a href="/blog/index.xml" class="rss-link" title="Subscribe to blog RSS feed">
+                    <svg class="rss-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+                    </svg>
+                    Blog RSS
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="/js/main.min.3e6e998f0e957d20a54fe5fec6c9a0260cfdd63d9fb871c2068ba504d0a00960.js" defer></script></body>
+</html>

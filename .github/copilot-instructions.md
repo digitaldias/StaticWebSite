@@ -4,16 +4,16 @@
 
 **This is a Hugo static site** for digitaldias.com - Pedro Dias's personal portfolio and blog. The site was migrated from custom HTML/CSS/JS to Hugo for better content management and faster authoring.
 
-## Available Prompts
+## Available Commands
 
-You have access to specialized workflow prompts for common tasks. Use these by typing `/` in Copilot Chat:
+You have access to specialized workflow commands for common tasks. Use these by typing `/` in Cursor Chat:
 
 - **`/new-blog-post`** - Complete blog post creation workflow with image planning, technical specs, front matter template, and pre-publish checklist
 - **`/optimize-image`** - Image optimization guide with dimensions, formats, compression settings, brand colors for diagrams, and AI-assisted selection
 - **`/deploy-checklist`** - Pre-deployment validation, build verification, deployment workflow, post-deployment checks, and rollback procedures
 - **`/common-tasks`** - Quick reference for updating stats, adding social links, changing navigation, managing content sections, and routine maintenance
 
-These prompts are in `.github/prompts/` and provide detailed, step-by-step guidance for specific workflows.
+These commands are in `.cursor/commands/` and provide detailed, step-by-step guidance for specific workflows. They are also available as reference files in `.github/prompts/` for GitHub Copilot compatibility.
 
 ## Critical: This is a Hugo Site
 

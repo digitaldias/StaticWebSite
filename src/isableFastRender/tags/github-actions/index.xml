@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GitHub Actions on DigitalDias - Pedro Dias</title>
+    <link>http://localhost:1313/tags/github-actions/</link>
+    <description>Recent content in GitHub Actions on DigitalDias - Pedro Dias</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <copyright>© 2025 Pedro Dias. All rights reserved.</copyright>
+    <lastBuildDate>Fri, 21 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/github-actions/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>When AI Becomes Your DevOps Partner: Cursor &#43; GitHub Pipelines</title>
+      <link>http://localhost:1313/blog/2025-11-21-cursor-github-pipelines-agentic-magic/</link>
+      <pubDate>Fri, 21 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/2025-11-21-cursor-github-pipelines-agentic-magic/</guid>
+      <description>&lt;h2 id=&#34;the-moment-everything-changed&#34;&gt;The Moment Everything Changed&lt;/h2&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been writing code for decades. I&amp;rsquo;ve seen tools come and go, each promising to make development easier. But nothing—and I mean &lt;em&gt;nothing&lt;/em&gt;—prepared me for what I witnessed last week when I paired Cursor AI with GitHub&amp;rsquo;s Model Context Protocol (MCP) integration.&lt;/p&gt;&#xA;&lt;p&gt;Picture this: A desktop application built with AvaloniaUI that needs to be deployed via GitHub Actions. Multiple platform targets. Complex build requirements. And me, giving Cursor a simple instruction: &amp;ldquo;Make this pipeline work, and push directly to main.&amp;rdquo;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

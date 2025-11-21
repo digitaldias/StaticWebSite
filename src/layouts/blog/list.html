@@ -1,30 +1,129 @@
 {{- define "main" -}}
 <header class="blog-hero section-container">
-    <div class="section-header">
-        <div class="section-badge">
-            <span>📝</span>
-            <span>digitaldias journal</span>
+    <div class="blog-hero-content">
+        <div class="hero-eyebrow">
+            <span class="hero-icon">✍️</span>
+            <span>Pedro's Notes</span>
         </div>
-        <h1 class="section-title">
-            <span class="title-accent">Stories</span>
-            <span class="title-main">from the architecture desk</span>
+        <h1 class="blog-hero-title">
+            Lessons from<br>
+            <span class="hero-highlight">40+ years</span><br>
+            building software
         </h1>
-        <p class="section-description">
-            Notes on software architecture, Azure, agentic development, and the creative adventures that happen along the way.
+        <p class="blog-hero-description">
+            I've made every mistake twice. Now I write about the patterns that survived, the architectures that scaled, and the AI experiments that surprised me.
         </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <strong>{{ len .Pages }}</strong>
+                <span>articles</span>
+            </div>
+            <div class="hero-stat">
+                <strong>{{ len .Site.Taxonomies.categories }}</strong>
+                <span>topics</span>
+            </div>
+            <div class="hero-stat">
+                <strong>1984</strong>
+                <span>coding since</span>
+            </div>
+        </div>
     </div>
 </header>
 
-<section class="blog-list section-container" aria-labelledby="recent-posts">
+{{- $pages := .Pages -}}
+{{- if gt (len $pages) 0 -}}
+{{- $featured := index $pages 0 -}}
+
+<!-- Featured Post -->
+<section class="featured-post section-container">
+    <div class="featured-label">Latest Article</div>
+    <article class="featured-card">
+        {{- if $featured.Params.featuredImage -}}
+        <div class="featured-image-wrapper">
+            <img 
+                src="{{ $featured.Params.featuredImage | relURL }}" 
+                alt="{{ $featured.Params.featuredAlt | default $featured.Title }}"
+                loading="eager"
+                class="featured-post-image"
+            >
+        </div>
+        {{- end -}}
+        <div class="featured-content">
+            <div class="featured-meta">
+                <span class="featured-date">{{ $featured.Date.Format "January 2, 2006" }}</span>
+                {{- with $featured.Params.readTime -}}
+                <span class="featured-read-time">{{ . }}</span>
+                {{- end -}}
+            </div>
+            <h3 class="featured-title">
+                <a href="{{ $featured.RelPermalink }}">{{ $featured.Title }}</a>
+            </h3>
+            {{- if $featured.Params.excerpt -}}
+            <p class="featured-excerpt">{{ $featured.Params.excerpt }}</p>
+            {{- else if $featured.Description -}}
+            <p class="featured-excerpt">{{ $featured.Description }}</p>
+            {{- else -}}
+            <p class="featured-excerpt">{{ $featured.Summary }}</p>
+            {{- end -}}
+            <div class="featured-tags">
+                {{- range $featured.Params.categories -}}
+                <a href="{{ "/categories/" | relURL }}{{ . | urlize }}" class="category-badge">{{ . }}</a>
+                {{- end -}}
+                {{- range first 3 $featured.Params.tags -}}
+                <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag-badge">#{{ . }}</a>
+                {{- end -}}
+            </div>
+            <a class="featured-cta" href="{{ $featured.RelPermalink }}">Read full post →</a>
+        </div>
+    </article>
+</section>
+
+<!-- Browse by Category & Tags -->
+<section class="blog-taxonomy section-container">
+    <div class="taxonomy-grid">
+        <div class="taxonomy-section">
+            <h3 class="taxonomy-title">📚 Browse by Category</h3>
+            <div class="taxonomy-list">
+                {{- range .Site.Taxonomies.categories.Alphabetical -}}
+                <a href="{{ .Page.RelPermalink }}" class="taxonomy-link category-link">
+                    <span class="taxonomy-name">{{ .Page.Title }}</span>
+                    <span class="taxonomy-count">{{ .Count }}</span>
+                </a>
+                {{- end -}}
+            </div>
+        </div>
+        <div class="taxonomy-section">
+            <h3 class="taxonomy-title">🏷️ Popular Tags</h3>
+            <div class="taxonomy-list tag-cloud">
+                {{- range first 15 .Site.Taxonomies.tags.ByCount -}}
+                <a href="{{ .Page.RelPermalink }}" class="taxonomy-link tag-link" style="font-size: {{ add 0.8 (mul 0.15 (div .Count 5.0)) }}rem;">
+                    #{{ .Page.Title }}
+                    <span class="taxonomy-count">{{ .Count }}</span>
+                </a>
+                {{- end -}}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- All Posts -->
+{{- if gt (len $pages) 1 -}}
+<section class="blog-list section-container" aria-labelledby="all-posts">
     <div class="section-header">
-        <h2 class="section-title" id="recent-posts">
-            <span class="title-main">Recent posts</span>
+        <h2 class="section-title" id="all-posts">
+            <span class="title-main">All Posts</span>
+            <span class="posts-count">({{ sub (len $pages) 1 }} {{ if eq (sub (len $pages) 1) 1 }}post{{ else }}posts{{ end }})</span>
         </h2>
     </div>
     <div class="blog-grid">
-        {{- range .Pages -}}
+        {{- range after 1 $pages -}}
         <article class="blog-card">
-            <p class="blog-card-meta">{{ .Date.Format "January 2, 2006" }}{{ with .Params.readTime }} · {{ . }}{{ end }}</p>
+            <div class="blog-card-categories">
+                {{- range .Params.categories -}}
+                <a href="{{ "/categories/" | relURL }}{{ . | urlize }}" class="category-badge-small">{{ . }}</a>
+                {{- end -}}
+            </div>
+            <p class="blog-card-meta">{{ .Date.Format "Jan 2, 2006" }}{{ with .Params.readTime }} · {{ . }}{{ end }}</p>
             <h3 class="blog-card-title">
                 <a href="{{ .RelPermalink }}">{{ .Title }}</a>
             </h3>
@@ -35,11 +134,20 @@
             {{- else -}}
             <p class="blog-card-excerpt">{{ .Summary }}</p>
             {{- end -}}
-            <a class="blog-card-link" href="{{ .RelPermalink }}">Read more</a>
+            <div class="blog-card-footer">
+                <a class="blog-card-link" href="{{ .RelPermalink }}">Read more →</a>
+                <div class="blog-card-tags">
+                    {{- range first 2 .Params.tags -}}
+                    <span class="tag-mini">#{{ . }}</span>
+                    {{- end -}}
+                </div>
+            </div>
         </article>
         {{- end -}}
     </div>
 </section>
+{{- end -}}
+{{- end -}}
 
 <footer class="contact-section">
     <div class="section-container">

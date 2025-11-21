@@ -11,6 +11,23 @@
             {{- end -}}
         </header>
 
+        {{- if .Params.featuredImage -}}
+        <div class="article-hero-image section-container">
+            <figure class="hero-figure">
+                <img 
+                    src="{{ .Params.featuredImage | relURL }}" 
+                    alt="{{ .Params.featuredAlt | default .Title }}"
+                    loading="eager"
+                    decoding="async"
+                    class="hero-image"
+                >
+                {{- if .Params.imageCredit -}}
+                <figcaption class="image-credit">{{ .Params.imageCredit }}</figcaption>
+                {{- end -}}
+            </figure>
+        </div>
+        {{- end -}}
+
         <div class="article-body section-container">
             {{ .Content }}
 

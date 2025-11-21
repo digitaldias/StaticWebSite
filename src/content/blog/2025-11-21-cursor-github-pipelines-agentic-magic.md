@@ -47,7 +47,7 @@ It kept going. Five iterations. Each cycle: wait 6 minutes → parse errors → 
 
 **After 30 minutes: ✅ Build succeeded. All platforms. All checks passed.**
 
-{{< img src="/images/blog/2025-11-21-cursor-github-pipelines/successful-build.png" alt="GitHub Actions dashboard showing successful multi-platform build with green checkmarks" caption="Successful build after five autonomous iterations" width="800" >}}
+{{< img src="/images/blog/2025-11-21-cursor-github-pipelines/successful-build.jpg" alt="GitHub Actions dashboard showing successful multi-platform build with green checkmarks across Windows, macOS, and Linux platforms" caption="Successful build after five autonomous iterations" width="800" >}}
 
 ## Why This Matters
 
