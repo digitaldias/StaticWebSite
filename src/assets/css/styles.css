@@ -829,26 +829,9 @@ body {
     margin-bottom: var(--space-16);
 }
 
+/* Section badges removed - icons now in section titles */
 .section-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-2) var(--space-4);
-    background: var(--bg-glass-strong);
-    backdrop-filter: blur(var(--blur-md));
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-full);
-    font-size: var(--text-sm);
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-6);
-}
-
-/* Make emojis within section badges monochromatic */
-.section-badge span:first-child {
-    filter: grayscale(100%);
-    opacity: 0.9;
-    display: inline-block;
+    display: none;
 }
 
 .section-title {
@@ -856,6 +839,19 @@ body {
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.title-icon {
+    font-size: 1.2em;
+    line-height: 1;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .title-accent {
@@ -2092,7 +2088,6 @@ body:not(:has(.article-main)) .reading-progress {
     font-size: var(--text-xs);
     font-weight: 700;
     border-radius: var(--radius-full);
-    text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: var(--space-4);
 }
