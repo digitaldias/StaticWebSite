@@ -9,7 +9,14 @@
   {{- /* Try to get from resources first (assets/) */ -}}
   {{- $image := resources.Get $src -}}
   {{- if $image -}}
-    {{- $resized := $image.Resize (printf "%dx" $width) -}}
+    {{- /* Preserve PNG format for transparency */ -}}
+    {{- $isPNG := eq (lower $image.MediaType.SubType) "png" -}}
+    {{- $resized := "" -}}
+    {{- if $isPNG -}}
+      {{- $resized = $image.Resize (printf "%dx png" $width) -}}
+    {{- else -}}
+      {{- $resized = $image.Resize (printf "%dx" $width) -}}
+    {{- end -}}
     <figure class="{{ $class }}" style="max-width: min({{ $width }}px, 100%);">
       <img 
         src="{{ $resized.RelPermalink }}" 

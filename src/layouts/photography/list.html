@@ -1,0 +1,120 @@
+{{- define "main" -}}
+<main id="main-content" class="photography-main">
+    <!-- Photography Note Section -->
+    <section class="photography-note section-container">
+        <div class="section-header">
+            <div class="section-badge">
+                <span>📸</span>
+                <span>Photography</span>
+            </div>
+            <h2 class="section-title">
+                <span class="title-accent">A delayed</span>
+                <span class="title-main">passion</span>
+            </h2>
+        </div>
+        
+        <div class="photography-note-content">
+            <p>
+                I've been fascinated by photography since I was a kid, but film development was expensive and out of reach. That changed when I got my first digital camera. Suddenly, I could experiment freely—take hundreds of shots, see results instantly, and learn from mistakes without worrying about the cost of developing film. When I moved to DSLRs, photography became a real passion. These days, I capture moments of family life, Norwegian landscapes, and the occasional tech setup. You can see my work on <a href="{{ .Site.Params.social.flickr }}" target="_blank" rel="noopener noreferrer">Flickr</a> for the full collection.
+            </p>
+        </div>
+    </section>
+
+    <!-- Photography Section -->
+    <section class="photography-section section-container" id="photography">
+        <div class="section-header">
+            <div class="section-badge">
+                <span>📸</span>
+                <span>Visual Portfolio</span>
+            </div>
+            <h2 class="section-title">
+                <span class="title-accent">Through</span>
+                <span class="title-main">My Lens</span>
+            </h2>
+            <p class="section-description">
+                A curated selection from my Flickr portfolio
+            </p>
+        </div>
+        
+        <div class="photo-masonry">
+            <div class="photo-item featured" data-photo="1">
+                <div class="photo-container">
+                    <img src="https://live.staticflickr.com/65535/48979110141_73942ce6db_c.jpg" alt="Photography highlight 1" loading="lazy" decoding="async">
+                    <div class="photo-overlay">
+                        <div class="photo-info">
+                            <h4>Captured Moment</h4>
+                            <p>From the digitaldias collection</p>
+                            <div class="photo-actions">
+                                <button class="photo-btn" type="button" data-action="view" aria-label="View larger image">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M1 12S5 4 12 4S23 12 23 12S19 20 12 20S1 12 1 12Z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                                <button class="photo-btn" type="button" data-action="external" aria-label="Open image on Flickr">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="photo-item" data-photo="2">
+                <div class="photo-container">
+                    <img src="https://live.staticflickr.com/65535/48952945517_d46c52e07f_c.jpg" alt="Photography highlight 2" loading="lazy" decoding="async">
+                </div>
+            </div>
+            
+            <div class="photo-item" data-photo="3">
+                <div class="photo-container">
+                    <img src="https://live.staticflickr.com/65535/48885457132_cd0dacd51f_c.jpg" alt="Photography highlight 3" loading="lazy" decoding="async">
+                </div>
+            </div>
+            
+            <div class="photo-item" data-photo="4">
+                <div class="photo-container">
+                    <img src="https://live.staticflickr.com/65535/48875745782_9e553fe0ca_c.jpg" alt="Photography highlight 4" loading="lazy" decoding="async">
+                </div>
+            </div>
+            
+            <div class="photo-item" data-photo="5">
+                <div class="photo-container">
+                    <img src="https://live.staticflickr.com/65535/48853184703_d409b92329_c.jpg" alt="Photography highlight 5" loading="lazy" decoding="async">
+                </div>
+            </div>
+            
+            <div class="photo-item" data-photo="6">
+                <div class="photo-container">
+                    <img src="https://live.staticflickr.com/65535/48836659668_6e0649ca2e_c.jpg" alt="Photography highlight 6" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </div>
+        
+        <div class="gallery-footer">
+            <div class="photo-stats">
+                <div class="stat-item">
+                    <span class="stat-number">{{ .Site.Params.stats.photos }}</span>
+                    <span class="stat-label">Photos Available</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15K+</span>
+                    <span class="stat-label">Total Views</span>
+                </div>
+            </div>
+            
+            <a href="{{ .Site.Params.social.flickr }}" class="gallery-cta" target="_blank" rel="noopener noreferrer" data-magnetic>
+                <span class="cta-text">View Full Portfolio</span>
+                <div class="cta-arrow">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
+    </section>
+</main>
+{{- end -}}
+

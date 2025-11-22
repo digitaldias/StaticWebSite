@@ -82,7 +82,7 @@
 <section class="blog-taxonomy section-container">
     <div class="taxonomy-grid">
         <div class="taxonomy-section">
-            <h3 class="taxonomy-title">📚 Browse by Category</h3>
+            <h3 class="taxonomy-title">📚 Browse by category</h3>
             <div class="taxonomy-list">
                 {{- range .Site.Taxonomies.categories.Alphabetical -}}
                 <a href="{{ .Page.RelPermalink }}" class="taxonomy-link category-link">
@@ -93,7 +93,7 @@
             </div>
         </div>
         <div class="taxonomy-section">
-            <h3 class="taxonomy-title">🏷️ Popular Tags</h3>
+            <h3 class="taxonomy-title">🏷️ Popular tags</h3>
             <div class="taxonomy-list tag-cloud">
                 {{- range first 15 .Site.Taxonomies.tags.ByCount -}}
                 <a href="{{ .Page.RelPermalink }}" class="taxonomy-link tag-link" style="font-size: {{ add 0.8 (mul 0.15 (div .Count 5.0)) }}rem;">
@@ -111,18 +111,13 @@
 <section class="blog-list section-container" aria-labelledby="all-posts">
     <div class="section-header">
         <h2 class="section-title" id="all-posts">
-            <span class="title-main">All Posts</span>
+            <span class="title-main">All posts</span>
             <span class="posts-count">({{ sub (len $pages) 1 }} {{ if eq (sub (len $pages) 1) 1 }}post{{ else }}posts{{ end }})</span>
         </h2>
     </div>
     <div class="blog-grid">
         {{- range after 1 $pages -}}
         <article class="blog-card">
-            <div class="blog-card-categories">
-                {{- range .Params.categories -}}
-                <a href="{{ "/categories/" | relURL }}{{ . | urlize }}" class="category-badge-small">{{ . }}</a>
-                {{- end -}}
-            </div>
             <p class="blog-card-meta">{{ .Date.Format "Jan 2, 2006" }}{{ with .Params.readTime }} · {{ . }}{{ end }}</p>
             <h3 class="blog-card-title">
                 <a href="{{ .RelPermalink }}">{{ .Title }}</a>
@@ -134,6 +129,11 @@
             {{- else -}}
             <p class="blog-card-excerpt">{{ .Summary }}</p>
             {{- end -}}
+            <div class="blog-card-categories">
+                {{- range .Params.categories -}}
+                <a href="{{ "/categories/" | relURL }}{{ . | urlize }}" class="category-badge-small">{{ . }}</a>
+                {{- end -}}
+            </div>
             <div class="blog-card-footer">
                 <a class="blog-card-link" href="{{ .RelPermalink }}">Read more →</a>
                 <div class="blog-card-tags">
@@ -151,22 +151,6 @@
 
 <footer class="contact-section">
     <div class="section-container">
-        <div class="footer-bottom">
-            <div class="footer-info">
-                <a class="location-badge" href="https://www.google.com/maps/place/Frogner+Lillestr%C3%B8m+Norway" target="_blank" rel="noopener noreferrer" aria-label="Open Frogner, Norway on Google Maps">
-                    <span class="location-icon">📍</span>
-                    <span class="location-text">{{ .Site.Params.location }}</span>
-                    <div class="location-pulse" aria-hidden="true"></div>
-                </a>
-                <div class="availability-status">
-                    <div class="status-indicator available"></div>
-                    <span class="status-text">Reach out!</span>
-                </div>
-            </div>
-            <div class="footer-copyright">
-                <p>{{ .Site.Copyright }}</p>
-            </div>
-        </div>
     </div>
 </footer>
 {{- end -}}

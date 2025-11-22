@@ -1,5 +1,5 @@
 ---
-title: "Agentic Development in Practice: Cursor + GitHub Actions"
+title: "Agentic development in practice: Cursor + GitHub Actions"
 date: 2025-11-21
 draft: false
 description: "Cursor AI autonomously resolved GitHub Actions pipeline issues through iterative builds. A practical look at agentic development patterns and their implications for DevOps migrations."
@@ -12,6 +12,10 @@ featuredImage: "/images/blog/2025-11-21-cursor-github-pipelines/featured.jpg"
 featuredAlt: "Cursor IDE interface showing GitHub MCP integration autonomously modifying pipeline configuration"
 imageCredit: "© Pedro Dias"
 ---
+
+{{< callout type="success" title="TL;DR" >}}
+Cursor AI autonomously debugged a GitHub Actions pipeline through five build cycles, reducing what would have been a day's work to 30 minutes. By connecting Cursor to GitHub via MCP and giving it permission to iterate, it successfully migrated an AvaloniaUI app's CI/CD from Azure DevOps to GitHub Actions without human intervention. This demonstrates agentic development's potential for infrastructure work—delegating tedious iteration cycles while developers focus on architecture and strategy.
+{{< /callout >}}
 
 ## The Setup
 
@@ -77,7 +81,7 @@ Three more repositories are scheduled for migration next quarter. With Cursor + 
 
 ## Cost Justification
 
-Cursor's $20/month subscription isn't trivial. This experiment demonstrates tangible ROI: what would have been a day's work compressed into 30 minutes. For our team, that time savings compounds across multiple migrations and ongoing maintenance.
+Cursor's $20/month subscription isn't trivial. It quickly runs out and then starts eating away on-demand usage. This experiment demonstrates tangible ROI: what would have been a day's work compressed into 30 minutes. For our team, that time savings compounds across multiple migrations and ongoing maintenance.
 
 We're tracking these metrics: time saved per task, reduction in specialist dependencies, and quality of generated code. Early results suggest the subscription pays for itself when used strategically—not as a crutch, but as a force multiplier for complex, iterative work.
 
@@ -94,3 +98,15 @@ If you've experimented, I'd value hearing your results—especially failure mode
 {{< callout type="info" >}}
 **Found this helpful?** Share your thoughts on [LinkedIn](https://linkedin.com/in/digitaldias) or tag me on [GitHub](https://github.com/digitaldias)—I read and respond to every comment.
 {{< /callout >}}
+
+## References
+
+Technologies and tools mentioned in this post:
+
+- **[Cursor](https://cursor.sh)** - AI-powered code editor with agentic development capabilities
+- **[GitHub Actions](https://github.com/features/actions)** - CI/CD platform for automating workflows
+- **[AvaloniaUI](https://avaloniaui.net/)** - Cross-platform .NET UI framework for Windows, macOS, and Linux
+- **[Azure DevOps](https://azure.microsoft.com/products/devops)** - Microsoft's DevOps platform (migrated from)
+- **[MCP (Model Context Protocol)](https://modelcontextprotocol.io/)** - Protocol for connecting AI assistants to external tools and data sources
+- **[.NET SDK](https://dotnet.microsoft.com/download)** - Software development kit for building .NET applications
+- **[NuGet](https://www.nuget.org/)** - Package manager for .NET

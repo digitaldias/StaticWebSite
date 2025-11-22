@@ -86,14 +86,6 @@
     "name": "{{ .Site.Params.author }}",
     "email": "{{ .Site.Params.email }}",
     "url": "{{ .Site.BaseURL }}"
-  },
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "{{ .Site.BaseURL }}search?q={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
   }
   {{- else if eq .Section "blog" -}}
   "@type": "BlogPosting",

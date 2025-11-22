@@ -22,7 +22,7 @@
                     <span class="title-line" data-text="dias">dias</span>
                 </h1>
                 <div class="title-subtitle">
-                    <span class="subtitle-text">Developer • Photographer • Creator</span>
+                    <span class="subtitle-text">Software Architect • Developer • Photographer • Creator</span>
                     <div class="subtitle-line"></div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
 <section class="featured-blog section-container" aria-labelledby="featured-posts">
     <div class="section-header">
         <h2 class="section-title" id="featured-posts">
-            <span class="title-main">Latest Posts</span>
+            <span class="title-main">Latest posts</span>
         </h2>
         <p class="section-description">Recent thoughts on software architecture, development practices, and technology</p>
     </div>
@@ -79,11 +79,6 @@
             </div>
             {{- end -}}
             <div class="blog-card-content">
-                <div class="blog-card-categories">
-                    {{- range .Params.categories -}}
-                    <a href="{{ "/categories/" | relURL }}{{ . | urlize }}" class="category-badge-small">{{ . }}</a>
-                    {{- end -}}
-                </div>
                 <p class="blog-card-meta">{{ .Date.Format "Jan 2, 2006" }}{{ with .Params.readTime }} · {{ . }}{{ end }}</p>
                 <h3 class="blog-card-title">
                     <a href="{{ .RelPermalink }}">{{ .Title }}</a>
@@ -95,6 +90,11 @@
                 {{- else -}}
                 <p class="blog-card-excerpt">{{ .Summary }}</p>
                 {{- end -}}
+                <div class="blog-card-categories">
+                    {{- range .Params.categories -}}
+                    <a href="{{ "/categories/" | relURL }}{{ . | urlize }}" class="category-badge-small">{{ . }}</a>
+                    {{- end -}}
+                </div>
                 <div class="blog-card-footer">
                     <a class="blog-card-link" href="{{ .RelPermalink }}">Read more →</a>
                     <div class="blog-card-tags">
@@ -234,25 +234,6 @@
                         <p>Family and Friends</p>
                     </div>
                 </a>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <div class="footer-info">
-                <a class="location-badge" href="https://www.google.com/maps/place/Frogner+Lillestr%C3%B8m+Norway" target="_blank" rel="noopener noreferrer" aria-label="Open Frogner, Norway on Google Maps">
-                    <span class="location-icon">📍</span>
-                    <span class="location-text">{{ .Site.Params.location }}</span>
-                    <div class="location-pulse" aria-hidden="true"></div>
-                </a>
-                
-                <div class="availability-status">
-                    <div class="status-indicator available"></div>
-                    <span class="status-text">Reach out!</span>
-                </div>
-            </div>
-            
-            <div class="footer-copyright">
-                <p>{{ .Site.Copyright }}</p>
             </div>
         </div>
     </div>

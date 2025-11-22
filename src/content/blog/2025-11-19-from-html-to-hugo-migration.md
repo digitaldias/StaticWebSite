@@ -1,5 +1,5 @@
 ---
-title: "From Hand-Crafted HTML to Hugo: A Migration Story"
+title: "From hand-crafted HTML to Hugo: A migration story"
 date: 2025-11-19
 draft: false
 description: "How I migrated digitaldias.com from custom HTML/CSS/JS to Hugo with GitHub Agent assistance, discovering how AI collaboration transforms the content creation workflow."
