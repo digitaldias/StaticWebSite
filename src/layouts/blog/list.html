@@ -82,7 +82,12 @@
 <section class="blog-taxonomy section-container">
     <div class="taxonomy-grid">
         <div class="taxonomy-section">
-            <h3 class="taxonomy-title">📚 Browse by category</h3>
+            <h3 class="taxonomy-title">
+                <svg class="taxonomy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+                Browse by category
+            </h3>
             <div class="taxonomy-list">
                 {{- range .Site.Taxonomies.categories.Alphabetical -}}
                 <a href="{{ .Page.RelPermalink }}" class="taxonomy-link category-link">
@@ -93,7 +98,13 @@
             </div>
         </div>
         <div class="taxonomy-section">
-            <h3 class="taxonomy-title">🏷️ Popular tags</h3>
+            <h3 class="taxonomy-title">
+                <svg class="taxonomy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                    <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+                Popular tags
+            </h3>
             <div class="taxonomy-list tag-cloud">
                 {{- range first 15 .Site.Taxonomies.tags.ByCount -}}
                 <a href="{{ .Page.RelPermalink }}" class="taxonomy-link tag-link" style="font-size: {{ add 0.8 (mul 0.15 (div .Count 5.0)) }}rem;">

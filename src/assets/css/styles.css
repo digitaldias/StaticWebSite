@@ -3353,9 +3353,9 @@ body:not(:has(.article-main)) .reading-progress {
 /* Category & Tag Badges */
 .category-badge,
 .category-badge-small {
-    background: rgba(186, 12, 47, 0.15);
+    background: var(--primary-light);
     color: var(--primary);
-    border: 1px solid rgba(186, 12, 47, 0.3);
+    border: 1px solid var(--border-primary);
     padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-sm);
     font-size: var(--text-xs);
@@ -3369,20 +3369,20 @@ body:not(:has(.article-main)) .reading-progress {
 .category-badge-small {
     padding: 3px 6px;
     font-size: 0.65rem;
-    opacity: 0.8;
+    opacity: 0.7;
     font-weight: 500;
 }
 
 .category-badge:hover,
 .category-badge-small:hover {
-    background: rgba(186, 12, 47, 0.3);
+    background: rgba(59, 130, 246, 0.2);
     border-color: var(--primary);
 }
 
 .tag-badge {
-    background: rgba(0, 102, 0, 0.15);
-    color: var(--accent);
-    border: 1px solid rgba(0, 102, 0, 0.3);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
     padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-sm);
     font-size: var(--text-xs);
@@ -3392,8 +3392,9 @@ body:not(:has(.article-main)) .reading-progress {
 }
 
 .tag-badge:hover {
-    background: rgba(0, 102, 0, 0.3);
-    border-color: var(--accent);
+    background: var(--bg-tertiary);
+    border-color: var(--border-subtle);
+    color: var(--text-primary);
 }
 
 /* Taxonomy Section */
@@ -3423,6 +3424,16 @@ body:not(:has(.article-main)) .reading-progress {
     font-size: var(--text-xl);
     font-weight: 700;
     color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.taxonomy-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
 }
 
 .taxonomy-list {
@@ -3473,8 +3484,8 @@ body:not(:has(.article-main)) .reading-progress {
 }
 
 .taxonomy-count {
-    background: rgba(59, 130, 246, 0.15);
-    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    color: var(--text-tertiary);
     padding: 2px 6px;
     border-radius: var(--radius-sm);
     font-size: var(--text-xs);
