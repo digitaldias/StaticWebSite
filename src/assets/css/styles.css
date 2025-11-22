@@ -1369,6 +1369,29 @@ body {
     gap: var(--space-3);
     align-items: flex-start;
     color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.bio-points li::before {
+    content: "•";
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: -2px;
+    flex-shrink: 0; /* Keep bullet from shrinking */
+}
+
+/* The text content wrapper - allows proper text wrapping */
+.bio-points li > span {
+    flex: 1;
+    min-width: 0; /* Critical: allows flex item to shrink and wrap properly */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Keep links with their trailing commas together */
+.bio-points li .nowrap {
+    white-space: nowrap;
 }
 
 .bio-points li::before {
@@ -2077,6 +2100,16 @@ body:not(:has(.article-main)) .reading-progress {
 .timeline-content p {
     color: var(--text-secondary);
     margin-bottom: var(--space-4);
+}
+
+.timeline-content a {
+    color: var(--highlight);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.timeline-content a:hover {
+    color: var(--text-primary);
 }
 
 .timeline-tags {
