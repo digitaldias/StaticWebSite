@@ -3200,6 +3200,25 @@ body:not(:has(.article-main)) .reading-progress {
     letter-spacing: -0.03em;
     margin: var(--space-6) 0;
     color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.blog-hero-title .title-icon {
+    font-size: 1.2em;
+    line-height: 1;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.blog-hero-title .title-text {
+    display: inline-block;
 }
 
 .hero-highlight {
