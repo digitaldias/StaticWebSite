@@ -2128,13 +2128,7 @@ body:not(:has(.article-main)) .reading-progress {
     font-size: var(--text-xs);
     font-weight: 600;
     color: var(--text-tertiary);
-    transition: all var(--transition-normal);
-}
-
-.timeline-tag:hover {
-    background: var(--secondary);
-    color: var(--white);
-    border-color: var(--secondary);
+    cursor: default;
 }
 
 /* Contact Section */
