@@ -61,20 +61,21 @@ Fullscreen was the fussy part. The agent handled the DirectX setup, the shaders,
 
 ## How I prompt and review
 
-- Start with constraints, not features: language, toolchain, no external services, and the exact folders to touch.
-- Include fixtures in the prompt: example inputs, expected outputs, and failure cases. Agents respond better to concrete data than to adjectives.
-- Ask for a plan before code when the task is big. Small plans reduce runaway output and make it clear where to intervene.
-- Demand small diffs. When the agent sends a wall of code, ask it to resend as a patch with explanations.
-- Keep a standing quality bar: lint, tests, and formatting. Mention them every time. Repetition trains the agent.
-- Review like a PR: scan for scope creep, check the tests first, and reject anything that widens dependencies without approval.
+- Define the scope and boundaries first: language, build tool, runtime, hosting, and “no extra services.” Clarity beats luck.
+- Include anchors when possible: sample inputs, expected outputs, and what “broken” looks like. Adjectives are vague; examples are loud.
+- Ask for a plan before code when scope is big. Plans curb runaway output and give me a first checkpoint. Put the agent in plan mode and hold implementation until the plan is solid.
+- Ask for diffs, not novels. Patches with short rationale are easy to accept or reject.
+- Report reality, not theories. I paste logs and screenshots, describe what I see, and let the agent fix it. Less guessing, more fixing.
+- Block scope creep. If a prompt comes back with surprise dependencies or glitter UI, I send it back with the same contract.
 
 ## What surprised me about agentic coding
 
 - The agents respected contracts when I repeated them. They drifted when I got lazy.
-- They produced working build scripts as long as I asked for them. Missing steps were my fault for not requesting them.
-- They handled refactors across files faster than I would by hand; my role was to shape the interfaces and spot the rough edges.
+- They produced build scripts when I asked, then sometimes ignored them until I reminded them to use their own instructions.
+- I never opened the code; the agents shaped the interfaces and I stayed in the loop through prompts, runs, and logs.
+- I asked them to optimize and to prune orphaned code and files; they claimed to clean up, but the file sizes stayed scary—some well past 1,000 lines.
 - They failed loudly when they lacked metrics. As soon as I supplied numbers, they optimized toward them with clarity.
-- They removed ceremony. No boilerplate for its own sake; every line had to earn its place once I asked for lean outputs.
+- I cannot tell if it was lean or spaghetti; I never opened the files to find out.
 
 ## What still needs my hands
 
@@ -86,25 +87,28 @@ Fullscreen was the fussy part. The agent handled the DirectX setup, the shaders,
 
 ## Patterns that transfer across stacks
 
-- Agents like constraints. The more specific the prompt on architecture, file layout, and test expectations, the closer the first draft lands.
-- Ask for diffs and explanations. When GPT or Claude replies with a patch plus a rationale, review time drops.
-- Keep platform edges isolated. DOM access, audio IO, and GPU calls belong at the edges so the core stays testable and the agent has less surface to break.
-- Demand tests early. Property-based tests for scoring, golden files for audio, and frame timing assertions for graphics give the agent a target and keep regressions visible.
-- Add instrumentation before asking for speed. Profilers in browsers, Qt, and DirectX each tell a different truth; combine them before optimizing.
-- Keep loops short. Small prompts, fast feedback, and tiny binaries encourage bold edits and quick rollbacks.
+- Agents behave when the constraints are crisp: architecture, files they may touch, tests they must hit.
+- Ask for diffs with a one-line why. Patches review fast; novels do not.
+- Keep the edges strict. DOM, audio IO, and GPU calls live at the borders so the core stays testable.
+- Ask for tests up front: property checks for scoring, golden files for audio, frame-time assertions for graphics.
+- Instrument before you beg for speed. Numbers beat vibes.
+- Keep loops short. Tiny prompts, quick runs, small binaries—espresso shots, not carafes.
+- Reset chats often. Long prompts get stale; start a new session after each task to keep the agent sharp across VSCode, Cursor, and Visual Studio 2026.
 
 ## Where to go next
 
-These experiments handed me a new role. I can ask agents for UI in JS and TypeScript, audio pipelines in C++, and assembler when cycles matter. My time shifts to scoping, reviewing, and testing. The next moves need intention.
+These experiments handed me a new role: I ask, the agents build, I sanity-check. The next moves need intention.
 
-- Foosball tracker: package the TypeScript version as a turnkey download with sync-free persistence and a friendly layout for public events. Ask the agent to polish tabletop scoring and ship checksums for the binaries.
-- Audio manager: add batch presets, level targets per venue, and export profiles so friends can process libraries without thinking about compressors. Script the build so the agent cannot drift on dependencies.
-- Fractal renderer: expose the assembler core as a library with a clean DirectX wrapper, then script animations from TypeScript to mix ease with speed. Add a recorded benchmark suite so future agent edits cannot slow the hot loop.
-- Cross-cutting: document the prompting patterns, the tests, and the no-go rules once, then reuse them as checklists before choosing a language for the next build.
+- Foosh: package the TypeScript build as a turnkey download, polish tabletop scoring, ship checksums, stay sync-free.
+- Woosh: add batch presets, level targets per venue, and export profiles so friends can process libraries without thinking about compressors; lock the build so dependencies cannot drift.
+- Fractals: wrap the assembler core behind a clean DirectX interface, script animations from TypeScript, and keep a benchmark suite to catch slowdowns.
+- Cross-cutting: one living checklist for prompts, tests, and no-go rules before picking a language.
+- New runs: start in a clean folder, seed a `.github` or `.cursor` with the commands and rules you know you will need, then brief the agent with the full project shape—architecture, stack, tests, and the “your terminal is Git Bash on Windows” type facts. A prepped environment makes the first prompts land like you planned it.
 
-Cadence matters. I plan weekly micro-builds where the agent handles a single feature in a language that risks cooling down. Each session ends with a one-page note: what the agent got right, where it drifted, which constraints helped, and which ones slowed it. The notes become a playbook so I can reach for the right tool without guessing.
+Cadence still matters. Weekly micro-builds keep skills warm; each ends with a one-page note on what the agent nailed, where it drifted, and which constraints helped. The notes become a map for the next ask.
 
-Ownership still matters. The agent writes code, but I sign off on what ships. I keep secrets out of prompts, lock down API keys, and run everything locally before trusting it near users. The speed is real; so is the need for judgment about where the code runs and who depends on it. My role shifts from typing to curating, but the responsibility remains mine.
+Ownership stays mine. The agent writes code, but I ship it. I keep secrets out of prompts, lock down keys, and run locally before trusting anything near users. Speed is real; judgment still matters.
+And when a task is done, I start a fresh chat. Long sessions go stale; new sessions keep the agent sharper than dragging yesterday’s context along.
 
 ## Try it yourself
 
@@ -119,6 +123,8 @@ Ownership still matters. The agent writes code, but I sign off on what ships. I 
 {{< callout type="info" >}}
 **Found this helpful?** Share your thoughts on [LinkedIn](https://linkedin.com/in/digitaldias) or tag me on [GitHub](https://github.com/digitaldias); I read and respond to every comment.
 {{< /callout >}}
+
+Enjoy the rest of your Christmas break, and have a happy new year.
 
 ## References
 
@@ -146,4 +152,7 @@ Ownership still matters. The agent writes code, but I sign off on what ships. I 
 - **[GPT-5](https://openai.com/)** - Agent that generated the fractal and Foosh code.
 - **[Claude 4.5 Opus](https://claude.ai/)** - Agent that produced the TypeScript refactor and Qt/C++ code.
 - **[Claude 4.5 Sonnet](https://claude.ai/)** - Agent that refined prompts and projections.
+- **[VS Code](https://code.visualstudio.com/)** - Editor used while prompting and reviewing.
+- **[Cursor](https://cursor.sh/)** - Agent-friendly IDE used across these builds.
+- **[Visual Studio 2026](https://visualstudio.microsoft.com/)** - IDE used to sanity-check outputs and logs.
 
