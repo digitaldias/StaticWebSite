@@ -52,6 +52,20 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
   # Support links
   [params.support]
     kofi = 'https://ko-fi.com/digitaldias'
+  
+  # Giscus comments configuration
+  [params.giscus]
+    repo = "digitaldias/StaticWebSite"
+    repoId = "R_kgDOQZVsAA"
+    category = "General"
+    categoryId = "DIC_kwDOQZVsAM4C1Zhn"
+    mapping = "pathname"
+    strict = "0"
+    reactionsEnabled = "1"
+    emitMetadata = "0"
+    inputPosition = "bottom"
+    theme = "dark"
+    lang = "en"
 
 # Asset processing
 [build]

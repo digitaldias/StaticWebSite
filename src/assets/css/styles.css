@@ -1971,6 +1971,20 @@ body:not(:has(.article-main)) .reading-progress {
     opacity: 0.8;
 }
 
+/* Giscus Comments Section */
+.article-comments {
+    margin-top: var(--space-8);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.comments-heading {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin-bottom: var(--space-6);
+    color: var(--text-primary);
+}
+
 /* Code block styling */
 .article-body pre {
     background: var(--bg-secondary);
