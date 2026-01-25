@@ -1,6 +1,6 @@
 {
   "globalHeaders": {
-    "Content-Security-Policy": "default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' https://cdn.jsdelivr.net; script-src-elem 'self' https://cdn.jsdelivr.net; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';",
+    "Content-Security-Policy": "default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'sha256-lNjSCcZGOLZsoT8ZyBml8SbwUrqkhnyzBU9n4w3/8aA=' 'sha256-82WpjKR4O/LbRdSRvxdGSjVlkwgEoezd2rFB2i2KtUE=' https://static.cloudflareinsights.com https://www.googletagmanager.com; script-src-elem 'self' https://static.cloudflareinsights.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';",
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
     "X-XSS-Protection": "1; mode=block",
