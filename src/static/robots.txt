@@ -1,6 +1,13 @@
 User-agent: *
 Allow: /
 
+# Explicitly allow important paths
+Allow: /blog/
+Allow: /about/
+Allow: /photography/
+Allow: /categories/
+Allow: /tags/
+
 # Sitemap location
 Sitemap: https://digitaldias.com/sitemap.xml
 
@@ -8,6 +15,17 @@ Sitemap: https://digitaldias.com/sitemap.xml
 Disallow: /admin/
 Disallow: /.git/
 Disallow: /public/
+Disallow: /isableFastRender/
 
 # Crawl-delay (optional, be nice to servers)
 Crawl-delay: 1
+
+# Allow common search engine bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /

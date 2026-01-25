@@ -11,10 +11,21 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+{{- $title := cond .IsHome .Site.Title (printf "%s | %s" .Title .Site.Title) -}}
+{{- if gt (len $title) 60 -}}
+{{- $title = printf "%s..." (substr $title 0 57) -}}
+{{- end -}}
+<title>{{ $title }}</title>
+{{- $description := cond (ne .Description "") .Description .Site.Params.description -}}
+{{- if gt (len $description) 160 -}}
+{{- $description = printf "%s..." (substr $description 0 157) -}}
+{{- end -}}
+<meta name="description" content="{{ $description }}">
 <meta name="author" content="{{ .Site.Params.author }}">
 <link rel="canonical" href="{{ .Permalink }}">
+<meta name="theme-color" content="#0D1117">
+<meta name="geo.region" content="NO-03">
+<meta name="geo.placename" content="Frogner, Norway">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com; script-src-elem 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com ws://localhost:* ws://127.0.0.1:*;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-XSS-Protection" content="1; mode=block">
@@ -24,11 +35,17 @@
 <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
-<meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:locale" content="en_US">
 {{- if and (not .IsHome) .Params.featuredImage -}}
 <meta property="og:image" content="{{ .Params.featuredImage | absURL }}">
+<meta property="og:image:width" content="1920">
+<meta property="og:image:height" content="1080">
+<meta property="og:image:alt" content="{{ .Params.featuredAlt | default .Title }}">
 {{- else -}}
 <meta property="og:image" content="{{ .Site.BaseURL }}og-default.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 {{- end -}}
 {{- if not .IsHome -}}
 <meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
@@ -36,20 +53,25 @@
 <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
 {{- end -}}
 <meta property="article:author" content="{{ .Site.Params.author }}">
+<meta property="article:locale" content="en_US">
+{{- if .Params.categories -}}
+<meta property="article:section" content="{{ index .Params.categories 0 }}">
+{{- end -}}
 {{- range .Params.tags -}}
 <meta property="article:tag" content="{{ . }}">
 {{- end -}}
 {{- end -}}
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="{{ .Permalink }}">
-<meta property="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
-<meta property="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{ .Permalink }}">
+<meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ $description }}">
 {{- if and (not .IsHome) .Params.featuredImage -}}
-<meta property="twitter:image" content="{{ .Params.featuredImage | absURL }}">
+<meta name="twitter:image" content="{{ .Params.featuredImage | absURL }}">
+<meta name="twitter:image:alt" content="{{ .Params.featuredAlt | default .Title }}">
 {{- else -}}
-<meta property="twitter:image" content="{{ .Site.BaseURL }}og-default.jpg">
+<meta name="twitter:image" content="{{ .Site.BaseURL }}og-default.jpg">
 {{- end -}}
 
 <!-- Favicon -->
@@ -91,6 +113,15 @@
   "name": "{{ .Site.Title }}",
   "url": "{{ .Site.BaseURL }}",
   "description": "{{ .Site.Params.description }}",
+  "inLanguage": "en-US",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ .Site.BaseURL }}search/?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  },
   "author": {
     "@type": "Person",
     "name": "{{ .Site.Params.author }}",
@@ -98,6 +129,15 @@
     "url": "{{ .Site.BaseURL }}"{{- if or .Site.Params.social .Site.Params.support.kofi -}},
     "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
     {{- end -}}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Params.author }}",
+    "url": "{{ .Site.BaseURL }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Site.BaseURL }}og-default.jpg"
+    }
   }
   {{- else if eq .Section "blog" -}}
   "@type": "BlogPosting",
@@ -117,13 +157,20 @@
     {{- end -}}
   },
   "publisher": {
-    "@type": "Person",
+    "@type": "Organization",
     "name": "{{ .Site.Params.author }}",
-    "url": "{{ .Site.BaseURL }}"{{- if or .Site.Params.social .Site.Params.support.kofi -}},
+    "url": "{{ .Site.BaseURL }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Site.BaseURL }}og-default.jpg",
+      "width": 1200,
+      "height": 630
+    }{{- if or .Site.Params.social .Site.Params.support.kofi -}},
     "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
     {{- end -}}
   },
   "description": "{{ .Description | default .Site.Params.description }}",
+  "inLanguage": "en-US",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "{{ .Permalink }}"
@@ -133,8 +180,19 @@
     "@type": "ImageObject",
     "url": "{{ .Params.featuredImage | absURL }}",
     "width": 1920,
-    "height": 1080
+    "height": 1080{{- if .Params.featuredAlt -}},
+    "caption": "{{ .Params.featuredAlt }}"{{- end -}}
   },
+  {{- end -}}
+  {{- if .Params.categories -}}
+  "articleSection": "{{ index .Params.categories 0 }}",
+  {{- end -}}
+  {{- if .Params.readTime -}}
+  "timeRequired": "PT{{ replace (replace .Params.readTime " minute read" "M") " minute reads" "M" }}",
+  {{- end -}}
+  {{- $wordCount := len (split (.Content | plainify) " ") -}}
+  {{- if gt $wordCount 0 -}}
+  "wordCount": {{ $wordCount }},
   {{- end -}}
   "keywords": [{{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}"{{ end }}]
   {{- else -}}
@@ -145,3 +203,60 @@
   {{- end -}}
 }
 </script>
+
+{{- if not .IsHome -}}
+<!-- Breadcrumb Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    }{{- if eq .Section "blog" -}},
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "{{ .Site.BaseURL }}blog/"
+    }{{- if .Params.categories -}},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ index .Params.categories 0 }}",
+      "item": "{{ .Site.BaseURL }}categories/{{ index .Params.categories 0 | urlize }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "{{ .Title }}",
+      "item": "{{ .Permalink }}"
+    }{{- else -}},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ .Title }}",
+      "item": "{{ .Permalink }}"
+    }{{- end -}}
+    {{- else if eq .Section "about" -}},
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "About",
+      "item": "{{ .Permalink }}"
+    }
+    {{- else if eq .Section "photography" -}},
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Photography",
+      "item": "{{ .Permalink }}"
+    }
+    {{- end -}}
+  ]
+}
+</script>
+{{- end -}}

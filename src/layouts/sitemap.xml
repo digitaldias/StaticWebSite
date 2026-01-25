@@ -1,0 +1,63 @@
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  {{- $home := .Site.Home -}}
+  <url>
+    <loc>{{ $home.Permalink }}</loc>
+    <lastmod>{{ $home.Lastmod.Format "2006-01-02T15:04:05Z07:00" | default ($home.Date.Format "2006-01-02T15:04:05Z07:00") }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  {{- range .Site.Sections -}}
+    {{- if eq .Section "blog" -}}
+      <url>
+        <loc>{{ .Permalink }}</loc>
+        <lastmod>{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" | default (.Date.Format "2006-01-02T15:04:05Z07:00") }}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+      </url>
+      {{- range .Pages -}}
+        <url>
+          <loc>{{ .Permalink }}</loc>
+          <lastmod>{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" | default (.Date.Format "2006-01-02T15:04:05Z07:00") }}</lastmod>
+          <changefreq>monthly</changefreq>
+          <priority>0.8</priority>
+          {{- if .Params.featuredImage -}}
+          <image:image>
+            <image:loc>{{ .Params.featuredImage | absURL }}</image:loc>
+            {{- if .Params.featuredAlt -}}
+            <image:caption>{{ .Params.featuredAlt }}</image:caption>
+            {{- end -}}
+            <image:title>{{ .Title }}</image:title>
+          </image:image>
+          {{- end -}}
+        </url>
+      {{- end -}}
+    {{- else if or (eq .Section "about") (eq .Section "photography") -}}
+      <url>
+        <loc>{{ .Permalink }}</loc>
+        <lastmod>{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" | default (.Date.Format "2006-01-02T15:04:05Z07:00") }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+      </url>
+    {{- end -}}
+  {{- end -}}
+  {{- range .Site.Taxonomies.categories -}}
+    <url>
+      <loc>{{ .Page.Permalink }}</loc>
+      <lastmod>{{ now.Format "2006-01-02T15:04:05Z07:00" }}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  {{- end -}}
+  {{- range .Site.Taxonomies.tags -}}
+    <url>
+      <loc>{{ .Page.Permalink }}</loc>
+      <lastmod>{{ now.Format "2006-01-02T15:04:05Z07:00" }}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+    </url>
+  {{- end -}}
+</urlset>
