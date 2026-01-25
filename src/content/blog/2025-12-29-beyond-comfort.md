@@ -120,10 +120,6 @@ And when a task is done, I start a fresh chat. Long sessions go stale; new sessi
 - Keep secrets out of prompts and avoid pasting production data; treat agents like contractors who see only what they need.
 - Run the agent output locally and offline first; only connect to external services once it passes local tests.
 
-{{< callout type="info" >}}
-**Found this helpful?** Share your thoughts on [LinkedIn](https://linkedin.com/in/digitaldias) or tag me on [GitHub](https://github.com/digitaldias); I read and respond to every comment.
-{{< /callout >}}
-
 Enjoy the rest of your Christmas break, and have a happy new year.
 
 ## References

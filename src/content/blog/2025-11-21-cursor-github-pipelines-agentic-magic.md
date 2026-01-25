@@ -95,10 +95,6 @@ Start with a non-critical repository. Give Cursor explicit permission to push ch
 
 If you've experimented, I'd value hearing your results—especially failure modes and edge cases. Connect on [LinkedIn](https://linkedin.com/in/digitaldias) or [GitHub](https://github.com/digitaldias).
 
-{{< callout type="info" >}}
-**Found this helpful?** Share your thoughts on [LinkedIn](https://linkedin.com/in/digitaldias) or tag me on [GitHub](https://github.com/digitaldias)—I read and respond to every comment.
-{{< /callout >}}
-
 ## References
 
 Technologies and tools mentioned in this post:

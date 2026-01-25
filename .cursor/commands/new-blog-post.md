@@ -144,10 +144,6 @@ Your content here...
 
 Action items and next steps for readers.
 
-{{< callout type="info" >}}
-**Found this helpful?** Share your thoughts on [LinkedIn](https://linkedin.com/in/digitaldias) or tag me on [GitHub](https://github.com/digitaldias)—I read and respond to every comment.
-{{< /callout >}}
-
 ## References
 
 Technologies and tools mentioned in this post:
