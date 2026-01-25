@@ -48,6 +48,10 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
     photos = 172
     channels = 2
     family = '∞'
+  
+  # Support links
+  [params.support]
+    kofi = 'https://ko-fi.com/digitaldias'
 
 # Asset processing
 [build]

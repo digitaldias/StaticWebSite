@@ -1933,6 +1933,44 @@ body:not(:has(.article-main)) .reading-progress {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Support note - subtle Ko-fi link */
+.article-support {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+}
+
+.support-note {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.support-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--transition-normal);
+    font-weight: 500;
+}
+
+.support-link:hover {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.support-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+.support-link span[aria-hidden="true"] {
+    display: inline-block;
+    margin-left: 2px;
+    opacity: 0.8;
+}
+
 /* Code block styling */
 .article-body pre {
     background: var(--bg-secondary);

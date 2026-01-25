@@ -802,11 +802,30 @@ function initReadingProgress() {
     window.addEventListener('resize', updateProgress, { passive: true });
 }
 
+// Track Ko-fi support link clicks
+function initKofiTracking() {
+    const kofiLinks = document.querySelectorAll('a[data-cta="kofi"]');
+    
+    kofiLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Only track if gtag is available (Google Analytics)
+            if (typeof window.gtag === 'function') {
+                window.gtag('event', 'support_click', {
+                    'event_category': 'Support',
+                    'event_label': 'kofi',
+                    'value': 1
+                });
+            }
+        });
+    });
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new DigitalDiasPortfolio();
     new ScrollReveal();
     initReadingProgress();
+    initKofiTracking();
     
     // Add loading state management
     window.addEventListener('load', () => {

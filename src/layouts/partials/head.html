@@ -95,7 +95,9 @@
     "@type": "Person",
     "name": "{{ .Site.Params.author }}",
     "email": "{{ .Site.Params.email }}",
-    "url": "{{ .Site.BaseURL }}"
+    "url": "{{ .Site.BaseURL }}"{{- if or .Site.Params.social .Site.Params.support.kofi -}},
+    "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
+    {{- end -}}
   }
   {{- else if eq .Section "blog" -}}
   "@type": "BlogPosting",
@@ -110,12 +112,16 @@
     "@type": "Person",
     "name": "{{ .Site.Params.author }}",
     "email": "{{ .Site.Params.email }}",
-    "url": "{{ .Site.BaseURL }}"
+    "url": "{{ .Site.BaseURL }}"{{- if or .Site.Params.social .Site.Params.support.kofi -}},
+    "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
+    {{- end -}}
   },
   "publisher": {
     "@type": "Person",
     "name": "{{ .Site.Params.author }}",
-    "url": "{{ .Site.BaseURL }}"
+    "url": "{{ .Site.BaseURL }}"{{- if or .Site.Params.social .Site.Params.support.kofi -}},
+    "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
+    {{- end -}}
   },
   "description": "{{ .Description | default .Site.Params.description }}",
   "mainEntityOfPage": {

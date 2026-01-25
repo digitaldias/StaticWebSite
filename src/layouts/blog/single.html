@@ -48,6 +48,14 @@
                     <div class="button-icon">✨</div>
                 </a>
             </div>
+
+            {{- if .Site.Params.support.kofi -}}
+            <div class="article-support">
+                <p class="support-note">
+                    If this helped, you can support my writing with a coffee on <a href="{{ .Site.Params.support.kofi }}" class="support-link" target="_blank" rel="noopener noreferrer" data-cta="kofi">Ko‑fi <span aria-hidden="true">☕</span></a>.
+                </p>
+            </div>
+            {{- end -}}
         </div>
     </article>
 </main>
