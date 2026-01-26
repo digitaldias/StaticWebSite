@@ -3,6 +3,7 @@
 {{- $class := "" -}}
 {{- $borderColor := "" -}}
 {{- $bgColor := "" -}}
+{{- $useCowAvatar := false -}}
 
 {{- if eq $type "info" -}}
   {{- $icon = "ℹ️" -}}
@@ -24,6 +25,11 @@
   {{- $class = "callout-error" -}}
   {{- $borderColor = "rgba(239, 68, 68, 0.4)" -}}
   {{- $bgColor = "rgba(239, 68, 68, 0.1)" -}}
+{{- else if or (eq $type "cow") (eq $type "helper") -}}
+  {{- $useCowAvatar = true -}}
+  {{- $class = "callout-cow" -}}
+  {{- $borderColor = "rgba(232, 121, 169, 0.4)" -}}
+  {{- $bgColor = "rgba(232, 121, 169, 0.08)" -}}
 {{- else -}}
   {{- $icon = "💡" -}}
   {{- $class = "callout-info" -}}
@@ -32,7 +38,11 @@
 {{- end -}}
 <aside class="callout {{ $class }}" style="background: {{ $bgColor }}; border-color: {{ $borderColor }}; border-left: 4px solid {{ $borderColor }};">
   <div class="callout-header">
+    {{- if $useCowAvatar -}}
+    <img class="callout-cow-avatar" src="/images/cow/cow-avatar-128.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+    {{- else -}}
     <span class="callout-icon" aria-hidden="true">{{ $icon }}</span>
+    {{- end -}}
     {{- if .Get "title" -}}
     <strong class="callout-title">{{ .Get "title" }}</strong>
     {{- end -}}

@@ -208,18 +208,77 @@ class DigitalDiasPortfolio {
             return;
         }
 
+        // Ensure navigation toggle is visible on mobile - aggressive fix
+        const ensureNavVisibility = () => {
+            // Force navigation to be visible
+            if (nav) {
+                nav.style.setProperty('display', 'block', 'important');
+                nav.style.setProperty('visibility', 'visible', 'important');
+                nav.style.setProperty('opacity', '1', 'important');
+                nav.style.setProperty('transform', 'translateY(0)', 'important');
+            }
+            
+            // Force toggle to be visible on mobile
+            if (navToggle) {
+                const isMobile = window.innerWidth <= 768;
+                if (isMobile) {
+                    navToggle.style.setProperty('display', 'flex', 'important');
+                    navToggle.style.setProperty('visibility', 'visible', 'important');
+                    navToggle.style.setProperty('opacity', '1', 'important');
+                } else {
+                    navToggle.style.setProperty('display', 'none', 'important');
+                }
+            }
+        };
+        
+        // Ensure visibility on load, resize, and navigation
+        ensureNavVisibility();
+        window.addEventListener('resize', ensureNavVisibility);
+        
+        // Watch for navigation changes (SPA navigation)
+        window.addEventListener('popstate', ensureNavVisibility);
+        
+        // Use MutationObserver to watch for style changes
+        if (navToggle) {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                        // If style changed, re-ensure visibility
+                        ensureNavVisibility();
+                    }
+                });
+            });
+            
+            observer.observe(navToggle, {
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+            
+            observer.observe(nav, {
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+        }
+        
+        // Re-check visibility periodically (fallback)
+        setInterval(ensureNavVisibility, 1000);
+
         // Enhanced scroll behavior - only change background opacity
+        // Ensure navigation and toggle are always visible
         window.addEventListener('scroll', () => {
             const currentScrollY = window.scrollY;
             
             if (currentScrollY > 100) {
-                nav.style.background = 'rgba(10, 10, 10, 0.98)';
+                nav.style.background = 'rgba(18, 24, 32, 0.96)';
                 nav.style.backdropFilter = 'blur(20px)';
             } else {
-                nav.style.background = 'rgba(10, 10, 10, 0.95)';
+                nav.style.background = 'rgba(18, 24, 32, 0.92)';
                 nav.style.backdropFilter = 'blur(16px)';
             }
-        });
+            
+            // Aggressively ensure navigation and toggle are always visible on every scroll
+            ensureNavVisibility();
+        }, { passive: true });
 
         // Active section detection
         const sections = document.querySelectorAll('section[id]');
@@ -827,10 +886,39 @@ document.addEventListener('DOMContentLoaded', () => {
     initReadingProgress();
     initKofiTracking();
     
+    // Ensure navigation visibility after everything loads
+    const ensureNavAfterLoad = () => {
+        const nav = document.querySelector('[data-nav]');
+        const navToggle = document.querySelector('[data-nav-toggle]');
+        if (nav && navToggle) {
+            nav.style.setProperty('display', 'block', 'important');
+            nav.style.setProperty('visibility', 'visible', 'important');
+            nav.style.setProperty('opacity', '1', 'important');
+            if (window.innerWidth <= 768) {
+                navToggle.style.setProperty('display', 'flex', 'important');
+                navToggle.style.setProperty('visibility', 'visible', 'important');
+                navToggle.style.setProperty('opacity', '1', 'important');
+            }
+        }
+    };
+    
     // Add loading state management
     window.addEventListener('load', () => {
         document.body.classList.add('loaded');
+        ensureNavAfterLoad();
     });
+    
+    // Ensure visibility when page becomes visible again
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            ensureNavAfterLoad();
+        }
+    });
+    
+    // Ensure visibility after a short delay (in case something else is hiding it)
+    setTimeout(ensureNavAfterLoad, 100);
+    setTimeout(ensureNavAfterLoad, 500);
+    setTimeout(ensureNavAfterLoad, 1000);
     
     // Performance monitoring
     if ('performance' in window && 'measure' in performance) {
