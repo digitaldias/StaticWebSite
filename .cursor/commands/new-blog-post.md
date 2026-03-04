@@ -1,17 +1,77 @@
 # New Blog Post Creation Workflow
 
-This command guides you through creating a new blog post for digitaldias.com with proper image planning.
+**Harry**: This file lives in `E:\dev\personal\active\digitaldias.com\.cursor\commands\` — this is where you work. Before starting ANY blog task, read:
+1. `.cursor/rules/writing.mdc` (tone, banned words, voice rules)
+2. `.cursor/commands/new-blog-post.md` (this file)
 
-## Step 1: Image Planning (Do This FIRST)
+These are your guardrails. They ensure consistency and voice across all posts.
+
+---
+
+## Critical Ground Rules (READ FIRST!)
+
+**Language**: ALWAYS English. Never Norwegian.
+
+**Perspective**: Write for decision-makers and architects, NOT implementers. Your readers are senior devs, leads, CTOs — not junior devs copy-pasting code. If implementation details appear, they're illustrative only.
+
+**Tone**: Warm, conversational, slightly irreverent. Hook readers with a real situation or challenge. Be opinionated. Show conviction.
+
+**Engagement**: Every section answers "Why does this matter to me?" Don't just explain — make readers *want* to learn more.
+
+**No Python/implementation in narrative**: You're not documenting how-tos. Leave Python scripts and config to the agentverse (Sven handles that). You tell the story, share wisdom, show the pattern.
+
+---
+
+## Step 1: Planning Phase (Do This FIRST)
 
 Before writing a single word, plan your visuals:
+
+### Planning Output (What You Deliver in Phase 1)
+Create a detailed plan document with:
+
+1. **Hook/Anecdote** (open with a real situation or challenge)
+2. **Front Matter** (title, description, tags, date)
+3. **Section Outline** (2-3 bullets per section explaining "Why this matters")
+4. **Tone Notes** (specific voice/style cues for this post)
+5. **Visual Aids** (what diagrams, screenshots, or images support this story)
+6. **Word Count Estimate** (800-2000 word range)
+7. **Key Takeaway** (what will readers actually DO with this knowledge?)
+
+**DO NOT write the full post yet.** Plan only. Pedro reviews and approves before you write.
+
+---
 
 ### Visual Concept Questions
 - **Hero image**: What's the main visual concept? (landscape photo, diagram, screenshot)
 - **Inline images**: What 2-3 visuals support the narrative? (every ~600-800 words)
 - **Diagrams**: What concepts need visual explanation? (architecture, flows, comparisons)
 
-### Image Count by Word Length
+### Examples: Good vs. Bad Tone & Engagement
+
+#### Hook
+❌ **Bad** (dry, generic):
+"Multi-agent systems are becoming more common in AI development."
+
+✅ **Good** (real situation, hooks reader):
+"The first time Pedro watched three agents get into an infinite loop—each politely asking the others for clarification—he realized something: multi-agent systems aren't smarter by default. They're smarter if you design them right."
+
+#### Section Explanation
+❌ **Bad** (just defines):
+"Multi-agent orchestration uses a central agent to coordinate worker agents. This pattern enables parallel execution."
+
+✅ **Good** (explains why it matters):
+"When you need agents to collaborate, someone has to be in charge—otherwise they spin in circles. The orchestrator pattern works because it gives you a single source of truth for what needs to happen and who does what."
+
+#### Implementation Detail (AVOID in narrative)
+❌ **Bad** (implementation nitty-grit):
+"Initialize PydanticAI with `Agent(model='gpt-4', tools=[...])` and use `@tool` decorators for structured outputs. Configure retry logic with exponential backoff on the dependency resolver."
+
+✅ **Good** (architecture insight):
+"When agents hand off work, every message costs tokens and latency. The trick is deciding what to send: full context (expensive but safe) or just essentials (cheap but risky)."
+
+---
+
+## Step 2: Image Planning (Do This FIRST)
 | Word Count | Images Needed |
 |------------|---------------|
 | 800-1200 words | 1 hero + 1 inline |
@@ -27,7 +87,7 @@ Before writing a single word, plan your visuals:
 | AI/Experimental | Abstract patterns, light trails, code editor screenshots | Futuristic, curious, innovative |
 | Personal/Family | Flickr candid photos, nature, travel moments | Warm, authentic, emotional |
 
-## Step 2: Technical Specifications
+## Step 3: Technical Specifications
 
 ### Hero Images
 - **Size**: 1920×1080px (16:9) or 1600×900px minimum, landscape
@@ -58,7 +118,7 @@ Before writing a single word, plan your visuals:
 - **Background**: Dark (#0a0a0a to #1a1a1a) to match theme
 - **Export**: Clean (no editor metadata), group logical elements
 
-## Step 3: File Storage
+## Step 4: File Storage
 
 ### Directory Structure
 ```
@@ -82,14 +142,14 @@ Use direct CDN URLs (no local copy needed):
 https://live.staticflickr.com/.../<photo-id>_<size-suffix>.jpg
 ```
 
-## Step 4: Create Post File
+## Step 5: Create Post File
 
 ```bash
 cd e:/dev/private/digitaldias.com/src
 hugo new blog/$(date +%Y-%m-%d)-post-title.md
 ```
 
-## Step 5: Front Matter Template
+## Step 6: Front Matter Template
 
 ```yaml
 ---
@@ -153,7 +213,7 @@ Technologies and tools mentioned in this post:
 - **[Yet Another](https://example.com)** - Brief description
 ```
 
-## Step 6: AI-Assisted Image Selection
+## Step 7: AI-Assisted Image Selection
 
 When choosing between candidate images, ask AI:
 - "Which fits a [serious/casual/technical] post about [topic]?"
@@ -167,7 +227,7 @@ When choosing between candidate images, ask AI:
 - Mood/tone matching (technical vs emotional)
 - Lightroom treatment suggestions (contrast, crop, color grade)
 
-## Step 7: Content Guidelines
+## Step 8: Content Guidelines
 
 **Writing Style**: 
 - First-person, conversational but professional
@@ -176,6 +236,16 @@ When choosing between candidate images, ask AI:
 - Enthusiastic about tech, humble about experience
 - Use sentence case for ALL headers (h1, h2, h3, etc.) - NOT Title Case
 - Example: "The setup" NOT "The Setup"
+- **CHECK `.cursor/rules/writing.mdc` BEFORE WRITING** — avoid banned words/phrases (agile, best practices, leverage, seamless, etc.)
+
+**Banned Word Examples** (full list in `writing.mdc`):
+- ❌ "best practices" → ✅ "proven approaches"
+- ❌ "leverage" → ✅ "use"
+- ❌ "seamless" → ✅ "automatic"
+- ❌ "innovative/modern" → ✅ remove or be specific
+- ❌ "I think/we believe" → ✅ state directly
+- ❌ "Let's dive into..." → ✅ skip clichés
+- ❌ "In today's fast-paced digital world" → ✅ avoid LLM patterns
 
 **Visual Hierarchy**:
 - Categories appear BELOW excerpt in blog cards (not before)
@@ -218,7 +288,7 @@ When choosing between candidate images, ask AI:
 - Examples: Cursor, GitHub Actions, AvaloniaUI, Azure DevOps, MCP, .NET SDK, NuGet, etc.
 - Helps readers find and explore the technologies discussed
 
-## Step 8: Pre-Publish Checklist
+## Step 9: Pre-Publish Checklist
 
 **Content & Style**:
 - [ ] Title uses **sentence case** (not Title Case)?
@@ -256,7 +326,7 @@ When choosing between candidate images, ask AI:
 - [ ] Article spacing looks appropriate (not too much vertical space)?
 - [ ] Hero image is horizontally centered?
 
-## Step 9: Build & Deploy
+## Step 10: Build & Deploy
 
 ```bash
 # Test locally
