@@ -35,7 +35,7 @@ src/
 └── public/            # Build output — do not edit
 ```
 
-**Homepage content** is entirely in `layouts/index.html`. Dynamic values (stats, social links) come from `[params]` in `hugo.toml`. Do not create `content/_index.md`.
+**Homepage content** is entirely in `layouts/index.html`. Dynamic values (stats, social links) come from `[params]` in `hugo.toml` — edit there, not in the template. Do not create `content/_index.md`.
 
 **Assets are processed by Hugo Pipes** — CSS and JS are minified and fingerprinted at build time.
 
@@ -85,18 +85,25 @@ Theme: dark glass-morphism (`backdrop-filter: blur`). Typography: Inter (body) +
 
 All animations must respect `prefers-reduced-motion`. Use `requestAnimationFrame` for scroll/animation work.
 
+CSS conventions: mobile-first, breakpoints at 480px / 768px / 1200px. Use existing variables only — don't add new colors. Glass-morphism pattern: `backdrop-filter: blur(var(--blur-md))`. Transitions: `transition: all var(--transition-normal)`.
+
+Hugo template conventions: use `{{- -}}` for whitespace control; guard optional params with `{{ with .Params.excerpt }}{{ . }}{{ end }}`; internal links via `.RelPermalink`; render HTML content via `{{ .Content | safeHTML }}`.
+
 ## CSP
 
 The Content Security Policy is hardcoded in `layouts/partials/head.html`. Any new external resource (font, script, image host) requires updating the CSP there explicitly.
 
 ## Deployment
 
-Target: **Azure Static Web Apps**. Build output is `src/public/`. The `src/isableFastRender/` directory is a Hugo server artifact — ignore it.
+Push to `main` triggers `.github/workflows/deploy-to-azure.yml`, which builds with `hugo --minify` and uploads `src/public/` to Azure Blob Storage (`$web` container) via `az storage blob upload-batch`. Requires `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` secrets in the repo.
+
+The `src/isableFastRender/` directory is a Hugo server artifact — ignore it.
 
 ## Content Guidelines
 
 - Writing: first-person, conversational but technically precise
 - Categories (use existing): Architecture, Azure, AI, DevOps, Family, Photography
 - Tags: specific only (e.g. `MediatR`, `Blazor`) — not generic (`web`, `code`)
-- Images: hero at `static/images/blog/<post-slug>/featured.jpg`, 1920×1080, JPEG ~200–300 KB
+- Images: hero at `static/images/blog/<post-slug>/featured.jpg`, 1920×1080, JPEG 80–85% quality, ~200–300 KB; inline images 1200×800, ~150–200 KB. Diagrams use brand colors only on dark backgrounds (#0a0a0a–#1a1a1a).
 - HTML is allowed in Markdown (`unsafe = true` in markup config)
+- Keep `static/llm.txt` updated when major site structure changes (new sections, content types, or technologies)

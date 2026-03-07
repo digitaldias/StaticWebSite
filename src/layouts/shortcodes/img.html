@@ -1,48 +1,14 @@
 {{- $src := .Get "src" -}}
 {{- $alt := .Get "alt" | default "" -}}
 {{- $caption := .Get "caption" -}}
-{{- $width := .Get "width" | default 800 -}}
-{{- $baseClass := .Get "class" | default "article-image" -}}
-{{- $class := printf "%s" $baseClass -}}
-
-{{- if $src -}}
-  {{- /* Try to get from resources first (assets/) */ -}}
-  {{- $image := resources.Get $src -}}
-  {{- if $image -}}
-    {{- /* Preserve PNG format for transparency */ -}}
-    {{- $isPNG := eq (lower $image.MediaType.SubType) "png" -}}
-    {{- $resized := "" -}}
-    {{- if $isPNG -}}
-      {{- $resized = $image.Resize (printf "%dx png" $width) -}}
-    {{- else -}}
-      {{- $resized = $image.Resize (printf "%dx" $width) -}}
-    {{- end -}}
-    <figure class="{{ $class }}" style="max-width: min({{ $width }}px, 100%);">
-      <img 
-        src="{{ $resized.RelPermalink }}" 
-        alt="{{ $alt }}"
-        width="{{ $resized.Width }}"
-        height="{{ $resized.Height }}"
-        loading="lazy"
-        decoding="async"
-      >
-      {{- if $caption -}}
-      <figcaption>{{ $caption }}</figcaption>
-      {{- end -}}
-    </figure>
-  {{- else -}}
-    {{- /* Fallback for static/ images or external URLs */ -}}
-    <figure class="{{ $class }}" style="max-width: min({{ $width }}px, 100%);">
-      <img 
-        src="{{ $src | relURL }}" 
-        alt="{{ $alt }}"
-        loading="lazy"
-        decoding="async"
-      >
-      {{- if $caption -}}
-      <figcaption>{{ $caption }}</figcaption>
-      {{- end -}}
-    </figure>
+{{- $credit := .Get "credit" -}}
+<figure class="figure">
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+  {{- if or $caption $credit -}}
+  <figcaption class="meta">
+    {{- with $caption }}{{ . }}{{ end -}}
+    {{- if and $caption $credit }} &mdash; {{ end -}}
+    {{- with $credit }}<span>{{ . }}</span>{{ end -}}
+  </figcaption>
   {{- end -}}
-{{- end -}}
-
+</figure>

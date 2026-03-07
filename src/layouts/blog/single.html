@@ -1,88 +1,73 @@
 {{- define "main" -}}
-<main id="main-content" class="article-main">
-    <div class="reading-progress" id="reading-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Reading progress">
-        <div class="reading-progress-bar" id="reading-progress-bar"></div>
+<article>
+  <header class="post-header">
+    <div class="container">
+      <nav aria-label="Breadcrumb" class="meta">
+        <a href="/">Home</a> /
+        {{- with .Params.categories }} <a href="/categories/{{ index . 0 | urlize }}/">{{ index . 0 }}</a> /{{ end }}
+        <span>{{ .Title }}</span>
+      </nav>
+
+      <div class="byline meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+        · <span>Pedro Dias</span>
+        {{- with .Params.readTime }} · {{ . }}{{ end -}}
+      </div>
+
+      <h1 class="display-title">{{ .Title }}</h1>
+
+      {{- with .Description -}}<p class="post-header__description">{{ . }}</p>{{- end -}}
     </div>
-    <article class="article-container" aria-labelledby="article-title">
-        <header class="article-header section-container">
-            <p class="blog-card-meta">{{ .Date.Format "January 2, 2006" }}{{ with .Params.readTime }} · {{ . }}{{ end }}</p>
-            <h1 class="article-title" id="article-title">{{ .Title }}</h1>
-            {{- if .Params.excerpt -}}
-            <p class="article-subtitle">{{ .Params.excerpt }}</p>
-            {{- else if .Description -}}
-            <p class="article-subtitle">{{ .Description }}</p>
-            {{- end -}}
-        </header>
 
-        {{- if .Params.featuredImage -}}
-        <div class="article-hero-image section-container">
-            <figure class="hero-figure">
-                <img 
-                    src="{{ .Params.featuredImage | relURL }}" 
-                    alt="{{ .Params.featuredAlt | default .Title }}"
-                    loading="eager"
-                    decoding="async"
-                    class="hero-image"
-                >
-                {{- if .Params.imageCredit -}}
-                <figcaption class="image-credit">{{ .Params.imageCredit }}</figcaption>
-                {{- end -}}
-            </figure>
-        </div>
-        {{- end -}}
-
-        <div class="article-body section-container">
-            {{ .Content }}
-
-            <div class="article-cta">
-                <a class="cta-button primary" href="{{ .Site.BaseURL }}" data-magnetic>
-                    <span class="button-text">Back to the homepage</span>
-                    <div class="button-arrow">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
-                        </svg>
-                    </div>
-                </a>
-                <a class="cta-button secondary" href="/blog/" data-magnetic>
-                    <span class="button-text">Explore more posts</span>
-                    <div class="button-icon">✨</div>
-                </a>
-            </div>
-
-            {{- if .Site.Params.support.kofi -}}
-            <div class="article-support">
-                <p class="support-note">
-                    If this helped, you can support my writing with a coffee on <a href="{{ .Site.Params.support.kofi }}" class="support-link" target="_blank" rel="noopener noreferrer" data-cta="kofi">Ko‑fi <span aria-hidden="true">☕</span></a>.
-                </p>
-            </div>
-            {{- end -}}
-
-            {{- if .Site.Params.giscus -}}
-            <div class="article-comments">
-                <h2 class="comments-heading">Comments</h2>
-                <script src="https://giscus.app/client.js"
-                        data-repo="{{ .Site.Params.giscus.repo }}"
-                        data-repo-id="{{ .Site.Params.giscus.repoId }}"
-                        data-category="{{ .Site.Params.giscus.category }}"
-                        data-category-id="{{ .Site.Params.giscus.categoryId }}"
-                        data-mapping="{{ .Site.Params.giscus.mapping | default "pathname" }}"
-                        data-strict="{{ .Site.Params.giscus.strict | default "0" }}"
-                        data-reactions-enabled="{{ .Site.Params.giscus.reactionsEnabled | default "1" }}"
-                        data-emit-metadata="{{ .Site.Params.giscus.emitMetadata | default "0" }}"
-                        data-input-position="{{ .Site.Params.giscus.inputPosition | default "bottom" }}"
-                        data-theme="{{ .Site.Params.giscus.theme | default "dark" }}"
-                        data-lang="{{ .Site.Params.giscus.lang | default "en" }}"
-                        crossorigin="anonymous"
-                        async>
-                </script>
-            </div>
-            {{- end -}}
-        </div>
-    </article>
-</main>
-
-<footer class="contact-section">
-    <div class="section-container">
+    {{- with .Params.featuredImage -}}
+    <div class="post-header__image">
+      <img src="{{ . }}" alt="{{ $.Params.featuredAlt }}" loading="eager" decoding="async">
+      {{- with $.Params.imageCredit -}}<p class="meta" style="text-align:right">{{ . }}</p>{{- end -}}
     </div>
-</footer>
+    {{- end -}}
+  </header>
+
+  <div class="post-content container--narrow">
+    {{ .Content | safeHTML }}
+  </div>
+
+  <footer class="post-footer container--narrow">
+    {{- with .Site.Params.support.kofi -}}
+    <div class="post-footer__support">
+      <p class="meta">Found this useful? You can support my writing on <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Ko-fi</a>.</p>
+    </div>
+    {{- end -}}
+
+    {{- if .Site.Params.giscus -}}
+    <div class="post-footer__comments">
+      <h2>Comments</h2>
+      <script src="https://giscus.app/client.js"
+              data-repo="{{ .Site.Params.giscus.repo }}"
+              data-repo-id="{{ .Site.Params.giscus.repoId }}"
+              data-category="{{ .Site.Params.giscus.category }}"
+              data-category-id="{{ .Site.Params.giscus.categoryId }}"
+              data-mapping="{{ .Site.Params.giscus.mapping | default "pathname" }}"
+              data-strict="{{ .Site.Params.giscus.strict | default "0" }}"
+              data-reactions-enabled="{{ .Site.Params.giscus.reactionsEnabled | default "1" }}"
+              data-emit-metadata="{{ .Site.Params.giscus.emitMetadata | default "0" }}"
+              data-input-position="{{ .Site.Params.giscus.inputPosition | default "bottom" }}"
+              data-theme="{{ .Site.Params.giscus.theme | default "light" }}"
+              data-lang="{{ .Site.Params.giscus.lang | default "en" }}"
+              crossorigin="anonymous"
+              async>
+      </script>
+    </div>
+    {{- end -}}
+
+    <div class="post-footer__nav">
+      {{- with .PrevInSection -}}
+      <a href="{{ .RelPermalink }}" rel="prev">&larr; {{ .Title }}</a>
+      {{- end -}}
+      {{- with .NextInSection -}}
+      <a href="{{ .RelPermalink }}" rel="next">{{ .Title }} &rarr;</a>
+      {{- end -}}
+    </div>
+    <a href="/blog/" class="post-footer__back">&larr; Back to all writing</a>
+  </footer>
+</article>
 {{- end -}}

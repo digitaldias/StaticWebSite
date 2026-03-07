@@ -1,21 +1,31 @@
 {{- define "main" -}}
-<section class="taxonomy-section section-container">
-    <header class="section-header">
-        <h1 class="section-title">
-            <span class="title-icon">📂</span>
-            <span class="title-main">Browse by {{ .Title }}</span>
-        </h1>
-        <p class="section-description">
-            Explore content organized by {{ lower .Title }}
-        </p>
-    </header>
-
-    <div class="tag-cloud">
-        {{- range .Data.Terms.ByCount -}}
-        <a href="{{ .Page.RelPermalink }}" class="tag-item" style="font-size: {{ add 1 (mul .Count 0.2) }}rem;">
-            {{ .Page.Title }} <span class="tag-count">({{ .Count }})</span>
-        </a>
-        {{- end -}}
+<div class="container">
+  <header class="page-header">
+    <div class="meta">
+      {{- with .Parent -}}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{- end -}}
     </div>
-</section>
+    <h1 class="display-title">{{ .Title }}</h1>
+    <p class="meta">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</p>
+  </header>
+
+  <div class="post-list">
+    {{- range .Pages -}}
+    <article class="post-card">
+      {{- with .Params.featuredImage -}}
+      <a href="{{ $.RelPermalink }}" class="post-card__image" tabindex="-1" aria-hidden="true">
+        <img src="{{ . }}" alt="{{ $.Params.featuredAlt }}" loading="lazy" decoding="async">
+      </a>
+      {{- end -}}
+      <div class="post-card__body">
+        <div class="post-card__meta meta">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+          {{- with .Params.readTime }} · {{ . }}{{ end -}}
+        </div>
+        <h2 class="post-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        {{- with .Params.excerpt -}}<p class="post-card__excerpt">{{ . }}</p>{{- end -}}
+      </div>
+    </article>
+    {{- end -}}
+  </div>
+</div>
 {{- end -}}

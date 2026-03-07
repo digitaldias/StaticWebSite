@@ -1,948 +1,191 @@
-// digitaldias Website JavaScript
-document.addEventListener('DOMContentLoaded', () => {
-    initializePage();
-    startSubtleAnimations();
-});
+/**
+ * digitaldias.com — main.js
+ * The Craftsman's Notebook edition.
+ * Clean ES6+, no dependencies, respects prefers-reduced-motion.
+ */
 
-function initializePage() {
-    console.log('digitaldias website loaded successfully!');
-    
-    // Add click tracking for analytics (placeholder)
-    trackPageLoad();
+'use strict';
+
+const prefersReducedMotion = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ─────────────────────────────────────────────
+   Page fade-in
+   Body starts at opacity:0 (CSS), transitions
+   to 1 on DOMContentLoaded via .is-loaded class.
+───────────────────────────────────────────── */
+function initPageFade() {
+  document.body.classList.add('is-loaded');
 }
 
-const motionPreferenceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+/* ─────────────────────────────────────────────
+   Navigation
+   - Sticky shadow on scroll
+   - Mobile hamburger toggle
+   - Active link detection by path
+───────────────────────────────────────────── */
+function initNavigation() {
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
 
-function userPrefersReducedMotion() {
-    return motionPreferenceQuery.matches;
-}
+  // Shadow on scroll
+  const onScroll = () => {
+    nav.classList.toggle('is-scrolled', window.scrollY > 10);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
-motionPreferenceQuery.addEventListener('change', (event) => {
-    if (!event.matches) {
-        startSubtleAnimations();
-    }
-});
-
-function startSubtleAnimations() {
-    if (userPrefersReducedMotion()) {
-        return;
-    }
-
-    createMinimalParticles();
-}
-
-function createMinimalParticles() {
-    const particleCount = 4;
-
-    for (let i = 0; i < particleCount; i++) {
-        setTimeout(() => {
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: fixed;
-                width: 4px;
-                height: 4px;
-                background: rgba(255, 215, 0, 0.18);
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: -1;
-                animation: subtleFloat ${18 + Math.random() * 12}s linear infinite;
-                left: ${Math.random() * 100}vw;
-                top: ${Math.random() * 100}vh;
-            `;
-
-            document.body.appendChild(particle);
-
-            const removeParticle = () => {
-                if (particle.parentNode) {
-                    particle.parentNode.removeChild(particle);
-                }
-            };
-
-            setTimeout(removeParticle, 30000);
-            window.addEventListener('pagehide', removeParticle, { once: true });
-        }, i * 2000);
-    }
-}
-
-function trackPageLoad() {
-    // Placeholder for analytics tracking
-    console.log('digitaldias page loaded at:', new Date().toISOString());
-    console.log('User agent:', navigator.userAgent);
-    console.log('Screen resolution:', screen.width + 'x' + screen.height);
-}
-
-// Add modern CSS animations
-function addModernStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes subtleFloat {
-            0%, 100% { 
-                transform: translateY(0px) rotate(0deg); 
-                opacity: 0.1; 
-            }
-            25% { 
-                opacity: 0.3; 
-            }
-            50% { 
-                transform: translateY(-20px) rotate(180deg); 
-                opacity: 0.4; 
-            }
-            75% { 
-                opacity: 0.3; 
-            }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-        
-        @keyframes slideInFromRight {
-            from { 
-                transform: translateX(100px); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateX(0); 
-                opacity: 1; 
-            }
-        }
-        
-        @keyframes slideOutToRight {
-            from { 
-                transform: translateX(0); 
-                opacity: 1; 
-            }
-            to { 
-                transform: translateX(100px); 
-                opacity: 0; 
-            }
-        }
-        
-        @keyframes slideInFromBottom {
-            from { 
-                transform: translateY(30px); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateY(0); 
-                opacity: 1; 
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-// Initialize modern styles
-addModernStyles();
-
-// Modern JavaScript for digitaldias portfolio
-class DigitalDiasPortfolio {
-    constructor() {
-        this.motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-        this.prefersReducedMotion = this.motionQuery.matches;
-
-        this.motionQuery.addEventListener('change', (event) => {
-            this.prefersReducedMotion = event.matches;
-            if (event.matches) {
-                this.showElementsWithoutAnimation();
-                this.setCountersImmediately();
-            }
-        });
-
-        this.init();
-    }
-
-    init() {
-        this.initLoading();
-        this.initNavigation();
-
-        if (this.prefersReducedMotion) {
-            this.showElementsWithoutAnimation();
-            this.setCountersImmediately();
-        } else {
-            this.initScrollAnimations();
-        }
-
-        this.initCounters();
-
-        if (!this.prefersReducedMotion) {
-            this.initMagneticButtons();
-            this.initTiltCards();
-            this.initParallax();
-        }
-
-        this.initPhotoGallery();
-        this.initThemeDetection();
-    }
-
-    // Loading screen
-    initLoading() {
-        const loadingScreen = document.querySelector('.loading-screen');
-        
-        // Simulate loading time
-        setTimeout(() => {
-            if (loadingScreen) {
-                loadingScreen.classList.add('hidden');
-                // Remove from DOM after animation
-                setTimeout(() => {
-                    loadingScreen.remove();
-                }, 500);
-            }
-        }, 1500);
-    }
-
-    // Navigation - Always visible
-    initNavigation() {
-        const nav = document.querySelector('[data-nav]');
-        const navLinks = document.querySelectorAll('[data-nav-link]');
-        const navToggle = document.querySelector('[data-nav-toggle]');
-        const navMenu = document.querySelector('[data-nav-menu]');
-
-        if (!nav) {
-            return;
-        }
-
-        // Ensure navigation toggle is visible on mobile - aggressive fix
-        const ensureNavVisibility = () => {
-            // Force navigation to be visible
-            if (nav) {
-                nav.style.setProperty('display', 'block', 'important');
-                nav.style.setProperty('visibility', 'visible', 'important');
-                nav.style.setProperty('opacity', '1', 'important');
-                nav.style.setProperty('transform', 'translateY(0)', 'important');
-            }
-            
-            // Force toggle to be visible on mobile
-            if (navToggle) {
-                const isMobile = window.innerWidth <= 768;
-                if (isMobile) {
-                    navToggle.style.setProperty('display', 'flex', 'important');
-                    navToggle.style.setProperty('visibility', 'visible', 'important');
-                    navToggle.style.setProperty('opacity', '1', 'important');
-                } else {
-                    navToggle.style.setProperty('display', 'none', 'important');
-                }
-            }
-        };
-        
-        // Ensure visibility on load, resize, and navigation
-        ensureNavVisibility();
-        window.addEventListener('resize', ensureNavVisibility);
-        
-        // Watch for navigation changes (SPA navigation)
-        window.addEventListener('popstate', ensureNavVisibility);
-        
-        // Use MutationObserver to watch for style changes
-        if (navToggle) {
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                        // If style changed, re-ensure visibility
-                        ensureNavVisibility();
-                    }
-                });
-            });
-            
-            observer.observe(navToggle, {
-                attributes: true,
-                attributeFilter: ['style', 'class']
-            });
-            
-            observer.observe(nav, {
-                attributes: true,
-                attributeFilter: ['style', 'class']
-            });
-        }
-        
-        // Re-check visibility periodically (fallback)
-        setInterval(ensureNavVisibility, 1000);
-
-        // Enhanced scroll behavior - only change background opacity
-        // Ensure navigation and toggle are always visible
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-            
-            if (currentScrollY > 100) {
-                nav.style.background = 'rgba(18, 24, 32, 0.96)';
-                nav.style.backdropFilter = 'blur(20px)';
-            } else {
-                nav.style.background = 'rgba(18, 24, 32, 0.92)';
-                nav.style.backdropFilter = 'blur(16px)';
-            }
-            
-            // Aggressively ensure navigation and toggle are always visible on every scroll
-            ensureNavVisibility();
-        }, { passive: true });
-
-        // Active section detection
-        const sections = document.querySelectorAll('section[id]');
-        
-        const updateActiveNav = () => {
-            const scrollY = window.scrollY + 200;
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                const sectionId = section.getAttribute('id');
-                
-                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${sectionId}`) {
-                            link.classList.add('active');
-                        }
-                    });
-                }
-            });
-        };
-        
-        window.addEventListener('scroll', updateActiveNav);
-        updateActiveNav();
-
-        // Smooth scroll for same-page anchors only; allow default navigation otherwise
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-
-                if (href) {
-                    const linkUrl = new URL(href, window.location.href);
-                    const targetId = linkUrl.hash ? linkUrl.hash.substring(1) : null;
-                    const isSameDocument = href.startsWith('#') || linkUrl.pathname === window.location.pathname;
-                    const targetSection = targetId ? document.getElementById(targetId) : null;
-
-                    if (targetSection && isSameDocument) {
-                        e.preventDefault();
-                        targetSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                }
-
-                if (navToggle && navMenu) {
-                    navToggle.setAttribute('aria-expanded', 'false');
-                    navToggle.classList.remove('active');
-                    navMenu.classList.remove('active');
-                }
-            });
-        });
-
-        // Mobile menu toggle
-        if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
-                const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
-                navToggle.setAttribute('aria-expanded', (!isExpanded).toString());
-                navToggle.classList.toggle('active', !isExpanded);
-                navMenu.classList.toggle('active', !isExpanded);
-            });
-        }
-    }
-
-    // Scroll animations
-    initScrollAnimations() {
-        if (this.prefersReducedMotion) {
-            this.showElementsWithoutAnimation();
-            this.setCountersImmediately();
-            return;
-        }
-
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    
-                    // Trigger counter animations
-                    if (entry.target.hasAttribute('data-animate')) {
-                        this.animateCounter(entry.target);
-                    }
-                    
-                    // Stagger animations for grid items
-                    if (entry.target.classList.contains('expertise-grid') || 
-                        entry.target.classList.contains('photo-masonry')) {
-                        const items = entry.target.children;
-                        Array.from(items).forEach((item, index) => {
-                            setTimeout(() => {
-                                item.style.opacity = '1';
-                                item.style.transform = 'translateY(0)';
-                            }, index * 100);
-                        });
-                    }
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements
-        const animatedElements = document.querySelectorAll(this.getAnimatedSelector());
-
-        animatedElements.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-            observer.observe(el);
-        });
-    }
-
-    getAnimatedSelector() {
-        return `
-            .section-header,
-            .expertise-card,
-            .photo-item,
-            .timeline-item,
-            .contact-card,
-            [data-animate]
-        `;
-    }
-
-    showElementsWithoutAnimation() {
-        const animatedElements = document.querySelectorAll(this.getAnimatedSelector());
-        animatedElements.forEach(el => {
-            el.style.opacity = '1';
-            el.style.transform = 'none';
-            el.style.transition = 'none';
-        });
-    }
-
-    setCountersImmediately() {
-        const counterElements = document.querySelectorAll('[data-animate] .stat-number');
-        counterElements.forEach(numberElement => {
-            const parent = numberElement.closest('[data-animate]');
-            const target = parent ? parent.getAttribute('data-target') : null;
-
-            if (parent && target) {
-                numberElement.textContent = target;
-            }
-        });
-    }
-
-    // Counter animations
-    initCounters() {
-        // Will be triggered by scroll animations
-    }
-
-    animateCounter(element) {
-        const target = parseInt(element.getAttribute('data-target'));
-        const numberElement = element.querySelector('.stat-number');
-        const duration = 2000;
-        const startTime = performance.now();
-        
-        if (element.classList.contains('infinity-stat')) return;
-
-        if (this.prefersReducedMotion) {
-            if (numberElement) {
-                numberElement.textContent = target;
-            }
-            return;
-        }
-
-        const updateCounter = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            
-            // Easing function
-            const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-            const current = Math.floor(easeOutExpo * target);
-            
-            if (numberElement) {
-                numberElement.textContent = current;
-            }
-            
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                if (numberElement) {
-                    numberElement.textContent = target;
-                }
-            }
-        };
-        
-        requestAnimationFrame(updateCounter);
-    }
-
-    // Magnetic buttons - simplified without cursor dependency
-    initMagneticButtons() {
-        const magneticElements = document.querySelectorAll('[data-magnetic]');
-        
-        if (!magneticElements.length) {
-            return;
-        }
-
-        magneticElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                if (this.prefersReducedMotion) {
-                    element.style.transform = 'translate(0, 0)';
-                    return;
-                }
-                element.style.transition = 'transform 0.3s ease';
-            });
-            
-            element.addEventListener('mousemove', (e) => {
-                if (this.prefersReducedMotion) {
-                    element.style.transform = 'translate(0, 0)';
-                    return;
-                }
-                const rect = element.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                
-                const moveX = x * 0.15;
-                const moveY = y * 0.15;
-                
-                element.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-            
-            element.addEventListener('mouseleave', () => {
-                element.style.transform = 'translate(0, 0)';
-                element.style.transition = 'transform 0.5s ease';
-            });
-        });
-    }
-
-    // Tilt cards
-    initTiltCards() {
-        const tiltElements = document.querySelectorAll('[data-tilt]');
-        
-        tiltElements.forEach(element => {
-            element.addEventListener('mousemove', (e) => {
-                if (this.prefersReducedMotion) {
-                    element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-                    return;
-                }
-                const rect = element.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / centerY * -10;
-                const rotateY = (x - centerX) / centerX * 10;
-                
-                element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-            
-            element.addEventListener('mouseleave', () => {
-                element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-            });
-        });
-    }
-
-    // Photo gallery
-    initPhotoGallery() {
-        const photoItems = document.querySelectorAll('.photo-item');
-        
-        photoItems.forEach(item => {
-            const img = item.querySelector('img');
-
-            if (!img) {
-                return;
-            }
-            
-            // Lazy loading
-            if (img && img.hasAttribute('loading')) {
-                const imageObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.src;
-                            img.classList.add('loaded');
-                            imageObserver.unobserve(img);
-                        }
-                    });
-                });
-                
-                imageObserver.observe(img);
-            }
-            
-            // Photo interactions
-            const photoButtons = item.querySelectorAll('[data-action]');
-            photoButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const action = button.getAttribute('data-action');
-                    const imgSrc = img.src;
-                    
-                    if (action === 'view') {
-                        this.openLightbox(imgSrc);
-                    } else if (action === 'external') {
-                        const externalWindow = window.open(imgSrc, '_blank', 'noopener');
-                        if (externalWindow) {
-                            externalWindow.opener = null;
-                        }
-                    }
-                });
-            });
-        });
-    }
-
-    openLightbox(imageSrc) {
-        // Create lightbox
-        const lightbox = document.createElement('div');
-        lightbox.className = 'lightbox';
-        lightbox.innerHTML = `
-            <div class="lightbox-backdrop"></div>
-            <div class="lightbox-content">
-                <img src="${imageSrc}" alt="Gallery image">
-                <button class="lightbox-close">&times;</button>
-            </div>
-        `;
-        lightbox.setAttribute('role', 'dialog');
-        lightbox.setAttribute('aria-modal', 'true');
-        
-        // Add styles
-        lightbox.style.cssText = `
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        `;
-        
-        const backdrop = lightbox.querySelector('.lightbox-backdrop');
-        backdrop.style.cssText = `
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-        `;
-        
-        const content = lightbox.querySelector('.lightbox-content');
-        content.style.cssText = `
-            position: relative;
-            max-width: 90vw;
-            max-height: 90vh;
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
-        `;
-        content.setAttribute('role', 'document');
-        
-        const img = lightbox.querySelector('img');
-        img.style.cssText = `
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 12px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        `;
-        
-        const closeBtn = lightbox.querySelector('.lightbox-close');
-        closeBtn.style.cssText = `
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        `;
-        closeBtn.setAttribute('aria-label', 'Close image preview');
-        
-        document.body.appendChild(lightbox);
-        document.body.style.overflow = 'hidden';
-        
-        // Animate in
-        requestAnimationFrame(() => {
-            lightbox.style.opacity = '1';
-            content.style.transform = 'scale(1)';
-        });
-
-        closeBtn.focus();
-        
-        // Close handlers
-        const closeLightbox = () => {
-            lightbox.style.opacity = '0';
-            content.style.transform = 'scale(0.8)';
-            document.body.style.overflow = '';
-            
-            setTimeout(() => {
-                lightbox.remove();
-            }, 300);
-        };
-        
-        closeBtn.addEventListener('click', closeLightbox);
-        backdrop.addEventListener('click', closeLightbox);
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeLightbox();
-        });
-    }
-
-    // Theme detection
-    initThemeDetection() {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-        
-        prefersDark.addEventListener('change', (e) => {
-            // Theme already handled by CSS
-            console.log('Theme changed to:', e.matches ? 'dark' : 'light');
-        });
-    }
-
-    // Parallax effects
-    initParallax() {
-        const parallaxElements = document.querySelectorAll('.photo-tile');
-        
-        window.addEventListener('scroll', () => {
-            if (this.prefersReducedMotion) {
-                parallaxElements.forEach(element => {
-                    element.style.transform = 'none';
-                });
-                return;
-            }
-
-            const scrolled = window.pageYOffset;
-            const parallax = scrolled * 0.3;
-            
-            parallaxElements.forEach((element, index) => {
-                const rate = (index % 3) * 0.1 + 0.1;
-                element.style.transform = `translateY(${parallax * rate}px)`;
-            });
-        });
-    }
-
-    // Utility methods
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    throttle(func, limit) {
-        let inThrottle;
-        return function() {
-            const args = arguments;
-            const context = this;
-            if (!inThrottle) {
-                func.apply(context, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
-            }
-        };
-    }
-}
-
-// Enhanced scroll reveal with intersection observer
-class ScrollReveal {
-    constructor() {
-        this.observer = new IntersectionObserver(
-            this.handleIntersection.bind(this),
-            {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            }
-        );
-        
-        this.init();
-    }
-    
-    init() {
-        const elements = document.querySelectorAll(`
-            .hero-badge,
-            .hero-title,
-            .hero-description,
-            .hero-actions,
-            .stat-card,
-            .section-badge,
-            .section-title,
-            .section-description,
-            .expertise-card,
-            .photo-item,
-            .timeline-item,
-            .contact-card
-        `);
-        
-        elements.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-            this.observer.observe(el);
-        });
-    }
-    
-    handleIntersection(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                this.observer.unobserve(entry.target);
-            }
-        });
-    }
-}
-
-// Reading Progress Indicator
-function initReadingProgress() {
-    const progressBar = document.getElementById('reading-progress-bar');
-    const progressContainer = document.getElementById('reading-progress');
-    const article = document.querySelector('.article-container');
-    
-    if (!progressBar || !article || !progressContainer) {
-        // Hide progress bar if not on blog post
-        if (progressContainer) {
-            progressContainer.style.display = 'none';
-        }
-        return; // Not on a blog post page
-    }
-    
-    // Ensure progress bar is visible on blog posts
-    progressContainer.style.display = 'block';
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
-    function updateProgress() {
-        const articleTop = article.offsetTop;
-        const articleHeight = article.offsetHeight;
-        const windowHeight = window.innerHeight;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        const articleBottom = articleTop + articleHeight;
-        const viewportTop = scrollTop;
-        const viewportBottom = scrollTop + windowHeight;
-        
-        // Calculate how much of the article has been scrolled past
-        let scrolled = 0;
-        if (viewportTop < articleTop) {
-            scrolled = 0;
-        } else if (viewportBottom > articleBottom) {
-            scrolled = 100;
-        } else {
-            scrolled = ((viewportTop - articleTop) / articleHeight) * 100;
-        }
-        
-        const progress = Math.min(100, Math.max(0, scrolled));
-        progressBar.style.width = progress + '%';
-        progressContainer.setAttribute('aria-valuenow', Math.round(progress));
-    }
-    
-    // Throttle scroll events
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                updateProgress();
-                ticking = false;
-            });
-            ticking = true;
-        }
-    }, { passive: true });
-    
-    // Initial calculation
-    updateProgress();
-    
-    // Update on resize
-    window.addEventListener('resize', updateProgress, { passive: true });
-}
-
-// Track Ko-fi support link clicks
-function initKofiTracking() {
-    const kofiLinks = document.querySelectorAll('a[data-cta="kofi"]');
-    
-    kofiLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            // Only track if gtag is available (Google Analytics)
-            if (typeof window.gtag === 'function') {
-                window.gtag('event', 'support_click', {
-                    'event_category': 'Support',
-                    'event_label': 'kofi',
-                    'value': 1
-                });
-            }
-        });
+  // Mobile toggle
+  const toggle = nav.querySelector('.nav__toggle');
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('nav--open', !expanded);
     });
+  }
+
+  // Close mobile menu on link click
+  nav.querySelectorAll('.nav__link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('nav--open');
+    });
+  });
+
+  // Active state: compare current path to link href
+  const currentPath = window.location.pathname;
+  nav.querySelectorAll('.nav__link').forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href) return;
+    const linkPath = new URL(href, window.location.href).pathname;
+    // Exact match, or starts-with for section pages (/blog/ matches /blog/post-slug/)
+    if (
+      currentPath === linkPath ||
+      (linkPath !== '/' && currentPath.startsWith(linkPath))
+    ) {
+      link.classList.add('nav__link--active');
+    }
+  });
 }
 
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new DigitalDiasPortfolio();
-    new ScrollReveal();
-    initReadingProgress();
-    initKofiTracking();
-    
-    // Ensure navigation visibility after everything loads
-    const ensureNavAfterLoad = () => {
-        const nav = document.querySelector('[data-nav]');
-        const navToggle = document.querySelector('[data-nav-toggle]');
-        if (nav && navToggle) {
-            nav.style.setProperty('display', 'block', 'important');
-            nav.style.setProperty('visibility', 'visible', 'important');
-            nav.style.setProperty('opacity', '1', 'important');
-            if (window.innerWidth <= 768) {
-                navToggle.style.setProperty('display', 'flex', 'important');
-                navToggle.style.setProperty('visibility', 'visible', 'important');
-                navToggle.style.setProperty('opacity', '1', 'important');
-            }
-        }
-    };
-    
-    // Add loading state management
-    window.addEventListener('load', () => {
-        document.body.classList.add('loaded');
-        ensureNavAfterLoad();
+/* ─────────────────────────────────────────────
+   Scroll reveal
+   Elements with .reveal get .is-visible when
+   they enter the viewport. CSS handles the
+   actual opacity/transform transition.
+───────────────────────────────────────────── */
+function initScrollReveal() {
+  if (prefersReducedMotion()) {
+    // Show everything immediately
+    document.querySelectorAll('.reveal').forEach(el => {
+      el.classList.add('is-visible');
     });
-    
-    // Ensure visibility when page becomes visible again
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) {
-            ensureNavAfterLoad();
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
         }
-    });
-    
-    // Ensure visibility after a short delay (in case something else is hiding it)
-    setTimeout(ensureNavAfterLoad, 100);
-    setTimeout(ensureNavAfterLoad, 500);
-    setTimeout(ensureNavAfterLoad, 1000);
-    
-    // Performance monitoring
-    if ('performance' in window && 'measure' in performance) {
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const navigation = performance.getEntriesByType('navigation')[0];
-                console.log(`Page load time: ${navigation.loadEventEnd - navigation.loadEventStart}ms`);
-            }, 0);
-        });
-    }
-});
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+  );
 
-// Error handling
-window.addEventListener('error', (e) => {
-    console.error('JavaScript error:', e.error);
-});
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
 
-// Unhandled promise rejections
-window.addEventListener('unhandledrejection', (e) => {
-    console.error('Unhandled promise rejection:', e.reason);
+/* ─────────────────────────────────────────────
+   Smooth scroll for in-page anchors
+   Handles href="#id" links only; leaves
+   cross-page navigation alone.
+───────────────────────────────────────────── */
+function initSmoothScroll() {
+  document.addEventListener('click', e => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    const targetId = link.getAttribute('href').slice(1);
+    if (!targetId) return;
+
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
     e.preventDefault();
-});
-
-// Export for potential module usage
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { DigitalDiasPortfolio, ScrollReveal };
+    target.scrollIntoView({
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  });
 }
+
+/* ─────────────────────────────────────────────
+   Reading progress bar
+   Only active on single blog posts that have
+   .post-content and #reading-progress-bar.
+───────────────────────────────────────────── */
+function initReadingProgress() {
+  const bar = document.getElementById('reading-progress-bar');
+  const article = document.querySelector('.post-content');
+  if (!bar || !article) return;
+
+  let ticking = false;
+
+  const update = () => {
+    const articleTop    = article.getBoundingClientRect().top + window.scrollY;
+    const articleHeight = article.offsetHeight;
+    const scrolled      = window.scrollY;
+    const winHeight     = window.innerHeight;
+
+    const raw      = (scrolled - articleTop) / (articleHeight - winHeight);
+    const progress = Math.min(100, Math.max(0, raw * 100));
+    bar.style.width = progress + '%';
+    ticking = false;
+  };
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+
+  update();
+}
+
+/* ─────────────────────────────────────────────
+   Ko-fi click tracking (Google Analytics)
+───────────────────────────────────────────── */
+function initKofiTracking() {
+  document.querySelectorAll('a[data-cta="kofi"]').forEach(link => {
+    link.addEventListener('click', () => {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'support_click', {
+          event_category: 'Support',
+          event_label: 'kofi',
+          value: 1,
+        });
+      }
+    });
+  });
+}
+
+/* ─────────────────────────────────────────────
+   Boot
+───────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  initPageFade();
+  initNavigation();
+  initScrollReveal();
+  initSmoothScroll();
+  initReadingProgress();
+  initKofiTracking();
+});

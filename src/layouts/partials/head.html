@@ -4,7 +4,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-49LY6Q6XNV');
 </script>
 
@@ -23,7 +22,7 @@
 <meta name="description" content="{{ $description }}">
 <meta name="author" content="{{ .Site.Params.author }}">
 <link rel="canonical" href="{{ .Permalink }}">
-<meta name="theme-color" content="#121820">
+<meta name="theme-color" content="#f7f4ef">
 <meta name="geo.region" content="NO-03">
 <meta name="geo.placename" content="Frogner, Norway">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://giscus.app; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com https://giscus.app; script-src-elem 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com https://giscus.app; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://api.github.com https://giscus.app ws://localhost:* ws://127.0.0.1:*; frame-src 'self' https://giscus.app;">
@@ -84,10 +83,10 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
 
-<!-- Preconnect for performance -->
+<!-- Fonts: Fraunces (display) + Source Serif 4 (body) + JetBrains Mono (code) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..900;1,8..60,300..900&family=JetBrains+Mono:wght@400;500;600&display=swap">
 
 <!-- Main Stylesheet -->
 {{- $css := resources.Get "css/styles.css" -}}
@@ -95,8 +94,6 @@
     {{- $css = $css | resources.Minify | resources.Fingerprint -}}
     <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 {{- end -}}
-
-<!-- Mermaid support removed: diagram rendering disabled -->
 
 <!-- RSS Feed -->
 {{ with .OutputFormats.Get "rss" -}}
@@ -107,167 +104,90 @@
     {{ printf `<link rel="alternate" type="application/json" href="%s" title="%s (JSON Feed)" />` .Permalink $.Site.Title | safeHTML }}
 {{ end -}}
 
-<!-- Structured Data (JSON-LD) -->
+<!-- Structured Data: WebSite (always present) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  {{- if .IsHome -}}
   "@type": "WebSite",
-  "name": "{{ .Site.Title }}",
+  "name": "digitaldias.com",
   "url": "{{ .Site.BaseURL }}",
   "description": "{{ .Site.Params.description }}",
-  "inLanguage": "en-US",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "{{ .Site.BaseURL }}search/?q={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
-  },
   "author": {
     "@type": "Person",
-    "name": "{{ .Site.Params.author }}",
-    "email": "{{ .Site.Params.email }}",
-    "url": "{{ .Site.BaseURL }}"{{- if or .Site.Params.social .Site.Params.support.kofi -}},
-    "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
-    {{- end -}}
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "{{ .Site.Params.author }}",
-    "url": "{{ .Site.BaseURL }}",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "{{ printf "%simages/dog-hero.jpg" .Site.BaseURL }}",
-      "width": 1200,
-      "height": 630
-    }
-  }
-  {{- else if eq .Section "blog" -}}
-  "@type": "BlogPosting",
-  "headline": "{{ .Title }}",
-  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-  {{- if .Lastmod -}}
-  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
-  {{- else -}}
-  "dateModified": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-  {{- end -}}
-  "author": {
-    "@type": "Person",
-    "name": "{{ .Site.Params.author }}",
-    "email": "{{ .Site.Params.email }}",
-    "url": "{{ .Site.BaseURL }}"{{- if or .Site.Params.social .Site.Params.support.kofi -}},
-    "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
-    {{- end -}}
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "{{ .Site.Params.author }}",
-    "url": "{{ .Site.BaseURL }}",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "{{ printf "%simages/dog-hero.jpg" .Site.BaseURL }}",
-      "width": 1200,
-      "height": 630
-    }{{- if or .Site.Params.social .Site.Params.support.kofi -}},
-    "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
-    {{- end -}}
-  },
-  "description": "{{ .Description | default .Site.Params.description }}",
-  "inLanguage": "en-US",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ .Permalink }}"
-  },
-  {{- if .Params.featuredImage -}}
-  "image": {
-    "@type": "ImageObject",
-    "url": "{{ .Params.featuredImage | absURL }}",
-    "width": 1920,
-    "height": 1080{{- if .Params.featuredAlt -}},
-    "caption": "{{ .Params.featuredAlt }}"{{- end -}}
-  },
-  {{- end -}}
-  {{- if .Params.categories -}}
-  "articleSection": "{{ index .Params.categories 0 }}",
-  {{- end -}}
-  {{- if .Params.readTime -}}
-  "timeRequired": "PT{{ replace (replace .Params.readTime " minute read" "M") " minute reads" "M" }}",
-  {{- end -}}
-  {{- $wordCount := len (split (.Content | plainify) " ") -}}
-  {{- if gt $wordCount 0 -}}
-  "wordCount": {{ $wordCount }},
-  {{- end -}}
-  "keywords": [{{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}"{{ end }}]
-  {{- else -}}
-  "@type": "WebPage",
-  "name": "{{ .Title }}",
-  "url": "{{ .Permalink }}",
-  "description": "{{ .Description | default .Site.Params.description }}"
-  {{- end -}}
-}
-</script>
-
-{{- if .IsHome -}}
-<!-- Organization Schema for Rich Results -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "{{ .Site.Params.author }}",
-  "url": "{{ .Site.BaseURL }}",
-  "logo": {
-    "@type": "ImageObject",
-    "url": "{{ printf "%simages/dog-hero.jpg" .Site.BaseURL }}",
-    "width": 1200,
-    "height": 630
-  },
-  "founder": {
-    "@type": "Person",
-    "name": "{{ .Site.Params.author }}",
-    "email": "{{ .Site.Params.email }}",
-    "url": "{{ .Site.BaseURL }}"{{- if or .Site.Params.social .Site.Params.support.kofi -}},
-    "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
-    {{- end -}}
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Frogner",
-    "addressRegion": "Lillestrøm",
-    "addressCountry": "NO"
+    "name": "Pedro Dias"
   }
 }
 </script>
 
-<!-- Person Schema for Rich Results -->
+<!-- Structured Data: Person (always present) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Person",
-  "name": "{{ .Site.Params.author }}",
+  "name": "Pedro Dias",
+  "jobTitle": "Chief AI Officer",
   "url": "{{ .Site.BaseURL }}",
-  "email": "{{ .Site.Params.email }}",
-  "jobTitle": "Software Architect",
   "worksFor": {
     "@type": "Organization",
     "name": "Tradesolution AS",
     "url": "https://www.tradesolution.no"
   },
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Frogner",
-    "addressRegion": "Lillestrøm",
-    "addressCountry": "NO"
-  }{{- if or .Site.Params.social .Site.Params.support.kofi -}},
-  "sameAs": [{{- if .Site.Params.social.linkedin -}}"{{ .Site.Params.social.linkedin }}"{{- end -}}{{- if and .Site.Params.social.linkedin (or .Site.Params.social.github .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.github -}}"{{ .Site.Params.social.github }}"{{- end -}}{{- if and .Site.Params.social.github (or .Site.Params.social.youtube_digitaldias .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.youtube_digitaldias -}}"{{ .Site.Params.social.youtube_digitaldias }}"{{- end -}}{{- if and .Site.Params.social.youtube_digitaldias (or .Site.Params.social.flickr .Site.Params.support.kofi) -}}, {{ end -}}{{- if .Site.Params.social.flickr -}}"{{ .Site.Params.social.flickr }}"{{- end -}}{{- if and .Site.Params.social.flickr .Site.Params.support.kofi -}}, {{ end -}}{{- if .Site.Params.support.kofi -}}"{{ .Site.Params.support.kofi }}"{{- end -}}]
+  "sameAs": [
+    "https://linkedin.com/in/digitaldias",
+    "https://github.com/digitaldias",
+    "https://flickr.com/photos/digitaldias"
+  ]
+}
+</script>
+
+{{- if eq .Section "blog" -}}
+<!-- Structured Data: Article (blog posts) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ .Title | jsonify }},
+  "datePublished": "{{ .Date.Format "2006-01-02" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+  "author": {
+    "@type": "Person",
+    "name": "Pedro Dias",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "digitaldias.com",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "description": {{ (.Description | default .Site.Params.description) | jsonify }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  }
+  {{- if .Params.featuredImage -}},
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ .Params.featuredImage | absURL }}",
+    "width": 1920,
+    "height": 1080
+    {{- if .Params.featuredAlt -}},
+    "caption": {{ .Params.featuredAlt | jsonify }}
+    {{- end -}}
+  }
+  {{- end -}}
+  {{- $wordCount := len (split (.Content | plainify) " ") -}}
+  {{- if gt $wordCount 0 -}},
+  "wordCount": {{ $wordCount }}
+  {{- end -}}
+  {{- if .Params.tags -}},
+  "keywords": [{{ range $i, $t := .Params.tags }}{{ if $i }}, {{ end }}{{ $t | jsonify }}{{ end }}]
   {{- end -}}
 }
 </script>
 {{- end -}}
 
 {{- if not .IsHome -}}
-<!-- Breadcrumb Schema -->
+<!-- Structured Data: BreadcrumbList -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -294,13 +214,13 @@
     {
       "@type": "ListItem",
       "position": 4,
-      "name": "{{ .Title }}",
+      "name": {{ .Title | jsonify }},
       "item": "{{ .Permalink }}"
     }{{- else -}},
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "{{ .Title }}",
+      "name": {{ .Title | jsonify }},
       "item": "{{ .Permalink }}"
     }{{- end -}}
     {{- else if eq .Section "about" -}},
