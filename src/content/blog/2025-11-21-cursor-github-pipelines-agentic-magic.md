@@ -14,21 +14,21 @@ imageCredit: "© Pedro Dias"
 ---
 
 {{< callout type="success" title="TL;DR" >}}
-Cursor AI autonomously debugged a GitHub Actions pipeline through five build cycles, reducing what would have been a day's work to 30 minutes. By connecting Cursor to GitHub via MCP and giving it permission to iterate, it successfully migrated an AvaloniaUI app's CI/CD from Azure DevOps to GitHub Actions without human intervention. This demonstrates agentic development's potential for infrastructure work—delegating tedious iteration cycles while developers focus on architecture and strategy.
+Cursor AI autonomously debugged a GitHub Actions pipeline through five build cycles, reducing what would have been a day's work to 30 minutes. By connecting Cursor to GitHub via MCP and giving it permission to iterate, it successfully migrated an AvaloniaUI app's CI/CD from Azure DevOps to GitHub Actions without human intervention. This demonstrates agentic development's potential for infrastructure work; delegating tedious iteration cycles while developers focus on architecture and strategy.
 {{< /callout >}}
 
 ## The Setup
 
 At Tradesolution AS, we're evaluating a migration from Azure DevOps to GitHub Actions. Our test case: an AvaloniaUI desktop app requiring multi-platform builds (Windows, macOS, Linux).
 
-In Azure DevOps, we had months of accumulated YAML tweaks—the "don't touch it, it's working" kind. Starting fresh in GitHub Actions meant rewriting all of that.
+In Azure DevOps, we had months of accumulated YAML tweaks. The "don't touch it, it's working" kind. Starting fresh in GitHub Actions meant rewriting all of that.
 
 This experiment is part of our ongoing scrutiny of Cursor. We need to justify its cost and subscription model. Can it deliver enough value to offset the subscription? This pipeline migration became a real-world test case.
 
 Or so I thought.
 
 {{< callout type="info" title="Key Insight" >}}
-This isn't about AI replacing developers. It's about delegating tedious iteration—the "try this, wait 6 minutes, try again" cycles—while you focus on architecture and strategy.
+This isn't about AI replacing developers. It's about delegating tedious iteration ("try this, wait 6 minutes, try again") while you focus on architecture and strategy.
 {{< /callout >}}
 
 ## What Happened
@@ -49,33 +49,33 @@ Cursor adjusted. Pushed. Waited 6 minutes.
 
 It kept going. Five iterations. Each cycle: wait 6 minutes → parse errors → make targeted fixes → commit → monitor.
 
-{{< img src="/images/blog/2025-11-21-cursor-github-pipelines/successful-build.png" alt="GitHub Actions dashboard showing successful multi-platform build with green checkmarks across Windows, macOS, and Linux platforms" caption="After 30 minutes of autonomous iteration: successful build across all platforms" width="1000" class="article-image featured" >}}
+{{< img src="/images/blog/2025-11-21-cursor-github-pipelines/successful-build.jpg" alt="GitHub Actions dashboard showing successful multi-platform build with green checkmarks across Windows, macOS, and Linux platforms" caption="After 30 minutes of autonomous iteration: successful build across all platforms" width="1000" class="article-image featured" >}}
 
-> "Watching AI debug a pipeline through five 6-minute build cycles without human input wasn't just impressive—it was a glimpse of how infrastructure work fundamentally changes."
+> "Watching AI debug a pipeline through five 6-minute build cycles without human input wasn't impressive so much as clarifying: infrastructure work has fundamentally changed."
 
 **After 30 minutes: ✅ Build succeeded. All platforms. All checks passed.**
 
 ## Why This Matters
 
-**Time compression:** Those 30 minutes would have been hours—maybe a full day—of manual debugging. Cursor compressed a day's work into half an hour without frustration or second-guessing.
+**Time compression:** Those 30 minutes would have been hours, maybe a full day, of manual debugging. Cursor compressed a day's work into half an hour without frustration or second-guessing.
 
 **Expertise democratization:** Deep GitHub Actions knowledge becomes less critical. Define the objective; Cursor handles implementation through iteration.
 
-**Learning by observation:** I learned from watching Cursor work. The final pipeline YAML is cleaner and more maintainable than what I would have written. It's like pair programming with infinite patience and instant access to best practices.
+**Learning by observation:** I learned from watching Cursor work. The final pipeline YAML is cleaner and more maintainable than what I would have written. It's like pair programming with infinite patience and instant access to proven approaches.
 
 {{< callout type="success" title="Practical Takeaway" >}}
-Don't schedule weeks of specialist time for pipeline migrations. Give Cursor clear objectives, MCP access, and permission to iterate. Monitor the first migration closely—subsequent ones get faster.
+Don't schedule weeks of specialist time for pipeline migrations. Give Cursor clear objectives, MCP access, and permission to iterate. Monitor the first migration closely; subsequent ones get faster.
 {{< /callout >}}
 
 ## Strategic Impact
 
 This changes our migration approach. Instead of a large, risky project requiring specialist knowledge, we're treating it as a series of smaller migrations with AI-assisted iteration.
 
-Each migration provides training data. Cursor accumulates institutional knowledge, improving with each repository. This reduces the "bus factor"—knowledge encoded in workflows rather than concentrated in individual engineers.
+Each migration provides training data. Cursor accumulates institutional knowledge, improving with each repository. This reduces the "bus factor": knowledge encoded in workflows rather than concentrated in individual engineers.
 
 Three more repositories are scheduled for migration next quarter. With Cursor + GitHub MCP, this is feasible without dedicated pipeline specialist time.
 
-**The bottom line:** Agentic development isn't just a productivity boost—it's a shift in how we approach infrastructure work. Computers now handle iterative debugging that previously consumed engineering time, enabling focus on architecture, UX, and strategic choices.
+**The bottom line:** Agentic development isn't a productivity boost so much as a shift in how we approach infrastructure work. Computers now handle iterative debugging that previously consumed engineering time, enabling focus on architecture, UX, and strategic choices.
 
 **This amplifies developers rather than replacing them.**
 
@@ -83,17 +83,33 @@ Three more repositories are scheduled for migration next quarter. With Cursor + 
 
 Cursor's $20/month subscription isn't trivial. It quickly runs out and then starts eating away on-demand usage. This experiment demonstrates tangible ROI: what would have been a day's work compressed into 30 minutes. For our team, that time savings compounds across multiple migrations and ongoing maintenance.
 
-We're tracking these metrics: time saved per task, reduction in specialist dependencies, and quality of generated code. Early results suggest the subscription pays for itself when used strategically—not as a crutch, but as a force multiplier for complex, iterative work.
+We're tracking these metrics: time saved per task, reduction in specialist dependencies, and quality of generated code. Early results suggest the subscription pays for itself when used strategically, not as a crutch but as a force multiplier for complex, iterative work.
 
 The verdict is still out, but autonomous pipeline debugging is a strong data point in Cursor's favor.
 
 ---
 
-## Try It Yourself
+## Try it yourself
 
 Start with a non-critical repository. Give Cursor explicit permission to push changes. Watch the first few iterations closely. Document what works.
 
-If you've experimented, I'd value hearing your results—especially failure modes and edge cases. Connect on [LinkedIn](https://linkedin.com/in/digitaldias) or [GitHub](https://github.com/digitaldias).
+If you've experimented, I'd value hearing your results, especially failure modes and edge cases. Connect on [LinkedIn](https://linkedin.com/in/digitaldias) or [GitHub](https://github.com/digitaldias).
+
+## Common questions
+
+**Is Cursor just GitHub Copilot with a different name?**
+No. Copilot completes code inline. Cursor's agent reads your codebase, plans multi-step tasks, runs commands, and iterates based on results. The pipeline debugging here would be impossible with Copilot; it requires reading build logs, making targeted changes, pushing, and observing the next failure.
+
+**Does this work for any CI/CD platform or just GitHub Actions?**
+The same pattern applies to Azure DevOps pipelines, CircleCI, or any system that produces readable error output. What matters is MCP access to the platform so the agent can push changes and read results without you as an intermediary.
+
+**What if the agent makes a destructive change mid-iteration?**
+That's the right concern. For this experiment, the repository was non-critical and the worst outcome was a broken build, not lost data. For anything near production, limit permissions: read access to logs, write access only to a feature branch, no merge permissions.
+
+**$20/month seems cheap. What's the real cost?**
+Cursor's base plan runs out quickly on heavy agentic use. On-demand usage kicks in after that. Budget for $40–80/month per active developer if they use it for complex, iterative tasks rather than autocomplete.
+
+---
 
 ## References
 

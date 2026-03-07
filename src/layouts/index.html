@@ -55,18 +55,16 @@
         <h2 class="paper-sidebar__head">Positions held</h2>
         <div class="paper-sidebar__rule"></div>
         <ol class="paper-opinions">
-          <li>Meetings that could be emails outnumber emails that could have been meetings, 10 to 1.</li>
-          <li>You don't need a framework. You need to think clearly.</li>
-          <li>Speaker placement matters more than the speakers.</li>
-          <li>The best code is the code you didn't write.</li>
-          <li>AI won't take your job. Someone using AI well might.</li>
+          {{- range .Site.Params.positions.items }}
+          <li>{{ . }}</li>
+          {{- end }}
         </ol>
       </div>
 
       {{- with .Site.Params.photo }}
       <div class="paper-sidebar__section paper-sidebar__portrait">
         <img src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
-        <p class="paper-sidebar__caption">Pedro Dias<br>Chief AI Officer, Tradesolution AS</p>
+        <p class="paper-sidebar__caption">Pedro Dias<br>Acting Chief AI Officer, Tradesolution AS</p>
       </div>
       {{- end }}
     </aside>

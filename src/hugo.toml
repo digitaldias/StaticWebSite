@@ -54,7 +54,7 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
     kofi = 'https://ko-fi.com/digitaldias'
   
   [params.currently]
-    building   = "An internal MCP server for procurement data"
+    building   = "An AI strategy framework and 1:1 training program for the company"
     listening  = "Dire Straits — Brothers in Arms (1982 pressing)"
     reading    = "The Design of Everyday Things — Don Norman"
     annoyed_by = "Meetings about meetings"
@@ -62,6 +62,16 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
   [params.photo]
     src = "/images/pedro.jpg"
     alt = "Pedro Dias"
+
+  # Positions held — update whenever an opinion sharpens or a new one forms
+  [params.positions]
+    items = [
+      "Meetings that could be emails outnumber emails that could have been meetings, 10 to 1.",
+      "You don't need a framework. You need to think clearly.",
+      "Speaker placement matters more than the speakers.",
+      "The best code is the code you didn't write.",
+      "AI won't take your job. Someone using AI well might.",
+    ]
 
   # Giscus comments configuration
   [params.giscus]

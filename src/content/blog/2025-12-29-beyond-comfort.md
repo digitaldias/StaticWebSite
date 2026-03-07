@@ -27,13 +27,13 @@ Three projects show the shift. Foosh, a PWA foosball tracker with a React client
 
 Foosh needed to feel like a game, not a spreadsheet. I asked GPT-5 for a PWA with a React client built with Vite, a Node.js and TypeScript server, MongoDB, Socket.IO, and Microsoft Entra ID via MSAL. It had to run in Docker and deploy to Azure Container Apps. The first prompt listed the features: lobby to create or join matches, a mobile scoring page that lays flat on the table with on-screen score buttons, a live watch page with a timeline, Elo leaderboards, and the three walls for bragging rights and infamy. The agent shipped a running build in minutes. I did not read the code; I opened the scoring page on my phone, started a lobby on my laptop, and watched events sync in real time.
 
-I iterated by describing what I saw instead of reading source. When the watch page felt too quiet, I asked for sound cues on the scorer device for goals, round wins, stuffings, sudden death, and undo. When the walls were missing, I asked for the Wall of Shame (10-0 round), the Wall of Utter Disgrace (20-0 match), and the Wall of Øyvind (3 stuffings in a row) with live updates. When the lobby flow felt slow, I asked for a darker, gamey palette and a quicker path from QR join to score entry. Every change came back as a small diff with a short rationale; my loop was to play a round, note gaps, and send another prompt—like ordering refills from a very fast barista.
+I iterated by describing what I saw instead of reading source. When the watch page felt too quiet, I asked for sound cues on the scorer device for goals, round wins, stuffings, sudden death, and undo. When the walls were missing, I asked for the Wall of Shame (10-0 round), the Wall of Utter Disgrace (20-0 match), and the Wall of Øyvind (3 stuffings in a row) with live updates. When the lobby flow felt slow, I asked for a darker, gamey palette and a quicker path from QR join to score entry. Every change came back as a small diff with a short rationale; my loop was to play a round, note gaps, and send another prompt, like ordering refills from a very fast barista.
 
 Architecture stayed agent-driven. I asked Claude to refit Foosh with CQRS and Event Sourcing. Commands and events gained shared TypeScript contracts so the client and server could not drift. The agent projected event streams into leaderboards, walls, and timelines, and wired Socket.IO to broadcast updates before the trash talk cooled. When the scoring page and watch page fell out of sync, I described the mismatch and the agent reconciled the contracts and shipped a new build.
 
 Prompt discipline mattered more than syntax. I kept a living prompt that named the domain nouns (lobby, round, timeline, wall), the on-screen score buttons for tabletop mode, the rule that sound plays only on the scorer, and the ban on external calls beyond MongoDB and Entra ID. Every time I asked for an addition, I pasted the same contract first; it felt like a small ritual to keep the genie aligned. Drift dropped to near zero. When the agent proposed flashy UI I did not ask for, I sent it back with the same contract and it complied. The loop felt like managing a junior dev who moves fast as long as the spec stays visible.
 
-<img src="/images/blog/2025-12-29-beyond-comfort/inline-01.jpg" alt="Diagram showing the foosball tracker moving from C# to JS to TypeScript" loading="lazy" decoding="async" />
+{{< img src="/images/blog/2025-12-29-beyond-comfort/inline-01.jpg" alt="Diagram showing the foosball tracker moving from C# to JS to TypeScript" caption="Foosh architecture: from JavaScript prototype to TypeScript contracts" >}}
 
 ## Woosh audio manager in Qt and C++: taming waveforms
 
@@ -43,9 +43,9 @@ I asked the agent to add a responsive UI that never blocks. It used signals and 
 
 The pipeline now scans a raw folder, renders waveforms, normalizes, compresses, cuts, applies fades, and exports to the target game sound folder without touching the originals. The raw folder is the pantry; the game folder is the plated dish. The agent cached intermediate buffers so tweaks rerun in milliseconds. A file watcher reruns the pipeline when new sounds land in the raw folder, turning the app into a quiet assistant during match days. It behaves like a native tool because it is one, and I did not type the C++.
 
-I trusted the output because I controlled the inputs. I pulled a batch of sounds from Pixabay after the agent produced a table of search prompts for each needed clip. I downloaded, dropped them into the raw folder, and let Woosh process them. I listened, noted what felt off, and asked the agent for tweaks. That loop—prompt, download, process, listen—felt like a tasting menu for sound effects.
+I trusted the output because I controlled the inputs. I pulled a batch of sounds from Pixabay after the agent produced a table of search prompts for each needed clip. I downloaded, dropped them into the raw folder, and let Woosh process them. I listened, noted what felt off, and asked the agent for tweaks. That loop (prompt, download, process, listen) felt like a tasting menu for sound effects.
 
-<img src="/images/blog/2025-12-29-beyond-comfort/inline-02.jpg" alt="Qt-based audio manager showing waveform trimming and compression" loading="lazy" decoding="async" />
+{{< img src="/images/blog/2025-12-29-beyond-comfort/inline-02.jpg" alt="Qt-based audio manager showing waveform trimming and compression" caption="Woosh: waveform rendering and DSP pipeline in Qt/C++" >}}
 
 ## DirectX and assembler: animating fractals without waste
 
@@ -55,9 +55,9 @@ The agent split the work in two. First, let the GPU paint the fractal and the st
 
 Palettes are pre-baked color ramps. Switching them is a buffer swap, not a rebuild. Zoom uses easing so moves feel smooth, pan follows the mouse, and click-to-zoom lands where you expect.
 
-Fullscreen was the fussy part. The agent handled the DirectX setup, the shaders, the assembly kernel, and the resize safety. My job was to run it, say “it crashed,” and paste logs. It even set up log collection and later pulled the log file itself when I said so. I did not know why it failed; the agent did—and fixed it. The smoke kept rising, the frames stayed smooth, and I stayed out of the weeds.
+Fullscreen was the fussy part. The agent handled the DirectX setup, the shaders, the assembly kernel, and the resize safety. My job was to run it, say “it crashed,” and paste logs. It even set up log collection and later pulled the log file itself when I said so. I did not know why it failed. The agent did, and fixed it. The smoke kept rising, the frames stayed smooth, and I stayed out of the weeds.
 
-<img src="/images/blog/2025-12-29-beyond-comfort/inline-03.jpg" alt="DirectX assembler Mandelbrot and Julia animation controls" loading="lazy" decoding="async" />
+{{< img src="/images/blog/2025-12-29-beyond-comfort/inline-03.jpg" alt="DirectX assembler Mandelbrot and Julia animation controls" caption="Mandelbrot and Julia animation: assembler inner loop inside a DirectX 11 pipeline" >}}
 
 ## How I prompt and review
 
@@ -73,7 +73,7 @@ Fullscreen was the fussy part. The agent handled the DirectX setup, the shaders,
 - The agents respected contracts when I repeated them. They drifted when I got lazy.
 - They produced build scripts when I asked, then sometimes ignored them until I reminded them to use their own instructions.
 - I never opened the code; the agents shaped the interfaces and I stayed in the loop through prompts, runs, and logs.
-- I asked them to optimize and to prune orphaned code and files; they claimed to clean up, but the file sizes stayed scary—some well past 1,000 lines.
+- I asked them to optimize and to prune orphaned code and files; they claimed to clean up, but the file sizes stayed scary, some well past 1,000 lines.
 - They failed loudly when they lacked metrics. As soon as I supplied numbers, they optimized toward them with clarity.
 - I cannot tell if it was lean or spaghetti; I never opened the files to find out.
 
@@ -92,7 +92,7 @@ Fullscreen was the fussy part. The agent handled the DirectX setup, the shaders,
 - Keep the edges strict. DOM, audio IO, and GPU calls live at the borders so the core stays testable.
 - Ask for tests up front: property checks for scoring, golden files for audio, frame-time assertions for graphics.
 - Instrument before you beg for speed. Numbers beat vibes.
-- Keep loops short. Tiny prompts, quick runs, small binaries—espresso shots, not carafes.
+- Keep loops short. Tiny prompts, quick runs, small binaries; espresso shots, not carafes.
 - Reset chats often. Long prompts get stale; start a new session after each task to keep the agent sharp across VSCode, Cursor, and Visual Studio 2026.
 
 ## Where to go next
@@ -103,7 +103,7 @@ These experiments handed me a new role: I ask, the agents build, I sanity-check.
 - Woosh: add batch presets, level targets per venue, and export profiles so friends can process libraries without thinking about compressors; lock the build so dependencies cannot drift.
 - Fractals: wrap the assembler core behind a clean DirectX interface, script animations from TypeScript, and keep a benchmark suite to catch slowdowns.
 - Cross-cutting: one living checklist for prompts, tests, and no-go rules before picking a language.
-- New runs: start in a clean folder, seed a `.github` or `.cursor` with the commands and rules you know you will need, then brief the agent with the full project shape—architecture, stack, tests, and the “your terminal is Git Bash on Windows” type facts. A prepped environment makes the first prompts land like you planned it.
+- New runs: start in a clean folder, seed a `.github` or `.cursor` with the commands and rules you know you will need, then brief the agent with the full project shape: architecture, stack, tests, and the “your terminal is Git Bash on Windows” type facts. A prepped environment makes the first prompts land like you planned it.
 
 Cadence still matters. Weekly micro-builds keep skills warm; each ends with a one-page note on what the agent nailed, where it drifted, and which constraints helped. The notes become a map for the next ask.
 
@@ -120,7 +120,23 @@ And when a task is done, I start a fresh chat. Long sessions go stale; new sessi
 - Keep secrets out of prompts and avoid pasting production data; treat agents like contractors who see only what they need.
 - Run the agent output locally and offline first; only connect to external services once it passes local tests.
 
-Enjoy the rest of your Christmas break, and have a happy new year.
+The experiments are documented. The code runs. The next prompt is already forming.
+
+## Common questions
+
+**Do I need to understand the languages the agent writes?**
+Not to get a working build. But you need enough to review the architecture, spot security issues, and decide when the agent is going in the wrong direction. "I can't read this code" is a risk you own.
+
+**What happens when the agent drifts off-spec?**
+It drifts when the constraints aren't visible. Pasting the same domain contract at the top of each prompt cuts drift significantly. When the agent proposes something you didn't ask for, send it back with the original spec.
+
+**Can I actually trust AI-generated C++ or assembler?**
+For internal tools where you control the inputs and outputs: yes, with review. For anything that handles untrusted data or ships to customers: no. The Woosh audio pipeline processes files from a known folder on a local machine. That's very different from a production web service.
+
+**Which AI worked better for which task?**
+GPT-5 was faster for the initial Foosh scaffolding and the fractal renderer. Claude Opus produced cleaner TypeScript refactors and was better at respecting architectural constraints. Sonnet handled refinements well at lower cost. None of them can replace your judgment on what to build.
+
+---
 
 ## References
 

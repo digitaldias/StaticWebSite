@@ -29,7 +29,7 @@ If you've used MediatR in a real codebase, you've done this dance hundreds of ti
 
 F12 ("Go to Definition") follows the type system. When you press it on `new GetOrderSummaryQuery()`, Visual Studio sees a class and jumps to where that class is defined. Perfectly logical. Completely useless for your actual goal.
 
-The problem isn't MediatR — it's any pattern where the connection between a type and its consumer is wired up at runtime rather than in code. The Mediator pattern, domain events, custom command buses: none of them create a compile-time reference from the type to the class that handles it. Your controller dispatches a message. Something, somewhere, picks it up. F12 has no way to follow that.
+The problem isn't MediatR; it's any pattern where the connection between a type and its consumer is wired up at runtime rather than in code. The Mediator pattern, domain events, custom command buses: none of them create a compile-time reference from the type to the class that handles it. Your controller dispatches a message. Something, somewhere, picks it up. F12 has no way to follow that.
 
 So you search. Every time. Forever.
 
@@ -67,7 +67,7 @@ public class CreateInvoiceCommandHandler : IRequestHandler<CreateInvoiceCommand,
 }
 ```
 
-If there's only one consumer, you jump straight to it. If there are multiple — a MediatR pipeline behavior, a second handler, an event subscriber in a different module — you get a list to pick from.
+If there's only one consumer, you jump straight to it. If there are multiple (a MediatR pipeline behavior, a second handler, an event subscriber in a different module) you get a list to pick from.
 
 It works the same way for domain events, custom command dispatchers, or any other type your codebase passes around at runtime. If a method somewhere accepts it as a parameter, Navigate to Handler finds it.
 
@@ -91,7 +91,7 @@ Every unnecessary context switch has a cost. You lose your train of thought. You
 
 I got tired of searching.
 
-That's really it. I kept seeing the same pattern: developer presses F12 on a request type, ends up somewhere useless, sighs, opens search. I did it myself dozens of times a day — in MediatR codebases, in projects with custom event buses, in legacy systems with hand-rolled command dispatchers.
+That's really it. I kept seeing the same pattern: developer presses F12 on a request type, ends up somewhere useless, sighs, opens search. I did it myself dozens of times a day, in MediatR codebases, in projects with custom event buses, in legacy systems with hand-rolled command dispatchers.
 
 It seemed like the kind of problem already solved. When I looked, it wasn't, at least not in a form that felt natural inside Visual Studio's existing navigation model.
 
@@ -111,7 +111,7 @@ Not yet. Rider has its own extension model, which would be a separate project.
 You get a pick list in a tool window rather than a direct jump. Each result shows the class name, method name, and source file so you can choose the right one.
 
 **Does it only work with MediatR?**
-No. The extension has no MediatR-specific logic. It works on any non-built-in type: place your cursor on a class or interface, and it finds every public or protected method in your solution that accepts that type as a parameter. Roll your own mediator, event bus, command dispatcher — it finds the consumers.
+No. The extension has no MediatR-specific logic. It works on any non-built-in type: place your cursor on a class or interface, and it finds every public or protected method in your solution that accepts that type as a parameter. Roll your own mediator, event bus, command dispatcher; it finds the consumers.
 
 ---
 
@@ -127,4 +127,4 @@ If it saves you time, let me know; always good to hear it's useful for someone e
 
 ---
 
-*Pedro Dias is Chief AI Officer at Tradesolution AS and writes about .NET, architecture, and the tools that make development less painful. More at [digitaldias.com](https://digitaldias.com).*
+*Pedro Dias is Acting Chief AI Officer at Tradesolution AS and writes about .NET, architecture, and the tools that make development less painful. More at [digitaldias.com](https://digitaldias.com).*
