@@ -1,88 +1,97 @@
 {{- define "main" -}}
+<div class="paper-layout">
 
-{{- /* ── Masthead ── */}}
-<section class="masthead">
-  <div class="container">
-    <div class="masthead__inner">
-      <p class="masthead__kicker">digitaldias.com</p>
-      <h1 class="masthead__name display-title">Pedro Dias</h1>
-      <p class="masthead__tagline">Norwegian pragmatism. Portuguese stubbornness. Too much code.</p>
-      {{- $latest := first 1 (where .Site.RegularPages "Section" "blog") -}}
-      {{- range $latest }}
-      <div class="masthead__latest">
-        <span class="meta">Latest &mdash; </span><a href="{{ .RelPermalink }}">{{ .Title }}</a>
+  {{- /* ── Nameplate ── */}}
+  <header class="paper-nameplate">
+    <div class="paper-nameplate__meta">
+      <span>Vol. {{ now.Year }}</span>
+      <span class="paper-nameplate__location">59°55′N · 10°45′E · Oslo, Norway</span>
+      <span>{{ now.Format "Monday, 2 January 2006" }}</span>
+    </div>
+    <div class="paper-nameplate__rule paper-nameplate__rule--thick"></div>
+    <h1 class="paper-nameplate__title">The Digital Dias</h1>
+    <div class="paper-nameplate__rule paper-nameplate__rule--thin"></div>
+    <p class="paper-nameplate__motto">Norwegian pragmatism · Portuguese stubbornness · Too much code</p>
+    <div class="paper-nameplate__rule paper-nameplate__rule--thin"></div>
+  </header>
+
+  {{- /* ── Front page ── */}}
+  <div class="paper-front">
+
+    {{- /* Lead story */}}
+    {{- $post := index (where .Site.RegularPages "Section" "blog") 0 -}}
+    {{ with $post }}
+    <article class="paper-lead">
+      <div class="paper-lead__kicker">{{ with .Params.categories }}{{ index . 0 }}{{ end }}</div>
+      <h2 class="paper-lead__headline">{{ .Title }}</h2>
+      <div class="paper-lead__byline">By Pedro Dias <span class="paper-lead__byline-sep">·</span> <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ with .Params.readTime }} <span class="paper-lead__byline-sep">·</span> {{ . }}{{ end }}</div>
+      {{ with .Params.featuredImage }}
+      <div class="paper-lead__image">
+        <a href="{{ $post.RelPermalink }}"><img src="{{ . }}" alt="{{ $post.Params.featuredAlt }}" loading="eager"></a>
+        {{ with $post.Params.featuredAlt }}<p class="paper-lead__cutline">{{ . }}</p>{{ end }}
+      </div>
+      {{ end }}
+      <p class="paper-lead__deck">{{ .Params.excerpt }}</p>
+      <p class="paper-lead__readmore"><a href="{{ .RelPermalink }}">Continue reading →</a></p>
+    </article>
+    {{ end }}
+
+    {{- /* Right sidebar */}}
+    <aside class="paper-sidebar">
+      {{- with .Site.Params.currently }}
+      <div class="paper-sidebar__section">
+        <h2 class="paper-sidebar__head">Ship's log</h2>
+        <div class="paper-sidebar__rule"></div>
+        <dl class="paper-log">
+          {{ with .building }}<dt>Building</dt><dd>{{ . }}</dd>{{ end }}
+          {{ with .listening }}<dt>Listening</dt><dd>{{ . }}</dd>{{ end }}
+          {{ with .reading }}<dt>Reading</dt><dd>{{ . }}</dd>{{ end }}
+          {{ with .annoyed_by }}<dt>Annoyed by</dt><dd>{{ . }}</dd>{{ end }}
+        </dl>
       </div>
       {{- end }}
-    </div>
-  </div>
-</section>
 
-{{- /* ── Editorial post spread ── */}}
-{{- $posts := first 3 (where .Site.RegularPages "Section" "blog") -}}
-{{- if gt (len $posts) 0 }}
-<section class="post-spread" aria-labelledby="post-spread-heading">
-  <div class="container">
-    <h2 class="section-title" id="post-spread-heading">Recent writing</h2>
-    {{- range first 1 $posts }}
-    {{- $postURL := .RelPermalink }}
-    {{- $postAlt := .Params.featuredAlt }}
-    <article class="post-spread__primary">
-      {{- with .Params.featuredImage }}
-      <a href="{{ $postURL }}"><img src="{{ . }}" alt="{{ $postAlt }}" loading="lazy"></a>
+      <div class="paper-sidebar__section">
+        <h2 class="paper-sidebar__head">Positions held</h2>
+        <div class="paper-sidebar__rule"></div>
+        <ol class="paper-opinions">
+          <li>Meetings that could be emails outnumber emails that could have been meetings, 10 to 1.</li>
+          <li>You don't need a framework. You need to think clearly.</li>
+          <li>Speaker placement matters more than the speakers.</li>
+          <li>The best code is the code you didn't write.</li>
+          <li>AI won't take your job. Someone using AI well might.</li>
+        </ol>
+      </div>
+
+      {{- with .Site.Params.photo }}
+      <div class="paper-sidebar__section paper-sidebar__portrait">
+        <img src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+        <p class="paper-sidebar__caption">Pedro Dias<br>Chief AI Officer, Tradesolution AS</p>
+      </div>
       {{- end }}
-      <div class="meta">{{ .Date.Format "January 2, 2006" }}{{- with .Params.categories }} &middot; {{ index . 0 }}{{ end }}</div>
-      <h3 class="section-title"><a href="{{ $postURL }}">{{ .Title }}</a></h3>
-      {{- with .Params.excerpt }}<p>{{ . }}</p>{{ end }}
-    </article>
-    {{- end }}
-    {{- if gt (len $posts) 1 }}
-    <div class="post-spread__secondary">
-      {{- range after 1 $posts }}
-      {{- $postURL := .RelPermalink }}
-      {{- $postAlt := .Params.featuredAlt }}
-      <article>
-        {{- with .Params.featuredImage }}
-        <a href="{{ $postURL }}"><img src="{{ . }}" alt="{{ $postAlt }}" loading="lazy"></a>
-        {{- end }}
-        <div class="meta">{{ .Date.Format "January 2, 2006" }}{{- with .Params.categories }} &middot; {{ index . 0 }}{{ end }}</div>
-        <h3><a href="{{ $postURL }}">{{ .Title }}</a></h3>
-        {{- with .Params.excerpt }}<p>{{ . }}</p>{{ end }}
+    </aside>
+
+  </div>
+
+  {{- /* ── Secondary stories ── */}}
+  {{- $secondary := first 3 (after 1 (where .Site.RegularPages "Section" "blog")) -}}
+  {{- if $secondary }}
+  <div class="paper-secondary">
+    <div class="paper-secondary__top-rule"></div>
+    <div class="paper-secondary__label">More dispatches</div>
+    <div class="paper-secondary__grid">
+      {{- range $secondary }}
+      <article class="paper-brief">
+        <div class="paper-brief__kicker">{{ with .Params.categories }}{{ index . 0 }}{{ end }}</div>
+        <h3 class="paper-brief__head"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p class="paper-brief__text">{{ .Params.excerpt | truncate 120 }}</p>
+        <div class="paper-brief__date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time></div>
       </article>
       {{- end }}
     </div>
-    {{- end }}
+    <p class="paper-secondary__all"><a href="/blog/">All dispatches →</a></p>
   </div>
-</section>
-{{- end }}
+  {{- end }}
 
-{{- /* ── Bio strip ── */}}
-<section class="bio-strip">
-  <div class="container--narrow">
-    <p>I've been writing code since 1992, before most of the internet existed. Now I'm helping a Norwegian food industry company figure out what AI actually means for them. I also have very strong opinions about loudspeakers.</p>
-    {{- if .Site.GetPage "/about" }}
-    <a href="/about/" class="meta">More about me &rarr;</a>
-    {{- end }}
-  </div>
-</section>
-
-{{- /* ── Reference posts ── */}}
-{{- $refPosts := first 6 (where .Site.RegularPages "Section" "blog") -}}
-{{- if gt (len $refPosts) 0 }}
-<section class="reference-posts" aria-labelledby="reference-posts-heading">
-  <div class="container">
-    <h2 class="section-title" id="reference-posts-heading">Posts worth bookmarking</h2>
-    <div class="reference-posts__grid">
-      {{- range $refPosts }}
-      <article class="reference-post">
-        <div class="meta">{{- with .Params.categories }}{{ index . 0 }}{{ end }}</div>
-        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-        {{- with .Params.excerpt }}<p class="meta">{{ . }}</p>{{ end }}
-      </article>
-      {{- end }}
-    </div>
-    <p><a href="/blog/" class="meta">All posts &rarr;</a></p>
-  </div>
-</section>
-{{- end }}
-
+</div>
 {{- end -}}
