@@ -53,6 +53,16 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
   [params.support]
     kofi = 'https://ko-fi.com/digitaldias'
   
+  [params.currently]
+    building   = "An internal MCP server for procurement data"
+    listening  = "Dire Straits — Brothers in Arms (1982 pressing)"
+    reading    = "The Design of Everyday Things — Don Norman"
+    annoyed_by = "Meetings about meetings"
+
+  [params.photo]
+    src = "/images/pedro.jpg"
+    alt = "Pedro Dias"
+
   # Giscus comments configuration
   [params.giscus]
     repo = "digitaldias/StaticWebSite"
