@@ -246,6 +246,33 @@ a.meta:hover {
 }
 
 /* =============================================================================
+   SKIP LINK
+   Hidden until focused — keyboard and screen reader accessibility.
+   ============================================================================= */
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--sp-4);
+  z-index: 9999;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--accent-red);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border-radius: 0 0 4px 4px;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* =============================================================================
    5. NAVIGATION
    ============================================================================= */
 
@@ -349,8 +376,18 @@ a.meta:hover {
     border-bottom: 2px solid rgba(255, 255, 255, 0.06);
   }
 
-  .nav__links.is-open {
+  .nav--open .nav__links {
     display: flex;
+  }
+
+  .nav--open .nav__toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav--open .nav__toggle span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav--open .nav__toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
   }
 }
 
