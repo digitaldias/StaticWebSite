@@ -55,9 +55,9 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
   
   [params.currently]
     building   = "An AI strategy framework and 1:1 training program for the company"
-    listening  = "ZZ Top — the early catalog (pre-Eliminator, via Spotify)"
-    tinkering  = "My webpage"
-    annoyed_by = "Meetings about meetings"
+    listening  = "Angine de Poitrine"
+    tinkering  = "Fixing my house up"
+    annoyed_by = "The weather"
 
   [params.photo]
     src = "/images/pedro.jpg"
@@ -66,11 +66,10 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
   # Positions held — update whenever an opinion sharpens or a new one forms
   [params.positions]
     items = [
-      "Meetings that could be emails outnumber emails that could have been meetings, 10 to 1.",
-      "You don't need a framework. You need to think clearly.",
-      "Speaker placement matters more than the speakers.",
-      "The best code is the code you didn't write.",
-      "AI won't take your job. Someone using AI well might.",
+      "Local models for coding aren't up for the task yet.",
+      "Coding is dead. Architecture is the new profession.",
+      "Buy rechargeable batteries.",
+      "Automate your house.",
     ]
 
   # Giscus comments configuration

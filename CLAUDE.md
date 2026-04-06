@@ -21,7 +21,7 @@ This is a **Hugo static site**. The entire Hugo project lives under `src/` — n
 src/
 ├── hugo.toml          # Config (use this — not config.toml or config.yaml)
 ├── assets/
-│   ├── css/styles.css # Full design system, ~2100 lines — do NOT break CSS variables
+│   ├── css/styles.css # Full design system, ~1715 lines — do NOT break CSS variables
 │   └── js/main.js     # All interactive JS (vanilla ES6+)
 ├── content/           # Markdown posts and pages
 │   └── blog/          # Blog posts (filename: YYYY-MM-DD-slug.md)
@@ -72,20 +72,23 @@ Mermaid was fully removed — do not add it back.
 
 ## Design System — Do Not Break
 
-Colors are brand-locked to Pedro's dual Norwegian/Portuguese heritage:
+Theme: aged-map/navigator — light parchment background, deep navy accents. ~1715 lines.
 
 ```css
---norway-red: #BA0C2F    /* primary */
---norway-blue: #002F8B   /* secondary */
---portugal-green: #006600
---portugal-gold: #FFD700
+--bg:          #f0ece1   /* parchment */
+--ink:         #161a1e   /* body text */
+--accent:      #b83c2c   /* primary red */
+--accent-cool: #162447   /* deep navy */
+--accent-map:  #2e6ebc   /* map blue */
+--accent-gold: #8a6a1c   /* gold */
+--transition:  150ms ease
 ```
 
-Theme: dark glass-morphism (`backdrop-filter: blur`). Typography: Inter (body) + JetBrains Mono (code).
+Typography: Lora (display) + Barlow (body) + JetBrains Mono (code).
 
 All animations must respect `prefers-reduced-motion`. Use `requestAnimationFrame` for scroll/animation work.
 
-CSS conventions: mobile-first, breakpoints at 480px / 768px / 1200px. Use existing variables only — don't add new colors. Glass-morphism pattern: `backdrop-filter: blur(var(--blur-md))`. Transitions: `transition: all var(--transition-normal)`.
+CSS conventions: mobile-first, breakpoints at 480px / 640px / 768px / 900px. Use existing variables only — don't add new colors or tokens. Transitions: `transition: ... var(--transition)`.
 
 Hugo template conventions: use `{{- -}}` for whitespace control; guard optional params with `{{ with .Params.excerpt }}{{ . }}{{ end }}`; internal links via `.RelPermalink`; render HTML content via `{{ .Content | safeHTML }}`.
 
@@ -104,6 +107,6 @@ The `src/isableFastRender/` directory is a Hugo server artifact — ignore it.
 - Writing: first-person, conversational but technically precise
 - Categories (use existing): Architecture, Azure, AI, DevOps, Family, Photography
 - Tags: specific only (e.g. `MediatR`, `Blazor`) — not generic (`web`, `code`)
-- Images: hero at `static/images/blog/<post-slug>/featured.jpg`, 1920×1080, JPEG 80–85% quality, ~200–300 KB; inline images 1200×800, ~150–200 KB. Diagrams use brand colors only on dark backgrounds (#0a0a0a–#1a1a1a).
+- Images: hero at `static/images/blog/<post-slug>/featured.jpg`, 1920×1080, JPEG 80–85% quality, ~200–300 KB; inline images 1200×800, ~150–200 KB. Diagrams use brand color tokens on light parchment backgrounds.
 - HTML is allowed in Markdown (`unsafe = true` in markup config)
 - Keep `static/llm.txt` updated when major site structure changes (new sections, content types, or technologies)
