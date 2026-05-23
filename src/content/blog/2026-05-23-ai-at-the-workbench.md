@@ -55,6 +55,10 @@ So again, I described what I needed. Two boards, these dimensions. The D1 Mini n
 
 What came back was a working OpenSCAD file. Not perfect -- the first render had the USB cutout on the wrong side, and the tolerances on the board mounts needed adjustment for the actual thickness of the PCBs. But the structure was right. I spent about an hour tweaking rather than three hours writing geometry from scratch.
 
+Since I'd never used OpenSCAD before, I had no intuition for whether the dimensions would survive the translation to plastic. So I got out the caliper, measured everything properly -- board lengths, widths, connector heights, the USB overhang -- and fed the actual numbers back in. I also asked Claude to add clearance for the wiring bundle between the two boards. Then, before committing to a full two-part print, I printed just the base. The boards dropped in. Every mount hit. The USB port lined up with the cutout. Like a glove.
+
+The full print ran on my new Bambu Lab H2C, ordered from [PolyAlkemi.no](https://www.polyalkemi.no). They were helpful, shipped fast, and -- apparently a house tradition -- included sweets with the package. If you're after filament or a new machine in Norway, they're the obvious first stop.
+
 The exploded view at the top of this post is the result. White top cover with a ventilated grille over the sensor window and an oblong cutout for the USB port. Dark body with board mounts, wire channels, and corner screw bosses. The assembly slides together and sits flush against a wall.
 
 ## What actually changed
@@ -87,4 +91,4 @@ In practice, yes -- for hobbyist wiring that involves established components and
 
 ### What tools are used for 3D printing enclosures?
 
-The enclosure was designed in OpenSCAD, which is free and parametric -- you write code to describe the geometry, which makes precise dimension changes easy. For slicing, I use PrusaSlicer. The model was printed on a Prusa MK4.
+The enclosure was designed in OpenSCAD, which is free and parametric -- you write code to describe the geometry, which makes precise dimension changes easy. The model was printed on a Bambu Lab H2C.
