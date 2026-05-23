@@ -43,6 +43,8 @@ Knowing *why* each of those things was true helped more than having the answer a
 
 ESPHome has a proper LD2410 integration. Once the wiring was correct, getting the sensor talking to Home Assistant took about ten minutes and a YAML block Claude wrote most of. I gave it the pin assignments and baud rate; it produced a configuration that compiles, flashes, and works.
 
+Home Assistant already runs most of our house -- several hundred sensors and lights, the cars' charging schedules optimized around spot prices, the dishwasher, a vacuum robot, two clothes dryers, and the home theatre. The LD2410B wasn't a proof of concept for anything. It was just the next thing on the list.
+
 The sensor reports two target types: moving and stationary. Each has a detection distance and a signal strength. You can tune the detection gates -- the LD2410B has ten 75cm zones you can configure independently -- and set a timeout for how long it waits before reporting the space as empty. I set mine to 30 seconds, long enough to not flicker when I lean back in my chair and short enough to catch me actually leaving the room.
 
 That wired-up prototype sat in a drawer for a couple of years. Working, tested, and going nowhere.
