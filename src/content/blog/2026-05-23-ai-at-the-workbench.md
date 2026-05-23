@@ -43,6 +43,10 @@ ESPHome's LD2410 integration is mature and well-documented. Once the wiring was 
 
 The sensor reports two target types: moving and stationary. Each has a detection distance and a signal strength. You can tune the detection gates -- the LD2410B has ten 75cm zones you can configure independently -- and set a timeout for how long it waits before reporting the space as empty. I set mine to 30 seconds, long enough to not flicker when I lean back in my chair and short enough to catch me actually leaving the room.
 
+That wired-up prototype sat in a drawer for a couple of years. Working, tested, and going nowhere.
+
+{{< img src="/images/blog/2026-05-23-ai-at-the-workbench/drawer.jpg" alt="The D1 Mini and HLK-LD2410B wired together with jumper wires, the working prototype before it got a proper enclosure" caption="Proof of concept. Functional for two years, mounted on nothing." >}}
+
 ## The enclosure problem
 
 At this point I had two naked boards, a handful of jumper wires, and a working integration. The next step was to make something I'd actually mount on a wall. Which meant a case.
@@ -55,7 +59,9 @@ So again, I described what I needed. Two boards, these dimensions. The D1 Mini n
 
 What came back was a working OpenSCAD file. Not perfect -- the first render had the USB cutout on the wrong side, and the tolerances on the board mounts needed adjustment for the actual thickness of the PCBs. But the structure was right. I spent about an hour tweaking rather than three hours writing geometry from scratch.
 
-Since I'd never used OpenSCAD before, I had no intuition for whether the dimensions would survive the translation to plastic. So I got out the caliper, measured everything properly -- board lengths, widths, connector heights, the USB overhang -- and fed the actual numbers back in. I also asked Claude to add clearance for the wiring bundle between the two boards. Then, before committing to a full two-part print, I printed just the base. The boards dropped in. Every mount hit. The USB port lined up with the cutout. Like a glove.
+Since I'd never used OpenSCAD before, I had no intuition for whether the dimensions would survive the translation to plastic. So I got out the caliper, measured everything properly -- board lengths, widths, connector heights, the USB overhang -- and fed the actual numbers back in.
+
+{{< img src="/images/blog/2026-05-23-ai-at-the-workbench/caliper.jpg" alt="The HLK-LD2410B sensor and D1 Mini next to a steel caliper, used to measure exact dimensions for the enclosure" caption="There is no substitute for a caliper and actual numbers." >}} I also asked Claude to add clearance for the wiring bundle between the two boards. Then, before committing to a full two-part print, I printed just the base. The boards dropped in. Every mount hit. The USB port lined up with the cutout. Like a glove.
 
 The full print ran on my new Bambu Lab H2C, ordered from [PolyAlkemi.no](https://www.polyalkemi.no). They were helpful, shipped fast, and -- apparently a house tradition -- included sweets with the package. If you're after filament or a new machine in Norway, they're the obvious first stop.
 
