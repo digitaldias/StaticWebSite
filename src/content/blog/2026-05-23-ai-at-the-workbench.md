@@ -41,7 +41,7 @@ Knowing *why* each of those things was true helped more than having the answer a
 
 ## ESPHome in ten minutes
 
-ESPHome's LD2410 integration is mature and well-documented. Once the wiring was correct, getting the sensor talking to Home Assistant took about ten minutes and a YAML configuration block Claude wrote most of. I gave it the pin assignments and baud rate; it produced a configuration that compiles, flashes, and works.
+ESPHome has a proper LD2410 integration. Once the wiring was correct, getting the sensor talking to Home Assistant took about ten minutes and a YAML block Claude wrote most of. I gave it the pin assignments and baud rate; it produced a configuration that compiles, flashes, and works.
 
 The sensor reports two target types: moving and stationary. Each has a detection distance and a signal strength. You can tune the detection gates -- the LD2410B has ten 75cm zones you can configure independently -- and set a timeout for how long it waits before reporting the space as empty. I set mine to 30 seconds, long enough to not flicker when I lean back in my chair and short enough to catch me actually leaving the room.
 
@@ -51,19 +51,19 @@ That wired-up prototype sat in a drawer for a couple of years. Working, tested, 
 
 ## The enclosure problem
 
-At this point I had two naked boards, a handful of jumper wires, and a working integration. The next step was to make something I'd actually mount on a wall. Which meant a case.
+Two naked boards, a handful of jumper wires, and a working integration. The obvious next problem: I had no intention of zip-tying this to a wall.
 
 {{< img src="/images/blog/2026-05-23-ai-at-the-workbench/d1-mini.jpg" alt="The Wemos D1 Mini microcontroller board next to a ruler, showing it is about 26mm long" caption="The D1 Mini. About 26mm, USB on the short end, WiFi built in. It punches well above its weight." >}}
 
-I've used OpenSCAD before. I like the parametric approach -- you describe geometry in code rather than pushing vertices around a GUI, and the model updates when you change the numbers. What I don't carry in my head is fluent command of its API. The difference between `hull()`, `minkowski()`, and nesting `translate()` and `cube()` calls is not something I can recite on demand.
+I asked Claude what a reasonable person uses to design a small enclosure for 3D printing. It suggested OpenSCAD. I'd never opened it. The pitch was that you describe geometry in code rather than pushing vertices around a GUI -- parametric, the model updates when the numbers change. That's a mental model I can work with. So I gave it the board dimensions and a list of requirements: USB port accessible from outside, a window in the lid over the sensor face, mounting holes, wiring clearance between the boards.
 
-So again, I described what I needed. Two boards, these dimensions. The D1 Mini needs its USB port accessible from outside for flashing. The sensor has a radar face that can't be blocked (the cover gets a window with a thin decorative grille). Mounting holes at the corners. A lid that screws onto the body.
+What came back was a working file. The first render had the USB cutout on the wrong side and the board mounts were too tight, but the structure was right. I spent an hour adjusting numbers rather than figuring out from scratch how the tool works.
 
-What came back was a working OpenSCAD file. Not perfect -- the first render had the USB cutout on the wrong side, and the tolerances on the board mounts needed adjustment for the actual thickness of the PCBs. But the structure was right. I spent about an hour tweaking rather than three hours writing geometry from scratch.
+I still had no intuition for whether any of it would survive the translation to plastic. So I got out the caliper and measured everything properly -- board lengths, widths, connector heights, the USB overhang. Fed the actual numbers in.
 
-Since I'd never used OpenSCAD before, I had no intuition for whether the dimensions would survive the translation to plastic. So I got out the caliper, measured everything properly -- board lengths, widths, connector heights, the USB overhang -- and fed the actual numbers back in.
+{{< img src="/images/blog/2026-05-23-ai-at-the-workbench/caliper.jpg" alt="The HLK-LD2410B sensor and D1 Mini next to a steel caliper, used to measure exact dimensions for the enclosure" caption="There is no substitute for a caliper and actual numbers." >}}
 
-{{< img src="/images/blog/2026-05-23-ai-at-the-workbench/caliper.jpg" alt="The HLK-LD2410B sensor and D1 Mini next to a steel caliper, used to measure exact dimensions for the enclosure" caption="There is no substitute for a caliper and actual numbers." >}} I also asked Claude to add clearance for the wiring bundle between the two boards. Then, before committing to a full two-part print, I printed just the base. The boards dropped in. Every mount hit. The USB port lined up with the cutout. Like a glove.
+Then I printed just the base. The boards dropped in. Every mount hit. The USB port lined up with the cutout. Like a glove.
 
 The full print ran on my new Bambu Lab H2C, ordered from [PolyAlkemi.no](https://www.polyalkemi.no). They were helpful, shipped fast, and -- apparently a house tradition -- included sweets with the package. If you're after filament or a new machine in Norway, they're the obvious first stop.
 
@@ -71,15 +71,15 @@ The exploded view at the top of this post is the result. White top cover with a 
 
 ## What actually changed
 
-There's a version of this project that never gets finished. I buy the parts, try to read the datasheets, get confused about logic levels, set it aside to look at later, and later never comes. That version lives in the drawer.
+There's a version of this project that never gets finished. I buy the parts, try to read the datasheets, get confused about logic levels, set it aside to look at later, and later never comes. That version sat in my drawer for two years.
 
-Having an AI that can explain the pinout, reason through voltage compatibility, check my ESPHome YAML for obvious mistakes, and write the OpenSCAD scaffolding -- that version gets finished. It's on my wall now.
+What changed this time was having something to ask. Not "search for a tutorial and hope someone had the exact same boards." Not "buy a book about electronics." Just: here's what I have, here's what I want, what do I need to know? And getting a clear answer with the reasoning included.
 
-The skills I brought: knowing what I wanted to build, being able to evaluate whether the answers made sense, and having the patience to iterate on the design. The skills AI contributed: the specific technical details I didn't have, and correct boilerplate for unfamiliar tools.
+I didn't need AI to want this or to wire it up or to press print. I needed it to fill the specific gaps where I would otherwise have given up: the voltage levels, the baud rate quirk, the OpenSCAD boilerplate for a tool I'd never touched. Those are the exact moments where previous versions of this project died.
 
-That's a useful collaboration. Not "AI did it for me." Not "I figured it all out and AI just typed." Something closer to having a well-read colleague who doesn't mind explaining the same basic thing twice.
+It's on my wall now. The lights stay on while I'm sitting at my desk.
 
-I have a position on this blog that says "automate your house." The HLK-LD2410B is a piece of that. The fact that this one got finished instead of shelved? That's a piece of something else entirely.
+I have a position on this blog that says "automate your house." This is what that looks like in practice -- not a weekend sprint by someone who already knows electronics. A project that took two years to get off the bench, and finally finished in an afternoon.
 
 ---
 
