@@ -66,8 +66,15 @@ def optimize(input_path: str, profile_name: str = "hero", output_path: str = Non
     # Open and process
     img = Image.open(input_file)
 
-    # Convert to RGB (handles PNG transparency, CMYK, etc.)
-    if img.mode != "RGB":
+    # Flatten transparency against parchment before converting to RGB.
+    # Default RGBA→RGB composites against black, which leaves a grey halo
+    # on images with transparent backgrounds.
+    if img.mode in ("RGBA", "LA") or (img.mode == "P" and "transparency" in img.info):
+        img = img.convert("RGBA")
+        bg = Image.new("RGBA", img.size, (*PAD_COLOR, 255))
+        bg.paste(img, mask=img.split()[3])
+        img = bg.convert("RGB")
+    elif img.mode != "RGB":
         img = img.convert("RGB")
 
     src_w, src_h = img.size
