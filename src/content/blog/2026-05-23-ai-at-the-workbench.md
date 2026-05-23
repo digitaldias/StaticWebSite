@@ -4,7 +4,7 @@ date: 2026-05-23
 draft: false
 description: "How AI helped me wire up the HLK-LD2410B human presence sensor, design a custom enclosure in OpenSCAD, and actually finish a hardware project for once."
 excerpt: "The HLK-LD2410B detects people who aren't moving. Getting it wired to a D1 Mini and housed in a 3D-printed enclosure was exactly the kind of project where AI made the difference between a drawer full of components and a finished thing on my wall."
-readTime: "7 minute read"
+readTime: "8 minute read"
 categories: ["AI"]
 tags: ["HLK-LD2410B", "Home Automation", "OpenSCAD", "ESPHome", "D1 Mini"]
 author: "Pedro Dias"
@@ -25,9 +25,9 @@ The problem, as always, was the gap between "I know how to write software" and "
 
 ## The wiring problem
 
-Forty years of software doesn't transfer to electronics. I can reason about protocols and timing; I cannot, by instinct, tell you whether a given board's GPIO pins run at 3.3V or 5V logic levels, or which pad labeled TX on one device connects to which pad labeled RX on another. This should be straightforward. It never is.
+Forty years of software doesn't transfer to electronics. I can reason about protocols and timing; I still can't tell you by instinct whether a given board's GPIO pins run at 3.3V or 5V, or which pad labeled TX connects to which pad labeled RX on another board. The gap is always there.
 
-The LD2410B datasheet exists. It is also a three-page PDF written for an audience that already knows what they're doing. The D1 Mini -- an ESP8266-based board with no business being as capable as it is for its size -- has similar documentation: technically complete, but hostile to anyone approaching from the software side.
+The LD2410B datasheet exists. It is also a three-page PDF written for an audience that already knows what they're doing. The D1 Mini -- an ESP8266-based board that packs WiFi and a full GPIO set into a 26mm footprint -- has similar documentation: technically complete, but hostile to anyone approaching from the software side.
 
 So I opened a conversation with Claude and described what I had. Two boards. I want them to talk to each other over UART. What do I need to know?
 
@@ -47,17 +47,17 @@ Home Assistant already runs most of our house -- several hundred sensors and lig
 
 The sensor reports two target types: moving and stationary. Each has a detection distance and a signal strength. You can tune the detection gates -- the LD2410B has ten 75cm zones you can configure independently -- and set a timeout for how long it waits before reporting the space as empty. I set mine to 30 seconds, long enough to not flicker when I lean back in my chair and short enough to catch me actually leaving the room.
 
-That wired-up prototype sat in a drawer for a couple of years. Working, tested, and going nowhere.
+That wired-up prototype sat in a drawer for a couple of years. Working and tested. Going nowhere.
 
 {{< img src="/images/blog/2026-05-23-ai-at-the-workbench/drawer.jpg" alt="The D1 Mini and HLK-LD2410B wired together with jumper wires, the working prototype before it got a proper enclosure" caption="Proof of concept. Functional for two years, mounted on nothing." >}}
 
 ## The enclosure problem
 
-Two naked boards, a handful of jumper wires, and a working integration. The obvious next problem: I had no intention of zip-tying this to a wall.
+Two naked boards, jumper wires everywhere, and a working integration. I had no intention of zip-tying this to a wall.
 
 {{< img src="/images/blog/2026-05-23-ai-at-the-workbench/d1-mini.jpg" alt="The Wemos D1 Mini microcontroller board next to a ruler, showing it is about 26mm long" caption="The D1 Mini. About 26mm, USB on the short end, WiFi built in. It punches well above its weight." >}}
 
-I asked Claude what a reasonable person uses to design a small enclosure for 3D printing. It suggested OpenSCAD. I'd never opened it. The pitch was that you describe geometry in code rather than pushing vertices around a GUI -- parametric, the model updates when the numbers change. That's a mental model I can work with. So I gave it the board dimensions and a list of requirements: USB port accessible from outside, a window in the lid over the sensor face, mounting holes, wiring clearance between the boards.
+I asked Claude what a reasonable person uses to design a small enclosure for 3D printing. It suggested OpenSCAD. I'd never opened it. The pitch: you describe geometry in code rather than pushing vertices around a GUI. Numbers change, model updates. That made sense to me. So I gave it the board dimensions and a list of requirements: USB port accessible from outside, a window in the lid over the sensor face, mounting holes, wiring clearance between the boards.
 
 What came back was a working file. The first render had the USB cutout on the wrong side and the board mounts were too tight, but the structure was right. I spent an hour adjusting numbers rather than figuring out from scratch how the tool works.
 
@@ -67,7 +67,7 @@ I still had no intuition for whether any of it would survive the translation to 
 
 Then I printed just the base. The boards dropped in. Every mount hit. The USB port lined up with the cutout. Like a glove.
 
-The full print ran on my new Bambu Lab H2C, ordered from [PolyAlkemi.no](https://www.polyalkemi.no). They were helpful, shipped fast, and -- apparently a house tradition -- included sweets with the package. If you're after filament or a new machine in Norway, they're the obvious first stop.
+The full print ran on my new Bambu Lab H2C, ordered from [PolyAlkemi.no](https://www.polyalkemi.no). They were helpful, shipped fast, and -- apparently a house tradition -- included sweets with the package. If you're after filament or a new machine in Norway, worth knowing about.
 
 The exploded view at the top of this post is the result. White top cover with a ventilated grille over the sensor window and an oblong cutout for the USB port. Dark body with board mounts, wire channels, and corner screw bosses. The assembly slides together and sits flush against a wall.
 
@@ -75,13 +75,13 @@ The exploded view at the top of this post is the result. White top cover with a 
 
 There's a version of this project that never gets finished. I buy the parts, try to read the datasheets, get confused about logic levels, set it aside to look at later, and later never comes. That version sat in my drawer for two years.
 
-What changed this time was having something to ask. Not "search for a tutorial and hope someone had the exact same boards." Not "buy a book about electronics." Just: here's what I have, here's what I want, what do I need to know? And getting a clear answer with the reasoning included.
+What changed this time was having something to ask. Before, it was datasheets I couldn't parse and forum threads from 2019 with half the images gone. A specific question got a specific answer, with the reasoning attached. That was the whole difference.
 
-I didn't need AI to want this or to wire it up or to press print. I needed it to fill the specific gaps where I would otherwise have given up: the voltage levels, the baud rate quirk, the OpenSCAD boilerplate for a tool I'd never touched. Those are the exact moments where previous versions of this project died.
+The voltage levels, the baud rate quirk, the OpenSCAD scaffolding -- those were the specific walls this project hit twice before. I had everything else. Just not those.
 
 It's on my wall now. The lights stay on while I'm sitting at my desk.
 
-I have a position on this blog that says "automate your house." This is what that looks like in practice -- not a weekend sprint by someone who already knows electronics. A project that took two years to get off the bench, and finally finished in an afternoon.
+I have a position on this blog that says "automate your house." A project that sat in a drawer for two years finished in an afternoon. That's what it means.
 
 ---
 
@@ -98,6 +98,10 @@ Motion detection requires physical movement -- a PIR sensor fires when your infr
 ### Can AI help with electronics wiring?
 
 In practice, yes -- for hobbyist wiring that involves established components and documented protocols. What works well: identifying correct pins, checking voltage compatibility, explaining how a protocol works, writing configuration boilerplate. What still requires your judgment: verifying the answer against the actual datasheet, especially for unusual components or edge cases. Treat it as a knowledgeable starting point, not a hardware oracle.
+
+### How do you use the HLK-LD2410B with ESPHome and Home Assistant?
+
+ESPHome has a built-in LD2410 component. Wire VCC to 5V, GND to GND, sensor TX to the microcontroller RX pin, and sensor RX to TX. Set the baud rate to 256000. Define the component in your ESPHome YAML with the correct TX/RX pins, flash the device, and it appears in Home Assistant as a sensor with separate entities for moving target distance, stationary target distance, and detection state. Configuration takes about ten minutes once the wiring is right.
 
 ### What tools are used for 3D printing enclosures?
 
