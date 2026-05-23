@@ -19,13 +19,15 @@ The HLK-LD2410B nearly joined them.
 
 This is a 24GHz mmWave radar module that detects human presence -- not just motion, but actual presence. A person sitting still at a desk. Someone breathing in a corner of a room. Standard PIR sensors need movement to fire, which means your lights switch off the moment you stop fidgeting. The LD2410B doesn't have that problem. It's also the size of a stick of gum.
 
+{{< img src="/images/blog/2026-05-23-ai-at-the-workbench/sensor.jpg" alt="The HLK-LD2410B sensor next to a ruler, showing it is about 35mm long" caption="35mm of 24GHz radar. The entire sensing antenna is in that rectangular patch on the right." >}}
+
 I bought it to add proper occupancy sensing to my home office. The plan: pair it with a D1 Mini, hook it into Home Assistant via ESPHome, and stop manually toggling lights like it's 1995.
 
-The problem, as always, was the gap between "I know how to write software" and "I know which wire goes where."
+The problem was the gap between "I know how to write software" and "I know which wire goes where."
 
 ## The wiring problem
 
-Forty years of software doesn't transfer to electronics. I can reason about protocols and timing; I still can't tell you by instinct whether a given board's GPIO pins run at 3.3V or 5V, or which pad labeled TX connects to which pad labeled RX on another board. The gap is always there.
+Forty years of software doesn't transfer to electronics. I can reason about protocols and timing; I still can't tell you by instinct whether a given board's GPIO pins run at 3.3V or 5V, or which pad labeled TX connects to which pad labeled RX on another board.
 
 The LD2410B datasheet exists. It is also a three-page PDF written for an audience that already knows what they're doing. The D1 Mini -- an ESP8266-based board that packs WiFi and a full GPIO set into a 26mm footprint -- has similar documentation: technically complete, but hostile to anyone approaching from the software side.
 
@@ -33,11 +35,9 @@ So I opened a conversation with Claude and described what I had. Two boards. I w
 
 What came back was everything the datasheets weren't. The LD2410B runs on 5V power but communicates at 3.3V logic. The D1 Mini's GPIO pins are also 3.3V. Direct connection is fine; no level shifter needed. The baud rate is 256000, a non-standard value that ESPHome handles without complaint. TX on the sensor goes to RX on the D1 Mini and vice versa. GND is shared. That's it.
 
-Knowing *why* each of those things was true helped more than having the answer alone. I understood what would break if I got it wrong. I could make decisions instead of just copying a wiring diagram and hoping.
+Knowing *why* each of those things was true helped more than having the answer alone. I understood what would break if I got it wrong.
 
 {{< img src="/images/blog/2026-05-23-ai-at-the-workbench/pinout-documentation.jpg" alt="AI-generated wiring documentation showing the D1 Mini to HLK-LD2410B UART pin mapping table" caption="The wiring guide Claude produced. Pin table, notes, and the one thing you must not do." >}}
-
-{{< img src="/images/blog/2026-05-23-ai-at-the-workbench/sensor.jpg" alt="The HLK-LD2410B sensor next to a ruler, showing it is about 35mm long" caption="35mm of 24GHz radar. The entire sensing antenna is in that rectangular patch on the right." >}}
 
 ## ESPHome in ten minutes
 
@@ -47,15 +47,13 @@ Home Assistant already runs most of our house -- several hundred sensors and lig
 
 The sensor reports two target types: moving and stationary. Each has a detection distance and a signal strength. You can tune the detection gates -- the LD2410B has ten 75cm zones you can configure independently -- and set a timeout for how long it waits before reporting the space as empty. I set mine to 30 seconds, long enough to not flicker when I lean back in my chair and short enough to catch me actually leaving the room.
 
-That wired-up prototype sat in a drawer for a couple of years. Working and tested. Going nowhere.
+Working and tested. Going nowhere.
 
 {{< img src="/images/blog/2026-05-23-ai-at-the-workbench/drawer.jpg" alt="The D1 Mini and HLK-LD2410B wired together with jumper wires, the working prototype before it got a proper enclosure" caption="Proof of concept. Functional for two years, mounted on nothing." >}}
 
 ## The enclosure problem
 
-Two naked boards, jumper wires everywhere, and a working integration. I had no intention of zip-tying this to a wall.
-
-{{< img src="/images/blog/2026-05-23-ai-at-the-workbench/d1-mini.jpg" alt="The Wemos D1 Mini microcontroller board next to a ruler, showing it is about 26mm long" caption="The D1 Mini. About 26mm, USB on the short end, WiFi built in. It punches well above its weight." >}}
+I had no intention of zip-tying this to a wall.
 
 I asked Claude what a reasonable person uses to design a small enclosure for 3D printing. It suggested OpenSCAD. I'd never opened it. The pitch: you describe geometry in code rather than pushing vertices around a GUI. Numbers change, model updates. That made sense to me. So I gave it the board dimensions and a list of requirements: USB port accessible from outside, a window in the lid over the sensor face, mounting holes, wiring clearance between the boards.
 
@@ -69,11 +67,11 @@ Then I printed just the base. The boards dropped in. Every mount hit. The USB po
 
 The full print ran on my new Bambu Lab H2C, ordered from [PolyAlkemi.no](https://www.polyalkemi.no). They were helpful, shipped fast, and -- apparently a house tradition -- included sweets with the package. If you're after filament or a new machine in Norway, worth knowing about.
 
-The exploded view at the top of this post is the result. White top cover with a ventilated grille over the sensor window and an oblong cutout for the USB port. Dark body with board mounts, wire channels, and corner screw bosses. The assembly slides together and sits flush against a wall.
+White top cover with a ventilated grille over the sensor window, oblong cutout for the USB port. Dark body with board mounts and corner screw bosses. It fits together and sits flush against a wall.
 
 ## What actually changed
 
-There's a version of this project that never gets finished. I buy the parts, try to read the datasheets, get confused about logic levels, set it aside to look at later, and later never comes. That version sat in my drawer for two years.
+There's a version of this project that never gets finished. I buy the parts, try to read the datasheets, get confused about logic levels, set it aside to look at later, and later never comes. This one sat in my drawer for two years before I finally had the right tool to push through the gaps.
 
 What changed this time was having something to ask. Before, it was datasheets I couldn't parse and forum threads from 2019 with half the images gone. A specific question got a specific answer, with the reasoning attached. That was the whole difference.
 
