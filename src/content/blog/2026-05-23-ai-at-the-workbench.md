@@ -81,6 +81,8 @@ The voltage levels, the baud rate quirk, the OpenSCAD scaffolding -- those were 
 
 It's on my wall now. The lights stay on while I'm sitting at my desk.
 
+There's a specific feeling to going from idea to finished product in an afternoon. I grew up reading Donald Duck, and Gyro Gearloose was always the character I wanted to be -- the guy in Duckburg who could build anything he imagined. Forty years into coding and I can finally build things too. Took long enough.
+
 I have a position on this blog that says "automate your house." A project that sat in a drawer for two years finished in an afternoon. That's what it means.
 
 ---
