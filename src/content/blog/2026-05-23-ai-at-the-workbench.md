@@ -83,6 +83,8 @@ It's on my wall now. The lights stay on while I'm sitting at my desk.
 
 There's a specific feeling to going from idea to finished product in an afternoon. I grew up reading Donald Duck, and Gyro Gearloose (Petter Smart in Norwegian) was always the character I wanted to be -- the guy in Duckburg who could build anything he imagined. Forty years into coding and I can finally build things too. Took long enough.
 
+Next up: more room sensors for the rest of the house. And somewhere in a package on its way here, magnets, springs, and ball bearings -- because the workbench has other ideas too.
+
 I have a position on this blog that says "automate your house." A project that sat in a drawer for two years finished in an afternoon. That's what it means.
 
 ---
