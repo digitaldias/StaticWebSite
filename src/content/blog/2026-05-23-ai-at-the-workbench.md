@@ -35,6 +35,8 @@ What came back was everything the datasheets weren't. The LD2410B runs on 5V pow
 
 Knowing *why* each of those things was true helped more than having the answer alone. I understood what would break if I got it wrong. I could make decisions instead of just copying a wiring diagram and hoping.
 
+{{< img src="/images/blog/2026-05-23-ai-at-the-workbench/pinout-documentation.jpg" alt="AI-generated wiring documentation showing the D1 Mini to HLK-LD2410B UART pin mapping table" caption="The wiring guide Claude produced. Pin table, notes, and the one thing you must not do." >}}
+
 {{< img src="/images/blog/2026-05-23-ai-at-the-workbench/sensor.jpg" alt="The HLK-LD2410B sensor next to a ruler, showing it is about 35mm long" caption="35mm of 24GHz radar. The entire sensing antenna is in that rectangular patch on the right." >}}
 
 ## ESPHome in ten minutes
