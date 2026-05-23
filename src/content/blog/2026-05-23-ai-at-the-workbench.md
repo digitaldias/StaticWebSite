@@ -67,7 +67,7 @@ Then I printed just the base. The boards dropped in. Every mount hit. The USB po
 
 The full print ran on my new Bambu Lab H2C, ordered from [PolyAlkemi.no](https://www.polyalkemi.no). They were helpful, shipped fast, and -- apparently a house tradition -- included sweets with the package. If you're after filament or a new machine in Norway, worth knowing about.
 
-White top cover with a ventilated grille over the sensor window, oblong cutout for the USB port. Dark body with board mounts and corner screw bosses. It fits together and sits flush against a wall.
+White top cover with a ventilated grille over the sensor window, oblong cutout for the USB port. Dark body with board mounts and corner screw bosses. It fits together and sits flush against a wall. A photo of the finished, assembled unit will appear here once the printer stops humming.
 
 ## What actually changed
 
