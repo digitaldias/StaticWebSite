@@ -15,7 +15,6 @@ Sitemap: https://digitaldias.com/sitemap.xml
 Disallow: /admin/
 Disallow: /.git/
 Disallow: /public/
-Disallow: /isableFastRender/
 
 # Crawl-delay (optional, be nice to servers)
 Crawl-delay: 1

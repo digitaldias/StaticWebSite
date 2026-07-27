@@ -54,10 +54,10 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
     kofi = 'https://ko-fi.com/digitaldias'
   
   [params.currently]
-    building   = "An AI strategy framework and 1:1 training program for the company"
-    listening  = "Angine de Poitrine"
-    tinkering  = "Human presence detection with the HLK-LD2410B and a D1 Mini"
-    annoyed_by = "The weather"
+    building   = "A new Code Quality Qualifier tool"
+    listening  = "Pneuma, Tool"
+    tinkering  = "My new Insta360 Luna Ultra video camera"
+    annoyed_by = "Delivery times from Norwegian online stores"
 
   [params.photo]
     src = "/images/pedro.jpg"
@@ -66,10 +66,10 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
   # Positions held — update whenever an opinion sharpens or a new one forms
   [params.positions]
     items = [
-      "Local models for coding aren't up for the task yet.",
-      "Coding is dead. Architecture is the new profession.",
-      "Buy rechargeable batteries.",
-      "Automate your house.",
+      "Open-source AI models are garbage, except for image generation.",
+      "Claude Code's cache expiration is a hidden cost nobody talks about.",
+      "Buy a 3D printer for your household.",
+      "Keep your home automations simple.",
     ]
 
   # Giscus comments configuration
