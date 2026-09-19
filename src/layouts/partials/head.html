@@ -15,7 +15,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {{- $title := cond .IsHome .Site.Title (printf "%s | %s" .Title .Site.Title) -}}
 {{- if gt (len $title) 60 -}}
+{{- $title = cond .IsHome $title .Title -}}
+{{- if gt (len $title) 60 -}}
 {{- $title = printf "%s..." (substr $title 0 57) -}}
+{{- end -}}
 {{- end -}}
 <title>{{ $title }}</title>
 {{- $description := cond (ne .Description "") .Description .Site.Params.description -}}
@@ -26,8 +29,8 @@
 <meta name="author" content="{{ .Site.Params.author }}">
 <link rel="canonical" href="{{ .Permalink }}">
 <meta name="theme-color" content="#f7f4ef">
-<meta name="geo.region" content="NO-03">
-<meta name="geo.placename" content="Frogner, Norway">
+<meta name="geo.region" content="NO-32">
+<meta name="geo.placename" content="{{ .Site.Params.location }}">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://giscus.app; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com https://giscus.app; script-src-elem 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com https://giscus.app; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://api.github.com https://giscus.app https://cloudflareinsights.com ws://localhost:* ws://127.0.0.1:*; frame-src 'self' https://giscus.app;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-XSS-Protection" content="1; mode=block">
@@ -149,7 +152,7 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": {{ .Title | jsonify }},
+  "headline": {{ .Title | jsonify | safeJS }},
   "datePublished": "{{ .Date.Format "2006-01-02" }}",
   "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
   "author": {
@@ -162,7 +165,7 @@
     "name": "digitaldias.com",
     "url": "{{ .Site.BaseURL }}"
   },
-  "description": {{ (.Description | default .Site.Params.description) | jsonify }},
+  "description": {{ (.Description | default .Site.Params.description) | jsonify | safeJS }},
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "{{ .Permalink }}"
@@ -174,7 +177,7 @@
     "width": 1920,
     "height": 1080
     {{- if .Params.featuredAlt -}},
-    "caption": {{ .Params.featuredAlt | jsonify }}
+    "caption": {{ .Params.featuredAlt | jsonify | safeJS }}
     {{- end -}}
   }
   {{- end -}}
@@ -183,7 +186,7 @@
   "wordCount": {{ $wordCount }}
   {{- end -}}
   {{- if .Params.tags -}},
-  "keywords": [{{ range $i, $t := .Params.tags }}{{ if $i }}, {{ end }}{{ $t | jsonify }}{{ end }}]
+  "keywords": [{{ range $i, $t := .Params.tags }}{{ if $i }}, {{ end }}{{ $t | jsonify | safeJS }}{{ end }}]
   {{- end -}}
 }
 </script>
@@ -217,13 +220,13 @@
     {
       "@type": "ListItem",
       "position": 4,
-      "name": {{ .Title | jsonify }},
+      "name": {{ .Title | jsonify | safeJS }},
       "item": "{{ .Permalink }}"
     }{{- else -}},
     {
       "@type": "ListItem",
       "position": 3,
-      "name": {{ .Title | jsonify }},
+      "name": {{ .Title | jsonify | safeJS }},
       "item": "{{ .Permalink }}"
     }{{- end -}}
     {{- else if eq .Section "about" -}},

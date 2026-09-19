@@ -19,7 +19,7 @@ I still write code. Mostly .NET, Blazor, and Avalonia. I genuinely enjoy it, whi
 
 ## The other stuff
 
-I'm Portuguese by heritage, Norwegian by upbringing, and I live in Frogner, Oslo. I speak Norwegian, English, and Portuguese — and publish in all three, with varying degrees of confidence.
+I'm Portuguese by heritage, Norwegian by upbringing, and I live in Frogner, Lillestrøm. I speak Norwegian, English, and Portuguese — and publish in all three, with varying degrees of confidence.
 
 I have a thing for high-end audio. Not the kind where you spend money to feel superior — the kind where you spend money to hear details in recordings you didn't notice before. That sensation of a tiny detail suddenly being audible: that's what good equipment is for. Same reason I'm particular about typography, code quality, and speaker placement.
 
