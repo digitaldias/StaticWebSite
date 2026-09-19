@@ -1801,3 +1801,4 @@ a.post-card__image img {
     right: var(--sp-4);
   }
 }
+:root { --cache-bust: 2; }
