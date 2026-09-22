@@ -51,4 +51,50 @@ jobs:
             --account-key "${AZURE_STORAGE_KEY}" \
             --source "src/public" \
             --destination '$web' \
-            --overwrite        
+            --overwrite
+
+      # Unlisted "briefing" section: staged locally by newsstream/scripts/publish_newsstream.py
+      # and committed to the briefing/ folder at repo root (outside Hugo's src/ tree).
+      - name: Deploy briefing pages ($web/briefing)
+        if: hashFiles('briefing/**') != ''
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+        run: |
+          az storage blob upload-batch \
+            --account-name "${AZURE_STORAGE_ACCOUNT}" \
+            --account-key "${AZURE_STORAGE_KEY}" \
+            --source "briefing" \
+            --destination '$web' \
+            --destination-path briefing \
+            --content-cache-control "no-cache, no-store, must-revalidate" \
+            --overwrite
+
+      # Retention: briefing/ only ever holds index.html (today) plus the last 4
+      # dated pages (YYYY-MM-DD.html) - delete anything older that lingers.
+      - name: Prune old briefing pages
+        if: hashFiles('briefing/**') != ''
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+        run: |
+          cutoff=$(date -u -d "-4 days" +%Y-%m-%d)
+          az storage blob list \
+            --account-name "${AZURE_STORAGE_ACCOUNT}" \
+            --account-key "${AZURE_STORAGE_KEY}" \
+            --container-name '$web' \
+            --prefix "briefing/" \
+            --query "[].name" -o tsv | while IFS= read -r name; do
+              base="${name##*/}"
+              if [[ "$base" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}\.html$ ]]; then
+                blobdate="${base%.html}"
+                if [[ "$blobdate" < "$cutoff" ]]; then
+                  az storage blob delete \
+                    --account-name "${AZURE_STORAGE_ACCOUNT}" \
+                    --account-key "${AZURE_STORAGE_KEY}" \
+                    --container-name '$web' \
+                    --name "$name"
+                  echo "deleted $name"
+                fi
+              fi
+            done
