@@ -162,6 +162,68 @@ function initReadingProgress() {
 }
 
 /* ─────────────────────────────────────────────
+   Image lightbox
+   Click any figure image in post content to view
+   it enlarged. Closes on backdrop click, the
+   close button, or Escape.
+───────────────────────────────────────────── */
+function initImageLightbox() {
+  const images = document.querySelectorAll('.post-content .figure img');
+  if (!images.length) return;
+
+  const lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+  lightbox.setAttribute('role', 'dialog');
+  lightbox.setAttribute('aria-modal', 'true');
+  lightbox.setAttribute('aria-hidden', 'true');
+  lightbox.innerHTML = `
+    <button type="button" class="lightbox__close" aria-label="Close">&times;</button>
+    <figure class="lightbox__figure">
+      <img class="lightbox__img" src="" alt="">
+      <figcaption class="lightbox__caption"></figcaption>
+    </figure>
+  `;
+  document.body.appendChild(lightbox);
+
+  const lightboxImg = lightbox.querySelector('.lightbox__img');
+  const lightboxCaption = lightbox.querySelector('.lightbox__caption');
+  const closeBtn = lightbox.querySelector('.lightbox__close');
+  let lastFocused = null;
+
+  const open = img => {
+    lastFocused = document.activeElement;
+    lightboxImg.src = img.currentSrc || img.src;
+    lightboxImg.alt = img.alt || '';
+    const caption = img.closest('.figure').querySelector('figcaption');
+    lightboxCaption.textContent = caption ? caption.textContent : '';
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  };
+
+  const close = () => {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    lightboxImg.src = '';
+    if (lastFocused) lastFocused.focus();
+  };
+
+  images.forEach(img => {
+    img.addEventListener('click', () => open(img));
+  });
+
+  closeBtn.addEventListener('click', close);
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) close();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) close();
+  });
+}
+
+/* ─────────────────────────────────────────────
    Ko-fi click tracking (Google Analytics)
 ───────────────────────────────────────────── */
 function initKofiTracking() {
@@ -187,5 +249,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollReveal();
   initSmoothScroll();
   initReadingProgress();
+  initImageLightbox();
   initKofiTracking();
 });

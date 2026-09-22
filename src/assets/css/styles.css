@@ -1039,6 +1039,15 @@ a.post-card__image img {
   border-radius: var(--radius);
 }
 
+.post-content .figure img {
+  cursor: zoom-in;
+  transition: opacity var(--transition);
+}
+
+.post-content .figure img:hover {
+  opacity: 0.9;
+}
+
 .post-content a {
   color: var(--accent-map);
   font-weight: 500;
@@ -1713,3 +1722,83 @@ a.post-card__image img {
     height: 140px;
   }
 }
+
+/* =============================================================================
+   21. LIGHTBOX — click-to-expand images in post content
+   ============================================================================= */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-6);
+  background: rgba(22, 26, 30, 0.92);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.lightbox.is-open {
+  display: flex;
+  opacity: 1;
+}
+
+.lightbox__figure {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.lightbox__img {
+  max-width: 90vw;
+  max-height: 88vh;
+  border-radius: var(--radius);
+  box-shadow: 0 var(--sp-3) var(--sp-8) rgba(22, 26, 30, 0.5);
+}
+
+.lightbox__caption {
+  color: var(--bg);
+  font-size: var(--text-sm);
+  font-style: italic;
+  text-align: center;
+  max-width: 70ch;
+}
+
+.lightbox__close {
+  position: fixed;
+  top: var(--sp-6);
+  right: var(--sp-6);
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: var(--text-xl);
+  line-height: 1;
+  cursor: pointer;
+  transition: transform var(--transition);
+}
+
+.lightbox__close:hover {
+  transform: scale(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .lightbox__close {
+    top: var(--sp-4);
+    right: var(--sp-4);
+  }
+}
+:root { --cache-bust: 2; }

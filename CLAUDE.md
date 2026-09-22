@@ -98,9 +98,21 @@ The Content Security Policy is hardcoded in `layouts/partials/head.html`. Any ne
 
 ## Deployment
 
-Push to `main` triggers `.github/workflows/deploy-to-azure.yml`, which builds with `hugo --minify` and uploads `src/public/` to Azure Blob Storage (`$web` container) via `az storage blob upload-batch`. Requires `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` secrets in the repo.
+Push to `main` triggers `.github/workflows/deploy-to-azure.yml`, which builds with `hugo --minify` and uploads `src/public/` to Azure Blob Storage (`$web` container) via `az storage blob upload-batch`. Requires `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` secrets in the repo. Cloudflare sits in front of the storage origin as CDN/DNS for the custom domain.
 
 The `src/isableFastRender/` directory is a Hugo server artifact — ignore it.
+
+### Known deploy race: do not verify a fresh deploy against the live CDN URL
+
+`upload-batch` uploads many files without guaranteeing order, so a page's HTML can become servable a moment before every fingerprinted asset it references (`css/styles.min.<hash>.css`, `js/main.min.<hash>.js`) is actually live at the origin. Cloudflare caches static-looking extensions (`.css`, `.js`, `.jpg`, …) **by default, including non-2xx responses**, and this site's zone currently returns `Cache-Control: max-age=14400` on those — so a single request that lands in that few-second window gets a 404 pinned at the edge for up to 4 hours, for everyone, until purged. This has caused a real outage (2026-09-19): the live site rendered unstyled because `styles.min.*.css` 404'd once, immediately after deploy, and stayed cached.
+
+Rules that follow from this:
+
+- **Never curl or open the live custom-domain URL immediately after a deploy finishes**, especially the fingerprinted CSS/JS paths. Checking is what poisons it. If you must confirm a deploy landed, read the `az storage blob upload-batch` step's JSON output in the GitHub Actions log (it lists every blob with its `eTag` and `Last Modified`) — that confirms the origin has the file without ever touching the CDN.
+- **Bumping the Hugo fingerprint is not a reliable fix on its own.** A new hash is a new URL Cloudflare has never cached, which sidesteps an already-poisoned entry — but the new URL can be raced and poisoned the exact same way (an uptime monitor, Cloudflare's own analytics beacon, or your own verification curl can all do it). Don't chase this by re-bumping and re-checking in a loop.
+- **The only deterministic fix once a URL is poisoned is a Cloudflare cache purge** (dashboard: Caching → Configuration → Purge Cache — purge the specific URL, or Purge Everything). Claude Code has no Cloudflare API token in this environment and cannot do this; ask Pedro to purge when this happens.
+- **The real fix belongs in Cloudflare, not this repo**: a Cache Rule that bypasses cache for non-2xx origin responses (e.g. "Bypass cache when Origin Status Code ≥ 400") would prevent this class of bug entirely. This needs to be set up once in the Cloudflare dashboard — flag it to Pedro rather than trying to work around it repo-side again.
+- Hugo's minifier strips comments before fingerprinting, so a comment-only edit to `styles.css`/`main.js` does **not** change the hash. Bumping the fingerprint on purpose requires an actual rule/value change.
 
 ## Content Guidelines
 

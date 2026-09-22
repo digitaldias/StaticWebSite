@@ -28,9 +28,9 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
 
 # Params
 [params]
-  description = 'Software Architect, Content Creator, and Family Man based in Frogner, Norway'
+  description = 'Software Architect, Content Creator, and Family Man based in Frogner, Lillestrøm'
   author = 'Pedro Dias'
-  location = 'Frogner, Norway'
+  location = 'Frogner, Lillestrøm'
   email = 'pedro.dias@tradesolution.no'
   
   # Social links
@@ -54,10 +54,10 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
     kofi = 'https://ko-fi.com/digitaldias'
   
   [params.currently]
-    building   = "A new Code Quality Qualifier tool"
-    listening  = "Pneuma, Tool"
-    tinkering  = "My new Insta360 Luna Ultra video camera"
-    annoyed_by = "Delivery times from Norwegian online stores"
+    building   = "A local, Jev-compatible decision API on oMLX"
+    listening  = "Ghost Notes, Mono Neon"
+    tinkering  = "Tuning oMLX's concurrency and cache settings on the M5 Pro"
+    annoyed_by = "My back pain"
 
   [params.photo]
     src = "/images/pedro.jpg"
@@ -66,7 +66,7 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
   # Positions held — update whenever an opinion sharpens or a new one forms
   [params.positions]
     items = [
-      "Open-source AI models are garbage, except for image generation.",
+      "Typed decision APIs like Jev are AI's next big shift for software.",
       "Claude Code's cache expiration is a hidden cost nobody talks about.",
       "Buy a 3D printer for your household.",
       "Keep your home automations simple.",
