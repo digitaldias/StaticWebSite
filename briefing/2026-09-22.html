@@ -273,6 +273,6 @@ body:has(#cat-hr-customer-support:target) .catbar-list a[href="#cat-hr-customer-
 
   <div class="footline">All 8 categories, every story today — nothing held back</div>
 </div>
-<script>document.querySelectorAll('.catbar-list a').forEach(function(a){a.addEventListener('click',function(){a.closest('details').open=false;});});</script>
+<script>(function(){var d=document.querySelector('.catbar');if(!d)return;function close(){d.open=false;}window.addEventListener('hashchange',close);d.querySelectorAll('.catbar-list a').forEach(function(a){a.addEventListener('click',function(){setTimeout(close,0);});});})();</script>
 </body>
 </html>
