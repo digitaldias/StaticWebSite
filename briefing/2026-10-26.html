@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Nyhetsstrøm — 2026-10-26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0ece1; --panel:#e8e3d4; --panel-2:#e6e1d2; --ink:#161a1e; --sub:#5a5e62; --faint:#c0bdb2; --line:#ddd6c4;
+  --accent:#b83c2c; --accent-cool:#162447; --accent-gold:#8a6a1c;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);font-family:"Barlow",system-ui,sans-serif;color:var(--ink);}
+.page{max-width:1200px;margin:0 auto;padding:28px 32px 60px;}
+a{color:inherit;text-decoration:none;}
+a:hover{color:var(--accent);}
+
+.meta-row{display:flex;justify-content:space-between;align-items:center;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--sub);padding-bottom:12px;border-bottom:2px solid var(--ink);}
+.meta-row .center{font-style:italic;font-family:"Lora",Georgia,serif;font-size:12px;letter-spacing:0;}
+.masthead{text-align:center;padding:20px 0 14px;border-bottom:1px solid var(--faint);}
+.wordmark{font-family:"Lora",Georgia,serif;font-weight:700;font-size:56px;letter-spacing:-0.01em;line-height:1;}
+.tagline{font-family:"Lora",Georgia,serif;font-style:italic;font-size:14px;color:var(--sub);margin-top:10px;}
+.rule-thick{height:2px;background:var(--ink);margin-top:14px;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:14px;margin:22px 0 16px;}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:16px 20px;}
+.kpi-label{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sub);margin-bottom:8px;}
+.kpi-value{font-family:"JetBrains Mono",monospace;font-weight:600;font-size:30px;line-height:1;}
+.kpi-value span{font-size:14px;color:var(--sub);font-weight:400;font-family:"Barlow",sans-serif;}
+.kpi.accent .kpi-value{color:var(--accent);}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--ink);padding:16px 22px 18px;margin-bottom:16px;}
+.panel-title{font-family:"Lora",Georgia,serif;font-weight:600;font-variant:small-caps;letter-spacing:.02em;font-size:17px;color:var(--ink);margin-bottom:14px;}
+
+.bar-row{display:flex;align-items:center;gap:12px;padding:5px 0;}
+.bar-label{width:170px;flex-shrink:0;font-size:13px;font-weight:500;}
+.bar-track{flex:1;height:8px;background:var(--panel-2);border:1px solid var(--line);border-radius:2px;overflow:hidden;}
+.bar-fill{height:100%;background:var(--accent);}
+.bar-count{width:26px;text-align:right;flex-shrink:0;font-family:"JetBrains Mono",monospace;font-weight:600;font-size:12.5px;color:var(--sub);}
+
+.grid{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:16px;align-items:start;}
+.cat-panel{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--ink);padding:16px 20px 18px;display:flex;flex-direction:column;}
+.cat-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line);}
+.cat-name{font-family:"Barlow",sans-serif;font-weight:600;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);}
+.cat-count{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--sub);font-weight:600;}
+.article-title{font-family:"Lora",Georgia,serif;font-weight:700;font-size:16px;line-height:1.3;margin-bottom:6px;}
+.translation-note{font-family:"Barlow",sans-serif;font-weight:400;font-style:italic;font-size:11px;color:var(--sub);}
+.article-summary{font-size:12.5px;line-height:1.5;color:var(--sub);margin-bottom:5px;}
+.article-pillar{font-size:11.5px;line-height:1.5;color:var(--sub);margin-bottom:5px;}
+.pillar-tag{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-cool);}
+.article-meta{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--sub);}
+.more{margin-top:12px;}
+.more > summary{list-style:none;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent-cool);cursor:pointer;font-weight:600;}
+.more > summary::-webkit-details-marker{display:none;}
+.more > summary::before{content:"+ ";}
+.more[open] > summary::before{content:"\2212 ";}
+.rest-list{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:10px;}
+.rest-item-head{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:500;line-height:1.4;}
+.rest-item-head a:hover{text-decoration:underline;}
+.rest-source{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--sub);white-space:nowrap;flex-shrink:0;padding-top:1px;}
+.rest-summary{font-size:11.5px;line-height:1.5;color:var(--sub);margin-top:3px;}
+.spotlight-item + .spotlight-item{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+
+.footline{margin-top:8px;font-size:11.5px;color:var(--sub);text-align:center;font-family:"JetBrains Mono",monospace;}
+</style>
+<style id="briefing-layer">
+.datestrip{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0 0;font-family:"JetBrains Mono",monospace;font-size:12px;}
+.datestrip a{padding:5px 10px;border:1px solid var(--line);border-radius:4px;color:var(--sub);}
+.datestrip a:hover{color:var(--accent);border-color:var(--accent);}
+.datestrip a[aria-current="page"]{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+
+.catbar{display:none;}
+
+@media (max-width:767px){
+  .page{padding:12px 16px 48px;}
+  .meta-row{font-size:10.5px;gap:8px;}
+  .meta-row .center{display:none;}
+  .masthead{padding:14px 0 10px;}
+  .wordmark{font-size:36px;}
+  .tagline{font-size:14px;line-height:1.4;}
+
+  .datestrip{justify-content:flex-start;margin-top:12px;}
+  .datestrip a{display:flex;align-items:center;min-height:44px;padding:0 14px;}
+
+  .kpi-row{gap:8px;margin:14px 0 12px;}
+  .kpi{padding:10px 12px;}
+  .kpi-label{font-size:10px;letter-spacing:.04em;line-height:1.3;}
+  .kpi-value{font-size:20px;}
+  .kpi-value span{display:none;}
+  .panel:has(.bar-row){display:none;}
+
+  .catbar{display:block;position:sticky;top:0;z-index:10;margin:0 -16px 12px;background:var(--bg);border-bottom:2px solid var(--ink);}
+  .catbar > summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;cursor:pointer;font-family:"Lora",Georgia,serif;font-weight:600;font-size:17px;}
+  .catbar > summary::-webkit-details-marker{display:none;}
+  .catbar > summary::after{content:"\25BE";font-family:"Barlow",sans-serif;font-size:16px;color:var(--sub);}
+  .catbar[open] > summary::after{content:"\25B4";}
+  .catbar .cur{display:none;}
+  .catbar .cur-all{display:inline;}
+  body:has(.cat-panel:target) .catbar .cur-all{display:none;}
+  .catbar-list{position:absolute;left:0;right:0;top:100%;max-height:70vh;overflow-y:auto;display:flex;flex-direction:column;background:var(--panel);border-bottom:2px solid var(--ink);}
+  .catbar-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;border-top:1px solid var(--line);font-size:16px;}
+  .catbar-list a span{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--sub);}
+  .catbar-list a.all{font-weight:600;}
+  body:has(.cat-panel:target) .catbar-list a.all{font-weight:400;}
+
+  body:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+
+  .grid{grid-template-columns:minmax(0,1fr);gap:12px;}
+  .cat-panel{padding:14px 16px 16px;scroll-margin-top:60px;}
+  .cat-name{font-size:12px;}
+  .cat-count{font-size:12px;}
+  .article-title{font-size:19px;line-height:1.3;}
+  .translation-note{font-size:12px;}
+  .article-summary{font-size:16px;line-height:1.6;color:var(--ink);}
+  .article-pillar{font-size:14px;}
+  .pillar-tag{font-size:11px;}
+  .article-meta{font-size:12px;}
+  .spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;}
+  .more{margin-top:6px;}
+  .more > summary{font-size:13px;padding:12px 0;}
+  .rest-list{gap:14px;}
+  .rest-item-head{flex-direction:column;gap:2px;font-size:15px;line-height:1.4;}
+  .rest-source{white-space:normal;font-size:11px;}
+  .rest-summary{font-size:14.5px;line-height:1.55;}
+  .footline{font-size:11px;line-height:1.5;}
+}
+
+body:has(#cat-utviklerverktoy:target) .catbar .cur-cat-utviklerverktoy{display:inline;}
+body:has(#cat-utviklerverktoy:target) .catbar-list a[href="#cat-utviklerverktoy"]{font-weight:600;color:var(--accent);}
+body:has(#cat-media-og-innholdsproduksjon:target) .catbar .cur-cat-media-og-innholdsproduksjon{display:inline;}
+body:has(#cat-media-og-innholdsproduksjon:target) .catbar-list a[href="#cat-media-og-innholdsproduksjon"]{font-weight:600;color:var(--accent);}
+body:has(#cat-bransjenytt:target) .catbar .cur-cat-bransjenytt{display:inline;}
+body:has(#cat-bransjenytt:target) .catbar-list a[href="#cat-bransjenytt"]{font-weight:600;color:var(--accent);}
+body:has(#cat-europa:target) .catbar .cur-cat-europa{display:inline;}
+body:has(#cat-europa:target) .catbar-list a[href="#cat-europa"]{font-weight:600;color:var(--accent);}
+body:has(#cat-kina-og-asia:target) .catbar .cur-cat-kina-og-asia{display:inline;}
+body:has(#cat-kina-og-asia:target) .catbar-list a[href="#cat-kina-og-asia"]{font-weight:600;color:var(--accent);}
+body:has(#cat-annet:target) .catbar .cur-cat-annet{display:inline;}
+body:has(#cat-annet:target) .catbar-list a[href="#cat-annet"]{font-weight:600;color:var(--accent);}
+body:has(#cat-norden:target) .catbar .cur-cat-norden{display:inline;}
+body:has(#cat-norden:target) .catbar-list a[href="#cat-norden"]{font-weight:600;color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="meta-row">
+    <span>DAGLIG BRIEFING</span>
+    <span class="center">CAIO-redaksjonen · Tradesolution</span>
+    <span>MANDAG 26. OKTOBER 2026</span>
+  </div>
+  <nav class="datestrip" aria-label="Dager"><a href="/briefing/">I dag</a><a href="/briefing/2026-10-27.html">27. okt</a><a href="/briefing/2026-10-26.html" aria-current="page">26. okt</a><a href="/briefing/2026-10-25.html">25. okt</a></nav>
+<div class="masthead">
+    <div class="wordmark">AI Nyhetsstrøm</div>
+    <div class="tagline">Fronten, støyen, og alt som er verdt Pedros fem minutter</div>
+  </div>
+  <div class="rule-thick"></div>
+
+  
+    <div class="kpi-row">
+      <div class="kpi accent">
+        <div class="kpi-label">Saker beholdt</div>
+        <div class="kpi-value">28 <span>/ 98 vurdert</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Filtrert bort som ikke AI-relatert</div>
+        <div class="kpi-value">70</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Aktive kilder</div>
+        <div class="kpi-value">57 <span>på tvers av 10 kategorier</span></div>
+      </div>
+    </div>
+    
+
+  <div class="panel">
+    <div class="panel-title">Saker etter kategori</div>
+    <div class="bar-row"><div class="bar-label">Bransjenytt</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-count">11</div></div>
+<div class="bar-row"><div class="bar-label">Kina og Asia</div><div class="bar-track"><div class="bar-fill" style="width:64%"></div></div><div class="bar-count">7</div></div>
+<div class="bar-row"><div class="bar-label">Media- og innholdsproduksjon</div><div class="bar-track"><div class="bar-fill" style="width:27%"></div></div><div class="bar-count">3</div></div>
+<div class="bar-row"><div class="bar-label">Utviklerverktøy</div><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><div class="bar-count">2</div></div>
+<div class="bar-row"><div class="bar-label">Europa</div><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><div class="bar-count">2</div></div>
+<div class="bar-row"><div class="bar-label">Annet</div><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><div class="bar-count">2</div></div>
+<div class="bar-row"><div class="bar-label">Norden</div><div class="bar-track"><div class="bar-fill" style="width:9%"></div></div><div class="bar-count">1</div></div>
+  </div>
+
+  <details class="catbar"><summary><span class="cur cur-all">Alle kategorier · 28</span><span class="cur cur-cat-utviklerverktoy">Utviklerverktøy · 2</span><span class="cur cur-cat-media-og-innholdsproduksjon">Media- og innholdsproduksjon · 3</span><span class="cur cur-cat-bransjenytt">Bransjenytt · 11</span><span class="cur cur-cat-europa">Europa · 2</span><span class="cur cur-cat-kina-og-asia">Kina og Asia · 7</span><span class="cur cur-cat-annet">Annet · 2</span><span class="cur cur-cat-norden">Norden · 1</span></summary><nav class="catbar-list" aria-label="Kategorier"><a class="all" href="#kategorier">Alle kategorier<span>28</span></a><a href="#cat-utviklerverktoy">Utviklerverktøy<span>2</span></a><a href="#cat-media-og-innholdsproduksjon">Media- og innholdsproduksjon<span>3</span></a><a href="#cat-bransjenytt">Bransjenytt<span>11</span></a><a href="#cat-europa">Europa<span>2</span></a><a href="#cat-kina-og-asia">Kina og Asia<span>7</span></a><a href="#cat-annet">Annet<span>2</span></a><a href="#cat-norden">Norden<span>1</span></a></nav></details>
+  <div class="grid" id="kategorier">
+    <div class="cat-panel" id="cat-utviklerverktoy"><div class="cat-head"><span class="cat-name">Utviklerverktøy</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.infoq.com/news/2026/10/google-meta-torchtpu/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering" target="_blank" rel="noopener noreferrer">Google og Meta åpner opp for TorchTPU: Native PyTorch-støtte for TPU</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Google og Meta har lansert TorchTPU, et open source backend for PyTorch som gir native støtte for Googles TPU. Meta planlegger å flytte større LLM-workloads til TPU med verktøyet, mens AWS samtidig har lansert TorchNeuron for Trainium.</div><div class="article-pillar"><span class="pillar-tag">Lisenser</span> Vurder om TorchTPU kan redusere avhengigheten av eksisterende GPU-lisenser ved å muliggjøre kostnadseffektiv trening på Googles TPU.</div><div class="article-meta">INFOQ AI, ML &amp; DATA ENGINEERING · 25. OKT, 17:00</div></div><details class="more"><summary>1 flere</summary><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.infoq.com/news/2026/10/google-ml-drift/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering" target="_blank" rel="noopener noreferrer">Google lanserer ML Drift for on-device AI-inferens på ulike GPU-typer</a><span class="rest-source">INFOQ AI, ML &amp; DATA ENGINEERING</span></div><div class="rest-summary">Google har lansert ML Drift, en open source GPU-beregningsemotor designet for on-device AI og maskinlæring. Verktøyet abstraherer kompleksiteten i ulike GPU-hardware og lavnivå-APIer, og støtter blant annet OpenGL ES, OpenCL, Metal og WebGPU.</div></div></div></details></div>
+<div class="cat-panel" id="cat-media-og-innholdsproduksjon"><div class="cat-head"><span class="cat-name">Media- og innholdsproduksjon</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://techcrunch.com/2026/10/25/grok-releases-the-first-seven-minutes-of-its-ai-generated-odyssey/" target="_blank" rel="noopener noreferrer">Grok lanserer de første syv minuttene av AI-generert «Odyssey»</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">xAI har publisert de første syv minuttene av sin AI-genererte film «Odyssey». Omtalen peker på at opptaket fungerer teknisk, men mangler kunstnerisk dybde og menneskelig interesse.</div><div class="article-meta">TECHCRUNCH AI · 25. OKT, 20:31</div></div><details class="more"><summary>2 flere</summary><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.lemonde.fr/international/article/2026/10/25/le-reve-cabosse-d-hollywood-face-a-l-ia-tout-le-monde-l-utilise-mais-personne-ne-veut-en-parler_6800103_3210.html" target="_blank" rel="noopener noreferrer">Hollywoods skadede drømme møter kunstig intelligens: «Alle bruker den, men ingen vil snakke om den»</a><span class="rest-source">LE MONDE - PIXELS</span></div><div class="rest-summary">Den amerikanske filmindustrien står overfor en dyp krise preget av kostbare produksjoner, utbredelsen av streamingtjenester og innføringen av kunstig intelligens. Selv om AI-verktøyene er i bred bruk, unngår bransjen å diskutere teknologien åpent. Artikkelen ser på hvordan Hollywoods tradisjonelle maktbalanse endres, med midtermsvalgene som bakgrunn.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/tv-and-radio/2026/oct/26/neighbours-soap-recut-ai-microdrama-mobile-series-feat-margot-robbie" target="_blank" rel="noopener noreferrer">Neighbours klippes om til mikrodrama med AI – medspillere misfornøyde</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">Den australske såpeoperaen Neighbours blir omklippet til vertikale mikrodrama for mobiltelefoner ved hjelp av AI-verktøyet RedSnapper. Medspillere til Margot Robbie uttrykker misnøye med at de ikke er blitt konsultert i prosessen, noe som har utløst debatt om bruk av TV-arkiv for ny innholdsskaping.</div></div></div></details></div>
+<div class="cat-panel" id="cat-bransjenytt"><div class="cat-head"><span class="cat-name">Bransjenytt</span><span class="cat-count">11</span></div><div class="spotlight-item"><div class="article-title"><a href="https://hrtechfeed.com/every-phase-every-tool-every-decision-how-sap-has-woven-ai-into-transformation/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=every-phase-every-tool-every-decision-how-sap-has-woven-ai-into-transformation" target="_blank" rel="noopener noreferrer">SAP vevet AI inn i transformasjonsprosjekter</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Artikkelen tar for seg hvordan SAP har integrert kunstig intelligens i praktiske transformasjonsprosjekter. Forfatteren gir en ærlig vurdering av SAPs Agent-Led Toolchain og hva som faktisk fungerer i produksjon.</div><div class="article-pillar"><span class="pillar-tag">Måling</span> Evaluer SAPs Agent-Led Toolchain mot eksisterende leverandører for å vurdere potensiell ROI og produktivitetsgevinst i våre transformasjonsprosjekter.</div><div class="article-meta">HR TECH FEED · 25. OKT, 14:00</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.theverge.com/column/1017983/google-ai-search-online-publishing" target="_blank" rel="noopener noreferrer">Googles AI-søk har endret reglene for nettopplag</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Nettopplag har tradisjonelt vært avhengig av søketrafikk for å nå leserne, men Googles innføring av AI-søk har forandret dette landskapet. Endringene har skapt store utfordringer for utgivere som nå må omstille seg for å beholde sin relevans i en digital verden der brukere får svar direkte i søkemotoren.</div><div class="article-pillar"><span class="pillar-tag">Kommunikasjon</span> Vurder hvordan Googles AI-søk påvirker vår digitale synlighet og juster innholdsstrategien for å sikre at vi fremdeles når målgruppen.</div><div class="article-meta">THE VERGE AI · 25. OKT, 11:00</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://ing.dk/holdning/ai-har-loest-en-aartusindegaade-hvad-goer-vi" target="_blank" rel="noopener noreferrer">AI har løst en tusenårsgåte – hva gjør vi nå?</a><span class="translation-note"> (oversatt fra da)</span></div><div class="article-summary">Artikkelen stiller spørsmål ved om store menneskelige prestasjoner er et overstått kapittel i lys av at kunstig intelligens har løst en gåte som har plaget forskere i tusenår. Den utforsker de etiske og samfunnsøkonomiske konsekvensene av denne teknologiske gjennombruddet.</div><div class="article-meta">INGENIOREN · 25. OKT, 08:06</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.japantimes.co.jp/business/2026/10/25/tech/ai-flaw-tech-debt/" target="_blank" rel="noopener noreferrer">Teknisk gjeld henger over oss: AI-avdekket sårbarhet varsler kaos</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">En sårbarhet ble avdekket ved hjelp av en modell fra OpenAI, i en av de mest profilerte demonstrasjonene av kunstig intelligens&#x27; cybermuligheter. Dette signaliserer at teknisk gjeld nå begynner å bli en akutt risiko for organisasjoner.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Evaluer om dere har tilstrekkelige prosesser for å identifisere og håndtere teknisk gjeld som kan utnyttes av AI-verktøy, og vurder å integrere AI-basert sårbarhetstesting i risikostyringen.</div><div class="article-meta">JAPAN TIMES · 25. OKT, 00:33</div></div><details class="more"><summary>7 flere</summary><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.scmp.com/business/cryptocurrency/article/3372060/standard-chartered-led-anchorpoint-plans-retail-stablecoin-hsbc-redcoin-launches" target="_blank" rel="noopener noreferrer">Anchorpoint planer retail-stablecoin etter lansering av HSBC RedCoin</a><span class="rest-source">SOUTH CHINA MORNING POST - TECH</span></div><div class="rest-summary">Etter at HSBC lanserte RedCoin, melder Anchorpoint, ledet av Standard Chartered, at de planlegger å lansere et retail-produkt på en offentlig blockchain. Selskapet understreker at de tar en forsiktig tilnærming til å integrere regulert digital valuta i hverdagsbetalinger og kommersielle applikasjoner.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/us-news/2026/oct/25/elvis-presley-anthropic-lawsuit-ai-models-music" target="_blank" rel="noopener noreferrer">Anthropic saksøkt for å ha brukt 274 Elvis Presley-sanger i AI-trening</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">Authentic Brands Group, som eier rettighetene til Elvis Presleys musikk, saksøker AI-selskapet Anthropic for å ha brukt 274 av Presleys sanger til å trene sine modeller uten tillatelse. Selskapet hevdet at Anthropic har krenket rettighetene til sangene, inkludert «Can’t Help Falling in Love».</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/10/25/ai-delivers-zero-financial-payoff-to-most-companies-according-to-apollo-economist/" target="_blank" rel="noopener noreferrer">Apollo-økonom: AI gir ingen finansiell avkastning til de fleste selskaper</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">En økonom hos Apollo påpeker at kunstig intelligens ikke har gitt noen finansiell gevinst til det meste av det amerikanske næringslivet utenfor teknologisektoren. Dette skjer til tross for store investeringer og betydelig oppmerksomhet rundt teknologien.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.digi.no/kunstig-intelligens/sann-slipper-hun-los-en-arme-av-ki-agenter/7148538" target="_blank" rel="noopener noreferrer">Sånn slipper hun løs en armé av KI-agenter</a><span class="rest-source">DIGI.NO</span></div><div class="rest-summary">Space XAI-ingeniør Lauren Tan har utviklet en ny ledelsesmodell for utviklingsteam som består utelukkende av KI-agenter. Teamet har én stabssjef, tre mellomledere og 11 spesialister, men ingen menneskelige medlemmer.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/10/25/the-hottest-ai-wearables-and-gadgets-you-should-know-about/" target="_blank" rel="noopener noreferrer">De varmeste AI-sløyfene og gjenstandene du bør kjenne til</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Artikkelen presenterer en oversikt over de mest populære AI-sløyfene og gjenstandene på markedet for øyeblikket. Listen inkluderer produkter som Muse Charm, Bee, Friend og Plaud.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/australia-news/2026/oct/26/deloitte-report-wa-university-mergers-260m-discrepancy-ai" target="_blank" rel="noopener noreferrer">WA-regjeringen krever erstatning fra Deloitte over feilaktig universitetsrapport</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">Den vestaustralske regjeringen krever erstatning fra Deloitte etter at feil ble oppdaget i en gjennomførbarhetsstudie om en mulig sammenslåing av tre universiteter. Regjeringen uttrykker «ekstrem skuffelse» over at rapporten inneholdt referanser generert av kunstig intelligens samt kostnadsavvik på hundrevis av millioner dollar.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/ai-artificial-intelligence/1018217/reddit-opensource-ai-ban" target="_blank" rel="noopener noreferrer">r/opensource forbanner AI-prosjekter og ikke-engelskspråklige innlegg</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">Moderatorene på r/opensource har innført nye regler som forbinder prosjekter som bruker, er laget av eller er ment for kunstig intelligens. De hevder at AI i dagens form er uforenlig med åpen kildekode. Reglene forbudt også innlegg på andre språk enn engelsk.</div></div></div></details></div>
+<div class="cat-panel" id="cat-europa"><div class="cat-head"><span class="cat-name">Europa</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://nos.nl/l/2636658" target="_blank" rel="noopener noreferrer">Bedrifter veksler til kinesiske åpne AI-modeller for kostnad og kontroll</a><span class="translation-note"> (oversatt fra nl)</span></div><div class="article-summary">Europas bedrifter øker bruken av åpne AI-modeller, hovedsakelig fra kinesiske aktører som DeepSeek og Qwen, for å redusere kostnader og beholde kontroll over sensitive data. Ifølge OpenRouter utgjør åpne modeller nå 70 prosent av AI-bruken, opp fra 30 prosent tidligere på året. Samtidig vurderer den kinesiske regjeringa å innføre restriksjoner på eksport av AI-teknologi, noe som skaper usikkerhet for europeiske og amerikanske selskaper.</div><div class="article-pillar"><span class="pillar-tag">Lisenser</span> Vurder å diversifisere leverandørporteføljen ved å teste kinesiske åpne modeller som DeepSeek eller Qwen for å redusere kostnader og øke datakontroll, samtidig som du kartlegger eksportrisikoen.</div><div class="article-meta">NOS - TECH · 25. OKT, 17:51</div></div><details class="more"><summary>1 flere</summary><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.lemonde.fr/economie/article/2026/10/25/pour-identifier-le-recours-a-l-ia-dans-les-uvres-la-musique-affiche-une-serieuse-avance-sur-l-edition-et-le-cinema_6800033_3234.html" target="_blank" rel="noopener noreferrer">Musikkbransjen er i tetthet i merking av kunstig intelligens</a><span class="rest-source">LE MONDE - PIXELS</span></div><div class="rest-summary">Streamingtjenester for musikk markerer allerede innhold generert med kunstig intelligens, noe som gir bransjen en klar ledertid i forhold til utgivelse og film. Det er fortsatt langt igjen før man oppnår tilsvarende gjennomsiktighet i bok- og filmbransjen, selv om det finnes enkelte initiativer innenfor fotografering.</div></div></div></details></div>
+<div class="cat-panel" id="cat-kina-og-asia"><div class="cat-head"><span class="cat-name">Kina og Asia</span><span class="cat-count">7</span></div><div class="spotlight-item"><div class="article-title"><a href="https://asia.nikkei.com/business/markets/trading-asia/ai-stock-falls-are-sore-spot-for-china-s-self-reliance-strategy" target="_blank" rel="noopener noreferrer">Falling AI stocks er et sår punkt for Kinas strategi om selvstendighet</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Nedgangene i aksjekurser for kunstig intelligens utgjør en utfordring for Kinas ambisjoner om teknologisk selvstendighet. Svak markedsutvikling kan svekke landets evne til å finansiere og opprettholde sin egen AI-ekosystem uavhengig av utenlandske aktører.</div><div class="article-meta">NIKKEI ASIA · 25. OKT, 21:01</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.scmp.com/tech/tech-trends/article/3371979/why-cloud-computing-pioneer-wang-jian-thinks-space-next-ai-frontier" target="_blank" rel="noopener noreferrer">Wang Jian mener rommet er neste front for kunstig intelligens</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Wang Jian, som grunnla Alibaba Cloud i 2009, mener at rommet vil bli neste store arena for utvikling av kunstig intelligens. Han har lenge vært en sentral skikkelse i utviklingen av den infrastruktur som nå driver AI-bransjen fremover.</div><div class="article-meta">SOUTH CHINA MORNING POST - TECH · 25. OKT, 21:00</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.scmp.com/tech/tech-trends/article/3371925/chinas-tech-giants-are-paying-1-million-yuan-new-kind-ai-engineer" target="_blank" rel="noopener noreferrer">Kinesiske techgiganter betaler én million yuan for nye AI-ingeniører</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Kinesiske selskaper som ByteDance, Tencent og Alibaba tilbyr lønnsnivåer på opptil én million yuan for å rekruttere såkalte forward-deployed engineers. Disse ingeniørene jobber direkte med kunder for å integrere AI-modeller i kommersielle løsninger og forretningsprosesser.</div><div class="article-meta">SOUTH CHINA MORNING POST - TECH · 25. OKT, 05:00</div></div><details class="more"><summary>4 flere</summary><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/business/softbank/softbank-plans-50bn-ai-investment-in-malaysia-pm-says" target="_blank" rel="noopener noreferrer">SoftBank planlegger 50 milliarder dollar i AI-investeringer i Malaysia</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">SoftBank har planer om å investere 50 milliarder dollar i kunstig intelligens i Malaysia, ifølge den malaysiske statsministeren. Investeringen skal styrke landets posisjon som et senter for AI-utvikling og infrastruktur i regionen.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/risikopruefungen-werden-pflicht-china-will-ki-jobverluste-abfedern-2610-214487.html" target="_blank" rel="noopener noreferrer">Kina innfører obligatoriske risikovurderinger for å dempe KI-relaterte jobbtap</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">Kina skal styrke kontrollen over bruken av kunstig intelligens på arbeidsplassen for å beskytte ansatte mot konsekvensene av automatisering. Regjeringen innfører obligatoriske risikovurderinger samt tiltak som omopplæring for å sikre at arbeidstakere ikke blir utsatt for negative effekter av teknologisk endring.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/politics/indonesia-free-university-plan-to-attract-ai-risks-more-fiscal-strain" target="_blank" rel="noopener noreferrer">Indonesias plan om gratis universitet for å tiltrekke seg AI-talenter kan øke budsjettbelastningen</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">Indonesias forslag om å gjøre universitetet gratis for å tiltrekke seg kunstig intelligens-talenter risikerer å øke det offentlige budsjetttrykket. Planen skal hjelpe landet med å bygge opp kapasitet innen AI, men finansieringsmodellen skaper bekymringer for bærekraften.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.japantimes.co.jp/commentary/2026/10/25/world/india-ai-quiet-quitting/" target="_blank" rel="noopener noreferrer">Stille oppsigelse spres til India. AI vil gjøre det verre</a><span class="rest-source">JAPAN TIMES</span></div><div class="rest-summary">Det er tegn på at kunstig intelligens, selv om den øker produktiviteten for eksperter, tynner ut ferdighetene unge mennesker tilegner seg tidlig i karrieren. Dette fenomenet, kjent som stille oppsigelse, forventes å bli forsterket av AI-bruk i India.</div></div></div></details></div>
+<div class="cat-panel" id="cat-annet"><div class="cat-head"><span class="cat-name">Annet</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.digi.no/sikkerhet/ofre-for-utpressingsvirus-utsettes-for-alvorlige-trusler-ifolge-rapport/7147688" target="_blank" rel="noopener noreferrer">Ofre for utpressingsvirus utsettes for alvorlige trusler</a><span class="translation-note"></span></div><div class="article-summary">Utpressingsvirus utgjør fortsatt en betydelig sikkerhetstrussel. Bruken av kunstig intelligens har gjort situasjonen enda verre for ofrene.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder å oppdatere AI-sikkerhetspolitikken for å adressere spesifikke trusler knyttet til AI-drevet utpressingsvirus og styrke risikostyringen.</div><div class="article-meta">DIGI.NO · 25. OKT, 03:00</div></div><details class="more"><summary>1 flere</summary><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://techpolicy.press/the-edge-dialogues-with-dr-alondra-nelson" target="_blank" rel="noopener noreferrer">The Edge Dialogues med Dr. Alondra Nelson</a><span class="rest-source">TECH POLICY PRESS</span></div><div class="rest-summary">Dr. Alondra Nelson er gjest i podkasten The Edge Dialogues. Uten tilgjengelig sammendrag kan ikke innholdet i samtalen beskrives nøyaktig.</div></div></div></details></div>
+<div class="cat-panel" id="cat-norden"><div class="cat-head"><span class="cat-name">Norden</span><span class="cat-count">1</span></div><div class="spotlight-item"><div class="article-title"><a href="https://ing.dk/artikel/kontroversiel-data-gigant-staar-bag-novos-hemmelige-laege-kartotek-her-er-skandalerne" target="_blank" rel="noopener noreferrer">Kontroversiell datagigant bak Novo Nordisks hemmelige legekartotek</a><span class="translation-note"> (oversatt fra da)</span></div><div class="article-summary">Novo Nordisk har bygget en hemmelig database for å rangere tusenvis av danske leger og sykepleiere med hjelp fra en kontroversiell amerikansk datagigant. Selskapet har nylig fått flere dommer i Europa for sin praksis.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Gjennomfør en risikoanalyse av Novo Nordisks praksis for å sikre at vår egen AI-styring unngår lignende etiske og juridiske brudd.</div><div class="article-meta">INGENIOREN · 25. OKT, 03:00</div></div></div>
+  </div>
+
+  <div class="footline">Alle 7 kategorier, hver sak i dag — ingenting holdt tilbake</div>
+</div>
+<script src="catbar.js" defer></script>
+</body>
+</html>
