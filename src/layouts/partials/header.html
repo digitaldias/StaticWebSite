@@ -1,19 +1,12 @@
-<header class="nav" role="banner">
-  <div class="container">
-    <a href="/" class="nav__logo">Pedro Dias</a>
-    <nav aria-label="Main navigation">
-      <ul class="nav__links">
-        <li><a href="/" class="nav__link{{- if .IsHome }} nav__link--active{{- end }}">Home</a></li>
-        <li><a href="/blog/" class="nav__link{{- if eq .Section "blog" }} nav__link--active{{- end }}">Writing</a></li>
-        {{- if .Site.GetPage "/about" }}
-        <li><a href="/about/" class="nav__link{{- if eq .Section "about" }} nav__link--active{{- end }}">About</a></li>
-        {{- end }}
-      </ul>
+{{- $inWriting := or .IsHome (eq .Section "blog") (eq .Kind "taxonomy") (eq .Kind "term") -}}
+<header class="mast" role="banner">
+  <div class="wrap">
+    <a class="wordmark" href="/">digital<b>dias</b></a>
+    <nav class="nav" aria-label="Main navigation">
+      {{- range slice (dict "url" "/blog/" "name" "Writing" "on" $inWriting) (dict "url" "/log/" "name" "Log" "on" (eq .Section "log")) (dict "url" "/photography/" "name" "Photographs" "on" (eq .Section "photography")) (dict "url" "/about/" "name" "About" "on" (eq .Section "about")) }}
+      <a href="{{ .url }}"{{ if eq $.RelPermalink .url }} aria-current="page"{{ else if .on }} aria-current="true"{{ end }}>{{ .name }}</a>
+      {{- end }}
     </nav>
-    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Toggle navigation">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
   </div>
 </header>

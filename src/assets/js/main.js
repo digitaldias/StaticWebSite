@@ -1,6 +1,6 @@
 /**
  * digitaldias.com — main.js
- * The Craftsman's Notebook edition.
+ * The Sea Glass edition.
  * Clean ES6+, no dependencies, respects prefers-reduced-motion.
  */
 
@@ -8,96 +8,6 @@
 
 const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* ─────────────────────────────────────────────
-   Page fade-in
-   Body starts at opacity:0 (CSS), transitions
-   to 1 on DOMContentLoaded via .is-loaded class.
-───────────────────────────────────────────── */
-function initPageFade() {
-  document.body.classList.add('is-loaded');
-}
-
-/* ─────────────────────────────────────────────
-   Navigation
-   - Sticky shadow on scroll
-   - Mobile hamburger toggle
-   - Active link detection by path
-───────────────────────────────────────────── */
-function initNavigation() {
-  const nav = document.querySelector('.nav');
-  if (!nav) return;
-
-  // Shadow on scroll
-  const onScroll = () => {
-    nav.classList.toggle('is-scrolled', window.scrollY > 10);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  // Mobile toggle
-  const toggle = nav.querySelector('.nav__toggle');
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      nav.classList.toggle('nav--open', !expanded);
-    });
-  }
-
-  // Close mobile menu on link click
-  nav.querySelectorAll('.nav__link').forEach(link => {
-    link.addEventListener('click', () => {
-      if (toggle) toggle.setAttribute('aria-expanded', 'false');
-      nav.classList.remove('nav--open');
-    });
-  });
-
-  // Active state: compare current path to link href
-  const currentPath = window.location.pathname;
-  nav.querySelectorAll('.nav__link').forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href) return;
-    const linkPath = new URL(href, window.location.href).pathname;
-    // Exact match, or starts-with for section pages (/blog/ matches /blog/post-slug/)
-    if (
-      currentPath === linkPath ||
-      (linkPath !== '/' && currentPath.startsWith(linkPath))
-    ) {
-      link.classList.add('nav__link--active');
-    }
-  });
-}
-
-/* ─────────────────────────────────────────────
-   Scroll reveal
-   Elements with .reveal get .is-visible when
-   they enter the viewport. CSS handles the
-   actual opacity/transform transition.
-───────────────────────────────────────────── */
-function initScrollReveal() {
-  if (prefersReducedMotion()) {
-    // Show everything immediately
-    document.querySelectorAll('.reveal').forEach(el => {
-      el.classList.add('is-visible');
-    });
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-  );
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
 
 /* ─────────────────────────────────────────────
    Smooth scroll for in-page anchors
@@ -242,8 +152,8 @@ function initChart() {
     if (e.key === 'Escape') setOpen(false);
   });
 
-  // Sit the strip and rail just under the sticky nav
-  const nav = document.querySelector('.nav');
+  // Sit the strip and rail just under the sticky header
+  const nav = document.querySelector('.mast');
   const placeBelowNav = () => {
     chart.style.top = `${nav ? nav.offsetHeight : 0}px`;
   };
@@ -405,6 +315,31 @@ function initReaderMemory() {
   window.addEventListener('load', () => requestAnimationFrame(offerResume), { once: true });
 }
 
+const READ_MARK_CARDS = '.stream article, .see-also__item, .next';
+const READ_MARK_SKIP = '.post-content, .respond, .chart, .nav, .revision-record';
+
+function readMarkFor(entry) {
+  const mark = document.createElement('span');
+  if (entry.done) {
+    mark.className = 'read-mark read-mark--done';
+    mark.textContent = 'Read';
+  } else {
+    mark.className = 'read-mark';
+    mark.style.setProperty('--read', entry.p);
+    mark.textContent = `${Math.round(entry.p * 100)}% read · ${entry.m} min left`;
+  }
+  return mark;
+}
+
+// A card's meta line takes the stamp; otherwise it sits above the headline, or after a bare link
+function placeReadMark(card, link, mark) {
+  const slot = card.querySelector('.meta-line');
+  const headline = card.querySelector('h2, h3, h4');
+  if (slot) slot.appendChild(mark);
+  else if (headline) headline.insertAdjacentElement('beforebegin', mark);
+  else link.insertAdjacentElement('afterend', mark);
+}
+
 function initReadMarks() {
   const log = readReadingLog();
   if (!Object.keys(log).length) return;
@@ -413,29 +348,16 @@ function initReadMarks() {
   const marked = new Set();
 
   document.querySelectorAll('main a[href]').forEach(a => {
-    if (a.closest('.post-content, .post-footer, .chart, .nav, .revision-record')) return;
+    if (a.closest(READ_MARK_SKIP)) return;
     const url = new URL(a.href, window.location.href);
     if (url.origin !== window.location.origin || url.pathname === here) return;
     const entry = log[url.pathname];
     if (!entry || (!entry.done && entry.p < STARTED_AT)) return;
 
-    const card = a.closest('.post-card, .paper-lead, .see-also__item') || a;
+    const card = a.closest(READ_MARK_CARDS) || a;
     if (marked.has(card)) return;
     marked.add(card);
-
-    const mark = document.createElement('span');
-    if (entry.done) {
-      mark.className = 'read-mark read-mark--done';
-      mark.textContent = 'Read';
-    } else {
-      mark.className = 'read-mark';
-      mark.style.setProperty('--read', entry.p);
-      mark.textContent = `${Math.round(entry.p * 100)}% read · ${entry.m} min left`;
-    }
-
-    const headline = card !== a && card.querySelector('h2, h3, h4');
-    if (headline) headline.insertAdjacentElement('beforebegin', mark);
-    else a.insertAdjacentElement('afterend', mark);
+    placeReadMark(card, a, readMarkFor(entry));
   });
 }
 
@@ -605,64 +527,125 @@ function initCitations() {
   });
 }
 /* ─────────────────────────────────────────────
-   Image lightbox
-   Click any figure image in post content to view
-   it enlarged. Closes on backdrop click, the
-   close button, or Escape.
+   Lightbox
+   One <dialog> for post figures and the
+   Photographs grid. The browser handles focus,
+   Escape and the backdrop layer.
 ───────────────────────────────────────────── */
-function initImageLightbox() {
-  const images = document.querySelectorAll('.post-content .figure img');
-  if (!images.length) return;
+function lightboxDialog() {
+  const existing = document.querySelector('dialog.lightbox');
+  if (existing) return existing;
 
-  const lightbox = document.createElement('div');
-  lightbox.className = 'lightbox';
-  lightbox.setAttribute('role', 'dialog');
-  lightbox.setAttribute('aria-modal', 'true');
-  lightbox.setAttribute('aria-hidden', 'true');
-  lightbox.innerHTML = `
-    <button type="button" class="lightbox__close" aria-label="Close">&times;</button>
-    <figure class="lightbox__figure">
-      <img class="lightbox__img" src="" alt="">
-      <figcaption class="lightbox__caption"></figcaption>
-    </figure>
+  const box = document.createElement('dialog');
+  box.className = 'lightbox';
+  box.setAttribute('aria-label', 'Enlarged image');
+  box.innerHTML = `
+    <form method="dialog"><button class="lightbox__close">Close</button></form>
+    <img class="lightbox__img" alt="">
+    <p class="lightbox__caption m"></p>
   `;
-  document.body.appendChild(lightbox);
+  box.addEventListener('click', e => {
+    if (e.target === box || e.target.classList.contains('lightbox__img')) box.close();
+  });
+  box.addEventListener('close', () => box.querySelector('.lightbox__img').removeAttribute('src'));
+  document.body.appendChild(box);
+  return box;
+}
 
-  const lightboxImg = lightbox.querySelector('.lightbox__img');
-  const lightboxCaption = lightbox.querySelector('.lightbox__caption');
-  const closeBtn = lightbox.querySelector('.lightbox__close');
-  let lastFocused = null;
+function openLightbox(img, caption) {
+  const box = lightboxDialog();
+  const big = box.querySelector('.lightbox__img');
+  big.src = img.currentSrc || img.src;
+  big.alt = img.alt || '';
+  box.querySelector('.lightbox__caption').textContent = caption || '';
+  box.showModal();
+}
 
-  const open = img => {
-    lastFocused = document.activeElement;
-    lightboxImg.src = img.currentSrc || img.src;
-    lightboxImg.alt = img.alt || '';
-    const caption = img.closest('.figure').querySelector('figcaption');
-    lightboxCaption.textContent = caption ? caption.textContent : '';
-    lightbox.classList.add('is-open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    closeBtn.focus();
-  };
-
-  const close = () => {
-    lightbox.classList.remove('is-open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    lightboxImg.src = '';
-    if (lastFocused) lastFocused.focus();
-  };
-
-  images.forEach(img => {
-    img.addEventListener('click', () => open(img));
+function initImageLightbox() {
+  document.querySelectorAll('.post-content .figure img').forEach(img => {
+    img.addEventListener('click', () => {
+      const caption = img.closest('.figure').querySelector('figcaption');
+      openLightbox(img, caption ? caption.textContent : '');
+    });
   });
 
-  closeBtn.addEventListener('click', close);
-  lightbox.addEventListener('click', e => {
-    if (e.target === lightbox) close();
+  const gallery = document.querySelector('.gallery');
+  if (!gallery) return;
+  gallery.addEventListener('click', e => {
+    const frame = e.target.closest('button');
+    if (frame) openLightbox(frame.querySelector('img'), frame.querySelector('span').textContent);
   });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) close();
+}
+
+/* ─────────────────────────────────────────────
+   Headline word rise
+   Wraps each word of a .split-words headline in
+   .w > span so CSS can raise them in sequence.
+   Under reduced motion nothing is split.
+───────────────────────────────────────────── */
+function splitWords(node, counter) {
+  Array.from(node.childNodes).forEach(child => {
+    if (child.nodeType !== Node.TEXT_NODE) {
+      splitWords(child, counter);
+      return;
+    }
+    const frag = document.createDocumentFragment();
+    child.textContent.split(/(\s+)/).forEach(part => {
+      if (!part.trim()) {
+        frag.append(part);
+        return;
+      }
+      const word = document.createElement('span');
+      const inner = document.createElement('span');
+      word.className = 'w';
+      inner.textContent = part;
+      inner.style.setProperty('--i', counter.i++);
+      word.append(inner);
+      frag.append(word);
+    });
+    child.replaceWith(frag);
+  });
+}
+
+function initHeadlineRise() {
+  document.querySelectorAll('.split-words').forEach(h => {
+    if (!prefersReducedMotion()) splitWords(h, { i: 0 });
+    h.classList.add('is-split');
+  });
+}
+
+/* ─────────────────────────────────────────────
+   Giscus
+   Reactions and comments, injected here so the
+   first load already matches the reader's theme;
+   re-themed live when theme.js emits theme:change.
+───────────────────────────────────────────── */
+const GISCUS_ORIGIN = 'https://giscus.app';
+
+const giscusTheme = () => {
+  const root = document.documentElement;
+  const osDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return (root.dataset.theme || (osDark ? 'dark' : 'light')) === 'dark' ? 'transparent_dark' : 'light';
+};
+
+function initGiscus() {
+  const host = document.querySelector('.giscus[data-repo]');
+  if (!host) return;
+
+  const script = document.createElement('script');
+  script.src = `${GISCUS_ORIGIN}/client.js`;
+  Object.entries(host.dataset).forEach(([key, value]) => {
+    script.dataset[key] = value;
+  });
+  script.dataset.theme = giscusTheme();
+  script.crossOrigin = 'anonymous';
+  script.async = true;
+  host.appendChild(script);
+
+  document.addEventListener('theme:change', () => {
+    const frame = document.querySelector('iframe.giscus-frame');
+    if (!frame) return;
+    frame.contentWindow.postMessage({ giscus: { setConfig: { theme: giscusTheme() } } }, GISCUS_ORIGIN);
   });
 }
 
@@ -687,14 +670,13 @@ function initKofiTracking() {
    Boot
 ───────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-  initPageFade();
-  initNavigation();
-  initScrollReveal();
+  initHeadlineRise();
   initSmoothScroll();
   initChart();
   initReaderMemory();
   initReadMarks();
   initCitations();
   initImageLightbox();
+  initGiscus();
   initKofiTracking();
 });

@@ -5,7 +5,8 @@
 </head>
 <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    
+    <div class="progress" aria-hidden="true"></div>
+
 {{- partial "header.html" . -}}
 
     <main id="main-content">
@@ -13,7 +14,7 @@
     </main>
 
     {{- partial "footer.html" . -}}
-    
+
     {{- $js := resources.Get "js/main.js" -}}
     {{- if $js -}}
         {{- $js = $js | resources.Minify | resources.Fingerprint -}}

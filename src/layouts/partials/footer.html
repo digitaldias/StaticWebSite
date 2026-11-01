@@ -1,17 +1,17 @@
-<footer class="site-footer">
-  <div class="container">
-    <div class="site-footer__copy">
-      <span>&copy; {{ now.Year }} Pedro Dias</span>
-    </div>
-    <nav class="site-footer__social" aria-label="Social links">
-      {{- with .Site.Params.social.linkedin }}
-      <a href="{{ . }}" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+<div class="wrap">
+  <footer class="foot m" role="contentinfo">
+    <span>&copy; {{ now.Year }} Pedro Dias · Schibsted Grotesk, Source Serif 4, Geist Mono · Hugo</span>
+    <nav aria-label="Elsewhere">
+      <a href="/index.xml">RSS</a>
+      <a href="/llm.txt">llm.txt</a>
+      {{- with .Site.Params.social.flickr }}
+      <a href="{{ . }}" rel="noopener noreferrer" target="_blank">Flickr</a>
       {{- end }}
       {{- with .Site.Params.social.github }}
       <a href="{{ . }}" rel="noopener noreferrer" target="_blank">GitHub</a>
       {{- end }}
-      {{- with .Site.Params.social.flickr }}
-      <a href="{{ . }}" rel="noopener noreferrer" target="_blank">Flickr</a>
+      {{- with .Site.Params.social.linkedin }}
+      <a href="{{ . }}" rel="noopener noreferrer" target="_blank">LinkedIn</a>
       {{- end }}
       {{- with .Site.Params.social.youtube_digitaldias }}
       <a href="{{ . }}" rel="noopener noreferrer" target="_blank">YouTube</a>
@@ -19,7 +19,6 @@
       {{- with .Site.Params.social.youtube_digitalhome }}
       <a href="{{ . }}" rel="noopener noreferrer" target="_blank">YouTube (home)</a>
       {{- end }}
-      <a href="/index.xml">RSS</a>
     </nav>
-  </div>
-</footer>
+  </footer>
+</div>
