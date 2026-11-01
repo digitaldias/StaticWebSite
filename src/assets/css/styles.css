@@ -955,6 +955,90 @@ a.post-card__image img {
   margin-bottom: var(--sp-4);
 }
 
+/* Folio line — a ruled record of filing, revision and length, as on a broadsheet */
+.folio {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: var(--sp-8) 0 0;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+.folio__cell {
+  padding: var(--sp-3) var(--sp-4) var(--sp-3) 0;
+}
+
+.folio__cell + .folio__cell {
+  padding-left: var(--sp-4);
+  border-left: 1px solid var(--ink-faint);
+}
+
+/* Two-up on phones: the third cell starts a new row, so drop its rule */
+.folio__cell:nth-child(odd) {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.folio__cell:nth-child(n+3) {
+  border-top: 1px solid var(--ink-faint);
+}
+
+.folio dt {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  margin-bottom: var(--sp-1);
+}
+
+.folio dd {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--ink);
+  font-variant-numeric: oldstyle-nums;
+}
+
+.folio__cell--revised dt {
+  color: var(--accent);
+}
+
+.folio__cell--revised a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.2em;
+  transition: color var(--transition);
+}
+
+.folio__cell--revised a:hover {
+  color: var(--accent);
+}
+
+@media (min-width: 640px) {
+  .folio {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: auto;
+    justify-content: start;
+  }
+
+  .folio__cell {
+    padding-right: var(--sp-6);
+  }
+
+  .folio__cell + .folio__cell,
+  .folio__cell:nth-child(odd):not(:first-child) {
+    padding-left: var(--sp-6);
+    border-left: 1px solid var(--ink-faint);
+  }
+
+  .folio__cell:nth-child(n+3) {
+    border-top: 0;
+  }
+}
+
 .post-header__image {
   margin-top: var(--sp-8);
 }
@@ -1076,6 +1160,197 @@ a.post-card__image img {
 .post-content td {
   padding: var(--sp-3) var(--sp-4);
   border-bottom: 1px solid var(--ink-faint);
+}
+
+/* Revision record — the newsroom corrections box, kept on the public record */
+.revision-record {
+  margin-bottom: var(--sp-12);
+}
+
+.revision-record__label {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  padding-top: var(--sp-3);
+  margin-bottom: var(--sp-4);
+  border-top: 1px solid var(--ink);
+}
+
+.revision-record__log {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--sp-4);
+}
+
+.revision-record__log li {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: var(--sp-4);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px dotted var(--ink-faint);
+  font-size: var(--text-sm);
+}
+
+.revision-record__log time {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  padding-top: 0.15em;
+}
+
+.revision-record__source {
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--ink-muted);
+}
+
+.revision-record__source a {
+  color: var(--accent-map);
+  font-style: normal;
+  font-weight: 500;
+}
+
+.revision-record__source a:hover {
+  color: var(--accent);
+}
+
+/* See also — the bottom-of-page strip; wider than the text column, ruled like newsprint */
+.see-also {
+  margin: 0 0 var(--sp-12);
+}
+
+.see-also__inner {
+  max-width: 1140px;
+  margin-inline: auto;
+  padding-inline: var(--sp-6);
+}
+
+.see-also__label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  padding-top: var(--sp-2);
+  margin-bottom: var(--sp-6);
+  border-top: 3px double var(--ink);
+}
+
+/* The rule runs out from the label to the margin, like a section head */
+.see-also__label::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--ink-faint);
+}
+
+.see-also__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.see-also__item {
+  padding: var(--sp-5) 0;
+  border-top: 1px solid var(--ink-faint);
+}
+
+.see-also__item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.see-also__kicker {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-map);
+  margin-bottom: var(--sp-2);
+}
+
+.see-also__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--sp-3);
+  text-wrap: balance;
+}
+
+.see-also__title a {
+  color: var(--ink);
+  text-decoration: none;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--transition), color var(--transition);
+}
+
+.see-also__title a:hover,
+.see-also__title a:focus-visible {
+  color: var(--accent);
+  background-size: 100% 1px;
+}
+
+.see-also__dek {
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--ink-muted);
+  margin-bottom: var(--sp-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Why it's here: the shared subjects, stated plainly instead of an opaque "you may also like" */
+.see-also__why {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+}
+
+.see-also__why::before {
+  content: "\2192\00a0";
+  color: var(--accent-gold);
+}
+
+@media (min-width: 768px) {
+  .see-also__list {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+
+  .see-also__item,
+  .see-also__item:first-child {
+    padding: 0 var(--sp-6);
+    border-top: 0;
+    border-left: 1px solid var(--ink-faint);
+  }
+
+  .see-also__item:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .see-also__item:last-child {
+    padding-right: 0;
+  }
+
+  /* The lead slot reads larger, as the top story of the strip */
+  .see-also__item:first-child .see-also__title {
+    font-size: var(--text-2xl);
+  }
 }
 
 /* =============================================================================

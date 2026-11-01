@@ -24,7 +24,7 @@
     <article class="paper-lead">
       <div class="paper-lead__kicker">{{ with .Params.categories }}{{ index . 0 }}{{ end }}</div>
       <h2 class="paper-lead__headline">{{ .Title }}</h2>
-      <div class="paper-lead__byline">By Pedro Dias <span class="paper-lead__byline-sep">·</span> <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ with .Params.readTime }} <span class="paper-lead__byline-sep">·</span> {{ . }}{{ end }}</div>
+      <div class="paper-lead__byline">By Pedro Dias <span class="paper-lead__byline-sep">·</span> <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time> <span class="paper-lead__byline-sep">·</span> {{ partial "read-time.html" . }}</div>
       {{ with .Params.featuredImage }}
       <div class="paper-lead__image">
         <a href="{{ $post.RelPermalink }}"><img src="{{ . }}" alt="{{ $post.Params.featuredAlt }}" loading="eager"></a>

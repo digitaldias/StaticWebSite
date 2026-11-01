@@ -50,7 +50,10 @@ date: 2025-11-19
 draft: false
 description: "SEO meta description (max 160 chars)"
 excerpt: "Teaser text shown in blog listing cards"
-readTime: "5 minute read"
+readTime: "5 minute read"             # Optional override; omit on new posts to use Hugo's word-count estimate
+updates:                              # Optional dated notes shown in the article's Revision record
+  - date: 2026-01-15
+    note: "Corrected the Hugo install command for Windows."
 categories: ["Architecture", "Azure"]   # First category drives breadcrumbs and article:section
 tags: ["Blazor", "DevOps"]              # Drive OG article:tag and JSON-LD keywords
 author: "Pedro Dias"
@@ -61,6 +64,8 @@ imageCredit: "© Pedro Dias"
 ```
 
 Without `featuredImage`, the OG image falls back to `images/dog-hero.jpg`.
+
+`lastmod` comes from git history (`enableGitInfo`, with `fetch-depth: 0` in CI). A post shows "Revised" in its folio line and a Revision record once its last commit lands more than 7 days after `date`. Any commit to a post counts, so never sweep mechanical front-matter edits across all posts: every one of them would claim a revision that day.
 
 ## Available Shortcodes
 

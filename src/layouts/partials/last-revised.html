@@ -1,0 +1,4 @@
+{{- /* Returns lastmod, never earlier than the publish date (posts are often committed before they go live) */ -}}
+{{- $revised := .Lastmod -}}
+{{- if $revised.Before .Date }}{{ $revised = .Date }}{{ end -}}
+{{- return $revised -}}

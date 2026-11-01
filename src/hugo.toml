@@ -3,6 +3,7 @@ languageCode = 'en-us'
 title = 'DigitalDias - Pedro Dias'
 author = 'Pedro Dias'
 copyright = '© 2025 Pedro Dias. All rights reserved.'
+enableGitInfo = true
 
 # Pagination
 [pagination]
@@ -85,6 +86,27 @@ copyright = '© 2025 Pedro Dias. All rights reserved.'
     inputPosition = "bottom"
     theme = "dark"
     lang = "en"
+
+  # Public source repo — article revision history links point here
+  [params.source]
+    repo = "https://github.com/digitaldias/StaticWebSite"
+    contentPath = "src/content"
+
+# An explicit front-matter lastmod always wins over git history
+[frontmatter]
+  lastmod = ['lastmod', ':git', 'date']
+
+# Related reading — tags weigh most, categories break ties
+[related]
+  includeNewer = true
+  threshold = 20
+  toLower = true
+  [[related.indices]]
+    name = 'tags'
+    weight = 100
+  [[related.indices]]
+    name = 'categories'
+    weight = 40
 
 # Asset processing
 [build]

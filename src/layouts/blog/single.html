@@ -1,4 +1,7 @@
 {{- define "main" -}}
+{{- $revised := partial "last-revised.html" . -}}
+{{- /* A revision counts once it lands more than a week after filing — typo fixes don't */ -}}
+{{- $isRevised := gt ($revised.Sub .Date).Hours 168.0 -}}
 <article>
   <header class="post-header">
     <div class="container">
@@ -8,15 +11,31 @@
         <span>{{ .Title }}</span>
       </nav>
 
-      <div class="byline meta">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
-        · <span>Pedro Dias</span>
-        {{- with .Params.readTime }} · {{ . }}{{ end -}}
-      </div>
-
       <h1 class="display-title">{{ .Title }}</h1>
 
       {{- with .Description -}}<p class="post-header__description">{{ . }}</p>{{- end -}}
+
+      {{- /* Folio line: the record of when this was filed, revised, and how long it is */ -}}
+      <dl class="folio">
+        <div class="folio__cell">
+          <dt>Filed</dt>
+          <dd><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time></dd>
+        </div>
+        {{- if $isRevised }}
+        <div class="folio__cell folio__cell--revised">
+          <dt>Revised</dt>
+          <dd><a href="#revision-record"><time datetime="{{ $revised.Format "2006-01-02" }}">{{ $revised.Format "2 Jan 2006" }}</time></a></dd>
+        </div>
+        {{- end }}
+        <div class="folio__cell">
+          <dt>Length</dt>
+          <dd>{{ lang.FormatNumberCustom 0 .WordCount }} words · {{ replace (partial "read-time.html" .) " minute read" " min" }}</dd>
+        </div>
+        <div class="folio__cell">
+          <dt>By</dt>
+          <dd>Pedro Dias</dd>
+        </div>
+      </dl>
     </div>
 
     {{- with .Params.featuredImage -}}
@@ -30,6 +49,70 @@
   <div class="post-content container--narrow">
     {{ .Content | safeHTML }}
   </div>
+
+  {{- if or $isRevised .Params.updates }}
+  <aside id="revision-record" class="revision-record container--narrow" aria-labelledby="revision-record-title">
+    <h2 id="revision-record-title" class="revision-record__label">Revision record</h2>
+    <ol class="revision-record__log">
+      {{- range sort (.Params.updates | default slice) "date" "desc" }}
+      <li>
+        <time datetime="{{ time.Format "2006-01-02" .date }}">{{ time.Format "2 Jan 2006" .date }}</time>
+        <span>{{ .note | markdownify }}</span>
+      </li>
+      {{- end }}
+      {{- if $isRevised }}
+      <li>
+        <time datetime="{{ $revised.Format "2006-01-02" }}">{{ $revised.Format "2 Jan 2006" }}</time>
+        <span>Last revised.</span>
+      </li>
+      {{- end }}
+      <li>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time>
+        <span>First filed.</span>
+      </li>
+    </ol>
+    {{- with .Site.Params.source }}{{ with $.File }}
+    <p class="revision-record__source">Every change to this article is on the public record. <a href="{{ $.Site.Params.source.repo }}/commits/main/{{ $.Site.Params.source.contentPath }}/{{ .Path | replaceRE `\\` "/" }}" rel="noopener">Read the full revision history</a>.</p>
+    {{- end }}{{ end }}
+  </aside>
+  {{- end }}
+
+  {{- $related := .Site.RegularPages.Related . | first 3 -}}
+  {{- if lt (len $related) 3 -}}
+    {{- /* Too few tag matches: fill with the most recent writing so the strip is never thin */ -}}
+    {{- $fill := where (where .Site.RegularPages "Section" "blog") "Permalink" "ne" .Permalink | complement $related -}}
+    {{- $related = $related | append (first (sub 3 (len $related)) $fill) -}}
+  {{- end -}}
+  {{- with $related }}
+  {{- $myTags := slice -}}
+  {{- range $.Params.tags }}{{ $myTags = $myTags | append (lower .) }}{{ end }}
+  <section class="see-also" aria-labelledby="see-also-title">
+    <div class="see-also__inner">
+      <h2 id="see-also-title" class="see-also__label">See also</h2>
+      <ol class="see-also__list">
+        {{- range . }}
+        {{- $shared := slice -}}
+        {{- range .Params.tags }}{{ if in $myTags (lower .) }}{{ $shared = $shared | append . }}{{ end }}{{ end }}
+        <li class="see-also__item">
+          {{- with .Params.categories }}<p class="see-also__kicker">{{ index . 0 }}</p>{{ end }}
+          <h3 class="see-also__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          {{- with .Params.excerpt | default .Description }}<p class="see-also__dek">{{ . }}</p>{{ end }}
+          <p class="see-also__why">
+            {{- $myCategory := index ($.Params.categories | default slice) 0 -}}
+            {{- if $shared -}}
+            Shares {{ delimit (first 3 $shared) ", " " and " }}
+            {{- else if and $myCategory (in .Params.categories $myCategory) -}}
+            More in {{ $myCategory }}
+            {{- else -}}
+            Recent writing · {{ .Date.Format "Jan 2006" }}
+            {{- end -}}
+          </p>
+        </li>
+        {{- end }}
+      </ol>
+    </div>
+  </section>
+  {{- end }}
 
   <footer class="post-footer container--narrow">
     {{- with .Site.Params.support.kofi -}}
