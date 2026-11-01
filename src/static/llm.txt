@@ -1,16 +1,16 @@
 # digitaldias.com
 
-> Personal portfolio and technical blog of Pedro Dias, Chief Architect at Tradesolution AS
+> Personal site and technical blog of Pedro Dias, Acting Chief AI Officer at Tradesolution AS
 
 ## Purpose
 
-This site serves as Pedro Dias's professional portfolio, technical blog, and digital presence. It showcases software architecture expertise, photography, and personal projects spanning four decades of technology experience.
+This site is Pedro Dias's writing, a dated log of what he builds and ships, a selection of his photographs, and an About page. The writing covers software architecture, Azure, AI, development and the occasional family or photography post, from four decades of working with technology.
 
 ## Owner
 
 Pedro Dias
-- **Role:** Chief Architect at Tradesolution AS
-- **Location:** Frogner, Norway
+- **Role:** Acting Chief AI Officer at Tradesolution AS (previously Chief Architect there, and years at Microsoft)
+- **Location:** Frogner, Lillestrøm, Norway
 - **Email:** pedro.dias@tradesolution.no
 - **LinkedIn:** https://linkedin.com/in/digitaldias
 - **GitHub:** https://github.com/digitaldias
@@ -20,84 +20,72 @@ Pedro Dias
 ## Technology Stack
 
 - **Framework:** Hugo (static site generator) v0.152.2+extended
-- **Languages:** HTML, CSS (custom), JavaScript (vanilla)
-- **Typography:** Inter (sans-serif), JetBrains Mono (monospace)
-- **Hosting:** Azure Static Web Apps / Azure Storage Static Website
-- **Deployment:** Manual (transitioning to GitHub Actions)
-- **Version Control:** Git
+- **Languages:** HTML, CSS (custom, no framework), JavaScript (vanilla ES6+, no dependencies)
+- **Typography:** Schibsted Grotesk (display and UI), Source Serif 4 (reading text), Geist Mono (meta and code)
+- **Hosting:** Azure Storage static website behind Cloudflare
+- **Deployment:** GitHub Actions on push to `main`
+- **Comments and reactions:** Giscus (GitHub Discussions)
 
 ## Site Structure
 
 ### Main Sections
 
-- **Homepage** (`/`): Hero, about, statistics, photo gallery, contact
-- **Blog** (`/blog/`): Technical articles on software architecture, Azure, AI, DevOps
-- **Categories** (`/categories/<name>/`): Posts grouped by topic (Architecture, Azure, AI, DevOps, etc.)
-- **Tags** (`/tags/<name>/`): Posts tagged with specific technologies (Hugo, Blazor, GitHub Copilot, etc.)
+- **Home** (`/`): A sidebar with portrait, short bio, Positions held and Now, beside the stream of posts with the newest as the lead story
+- **Writing** (`/blog/`): Every post, filterable by category
+- **Log** (`/log/`): Short dated notes on what Pedro is building, shipping and fixing, plus a row for every published post
+- **Photographs** (`/photography/`): A curated grid of photographs from Flickr, each opening large
+- **About** (`/about/`): Portrait, biography, a track list of milestones and the positions Pedro holds, with links to the posts that argue them
+- **Categories** (`/categories/<name>/`): Posts grouped by topic (Architecture, Azure, AI, Development, DevOps, Family, Photography)
+- **Tags** (`/tags/<name>/`): Posts tagged with specific technologies
 
 ### Content Types
 
-1. **Blog Posts:** Long-form technical articles (800–2000 words)
-   - Format: Markdown with YAML front matter
-   - Topics: Software architecture, cloud computing, AI/ML, web development
-   - Style: First-person, conversational but professional
+1. **Blog posts:** Long-form articles in Markdown with YAML front matter. New posts open with a TL;DR (`tldr`) above the first paragraph. Articles carry a folio line (filed, revised, length), a revision record, related reading and reader response.
+2. **Log entries:** Dated notes in `data/log.yaml`.
+3. **Photographs:** Flickr-hosted, listed in `data/photos.yaml`.
 
-2. **Portfolio:** Project showcases and case studies (future)
+### Reader tools on articles
 
-3. **Photography:** Flickr-hosted images integrated throughout site
+- A route chart of the article's sections with minutes left: a rail in the margin on wide screens, a sticky strip on narrow ones
+- A resume slip that offers to return a reader to where they left off, and Read stamps on links to articles already read (kept in the reader's own browser storage)
+- Section (§) and paragraph (¶) deep links, and a toolbar on selected text that copies a link to the passage or a quote with its citation
 
 ### Key Pages
 
-- `/blog/` - Blog index with post cards
-- `/blog/2025-11-19-from-html-to-hugo-migration/` - Site migration story
-- `/blog/2025-09-30-gpt5-codex-static-site/` - GPT5-Codex collaboration post
+- `/blog/` - Writing index
+- `/log/` - Ship's log
+- `/photography/` - Photographs
+- `/about/` - About Pedro
 - `/index.xml` - Global RSS feed
-- `/blog/index.xml` - Blog-specific RSS feed
+- `/blog/index.xml` - Blog RSS feed
 - `/sitemap.xml` - Full site map
 - `/robots.txt` - Search engine directives
 
 ## Design System
 
-### Brand Identity
+"Sea Glass": a cool Nordic palette, newspaper structure, light and dark themes.
 
-The site celebrates Pedro's Norwegian and Portuguese heritage through a dual-flag color palette:
-
-**Norwegian Colors:**
-- Primary: `#BA0C2F` (Norway Red)
-- Secondary: `#002F8B` (Norway Blue)
-- Neutral: `#FFFFFF` (White)
-
-**Portuguese Colors:**
-- Accent: `#006600` (Portugal Green)
-- Alert: `#FF0000` (Portugal Red)
-- Highlight: `#FFD700` (Portugal Gold)
-
-### Visual Style
-
-- Dark mode design (`#0a0a0a` background)
-- Glass-morphism effects (backdrop-blur)
-- Smooth animations (respecting `prefers-reduced-motion`)
-- Generous whitespace
-- Mobile-first responsive design
+- **Colours:** ground `#f4f6f4` / dark `#0f1a1b`, ink `#14201f` / `#e3ebe9`, muted `#4f5f5d` / `#9db1ae`, rule `#cdd8d5` / `#2a3b3d`, one accent teal `#0b5d63` / `#5fc3c2`, depth tints `#d7ebe8`, `#a9d3cf`, `#5aa5a3`. No warm accent.
+- **Themes:** Follows the OS setting; a header switch stores the reader's choice in the browser.
+- **Layout:** Ruled columns and folio lines instead of cards; full-colour photographs.
+- **Motion:** Headline word rise, image wipe, scroll-driven reveals, a reading-progress hairline and cross-page view transitions. All of it is off for readers who prefer reduced motion.
+- Tokens live in `src/assets/css/tokens.css`, the single source for every page.
 
 ## Content Guidelines
 
 ### Blog Writing
 
-- **Voice:** First-person, authentic, conversational
-- **Tone:** Enthusiastic about technology, humble about expertise
-- **Topics:** Software architecture, Azure, .NET, Blazor, Avalonia, AI/ML, photography, family
-- **Length:** 800–2000 words ideal (5–10 minute read)
-- **Structure:** Clear sections with descriptive headings
-- **Code:** Use fenced blocks with language tags
+- **Voice:** First-person, direct and dry; opinions stated flat, then reasoned
+- **Topics:** Software architecture, Azure, .NET, Blazor, Avalonia, AI, home automation, photography, family
+- **Structure:** Clear `##` sections with descriptive headings, ending in a short FAQ
+- **Code:** Fenced blocks with language tags
 
 ### SEO
 
 - Unique title and description in every post
-- Descriptive excerpts for social sharing
+- A TL;DR on every new post, worded differently from the description
 - Specific tags (not generic keywords)
-- Internal linking between related posts
-- Semantic HTML structure
+- Semantic HTML with Open Graph and JSON-LD metadata
 
 ## RSS Feeds
 
@@ -109,7 +97,7 @@ The site provides multiple RSS feeds for subscription:
 
 ## Licensing
 
-© 2025 Pedro Dias. All rights reserved.
+© Pedro Dias. All rights reserved.
 
 Content and code are proprietary unless otherwise noted. Photography is personal work (© Pedro Dias) hosted on Flickr.
 
@@ -121,36 +109,33 @@ For professional inquiries, collaboration, or technical discussions:
 
 ## LLM Usage Guidelines
 
-This site is optimized for AI assistant comprehension:
-- All blog posts use semantic HTML with clear heading hierarchy
-- Code blocks include language tags for syntax awareness
-- Front matter provides structured metadata
-- Content follows consistent voice and style patterns
+This site is built to be easy for AI assistants to read:
+- All posts use semantic HTML with a clear heading hierarchy
+- Code blocks include language tags
+- Front matter provides structured metadata, including a TL;DR on new posts
+- Content follows a consistent voice
 
 When helping users with this site:
-- Respect the Norwegian/Portuguese color palette (do not introduce new colors)
-- Maintain the conversational-but-professional writing tone
-- Preserve accessibility features (ARIA labels, semantic HTML)
-- Keep performance high (avoid heavy dependencies)
-- Follow Hugo conventions (content in `content/`, templates in `layouts/`)
+- Use the Sea Glass tokens in `tokens.css`; do not introduce new colours
+- Keep every animation behind `prefers-reduced-motion: no-preference`
+- Preserve accessibility features (ARIA labels, semantic HTML, focus states)
+- Keep performance high (no frameworks, no heavy dependencies)
+- Follow Hugo conventions (content in `content/`, templates in `layouts/`, data in `data/`)
 
 ## Recent Changes
 
 - **2025-11-19:** Migrated from hand-coded HTML to Hugo
-- **2025-11-19:** Removed Mermaid diagram support (replaced with plain text or SVG)
-- **2025-11-20:** Added comprehensive planning documentation in `.todo/`
-- **2025-11-20:** Created `llm.txt` for AI assistant integration
+- **2026-11-01:** Reader tools: section chart, resume slip, passage citations
+- **2026-11-01:** Sea Glass redesign: new palette and type, light and dark themes, split homepage, Ship's log, Photographs and About pages
 
-## Statistics (as of 2025-11-20)
+## Statistics (as of 2026-11-01)
 
-- **Experience:** 41 years in software development
-- **Photos Published:** 172+ on Flickr
-- **YouTube Channels:** 2 (@digitaldias tech, @digitalhome family)
-- **Blog Posts:** 2 (growing)
-- **Build Time:** ~50–70ms for 42 pages
-- **Deployment:** Automated via GitHub Actions
+- **Writing code since:** 1982
+- **Photos published:** 172+ on Flickr
+- **YouTube channels:** 2 (@digitaldias tech, @digitalhome family)
+- **Blog posts:** 11
 
 ---
 
 For the most current information, visit https://www.digitaldias.com
-Last updated: 2025-11-20
+Last updated: 2026-11-01

@@ -22,21 +22,27 @@ This is a **Hugo static site**. The entire Hugo project lives under `src/` — n
 src/
 ├── hugo.toml          # Config (use this — not config.toml or config.yaml)
 ├── assets/
-│   ├── css/styles.css # Full design system, ~1715 lines — do NOT break CSS variables
-│   └── js/main.js     # All interactive JS (vanilla ES6+)
-├── content/           # Markdown posts and pages
+│   ├── css/tokens.css # Sea Glass tokens: the single source for the site and /briefing/
+│   ├── css/styles.css # The site's CSS, bundled after tokens.css
+│   ├── js/theme.js    # Light/dark choice, loaded without defer in <head>
+│   └── js/main.js     # Reader tools, lightbox, Giscus, headline rise (vanilla ES6+)
+├── content/           # Markdown posts and section pages (blog, log, photography, about)
 │   └── blog/          # Blog posts (filename: YYYY-MM-DD-slug.md)
+├── data/              # log.yaml, photos.yaml, track.yaml, covers.yaml
 ├── layouts/           # Go HTML templates
-│   ├── _default/      # baseof.html, taxonomy/term fallbacks
+│   ├── _default/      # baseof.html, taxonomy/term
 │   ├── blog/          # list.html + single.html
-│   ├── partials/      # head.html, header.html, footer.html
+│   ├── log/ photography/ about/   # list.html each (the sections render from _index.md)
+│   ├── partials/      # head, header, footer, stream, cover, category-filter
 │   ├── shortcodes/    # callout, img, pullquote (see below)
-│   └── index.html     # Homepage — all sections hardcoded here
+│   └── index.html     # Homepage: identity sidebar beside the post stream
 ├── static/            # Favicons, robots.txt, llm.txt, images/
 └── public/            # Build output — do not edit
 ```
 
-**Homepage content** is entirely in `layouts/index.html`. Dynamic values (stats, social links) come from `[params]` in `hugo.toml` — edit there, not in the template. Do not create `content/_index.md`.
+**Homepage values** come from `[params]` in `hugo.toml`: `bio`, `photo`, `[[params.positions]]` (`text`, optional `since` YYYY-MM and `post` path), `[params.currently]`. Edit there, not in the template. Do not create `content/_index.md`.
+
+**Data files.** `data/log.yaml` holds the Ship's log notes (published posts join it automatically). `data/photos.yaml` is the Photographs selection; never add photos of the children. `data/track.yaml` is the About page's milestone list. `data/covers.yaml` holds alt text for generated covers.
 
 **Assets are processed by Hugo Pipes** — CSS and JS are minified and fingerprinted at build time.
 
@@ -65,7 +71,7 @@ imageCredit: "© Pedro Dias"
 ---
 ```
 
-Without `featuredImage`, the OG image falls back to `images/dog-hero.jpg`.
+Without `featuredImage`, the `cover` partial looks for `static/images/blog/<post file name>/featured.jpg` (alt text in `data/covers.yaml`), so an image-less post gets a cover without a Markdown edit. With neither, the OG image falls back to `images/dog-hero.jpg`.
 
 Each post's `## ` headings drive the reader tools in `main.js`: the Chart (section route rail and course strip), the resume slip and Read stamps (browser `localStorage` key `dd-reading-log`), and § / ¶ passage links. A post needs at least two `## ` sections for the Chart to appear.
 
@@ -79,25 +85,37 @@ Each post's `## ` headings drive the reader tools in `main.js`: the Chart (secti
 
 Mermaid was fully removed — do not add it back.
 
-## Design System — Do Not Break
+## Design System — Sea Glass
 
-Theme: aged-map/navigator — light parchment background, deep navy accents. ~1715 lines.
+Cool Nordic palette, newspaper structure (ruled columns, folio lines, no cards), full-colour photos, light and dark themes. Every token lives in `src/assets/css/tokens.css`, which the site bundles ahead of `styles.css` and the briefing publisher inlines (see `doc/briefing-style-handoff.md`). Change a value there, nowhere else.
 
 ```css
---bg:          #f0ece1   /* parchment */
---ink:         #161a1e   /* body text */
---accent:      #b83c2c   /* primary red */
---accent-cool: #162447   /* deep navy */
---accent-map:  #2e6ebc   /* map blue */
---accent-gold: #8a6a1c   /* gold */
---transition:  150ms ease
+/* light-dark(light, dark) */
+--ground:   #f4f6f4 / #0f1a1b   /* page */
+--ground-2: #e7eeec / #162527   /* raised surface: code, image wells */
+--ink:      #14201f / #e3ebe9   /* text, heavy rules */
+--muted:    #4f5f5d / #9db1ae   /* meta, secondary text */
+--rule:     #cdd8d5 / #2a3b3d   /* hairlines */
+--teal:     #0b5d63 / #5fc3c2   /* the only accent */
+--deep-1:   #d7ebe8 / #15343a   /* tint: TL;DR, callouts, Now box, Next entry */
+--deep-2:   #a9d3cf / #18454c   /* hover underline sweep, chart markers */
+--deep-3:   #5aa5a3 / #1c5860   /* link underline colour; never text */
+--on-teal:  #f4f6f4 / #0f1a1b   /* text on a teal fill */
+--ease-out: cubic-bezier(.16, 1, .3, 1)
+--transition: 150ms ease
 ```
 
-Typography: Lora (display) + Barlow (body) + JetBrains Mono (code).
+No orange, terracotta, coral or any other warm accent: it reads as AI-made. Use the tokens only; don't add colours.
 
-All animations must respect `prefers-reduced-motion`. Use `requestAnimationFrame` for scroll/animation work.
+Typography: `--display` Schibsted Grotesk (headlines, labels, UI), `--text` Source Serif 4 (reading text), `--mono` Geist Mono (meta, dates, code), loaded from Google Fonts in `head.html`. Utility classes: `.d` display headline (`<em>` inside turns teal), `.k` kicker label, `.m` mono meta, `.note` muted aside.
 
-CSS conventions: mobile-first, breakpoints at 480px / 640px / 768px / 900px. Use existing variables only — don't add new colors or tokens. Transitions: `transition: ... var(--transition)`.
+Light/dark: `light-dark()` follows the OS. The header switch (`[data-theme-toggle]`, `theme.js`) stores `light` or `dark` under `localStorage` key `dd-theme` and sets `<html data-theme>`. `theme.js` loads without `defer` in `<head>` because the CSP's `script-src-elem` blocks an inline pre-paint script. It emits `theme:change`; `initGiscus` in `main.js` re-themes Giscus from it.
+
+Motion: headline word rise (`.split-words`, `initHeadlineRise`), image wipe (`.wipe`), entrance (`.lift`), scroll-driven reveals (`.reveal`) and the progress hairline (`animation-timeline`, behind `@supports`), and cross-document view transitions (`lead-image`, `lead-title`, `portrait`). Every animation sits inside `@media (prefers-reduced-motion: no-preference)`; under reduce, transitions drop to zero and nothing is split, so the page is still. Use `requestAnimationFrame` for scroll work in JS.
+
+CSS conventions: mobile-first rules; breakpoints at 400 / 520 / 560 / 700 / 760 / 900 / 960 / 1180 px (the Chart switches from strip to rail at 1180). Side gutter `clamp(16px, 4vw, 44px)`; nothing may scroll horizontally from 320 px up. Transitions use `var(--transition)` or `var(--ease-out)`.
+
+`main.js` scores 8.4 on `qualify`; `initChart`'s `update` (cc 12) and `initReadMarks` (cc 10) are over the cc 9 threshold. Add new behaviour as small `init*` functions, never inside those two.
 
 Hugo template conventions: use `{{- -}}` for whitespace control; guard optional params with `{{ with .Params.excerpt }}{{ . }}{{ end }}`; internal links via `.RelPermalink`; render HTML content via `{{ .Content | safeHTML }}`.
 
