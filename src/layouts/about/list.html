@@ -1,16 +1,34 @@
 {{- define "main" -}}
-<main class="page-main" id="main-content">
-  <div class="about-hero container">
-    <div class="about-hero__photo">
-      <img src="/images/pedro.jpg" alt="Pedro Dias" loading="eager">
+<div class="wrap">
+  <section class="about">
+    {{- with site.Params.photo }}
+    <div class="portrait"><img src="{{ .src }}" alt="{{ .alt }}" width="600" height="600" fetchpriority="high"></div>
+    {{- end }}
+    <div>
+      <span class="k">About</span>
+      <h1 class="d split-words">{{ .Params.headline | default .Title | markdownify }}</h1>
+      <div class="about-text lift">
+        {{ .Content | safeHTML }}
+      </div>
+      {{- with site.Data.track }}
+      <div class="track">
+        {{- range . }}
+        <div class="reveal"><span>{{ .year | default "—" }}</span>{{ .text }}</div>
+        {{- end }}
+      </div>
+      {{- end }}
+      {{- with site.Params.positions }}
+      <div class="positions-full">
+        <span class="k">Positions held</span>
+        {{- range . }}
+        <blockquote class="reveal">
+          <q>{{ .text }}</q>
+          <span class="m">Held{{ with .since }} since {{ (time.AsTime (printf "%s-01" .)).Format "Jan 2006" }}{{ end }} · {{ with .post }}{{ with site.GetPage (strings.TrimSuffix "/" .) }}argued in <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ else }}no post yet{{ end }}</span>
+        </blockquote>
+        {{- end }}
+      </div>
+      {{- end }}
     </div>
-    <div class="about-hero__intro">
-      <h1 class="display-title">{{ .Title }}</h1>
-      {{- with .Description -}}<p class="about-hero__description">{{ . }}</p>{{- end -}}
-    </div>
-  </div>
-  <div class="post-content container--narrow">
-    {{ .Content | safeHTML }}
-  </div>
-</main>
+  </section>
+</div>
 {{- end -}}

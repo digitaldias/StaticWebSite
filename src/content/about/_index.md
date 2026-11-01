@@ -1,6 +1,7 @@
 ---
 title: "About"
 description: "Developer, AI strategist, audio obsessive, and person with too many strong opinions."
+headline: "Writing code since 1982. *Still finds it interesting.*"
 ---
 
 I've been writing code since 1982 — a ZX Spectrum 48K was my first computer. By the time the web showed up I was already mildly annoyed by it.

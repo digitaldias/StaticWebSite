@@ -1,0 +1,43 @@
+{{- define "main" -}}
+{{- /* Days: the hand-written notes in data/log.yaml, plus a Published row per post */ -}}
+{{- $days := newScratch -}}
+{{- range site.Data.log -}}
+  {{- $days.Add (time.Format "2006-01-02" .date) (slice (dict "tag" .tag "html" (.text | markdownify))) -}}
+{{- end -}}
+{{- range where site.RegularPages "Section" "blog" -}}
+  {{- $days.Add (.Date.Format "2006-01-02") (slice (dict "tag" "Published" "url" .RelPermalink "title" .Title)) -}}
+{{- end -}}
+{{- $dates := slice -}}
+{{- range $date, $_ := $days.Values }}{{ $dates = $dates | append $date }}{{ end -}}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="d split-words">Ship's <em>log</em></h1>
+    {{- with .Description }}
+    <p class="lift">{{ . }}</p>
+    {{- end }}
+  </header>
+  <div class="log-grid">
+    {{- with site.Params.currently }}
+    <aside class="now reveal" aria-label="Now">
+      <span class="k">Now</span>
+      {{- with .building }}<div><span class="m">Building</span><p>{{ . }}</p></div>{{ end }}
+      {{- with .tinkering }}<div><span class="m">Tinkering</span><p>{{ . }}</p></div>{{ end }}
+      {{- with .listening }}<div><span class="m">Listening</span><p>{{ . }}</p></div>{{ end }}
+      {{- with .annoyed_by }}<div><span class="m">Annoyed by</span><p>{{ . }}</p></div>{{ end }}
+    </aside>
+    {{- end }}
+    <ol class="days">
+      {{- range sort $dates "value" "desc" }}
+      <li class="day reveal">
+        <time datetime="{{ . }}">{{ (time.AsTime .).Format "Mon 2 Jan 2006" }}</time>
+        <ul>
+          {{- range $e := $days.Get . }}
+          <li><span class="tag{{ if not (in (slice "Shipped" "Published") $e.tag) }} q{{ end }}">{{ $e.tag }}</span>{{ with $e.url }}<a href="{{ . }}">{{ $e.title }}</a>{{ else }}{{ $e.html }}{{ end }}</li>
+          {{- end }}
+        </ul>
+      </li>
+      {{- end }}
+    </ol>
+  </div>
+</div>
+{{- end -}}

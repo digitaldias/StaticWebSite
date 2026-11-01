@@ -1,0 +1,11 @@
+# About page track list, oldest first. A blank year renders as a dash.
+- year: "1982"
+  text: "First computer: a ZX Spectrum 48K"
+- year: "1999"
+  text: "BSc Computer Science, Høyskolen i Oslo og Akershus"
+- year: ""
+  text: "Microsoft: Azure adoption"
+- year: ""
+  text: "Chief Architect, Tradesolution AS"
+- year: "Now"
+  text: "Acting Chief AI Officer, Tradesolution AS"

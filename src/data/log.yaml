@@ -1,0 +1,11 @@
+# Ship's log: short dated notes, newest first. Published posts join automatically.
+# tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
+- date: 2026-11-01
+  tag: Shipped
+  text: "Reader tools: a route chart in the margin, a resume slip, and quotable paragraphs."
+- date: 2026-11-01
+  tag: Site
+  text: "Article furniture: folio line, revision record, See also. New posts open with a TL;DR."
+- date: 2026-09-19
+  tag: Fixed
+  text: "The live stylesheet went unstyled behind a cached 404 at the CDN. Forced a new fingerprint and wrote the deploy race down."
