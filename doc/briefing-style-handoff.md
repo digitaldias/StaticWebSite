@@ -15,6 +15,12 @@ Read from `briefing/index.html` as mirrored on 2026-11-01:
 
 ## 2. Tokens: one source for the site and the briefing
 
+**Order of rollout.** This restyle depends on the Sea Glass redesign being live:
+
+1. Merge the `sea-glass` branch into `main` first. `src/assets/css/tokens.css` and `src/assets/js/theme.js` exist only there until then, and the header in section 4 links to `/log/` and `/photography/`, which the live site gains with the same merge.
+2. The publisher reads both files from the same up-to-date `main` checkout it commits `briefing/` into.
+3. If either file is missing, the publish run fails instead of shipping a page without tokens.
+
 The single source is `src/assets/css/tokens.css` in this repo. The site bundles it into its fingerprinted stylesheet.
 
 The publisher already writes into this repo, so at publish time it does two things:

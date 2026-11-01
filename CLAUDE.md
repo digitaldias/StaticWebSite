@@ -117,7 +117,7 @@ CSS conventions: mobile-first rules; breakpoints at 400 / 520 / 560 / 700 / 760 
 
 `main.js` scores 8.4 on `qualify`; `initChart`'s `update` (cc 12) and `initReadMarks` (cc 10) are over the cc 9 threshold. Add new behaviour as small `init*` functions, never inside those two.
 
-Hugo template conventions: use `{{- -}}` for whitespace control; guard optional params with `{{ with .Params.excerpt }}{{ . }}{{ end }}`; internal links via `.RelPermalink`; render HTML content via `{{ .Content | safeHTML }}`.
+Hugo template conventions: in the blog section `.PrevInSection` is the older post and `.NextInSection` the newer one (the "Next entry" link uses `.PrevInSection`); use `{{- -}}` for whitespace control; guard optional params with `{{ with .Params.excerpt }}{{ . }}{{ end }}`; internal links via `.RelPermalink`; render HTML content via `{{ .Content | safeHTML }}`.
 
 ## CSP
 
