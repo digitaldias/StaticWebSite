@@ -4,14 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-All Hugo commands must be run from the `src/` directory:
+Repeatable commands live in the root `justfile` (`just --list`): `new-post`, `cover`, `check`. Add a recipe there rather than re-deriving a command twice.
 
 ```bash
-cd src
-hugo server          # Dev server at http://localhost:1313
-hugo --minify        # Production build → src/public/
-hugo new blog/$(date +%Y-%m-%d)-post-title.md   # New post from archetype
+just new-post my-slug     # src/content/blog/<today>-my-slug.md from src/archetypes/blog.md
+just check                # build with drafts into %TEMP%, never src/public
+cd src && hugo server -D  # dev server at http://localhost:1313
 ```
+
+A Hugo dev server Pedro already has running is his. Reuse it; never start a second one on the same port or restart his.
 
 ## Architecture
 
@@ -50,6 +51,7 @@ date: 2025-11-19
 draft: false
 description: "SEO meta description (max 160 chars)"
 excerpt: "Teaser text shown in blog listing cards"
+tldr: "The whole post in two or three plain sentences"   # Rendered as a TL;DR box above the first paragraph
 readTime: "5 minute read"             # Optional override; omit on new posts to use Hugo's word-count estimate
 updates:                              # Optional dated notes shown in the article's Revision record
   - date: 2026-01-15
@@ -71,7 +73,7 @@ Each post's `## ` headings drive the reader tools in `main.js`: the Chart (secti
 
 ## Available Shortcodes
 
-- `{{< callout >}}` — highlighted callout block
+- `{{< callout >}}` — highlighted callout block (four older posts carry a TL;DR in one; new posts use the `tldr` front-matter field instead)
 - `{{< pullquote >}}` — pull quote styling
 - `{{< img >}}` — image with caption support
 
@@ -121,11 +123,36 @@ Rules that follow from this:
 - **The real fix belongs in Cloudflare, not this repo**: a Cache Rule that bypasses cache for non-2xx origin responses (e.g. "Bypass cache when Origin Status Code ≥ 400") would prevent this class of bug entirely. This needs to be set up once in the Cloudflare dashboard — flag it to Pedro rather than trying to work around it repo-side again.
 - Hugo's minifier strips comments before fingerprinting, so a comment-only edit to `styles.css`/`main.js` does **not** change the hash. Bumping the fingerprint on purpose requires an actual rule/value change.
 
-## Content Guidelines
+## Writing a new blog post
 
-- Writing: first-person, conversational but technically precise
-- Categories (use existing): Architecture, Azure, AI, DevOps, Family, Photography
-- Tags: specific only (e.g. `MediatR`, `Blazor`) — not generic (`web`, `code`)
-- Images: hero at `static/images/blog/<post-slug>/featured.jpg`, 1920×1080, JPEG 80–85% quality, ~200–300 KB; inline images 1200×800, ~150–200 KB. Diagrams use brand color tokens on light parchment backgrounds.
-- HTML is allowed in Markdown (`unsafe = true` in markup config)
-- Keep `static/llm.txt` updated when major site structure changes (new sections, content types, or technologies)
+When Pedro brings an idea for a post, run these steps in order. Each ends on its completion criterion.
+
+1. **Interview.** Ask Pedro one question at a time (`AskUserQuestion`) until you hold the post's one claim, the story or evidence behind it, and the reader it is for. Done when you can state the claim in one sentence and Pedro agrees with it.
+2. **Scaffold.** `just new-post <slug>`. Done when the file exists with `draft: true`.
+3. **Draft.** Load the `writing-rules` skill first, then write to the voice rules below. Use `## ` sections (at least two, so the reader tools' Chart appears). Done when every section serves the one claim and every number, quote and link is real and checked. Mark anything unverified for Pedro instead of guessing.
+4. **Front matter.** Fill every field in the block above: `description` at most 160 characters, `excerpt` one or two sentences, `categories` from the list below, specific `tags`, `featuredAlt` describing the image. Omit `readTime`.
+   Every new post gets a `tldr`: the claim and its payoff in two or three plain sentences, written for a reader who stops there. Say what the reader learns or can do, not what the post covers. Word it differently from `description`: the TL;DR is visible page content (good for skimmers, featured snippets and AI answers), while `description` is the search-result snippet.
+5. **Images.** Prefer Pedro's own photos or real screenshots. When the post needs an illustration, generate it locally with MakeImage (see below). Done when `featured.jpg` exists at the hero spec and every image has alt text.
+6. **Check.** `just check` passes, then show Pedro the draft on his running dev server. Pedro sets `draft: false` and decides when to commit and push; a push deploys (see the deploy race above).
+
+### Voice
+
+Model new posts on the 2026 posts (from `2026-04-06-…` on); the 2025 posts carry habits Pedro has since dropped.
+
+- First person, direct, dry. Pedro tells what he did, what broke, and what he concluded. Opinions are stated flat, then reasoned ("Local wins that one."). Humour is understated self-deprecation.
+- Rhythm: about 12 words per sentence on average, with frequent short lines and fragments for emphasis ("Not a battery problem."). Paragraphs of two to four sentences. "Not X, but Y" contrasts recur.
+- Open on a concrete scene or personal fact ("I have a drawer. You probably have one too."). End on a short punchline, then a `## FAQ` of real reader questions with `###` questions.
+- Specific numbers, named tools and links over adjectives. Estimates are labelled as estimates; caveats are numeric, not hedged. Disclose edits to screenshots or data briefly.
+- Titles and headings are sentence case. Titles are a claim, a question or a small story ("I tried to fix a Wi-Fi camera. I built a weather station."); headings are descriptive with a light twist ("Why F12 fails you here").
+- Plain punctuation: no emoji, no exclamation marks, commas or colons instead of em dashes, and no hype vocabulary.
+- `{{< img >}}` for every in-post image, `{{< callout >}}` sparingly. Fenced code blocks name their language.
+- Posts are in English. Categories: Architecture, Azure, AI, Development, DevOps, Family, Photography. Tags are specific (`MediatR`, `Blazor`), never generic (`web`, `code`).
+- HTML is allowed in Markdown (`unsafe = true`), but prefer the shortcodes.
+
+### Images and MakeImage
+
+- Hero: `static/images/blog/<post-file-name>/featured.jpg`, 1920×1080, JPEG ~82%, ~200–300 KB. Inline: 1200×800, ~150–200 KB. `python scripts/optimize-image.py <in> hero|inline <out>` produces both.
+- MakeImage is Pedro's local image generator (`makeImage`, Krea 2 Turbo on ComfyUI, about a minute per image; run it in the background). `just cover <post-file-name> "<prompt>" [seed]` generates a landscape image and writes the optimised `featured.jpg`. For other images: `makeImage --no-input -p landscape -s <seed> -o <folder> "<prompt>"`, then `optimize-image.py`.
+- Prompts end with "no text"; generated letters come out garbled. Show Pedro the result before using it; regenerate with a new seed rather than accept a weak image.
+- Photos of Pedro's children stay on Flickr; they never go on this site. Pedro's Flickr (`digitaldias`) holds 172 photos for landscape, dog, studio and still-life imagery.
+- Keep `static/llm.txt` updated when the site structure changes (new sections, content types, or technologies).

@@ -1989,6 +1989,26 @@ a.post-card__image img {
    ============================================================================= */
 
 /* Callout */
+/* TL;DR — the post in two or three sentences, above the first paragraph */
+.tldr {
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--ink-faint);
+  padding: var(--sp-4) 0;
+  margin: 0 0 var(--sp-8);
+}
+
+.tldr p {
+  margin: 0;
+}
+
+.tldr .tldr__label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: var(--sp-2);
+}
+
 .callout {
   background: var(--bg-surface);
   border-left: 3px solid var(--accent-gold);

@@ -50,6 +50,9 @@
     {{- /* The Chart: section route, built by main.js from the article's h2s */ -}}
     <nav class="chart" aria-label="Article sections" hidden></nav>
     <div class="post-content container--narrow" data-title="{{ .Title }}" data-date="{{ .Date.Format "2 Jan 2006" }}">
+      {{- with .Params.tldr }}
+      <aside class="tldr" aria-label="Summary"><p class="tldr__label">TL;DR</p><p>{{ . }}</p></aside>
+      {{- end }}
       {{ .Content | safeHTML }}
     </div>
   </div>
