@@ -263,12 +263,16 @@ function initChart() {
     );
 
     let current = 0;
+    let currentLeg = 0;
     let wordsRead = 0;
     sections.forEach((s, i) => {
       const top = tops[i];
       const bottom = i + 1 < sections.length ? tops[i + 1] : contentEnd;
       const f = Math.min(1, Math.max(0, (line - top) / Math.max(bottom - top, 1)));
-      if (line >= top) current = i;
+      if (line >= top) {
+        current = i;
+        currentLeg = f;
+      }
       wordsRead += f * s.words;
       fills[i].style.transform = `scaleX(${f})`;
       waypoints[i].style.setProperty('--leg-done', f);
@@ -292,7 +296,7 @@ function initChart() {
     }
 
     document.dispatchEvent(new CustomEvent('chart:progress', {
-      detail: { progress, minutesLeft, section: sections[current].title },
+      detail: { progress, minutesLeft, section: sections[current].title, index: current, leg: currentLeg },
     }));
   };
 
@@ -335,7 +339,7 @@ function initReaderMemory() {
   const save = () => {
     flushTimer = null;
     if (!latest) return;
-    const { progress, minutesLeft, section } = latest;
+    const { progress, minutesLeft, section, index, leg } = latest;
     latest = null;
     const now = Date.now();
     const log = readReadingLog();
@@ -345,6 +349,8 @@ function initReaderMemory() {
       p: Math.round(progress * 1000) / 1000,
       m: Math.ceil(minutesLeft),
       s: section,
+      i: index,
+      f: Math.round(leg * 1000) / 1000,
       t: now,
       done: entry.done || progress >= FINISHED_AT,
     };
@@ -383,9 +389,15 @@ function initReaderMemory() {
     folio.insertAdjacentElement('afterend', slip);
 
     slip.querySelector('.resume__go').addEventListener('click', () => {
-      const top = content.getBoundingClientRect().top + window.scrollY;
-      const y = top + saved.p * content.offsetHeight - window.innerHeight * READING_LINE;
+      // Return to the same point in the same section; images and code take height but no words.
+      // The slip sits above the article, so remove it before measuring.
       slip.remove();
+      const sections = buildSections(content);
+      const pageY = el => el.getBoundingClientRect().top + window.scrollY;
+      const i = Math.min(saved.i || 0, sections.length - 1);
+      const top = pageY(sections[i].anchor);
+      const bottom = i + 1 < sections.length ? pageY(sections[i + 1].anchor) : pageY(content) + content.offsetHeight;
+      const y = top + (saved.f || 0) * (bottom - top) - window.innerHeight * READING_LINE;
       window.scrollTo({ top: y, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
     });
     slip.querySelector('.resume__dismiss').addEventListener('click', () => slip.remove());
@@ -401,13 +413,13 @@ function initReadMarks() {
   const marked = new Set();
 
   document.querySelectorAll('main a[href]').forEach(a => {
-    if (a.closest('.post-content, .chart, .nav, .revision-record')) return;
+    if (a.closest('.post-content, .post-footer, .chart, .nav, .revision-record')) return;
     const url = new URL(a.href, window.location.href);
     if (url.origin !== window.location.origin || url.pathname === here) return;
     const entry = log[url.pathname];
     if (!entry || (!entry.done && entry.p < STARTED_AT)) return;
 
-    const card = a.closest('.post-card, .paper-lead, .see-also__item, li, article') || a.parentElement;
+    const card = a.closest('.post-card, .paper-lead, .see-also__item') || a;
     if (marked.has(card)) return;
     marked.add(card);
 
@@ -421,7 +433,7 @@ function initReadMarks() {
       mark.textContent = `${Math.round(entry.p * 100)}% read · ${entry.m} min left`;
     }
 
-    const headline = card.querySelector('h2, h3, h4');
+    const headline = card !== a && card.querySelector('h2, h3, h4');
     if (headline) headline.insertAdjacentElement('beforebegin', mark);
     else a.insertAdjacentElement('afterend', mark);
   });
@@ -505,7 +517,6 @@ function initCitations() {
     const mark = document.createElement('a');
     mark.className = 'section-mark';
     mark.href = `#${h.id}`;
-    mark.textContent = '§';
     mark.setAttribute('aria-label', `Copy link to section: ${h.textContent.trim()}`);
     mark.addEventListener('click', () => {
       history.replaceState(null, '', `#${h.id}`);
@@ -520,7 +531,7 @@ function initCitations() {
     const mark = document.createElement('button');
     mark.type = 'button';
     mark.className = 'para-mark';
-    mark.textContent = '¶';
+    mark.tabIndex = -1; // Keyboard readers have § and selection; a stop per paragraph is noise
     mark.setAttribute('aria-label', 'Copy link to this paragraph');
     mark.addEventListener('click', () =>
       copyText(passageUrl(text), notify, 'Paragraph link copied. It opens highlighted.')
