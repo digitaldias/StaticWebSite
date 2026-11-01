@@ -1,5 +1,5 @@
 ---
-title: "My computer reads the news before I do"
+title: "Stop paying a frontier model to read your news"
 date: 2026-11-01
 draft: false
 description: "While I sleep, my PC reads 60 news sites and keeps what matters for my job. Here's how to build your own: code to copy, prompts to paste, and no API bill."
@@ -9,7 +9,7 @@ categories: ["AI"]
 tags: ["Local LLMs", "Decision Models", "News Filtering", "Spearman", "Ollama"]
 author: "Pedro Dias"
 featuredImage: "/images/blog/2026-11-01-local-models-news-filter/featured.jpg"
-featuredAlt: "Overhead view of a wooden desk with a small black computer and a wire basket of loose paper slips, one slip lifted out"
+featuredAlt: "A small black computer tower labeled LOCAL beside a wire basket of paper slips on a wooden desk, one slip lifted out and marked MUST-READ 1.9"
 imageCredit: "© Pedro Dias"
 ---
 
@@ -81,7 +81,7 @@ for v in httpx.get(URL, timeout=30, follow_redirects=True).json()["vulnerabiliti
 
 Run it once and look at the volume. If it's more than you'd read, narrow it to the products you run. That narrowing is the part only you can do.
 
-{{< img src="/images/blog/2026-11-01-local-models-news-filter/recall-shelf.jpg" alt="A red warning triangle on a supermarket shelf edge among stacked blank cereal boxes" caption="The recall notice you want to see before the rest." >}}
+{{< img src="/images/blog/2026-11-01-local-models-news-filter/recall-shelf.jpg" alt="A red warning triangle standing on a supermarket shelf above a long label that reads SECURITY WARNING" caption="The recall notice you want to see before the rest." >}}
 
 **Convert the numbers so you don't have to.** A tool costs $20 a month and a delivery drone flies 10 miles. You won't convert those in your head, so you'll skip them. My pipeline puts a figure in kroner next to every foreign-currency amount and converts every measurement to metric. One rule matters: never skip an amount because its notation is vague. A bare dollar sign means US dollars. A converter that skips some currencies isn't worth having.
 
@@ -107,7 +107,7 @@ Change the date to 28 October 2026 and it prints 17:00. The US and Europe switch
 
 ## One question, three levels
 
-The first version of my picker asked a general model to choose favorites from a numbered list. It worked, and I wanted to know how well. The second version uses a decision model. A decision model doesn't write. It answers a question about a text with probabilities over levels you define, and hands back the expected level.
+The first version of my picker asked a general model to choose favorites from a numbered list. It worked, and I wanted to know how well. The second version uses a decision model. A decision model doesn't write. It answers a question about a text with probabilities over levels you define, and hands back the expected level. I wrote about a related idea in my [Jev experiment](/blog/2026-09-19-jev-before-the-waitlist/): ask a model a typed question and get a score back.
 
 I ask one question per story: "How worth highlighting is this story for this reader?" The answer options are three ordered levels: 0 for not worth highlighting, 1 for worth a mention, 2 for must-read. The model's probabilities over those three become a score between 0 and 2. I like this part most: you get a dial instead of a verdict. A story at 1.9 and a story at 1.1 are both "relevant", and you can see which one wins.
 
@@ -255,7 +255,7 @@ A method that feels better proves nothing. You need a number, and you can get on
 
 Label 30 stories yourself with 0, 1 or 2, before you look at any model output. Then compare your labels with the scores. The comparison is Spearman's correlation, a score for how closely two rankings agree. Say you and a friend each rank five restaurants from best to worst. The same order scores 1. Orders with no pattern in common score 0.
 
-{{< img src="/images/blog/2026-11-01-local-models-news-filter/thirty-cards.jpg" alt="Two hands arranging thirty blank cards in two rows on a table, one row slightly out of order" caption="Thirty stories, two orders, one number." >}}
+{{< img src="/images/blog/2026-11-01-local-models-news-filter/thirty-cards.jpg" alt="Two rows of white cards with handwritten digits 0, 1 and 2, the top row labeled ME and the bottom row labeled MODEL, a hand moving one card" caption="My labels on top, the model's scores below. Spearman measures how well the two rows match." >}}
 
 Save your labels as `labels.csv` (`id,label`) and the scores as `scores.csv` (`id,score`), then run this:
 
