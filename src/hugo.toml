@@ -33,6 +33,8 @@ enableGitInfo = true
   author = 'Pedro Dias'
   location = 'Frogner, Lillestrøm'
   email = 'pedro.dias@tradesolution.no'
+  # Homepage sidebar line under the name
+  bio = "Acting Chief AI Officer at Tradesolution. Writing code since 1982. Too many strong opinions about software, AI and speaker placement."
   
   # Social links
   [params.social]
@@ -64,14 +66,19 @@ enableGitInfo = true
     src = "/images/pedro.jpg"
     alt = "Pedro Dias"
 
-  # Positions held — update whenever an opinion sharpens or a new one forms
-  [params.positions]
-    items = [
-      "Typed decision APIs like Jev are AI's next big shift for software.",
-      "Claude Code's cache expiration is a hidden cost nobody talks about.",
-      "Buy a 3D printer for your household.",
-      "Keep your home automations simple.",
-    ]
+  # Positions held: refreshed with every new post (CLAUDE.md, "Writing a new blog post").
+  # since = month the position was taken (YYYY-MM); post = path of the post that argues it.
+  [[params.positions]]
+    text  = "Typed decision APIs like Jev are AI's next big shift for software."
+    since = "2026-09"
+    post  = "/blog/2026-09-19-jev-before-the-waitlist/"
+  [[params.positions]]
+    text  = "Claude Code's cache expiration is a hidden cost nobody talks about."
+  [[params.positions]]
+    text  = "Buy a 3D printer for your household."
+    post  = "/blog/2026-05-23-ai-at-the-workbench/"
+  [[params.positions]]
+    text  = "Keep your home automations simple."
 
   # Giscus comments configuration
   [params.giscus]
@@ -84,7 +91,6 @@ enableGitInfo = true
     reactionsEnabled = "1"
     emitMetadata = "0"
     inputPosition = "bottom"
-    theme = "dark"
     lang = "en"
 
   # Public source repo — article revision history links point here

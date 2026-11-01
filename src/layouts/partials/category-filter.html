@@ -1,0 +1,6 @@
+<nav class="category-filter" aria-label="Filter by category">
+  <a href="/blog/"{{ if eq .RelPermalink "/blog/" }} aria-current="page"{{ end }}>All</a>
+  {{- range .Site.Taxonomies.categories.Alphabetical }}
+  <a href="{{ .Page.RelPermalink }}"{{ if eq $.RelPermalink .Page.RelPermalink }} aria-current="page"{{ end }}>{{ .Page.Title }}</a>
+  {{- end }}
+</nav>

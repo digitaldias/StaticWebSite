@@ -1,12 +1,12 @@
 {{- define "main" -}}
-<section class="error-page">
-  <div class="container--narrow">
-    <h1 class="display-title">This page doesn't exist.</h1>
-    <p>Neither does the perfect audio system, but that doesn't stop me from looking.</p>
-    <nav aria-label="Recovery links">
-      <a href="/">&#8592; Back home</a>
-      <a href="/blog/">Read something instead</a>
-    </nav>
-  </div>
-</section>
+<div class="wrap error-page">
+  <header class="page-head">
+    <h1 class="d split-words">Not <em>found</em></h1>
+    <p class="lift">This page doesn't exist. Neither does the perfect audio system, but that doesn't stop me from looking.</p>
+  </header>
+  <nav aria-label="Recovery links">
+    <a href="/">&larr; Back home</a>
+    <a href="/blog/">Read something instead</a>
+  </nav>
+</div>
 {{- end -}}

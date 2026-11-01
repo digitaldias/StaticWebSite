@@ -2,54 +2,56 @@
 {{- $revised := partial "last-revised.html" . -}}
 {{- /* A revision counts once it lands more than a week after filing — typo fixes don't */ -}}
 {{- $isRevised := gt ($revised.Sub .Date).Hours 168.0 -}}
+{{- $posts := where .Site.RegularPages "Section" "blog" -}}
+{{- $entry := len (where $posts "Date" "le" .Date) -}}
+{{- $cover := partial "cover.html" . -}}
+{{- $category := index (.Params.categories | default slice) 0 -}}
 <article>
-  <header class="post-header">
-    <div class="container">
-      <nav aria-label="Breadcrumb" class="meta">
-        <a href="/">Home</a> /
-        {{- with .Params.categories }} <a href="/categories/{{ index . 0 | urlize }}/">{{ index . 0 }}</a> /{{ end }}
-        <span>{{ .Title }}</span>
-      </nav>
+  <header class="a-head">
+    <p class="k">{{ with $category }}<a href="/categories/{{ . | urlize }}/">{{ . }}</a> · {{ end }}Entry {{ printf "%03d" $entry }}</p>
+    <h1 class="d">{{ .Title }}</h1>
+    {{- with .Description }}
+    <p class="dek lift">{{ . }}</p>
+    {{- end }}
 
-      <h1 class="display-title">{{ .Title }}</h1>
-
-      {{- with .Description -}}<p class="post-header__description">{{ . }}</p>{{- end -}}
-
-      {{- /* Folio line: the record of when this was filed, revised, and how long it is */ -}}
-      <dl class="folio">
-        <div class="folio__cell">
-          <dt>Filed</dt>
-          <dd><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time></dd>
-        </div>
-        {{- if $isRevised }}
-        <div class="folio__cell folio__cell--revised">
-          <dt>Revised</dt>
-          <dd><a href="#revision-record"><time datetime="{{ $revised.Format "2006-01-02" }}">{{ $revised.Format "2 Jan 2006" }}</time></a></dd>
-        </div>
-        {{- end }}
-        <div class="folio__cell">
-          <dt>Length</dt>
-          <dd>{{ lang.FormatNumberCustom 0 .WordCount }} words · {{ replace (partial "read-time.html" .) " minute read" " min" }}</dd>
-        </div>
-        <div class="folio__cell">
-          <dt>By</dt>
-          <dd>Pedro Dias</dd>
-        </div>
-      </dl>
-    </div>
-
-    {{- with .Params.featuredImage -}}
-    <div class="post-header__image">
-      <img src="{{ . }}" alt="{{ $.Params.featuredAlt }}" loading="eager" decoding="async">
-      {{- with $.Params.imageCredit -}}<p class="meta" style="text-align:right">{{ . }}</p>{{- end -}}
-    </div>
-    {{- end -}}
+    {{- /* Folio line: the record of when this was filed, revised, and how long it is */}}
+    <dl class="folio">
+      <div>
+        <dt>Filed</dt>
+        <dd><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time></dd>
+      </div>
+      {{- if $isRevised }}
+      <div class="folio__revised">
+        <dt>Revised</dt>
+        <dd><a href="#revision-record"><time datetime="{{ $revised.Format "2006-01-02" }}">{{ $revised.Format "2 Jan 2006" }}</time></a></dd>
+      </div>
+      {{- end }}
+      <div>
+        <dt>Length</dt>
+        <dd>{{ lang.FormatNumberCustom 0 .WordCount }} w · {{ replace (partial "read-time.html" .) " minute read" " min" }}</dd>
+      </div>
+      <div>
+        <dt>By</dt>
+        <dd>Pedro Dias</dd>
+      </div>
+    </dl>
   </header>
 
-  <div class="post-body">
-    {{- /* The Chart: section route, built by main.js from the article's h2s */ -}}
+  {{- with $cover.src }}
+  <figure class="a-hero">
+    <div class="ph"><img src="{{ . }}" alt="{{ $cover.alt }}" fetchpriority="high" decoding="async"></div>
+    {{- with $.Params.imageCredit }}
+    <figcaption class="m">{{ . }}</figcaption>
+    {{- else }}{{ if $cover.generated }}
+    <figcaption class="m">Cyanotype cover · MakeImage</figcaption>
+    {{- end }}{{ end }}
+  </figure>
+  {{- end }}
+
+  <div class="a-body">
+    {{- /* The Chart: section route, built by main.js from the article's h2s */}}
     <nav class="chart" aria-label="Article sections" hidden></nav>
-    <div class="post-content container--narrow" data-title="{{ .Title }}" data-date="{{ .Date.Format "2 Jan 2006" }}">
+    <div class="post-content" data-title="{{ .Title }}" data-date="{{ .Date.Format "2 Jan 2006" }}">
       {{- with .Params.tldr }}
       <aside class="tldr" aria-label="Summary"><p class="tldr__label">TL;DR</p><p>{{ . }}</p></aside>
       {{- end }}
@@ -58,8 +60,8 @@
   </div>
 
   {{- if or $isRevised .Params.updates }}
-  <aside id="revision-record" class="revision-record container--narrow" aria-labelledby="revision-record-title">
-    <h2 id="revision-record-title" class="revision-record__label">Revision record</h2>
+  <aside id="revision-record" class="revision-record column" aria-labelledby="revision-record-title">
+    <h2 id="revision-record-title" class="k revision-record__label">Revision record</h2>
     <ol class="revision-record__log">
       {{- range sort (.Params.updates | default slice) "date" "desc" }}
       <li>
@@ -84,80 +86,77 @@
   </aside>
   {{- end }}
 
+  {{- /* Next entry: the next one back in time; the oldest post points to the newest */}}
+  {{- $next := .PrevInSection | default (index $posts 0) -}}
+  {{- if ne $next.Permalink .Permalink }}
+  {{- $nextCover := partial "cover.html" $next }}
+  <div class="column">
+    <a class="next reveal" href="{{ $next.RelPermalink }}">
+      <div>
+        <span class="k">{{ if .PrevInSection }}Next entry{{ else }}Latest entry{{ end }}</span>
+        <h3 class="d">{{ $next.Title }}</h3>
+        {{- with $next.Params.categories }}<span class="m">{{ index . 0 }}</span>{{ end }}
+      </div>
+      {{- with $nextCover.src }}
+      <img src="{{ . }}" alt="" loading="lazy" decoding="async">
+      {{- end }}
+    </a>
+  </div>
+  {{- end }}
+
+  {{- /* Reader response: one quiet Ko-fi line, then Giscus (injected by main.js with the current theme) */}}
+  <section class="respond column" aria-label="Reader response">
+    {{- with .Site.Params.support.kofi }}
+    <p class="thanks">If this saved you an afternoon, you can <a href="{{ . }}" data-cta="kofi" target="_blank" rel="noopener noreferrer">buy me a coffee</a>.</p>
+    {{- end }}
+    {{- with .Site.Params.giscus }}
+    <h2 class="k">Reactions and comments</h2>
+    <div class="giscus"
+         data-repo="{{ .repo }}"
+         data-repo-id="{{ .repoId }}"
+         data-category="{{ .category }}"
+         data-category-id="{{ .categoryId }}"
+         data-mapping="{{ .mapping | default "pathname" }}"
+         data-strict="{{ .strict | default "0" }}"
+         data-reactions-enabled="{{ .reactionsEnabled | default "1" }}"
+         data-emit-metadata="{{ .emitMetadata | default "0" }}"
+         data-input-position="{{ .inputPosition | default "bottom" }}"
+         data-lang="{{ .lang | default "en" }}"></div>
+    {{- end }}
+  </section>
+
   {{- $related := .Site.RegularPages.Related . | first 3 -}}
   {{- if lt (len $related) 3 -}}
     {{- /* Too few tag matches: fill with the most recent writing so the strip is never thin */ -}}
-    {{- $fill := where (where .Site.RegularPages "Section" "blog") "Permalink" "ne" .Permalink | complement $related -}}
+    {{- $fill := where $posts "Permalink" "ne" .Permalink | complement $related -}}
     {{- $related = $related | append (first (sub 3 (len $related)) $fill) -}}
   {{- end -}}
   {{- with $related }}
   {{- $myTags := slice -}}
   {{- range $.Params.tags }}{{ $myTags = $myTags | append (lower .) }}{{ end }}
-  <section class="see-also" aria-labelledby="see-also-title">
-    <div class="see-also__inner">
-      <h2 id="see-also-title" class="see-also__label">See also</h2>
-      <ol class="see-also__list">
-        {{- range . }}
-        {{- $shared := slice -}}
-        {{- range .Params.tags }}{{ if in $myTags (lower .) }}{{ $shared = $shared | append . }}{{ end }}{{ end }}
-        <li class="see-also__item">
-          {{- with .Params.categories }}<p class="see-also__kicker">{{ index . 0 }}</p>{{ end }}
-          <h3 class="see-also__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-          {{- with .Params.excerpt | default .Description }}<p class="see-also__dek">{{ . }}</p>{{ end }}
-          <p class="see-also__why">
-            {{- $myCategory := index ($.Params.categories | default slice) 0 -}}
-            {{- if $shared -}}
-            Shares {{ delimit (first 3 $shared) ", " " and " }}
-            {{- else if and $myCategory (in .Params.categories $myCategory) -}}
-            More in {{ $myCategory }}
-            {{- else -}}
-            Recent writing · {{ .Date.Format "Jan 2006" }}
-            {{- end -}}
-          </p>
-        </li>
-        {{- end }}
-      </ol>
-    </div>
+  <section class="see-also wrap" aria-labelledby="see-also-title">
+    <h2 id="see-also-title" class="k see-also__label">See also</h2>
+    <ol class="see-also__list">
+      {{- range . }}
+      {{- $shared := slice -}}
+      {{- range .Params.tags }}{{ if in $myTags (lower .) }}{{ $shared = $shared | append . }}{{ end }}{{ end }}
+      <li class="see-also__item reveal">
+        {{- with .Params.categories }}<p class="k">{{ index . 0 }}</p>{{ end }}
+        <h3 class="see-also__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        {{- with .Params.excerpt | default .Description }}<p class="see-also__dek">{{ . }}</p>{{ end }}
+        <p class="see-also__why">
+          {{- if $shared -}}
+          Shares {{ delimit (first 3 $shared) ", " " and " }}
+          {{- else if and $category (in .Params.categories $category) -}}
+          More in {{ $category }}
+          {{- else -}}
+          Recent writing · {{ .Date.Format "Jan 2006" }}
+          {{- end -}}
+        </p>
+      </li>
+      {{- end }}
+    </ol>
   </section>
   {{- end }}
-
-  <footer class="post-footer container--narrow">
-    {{- with .Site.Params.support.kofi -}}
-    <div class="post-footer__support">
-      <p class="meta">Found this useful? You can support my writing on <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Ko-fi</a>.</p>
-    </div>
-    {{- end -}}
-
-    {{- if .Site.Params.giscus -}}
-    <div class="post-footer__comments">
-      <h2>Comments</h2>
-      <script src="https://giscus.app/client.js"
-              data-repo="{{ .Site.Params.giscus.repo }}"
-              data-repo-id="{{ .Site.Params.giscus.repoId }}"
-              data-category="{{ .Site.Params.giscus.category }}"
-              data-category-id="{{ .Site.Params.giscus.categoryId }}"
-              data-mapping="{{ .Site.Params.giscus.mapping | default "pathname" }}"
-              data-strict="{{ .Site.Params.giscus.strict | default "0" }}"
-              data-reactions-enabled="{{ .Site.Params.giscus.reactionsEnabled | default "1" }}"
-              data-emit-metadata="{{ .Site.Params.giscus.emitMetadata | default "0" }}"
-              data-input-position="{{ .Site.Params.giscus.inputPosition | default "bottom" }}"
-              data-theme="{{ .Site.Params.giscus.theme | default "light" }}"
-              data-lang="{{ .Site.Params.giscus.lang | default "en" }}"
-              crossorigin="anonymous"
-              async>
-      </script>
-    </div>
-    {{- end -}}
-
-    <div class="post-footer__nav">
-      {{- with .PrevInSection -}}
-      <a href="{{ .RelPermalink }}" rel="prev">&larr; {{ .Title }}</a>
-      {{- end -}}
-      {{- with .NextInSection -}}
-      <a href="{{ .RelPermalink }}" rel="next">{{ .Title }} &rarr;</a>
-      {{- end -}}
-    </div>
-    <a href="/blog/" class="post-footer__back">&larr; Back to all writing</a>
-  </footer>
 </article>
 {{- end -}}

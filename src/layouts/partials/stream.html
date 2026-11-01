@@ -1,0 +1,27 @@
+{{- /* Post rows for the homepage, Writing and taxonomy pages.
+       Context: dict "pages" (the posts) "lead" (true makes the first post the lead story). */ -}}
+<div class="stream">
+  {{- range $i, $p := .pages }}
+  {{- $isLead := and $.lead (eq $i 0) -}}
+  {{- $cover := partial "cover.html" $p }}
+  <article class="{{ if $isLead }}lead{{ else }}reveal{{ end }}">
+    <div>
+      <div class="meta-line m">
+        {{- with $p.Params.categories }}<span>{{ index . 0 }}</span>{{ end -}}
+        <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "2 Jan 2006" }}</time>
+        <span>{{ replace (partial "read-time.html" $p) " minute read" " min" }}</span>
+      </div>
+      <h2 class="d{{ if $isLead }} split-words{{ end }}"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
+      {{- with $p.Params.excerpt | default $p.Description }}
+      <p{{ if $isLead }} class="lift"{{ end }}>{{ . }}</p>
+      {{- end }}
+      {{- if $cover.generated }}
+      <span class="cover-note">Cyanotype cover · MakeImage</span>
+      {{- end }}
+    </div>
+    {{- with $cover.src }}
+    <a class="ph{{ if $isLead }} wipe{{ end }}" href="{{ $p.RelPermalink }}" tabindex="-1" aria-hidden="true"><img src="{{ . }}" alt=""{{ if $isLead }} fetchpriority="high"{{ else }} loading="lazy"{{ end }} decoding="async"></a>
+    {{- end }}
+  </article>
+  {{- end }}
+</div>

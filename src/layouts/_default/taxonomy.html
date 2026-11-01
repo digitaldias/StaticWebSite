@@ -1,17 +1,13 @@
 {{- define "main" -}}
-<div class="container">
-  <header class="page-header">
-    <h1 class="display-title">{{ .Title }}</h1>
-    <p class="meta">{{ len .Pages }} {{ if eq (len .Pages) 1 }}term{{ else }}terms{{ end }}</p>
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="d split-words">{{ .Title }}</h1>
+    <p class="lift">{{ len .Pages }} {{ if eq (len .Pages) 1 }}term{{ else }}terms{{ end }}</p>
   </header>
-
   <ul class="taxonomy-list">
-    {{- range .Pages -}}
-    <li class="taxonomy-term">
-      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-      <span class="meta">({{ len .Pages }})</span>
-    </li>
-    {{- end -}}
+    {{- range .Pages }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span class="m">{{ len .Pages }}</span></li>
+    {{- end }}
   </ul>
 </div>
 {{- end -}}

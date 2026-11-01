@@ -1,0 +1,16 @@
+{{- /* A post's cover image. Front-matter featuredImage wins; otherwise a generated cover
+       found by convention at static/images/blog/<post file name>/featured.jpg, with its
+       alt text in data/covers.yaml. Image-less posts get a cover without a Markdown edit. */ -}}
+{{- $src := .Params.featuredImage -}}
+{{- $alt := .Params.featuredAlt | default "" -}}
+{{- $generated := false -}}
+{{- if and (not $src) .File -}}
+  {{- $name := .File.ContentBaseName -}}
+  {{- $path := printf "images/blog/%s/featured.jpg" $name -}}
+  {{- if fileExists (printf "static/%s" $path) -}}
+    {{- $src = printf "/%s" $path -}}
+    {{- $generated = true -}}
+    {{- with index site.Data.covers $name }}{{ $alt = .alt }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- return dict "src" $src "alt" $alt "generated" $generated -}}

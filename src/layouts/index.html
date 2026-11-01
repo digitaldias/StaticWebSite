@@ -1,95 +1,38 @@
 {{- define "main" -}}
-<div class="paper-layout">
-
-  {{- /* ── Nameplate ── */}}
-  <header class="paper-nameplate">
-    <div class="paper-nameplate__meta">
-      <span>Vol. {{ now.Year }}</span>
-      <span class="paper-nameplate__location">59°55′N · 10°49′E · Oslo, Norway</span>
-      <span>{{ now.Format "Monday, 2 January 2006" }}</span>
-    </div>
-    <div class="paper-nameplate__rule paper-nameplate__rule--thick"></div>
-    <h1 class="paper-nameplate__title">The Digital Dias</h1>
-    <div class="paper-nameplate__rule paper-nameplate__rule--thin"></div>
-    <p class="paper-nameplate__motto">Norwegian pragmatism · Portuguese stubbornness · Too much code</p>
-    <div class="paper-nameplate__rule paper-nameplate__rule--thin"></div>
-  </header>
-
-  {{- /* ── Front page ── */}}
-  <div class="paper-front">
-
-    {{- /* Lead story */}}
-    {{- $post := index (where .Site.RegularPages "Section" "blog") 0 -}}
-    {{ with $post }}
-    <article class="paper-lead">
-      <div class="paper-lead__kicker">{{ with .Params.categories }}{{ index . 0 }}{{ end }}</div>
-      <h2 class="paper-lead__headline">{{ .Title }}</h2>
-      <div class="paper-lead__byline">By Pedro Dias <span class="paper-lead__byline-sep">·</span> <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time> <span class="paper-lead__byline-sep">·</span> {{ partial "read-time.html" . }}</div>
-      {{ with .Params.featuredImage }}
-      <div class="paper-lead__image">
-        <a href="{{ $post.RelPermalink }}"><img src="{{ . }}" alt="{{ $post.Params.featuredAlt }}" loading="eager"></a>
-        {{ with $post.Params.featuredAlt }}<p class="paper-lead__cutline">{{ . }}</p>{{ end }}
-      </div>
-      {{ end }}
-      <p class="paper-lead__deck">{{ .Params.excerpt }}</p>
-      <p class="paper-lead__readmore"><a href="{{ .RelPermalink }}">Continue reading →</a></p>
-    </article>
-    {{ end }}
-
-    {{- /* Right sidebar */}}
-    <aside class="paper-sidebar">
-      {{- with .Site.Params.currently }}
-      <div class="paper-sidebar__section">
-        <h2 class="paper-sidebar__head">Ship's log</h2>
-        <div class="paper-sidebar__rule"></div>
-        <dl class="paper-log">
-          {{ with .building }}<dt>Building</dt><dd>{{ . }}</dd>{{ end }}
-          {{ with .listening }}<dt>Listening</dt><dd>{{ . }}</dd>{{ end }}
-          {{ with .tinkering }}<dt>Tinkering</dt><dd>{{ . }}</dd>{{ end }}
-          {{ with .annoyed_by }}<dt>Annoyed by</dt><dd>{{ . }}</dd>{{ end }}
-        </dl>
-      </div>
-      {{- end }}
-
-      <div class="paper-sidebar__section">
-        <h2 class="paper-sidebar__head">Positions held</h2>
-        <div class="paper-sidebar__rule"></div>
-        <ol class="paper-opinions">
-          {{- range .Site.Params.positions.items }}
-          <li>{{ . }}</li>
-          {{- end }}
-        </ol>
-      </div>
-
+{{- $posts := where .Site.RegularPages "Section" "blog" -}}
+<div class="wrap">
+  <div class="split">
+    <aside class="side" aria-label="About the author">
       {{- with .Site.Params.photo }}
-      <div class="paper-sidebar__section paper-sidebar__portrait">
-        <img src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
-        <p class="paper-sidebar__caption">Pedro Dias<br>Acting Chief AI Officer, Tradesolution AS</p>
-      </div>
+      <div class="portrait"><img src="{{ .src }}" alt="{{ .alt }}" width="240" height="240"></div>
       {{- end }}
+      <h1 class="d split-words">Pedro <em>Dias</em></h1>
+      {{- with .Site.Params.bio }}
+      <p class="lift">{{ . }}</p>
+      {{- end }}
+      {{- with .Site.Params.positions }}
+      <h2 class="k">Positions held</h2>
+      <ol>
+        {{- range . }}
+        <li>{{ .text }}</li>
+        {{- end }}
+      </ol>
+      {{- end }}
+      {{- with .Site.Params.currently }}
+      <h2 class="k">Now</h2>
+      <dl>
+        {{- with .building }}<dt>Building</dt><dd>{{ . }}</dd>{{ end }}
+        {{- with .listening }}<dt>Listening</dt><dd>{{ . }}</dd>{{ end }}
+      </dl>
+      {{- end }}
+      <a class="m more" href="/log/">The full log &rarr;</a>
     </aside>
-
-  </div>
-
-  {{- /* ── Secondary stories ── */}}
-  {{- $secondary := first 3 (after 1 (where .Site.RegularPages "Section" "blog")) -}}
-  {{- if $secondary }}
-  <div class="paper-secondary">
-    <div class="paper-secondary__top-rule"></div>
-    <div class="paper-secondary__label">More dispatches</div>
-    <div class="paper-secondary__grid">
-      {{- range $secondary }}
-      <article class="paper-brief">
-        <div class="paper-brief__kicker">{{ with .Params.categories }}{{ index . 0 }}{{ end }}</div>
-        <h3 class="paper-brief__head"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-        <p class="paper-brief__text">{{ .Params.excerpt | truncate 120 }}</p>
-        <div class="paper-brief__date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time></div>
-      </article>
+    <div>
+      {{- partial "stream.html" (dict "pages" (first 12 $posts) "lead" true) }}
+      {{- if gt (len $posts) 12 }}
+      <a class="m stream-more" href="/blog/">All writing &rarr;</a>
       {{- end }}
     </div>
-    <p class="paper-secondary__all"><a href="/blog/">All dispatches →</a></p>
   </div>
-  {{- end }}
-
 </div>
 {{- end -}}

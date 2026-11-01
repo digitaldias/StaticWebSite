@@ -1,31 +1,13 @@
 {{- define "main" -}}
-<div class="container">
-  <header class="page-header">
-    <div class="meta">
-      {{- with .Parent -}}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{- end -}}
+<div class="wrap">
+  <header class="page-head">
+    <div>
+      {{- with .Parent }}<a class="k" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
+      <h1 class="d split-words">{{ .Title }}</h1>
     </div>
-    <h1 class="display-title">{{ .Title }}</h1>
-    <p class="meta">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</p>
+    <p class="lift">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</p>
   </header>
-
-  <div class="post-list">
-    {{- range .Pages -}}
-    <article class="post-card">
-      {{- with .Params.featuredImage -}}
-      <a href="{{ $.RelPermalink }}" class="post-card__image" tabindex="-1" aria-hidden="true">
-        <img src="{{ . }}" alt="{{ $.Params.featuredAlt }}" loading="lazy" decoding="async">
-      </a>
-      {{- end -}}
-      <div class="post-card__body">
-        <div class="post-card__meta meta">
-          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
-          {{- " · " }}{{ partial "read-time.html" . }}
-        </div>
-        <h2 class="post-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-        {{- with .Params.excerpt -}}<p class="post-card__excerpt">{{ . }}</p>{{- end -}}
-      </div>
-    </article>
-    {{- end -}}
-  </div>
+  {{- if eq .Data.Plural "categories" }}{{ partial "category-filter.html" . }}{{ end }}
+  {{- partial "stream.html" (dict "pages" .Pages "lead" false) }}
 </div>
 {{- end -}}
