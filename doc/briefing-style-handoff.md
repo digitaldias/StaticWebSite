@@ -271,16 +271,16 @@ a:hover{color:var(--teal);}
 
 ## 6. Mobile and the publish layer
 
-This block replaces the contents of `<style id="briefing-layer">`, above the per-category rules. Below 768 px the site header stops being sticky, so the catbar keeps the one sticky slot. At 374 px and below the header nav moves to a second row, exactly as on the site.
+This block replaces the contents of `<style id="briefing-layer">`, above the per-category rules. Below 768 px the site header stops being sticky, so the catbar keeps the one sticky slot. Below 401 px the header type tightens, and at 339 px and below the nav moves to a second row, exactly as on the site.
 
 ```css
 .catbar{display:none;}
 
 @media (max-width:767px){
   .mast{position:static;}
-  .mast .wrap{gap:12px;}
+  .mast .wrap{gap:10px;}
   .mast .wordmark{font-size:1.2rem;}
-  .nav{gap:11px;font-size:.76rem;}
+  .nav{gap:10px;font-size:.76rem;}
   .theme-toggle{width:28px;height:28px;margin-left:-2px;}
 
   .page{padding:0 16px 48px;}
@@ -333,7 +333,12 @@ This block replaces the contents of `<style id="briefing-layer">`, above the per
   .footline{margin-top:40px;font-size:.72rem;}
 }
 
-@media (max-width:374px){
+@media (max-width:400px){
+  .mast .wordmark{font-size:1.1rem;}
+  .nav{font-size:.72rem;}
+}
+
+@media (max-width:339px){
   .mast .wrap{flex-wrap:wrap;height:auto;padding-block:10px;row-gap:6px;}
   .nav{order:3;width:100%;margin-left:0;justify-content:space-between;}
   .theme-toggle{margin-left:auto;}
