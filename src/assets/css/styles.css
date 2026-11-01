@@ -1353,6 +1353,514 @@ a.post-card__image img {
   }
 }
 
+/* -----------------------------------------------------------------------------
+   The Chart — the article plotted as a route: sections are waypoints,
+   distances are minutes. A sticky course strip on narrow screens, a rail
+   in the left margin on wide ones. Built by initChart() in main.js.
+   ----------------------------------------------------------------------------- */
+.chart {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  margin-bottom: var(--sp-8);
+  padding-inline: max(var(--sp-6), calc((100% - 720px) / 2 + var(--sp-6)));
+  background: var(--bg);
+  border-bottom: 1px solid var(--ink-faint);
+}
+
+.chart[hidden] {
+  display: none;
+}
+
+.chart__label,
+.chart__arrival {
+  display: none;
+}
+
+.chart__strip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-3) 0 var(--sp-2);
+  background: none;
+  border: 0;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.chart__strip::after {
+  content: "\25BE";
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  transition: transform var(--transition);
+}
+
+.chart--open .chart__strip::after {
+  transform: rotate(180deg);
+}
+
+.chart__leg {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--accent);
+}
+
+.chart__here {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chart__eta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+/* One segment per section, sized by its share of the words */
+.chart__track {
+  display: flex;
+  gap: 3px;
+  padding-bottom: var(--sp-3);
+}
+
+.chart__seg {
+  position: relative;
+  height: 3px;
+  min-width: 4px;
+  overflow: hidden;
+  background: var(--ink-faint);
+}
+
+.chart__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.chart__route {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: var(--sp-2) 0 var(--sp-4);
+  max-height: 60vh;
+  overflow-y: auto;
+  border-top: 1px solid var(--ink-faint);
+}
+
+.chart--open .chart__route {
+  display: block;
+}
+
+.chart__waypoint {
+  position: relative;
+}
+
+.chart__waypoint a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+  color: var(--ink-muted);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  line-height: 1.35;
+  transition: color var(--transition);
+}
+
+/* The waypoint marker: hollow ahead, red where you are, inked once passed */
+.chart__waypoint a::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink-faint);
+  background: var(--bg);
+  transform: translateY(-1px);
+}
+
+.chart__waypoint[data-state="past"] a::before {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+
+.chart__waypoint[data-state="current"] a {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.chart__waypoint[data-state="current"] a::before {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--accent);
+}
+
+.chart__waypoint a:hover {
+  color: var(--accent);
+}
+
+.chart__mins {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+/* Anchored headings land below the nav and the course strip */
+.post-content h2 {
+  scroll-margin-top: 8rem;
+}
+
+@media (min-width: 1100px) {
+  .post-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 720px) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .post-body > .post-content {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .chart {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    width: 260px;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    margin: 0 var(--sp-4) 0 0;
+    padding: var(--sp-6) 0 var(--sp-4);
+    background: transparent;
+    border-bottom: 0;
+  }
+
+  .post-content h2 {
+    scroll-margin-top: 5rem;
+  }
+
+  .chart__strip,
+  .chart__track {
+    display: none;
+  }
+
+  .chart__label {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    padding-top: var(--sp-2);
+    margin-bottom: var(--sp-3);
+    border-top: 2px solid var(--ink);
+  }
+
+  .chart__route,
+  .chart--open .chart__route {
+    display: block;
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    border-top: 0;
+  }
+
+  /* The leg to the next waypoint: red for the distance covered, faint for what's ahead */
+  .chart__waypoint:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: calc(var(--sp-2) + 0.8em);
+    bottom: calc(-1 * (var(--sp-2) + 0.35em));
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      var(--accent) calc(var(--leg-done, 0) * 100%),
+      var(--ink-faint) 0
+    );
+  }
+
+  .chart__waypoint a {
+    font-size: var(--text-sm);
+  }
+
+  .chart__waypoint a::before {
+    position: relative;
+    z-index: 1;
+  }
+
+  .chart__arrival {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: var(--sp-4);
+    padding-top: var(--sp-3);
+    border-top: 1px solid var(--ink-faint);
+  }
+
+  .chart__arrival-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+  }
+
+  .chart__arrival-value {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--ink);
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   Reader memory — the "Continued" slip on return, and stamps on links to
+   articles already read or started.
+   ----------------------------------------------------------------------------- */
+.resume {
+  display: grid;
+  gap: var(--sp-2);
+  margin-top: var(--sp-6);
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--bg-surface);
+  border: 1px solid var(--ink-faint);
+  border-left: 4px solid var(--accent);
+}
+
+.resume__label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.resume__text {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  color: var(--ink);
+  max-width: none;
+}
+
+.resume__text em {
+  font-weight: 600;
+}
+
+.resume__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-1);
+}
+
+.resume__go {
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--accent-cool);
+  color: var(--bg);
+  border: 0;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.resume__go:hover {
+  background: var(--accent);
+}
+
+.resume__dismiss {
+  padding: 0;
+  background: none;
+  border: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.read-mark {
+  display: inline-block;
+  align-self: flex-start;
+  width: fit-content;
+  margin-bottom: var(--sp-2);
+  padding-bottom: 3px;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-map);
+  background: linear-gradient(to right, var(--accent-map) calc(var(--read, 0) * 100%), var(--ink-faint) 0)
+    no-repeat 0 100% / 100% 2px;
+}
+
+/* Finished: a rubber stamp, slightly askew, as a desk editor would ink it */
+.read-mark--done {
+  padding: 1px var(--sp-2);
+  color: var(--accent);
+  background: none;
+  border: 1.5px solid currentColor;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.2em;
+  transform: rotate(-3deg);
+  opacity: 0.85;
+}
+
+/* -----------------------------------------------------------------------------
+   Cite a passage — § and ¶ deep links, the selection toolbar, the toast,
+   and the highlight a text-fragment link lands on.
+   ----------------------------------------------------------------------------- */
+.section-mark,
+.post-content a.section-mark {
+  margin-left: 0.35em;
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--ink-faint);
+  text-decoration: none;
+  transition: color var(--transition), opacity var(--transition);
+}
+
+.post-content a.section-mark:hover,
+.post-content a.section-mark:focus-visible {
+  color: var(--accent);
+}
+
+.para-mark {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .section-mark {
+    opacity: 0;
+  }
+
+  .post-content h2:hover .section-mark,
+  .section-mark:focus-visible {
+    opacity: 1;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 900px) {
+  .post-content > p {
+    position: relative;
+  }
+
+  .para-mark {
+    display: block;
+    position: absolute;
+    top: 0.1em;
+    right: -2rem;
+    padding: 0 var(--sp-1);
+    background: none;
+    border: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--ink-faint);
+    opacity: 0;
+    cursor: pointer;
+    transition: color var(--transition), opacity var(--transition);
+  }
+
+  .post-content > p:hover .para-mark,
+  .para-mark:focus-visible {
+    opacity: 1;
+  }
+
+  .para-mark:hover {
+    color: var(--accent);
+  }
+}
+
+.cite-pop {
+  position: absolute;
+  z-index: 200;
+  display: flex;
+  background: var(--accent-cool);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.cite-pop[hidden] {
+  display: none;
+}
+
+.cite-pop button {
+  padding: var(--sp-2) var(--sp-3);
+  background: none;
+  border: 0;
+  color: var(--bg);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.cite-pop button + button {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cite-pop button:hover,
+.cite-pop button:focus-visible {
+  background: var(--accent);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
+  z-index: 300;
+  max-width: calc(100% - 2 * var(--sp-6));
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--ink);
+  color: var(--bg);
+  font-size: var(--text-sm);
+  border-radius: var(--radius);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 0.75rem);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+::target-text {
+  background: var(--bg-overlay);
+  color: var(--ink);
+  text-decoration: underline 2px var(--accent);
+  text-underline-offset: 0.2em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart__strip::after,
+  .toast {
+    transition: none;
+  }
+}
+
 /* =============================================================================
    16. POST FOOTER
    ============================================================================= */

@@ -65,6 +65,8 @@ imageCredit: "© Pedro Dias"
 
 Without `featuredImage`, the OG image falls back to `images/dog-hero.jpg`.
 
+Each post's `## ` headings drive the reader tools in `main.js`: the Chart (section route rail and course strip), the resume slip and Read stamps (browser `localStorage` key `dd-reading-log`), and § / ¶ passage links. A post needs at least two `## ` sections for the Chart to appear.
+
 `lastmod` comes from git history (`enableGitInfo`, with `fetch-depth: 0` in CI). A post shows "Revised" in its folio line and a Revision record once its last commit lands more than 7 days after `date`. Any commit to a post counts, so never sweep mechanical front-matter edits across all posts: every one of them would claim a revision that day.
 
 ## Available Shortcodes

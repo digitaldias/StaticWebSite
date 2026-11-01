@@ -46,8 +46,12 @@
     {{- end -}}
   </header>
 
-  <div class="post-content container--narrow">
-    {{ .Content | safeHTML }}
+  <div class="post-body">
+    {{- /* The Chart: section route, built by main.js from the article's h2s */ -}}
+    <nav class="chart" aria-label="Article sections" hidden></nav>
+    <div class="post-content container--narrow" data-title="{{ .Title }}" data-date="{{ .Date.Format "2 Jan 2006" }}">
+      {{ .Content | safeHTML }}
+    </div>
   </div>
 
   {{- if or $isRevised .Params.updates }}

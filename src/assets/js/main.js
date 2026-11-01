@@ -123,44 +123,476 @@ function initSmoothScroll() {
   });
 }
 
-/* ─────────────────────────────────────────────
-   Reading progress bar
-   Only active on single blog posts that have
-   .post-content and #reading-progress-bar.
-───────────────────────────────────────────── */
-function initReadingProgress() {
-  const bar = document.getElementById('reading-progress-bar');
-  const article = document.querySelector('.post-content');
-  if (!bar || !article) return;
+const WORDS_PER_MINUTE = 230;
+const READING_LINE = 0.3; // Fraction of the viewport where the eye sits while reading
 
+const countWords = text => (text.trim().match(/\S+/g) || []).length;
+
+const formatMinutes = minutes => {
+  const m = Math.ceil(minutes);
+  return m <= 0 ? 'Arrived' : `${m} min`;
+};
+
+/* ─────────────────────────────────────────────
+   Reading log
+   Per-browser memory of how far into each
+   article the reader got. Storage can be blocked
+   (private mode), so every access is guarded.
+───────────────────────────────────────────── */
+const READING_LOG_KEY = 'dd-reading-log';
+const READING_LOG_LIMIT = 100;
+
+function readReadingLog() {
+  try {
+    return JSON.parse(localStorage.getItem(READING_LOG_KEY)) || {};
+  } catch {
+    return {};
+  }
+}
+
+function writeReadingLog(log) {
+  const entries = Object.entries(log)
+    .sort((a, b) => b[1].t - a[1].t)
+    .slice(0, READING_LOG_LIMIT);
+  try {
+    localStorage.setItem(READING_LOG_KEY, JSON.stringify(Object.fromEntries(entries)));
+  } catch {
+    /* Storage unavailable: the site works the same, it just forgets */
+  }
+}
+
+/* ─────────────────────────────────────────────
+   The Chart
+   Plots the article's h2 sections as waypoints
+   on a route, weighted by word count. Marks where
+   the reader is and the minutes left, overall and
+   per section. A rail in the margin on wide
+   screens; a sticky course strip below that.
+   Emits `chart:progress` for the reading log.
+───────────────────────────────────────────── */
+function buildSections(content) {
+  if (!content.id) content.id = 'article-text';
+  const sections = [{ id: content.id, title: 'Opening', anchor: content, words: 0 }];
+
+  Array.from(content.children).forEach(el => {
+    if (el.tagName === 'H2' && el.id) {
+      sections.push({ id: el.id, title: el.textContent.trim(), anchor: el, words: 0 });
+    } else {
+      sections[sections.length - 1].words += countWords(el.textContent);
+    }
+  });
+
+  // An article that opens straight into its first h2 has no Opening leg
+  if (sections.length > 1 && sections[0].words < 40) {
+    sections[1].words += sections[0].words;
+    sections.shift();
+  }
+  return sections;
+}
+
+function initChart() {
+  const chart = document.querySelector('.chart');
+  const content = document.querySelector('.post-content');
+  if (!chart || !content) return;
+
+  const sections = buildSections(content);
+  if (sections.length < 3) return;
+
+  const totalWords = sections.reduce((sum, s) => sum + s.words, 0);
+  const minutesFor = words => words / WORDS_PER_MINUTE;
+
+  chart.innerHTML = `
+    <p class="chart__label">The course</p>
+    <button type="button" class="chart__strip" aria-expanded="false" aria-controls="chart-route">
+      <span class="chart__leg"></span>
+      <span class="chart__here"></span>
+      <span class="chart__eta"></span>
+    </button>
+    <div class="chart__track" aria-hidden="true">
+      ${sections.map(s => `<span class="chart__seg" style="flex-grow:${Math.max(s.words, 1)}"><span class="chart__fill"></span></span>`).join('')}
+    </div>
+    <ol class="chart__route" id="chart-route">
+      ${sections.map(s => `
+        <li class="chart__waypoint">
+          <a href="#${s.id}">
+            <span class="chart__name">${s.title.replace(/</g, '&lt;')}</span>
+            <span class="chart__mins">${formatMinutes(minutesFor(s.words))}</span>
+          </a>
+        </li>`).join('')}
+    </ol>
+    <p class="chart__arrival"><span class="chart__arrival-label">Arrival in</span> <span class="chart__arrival-value"></span></p>
+  `;
+  chart.hidden = false;
+
+  const strip = chart.querySelector('.chart__strip');
+  const leg = chart.querySelector('.chart__leg');
+  const here = chart.querySelector('.chart__here');
+  const eta = chart.querySelector('.chart__eta');
+  const arrival = chart.querySelector('.chart__arrival-value');
+  const fills = chart.querySelectorAll('.chart__fill');
+  const waypoints = chart.querySelectorAll('.chart__waypoint');
+
+  const setOpen = open => {
+    strip.setAttribute('aria-expanded', String(open));
+    chart.classList.toggle('chart--open', open);
+  };
+  strip.addEventListener('click', () => setOpen(strip.getAttribute('aria-expanded') !== 'true'));
+  chart.querySelectorAll('.chart__route a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+
+  // Sit the strip and rail just under the sticky nav
+  const nav = document.querySelector('.nav');
+  const placeBelowNav = () => {
+    chart.style.top = `${nav ? nav.offsetHeight : 0}px`;
+  };
+
+  let lastIndex = -1;
   let ticking = false;
 
   const update = () => {
-    const articleTop    = article.getBoundingClientRect().top + window.scrollY;
-    const articleHeight = article.offsetHeight;
-    const scrolled      = window.scrollY;
-    const winHeight     = window.innerHeight;
-
-    const raw      = (scrolled - articleTop) / (articleHeight - winHeight);
-    const progress = Math.min(100, Math.max(0, raw * 100));
-    bar.style.width = progress + '%';
     ticking = false;
+    // At the foot of the page every leg counts as sailed, however short the tail
+    const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    const line = atBottom ? Infinity : window.scrollY + window.innerHeight * READING_LINE;
+    const contentTop = content.getBoundingClientRect().top + window.scrollY;
+    const contentEnd = contentTop + content.offsetHeight;
+    const tops = sections.map((s, i) =>
+      i === 0 ? contentTop : s.anchor.getBoundingClientRect().top + window.scrollY
+    );
+
+    let current = 0;
+    let wordsRead = 0;
+    sections.forEach((s, i) => {
+      const top = tops[i];
+      const bottom = i + 1 < sections.length ? tops[i + 1] : contentEnd;
+      const f = Math.min(1, Math.max(0, (line - top) / Math.max(bottom - top, 1)));
+      if (line >= top) current = i;
+      wordsRead += f * s.words;
+      fills[i].style.transform = `scaleX(${f})`;
+      waypoints[i].style.setProperty('--leg-done', f);
+      waypoints[i].dataset.state = f >= 1 ? 'past' : line >= top ? 'current' : 'ahead';
+    });
+
+    const minutesLeft = minutesFor(totalWords - wordsRead);
+    const progress = totalWords ? wordsRead / totalWords : 0;
+    eta.textContent = minutesLeft <= 0.05 ? 'Arrived' : `${formatMinutes(minutesLeft)} to go`;
+    arrival.textContent = minutesLeft <= 0.05 ? 'port' : formatMinutes(minutesLeft);
+
+    if (current !== lastIndex) {
+      lastIndex = current;
+      leg.textContent = `§ ${current + 1}/${sections.length}`;
+      here.textContent = sections[current].title;
+      waypoints.forEach((w, i) => {
+        const link = w.querySelector('a');
+        if (i === current) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    }
+
+    document.dispatchEvent(new CustomEvent('chart:progress', {
+      detail: { progress, minutesLeft, section: sections[current].title },
+    }));
   };
 
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (!ticking) {
-        requestAnimationFrame(update);
-        ticking = true;
-      }
-    },
-    { passive: true }
-  );
+  const requestUpdate = () => {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  };
 
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', () => {
+    placeBelowNav();
+    requestUpdate();
+  });
+  window.addEventListener('load', requestUpdate);
+  placeBelowNav();
   update();
 }
 
+/* ─────────────────────────────────────────────
+   Reader memory
+   On an article: remember the reader's place,
+   and offer to resume on return. Everywhere:
+   stamp article links the reader has finished
+   or started.
+───────────────────────────────────────────── */
+const FINISHED_AT = 0.92;
+const STARTED_AT = 0.05;
+
+function initReaderMemory() {
+  const content = document.querySelector('.post-content');
+  if (!content || !document.querySelector('.chart:not([hidden])')) return;
+
+  const path = window.location.pathname;
+  const saved = readReadingLog()[path];
+  let latest = null;
+  let flushTimer = null;
+
+  const save = () => {
+    flushTimer = null;
+    if (!latest) return;
+    const { progress, minutesLeft, section } = latest;
+    latest = null;
+    const now = Date.now();
+    const log = readReadingLog();
+    const entry = log[path] || {};
+    if (progress < STARTED_AT) return; // Back at the top (or a page unloading) never erases a saved place
+    log[path] = {
+      p: Math.round(progress * 1000) / 1000,
+      m: Math.ceil(minutesLeft),
+      s: section,
+      t: now,
+      done: entry.done || progress >= FINISHED_AT,
+    };
+    writeReadingLog(log);
+  };
+
+  // Write at most every 1.5 s while scrolling, and always the final position
+  document.addEventListener('chart:progress', e => {
+    latest = e.detail;
+    if (!flushTimer) flushTimer = setTimeout(save, 1500);
+  });
+  window.addEventListener('pagehide', save);
+
+  if (!saved || saved.done || saved.p < STARTED_AT || window.location.hash) return;
+
+  // Offer to resume only on a fresh arrival at the top. Decided after load, because a
+  // text-fragment link scrolls the page late and never shows up in location.hash.
+  const offerResume = () => {
+    if (window.scrollY > 100) return;
+    const folio = document.querySelector('.folio');
+    if (!folio) return;
+
+    const slip = document.createElement('div');
+    slip.className = 'resume';
+    slip.setAttribute('role', 'region');
+    slip.setAttribute('aria-label', 'Resume reading');
+    slip.innerHTML = `
+      <p class="resume__label">Continued</p>
+      <p class="resume__text">You left off at <em></em>, ${Math.round(saved.p * 100)}% of the way through. ${saved.m} min to go.</p>
+      <div class="resume__actions">
+        <button type="button" class="resume__go">Resume reading &darr;</button>
+        <button type="button" class="resume__dismiss">Start from the top</button>
+      </div>
+    `;
+    slip.querySelector('em').textContent = saved.s;
+    folio.insertAdjacentElement('afterend', slip);
+
+    slip.querySelector('.resume__go').addEventListener('click', () => {
+      const top = content.getBoundingClientRect().top + window.scrollY;
+      const y = top + saved.p * content.offsetHeight - window.innerHeight * READING_LINE;
+      slip.remove();
+      window.scrollTo({ top: y, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    });
+    slip.querySelector('.resume__dismiss').addEventListener('click', () => slip.remove());
+  };
+  window.addEventListener('load', () => requestAnimationFrame(offerResume), { once: true });
+}
+
+function initReadMarks() {
+  const log = readReadingLog();
+  if (!Object.keys(log).length) return;
+
+  const here = window.location.pathname;
+  const marked = new Set();
+
+  document.querySelectorAll('main a[href]').forEach(a => {
+    if (a.closest('.post-content, .chart, .nav, .revision-record')) return;
+    const url = new URL(a.href, window.location.href);
+    if (url.origin !== window.location.origin || url.pathname === here) return;
+    const entry = log[url.pathname];
+    if (!entry || (!entry.done && entry.p < STARTED_AT)) return;
+
+    const card = a.closest('.post-card, .paper-lead, .see-also__item, li, article') || a.parentElement;
+    if (marked.has(card)) return;
+    marked.add(card);
+
+    const mark = document.createElement('span');
+    if (entry.done) {
+      mark.className = 'read-mark read-mark--done';
+      mark.textContent = 'Read';
+    } else {
+      mark.className = 'read-mark';
+      mark.style.setProperty('--read', entry.p);
+      mark.textContent = `${Math.round(entry.p * 100)}% read · ${entry.m} min left`;
+    }
+
+    const headline = card.querySelector('h2, h3, h4');
+    if (headline) headline.insertAdjacentElement('beforebegin', mark);
+    else a.insertAdjacentElement('afterend', mark);
+  });
+}
+
+/* ─────────────────────────────────────────────
+   Cite a passage
+   § beside each section head and ¶ beside each
+   paragraph copy a deep link; selecting text
+   offers a link to that exact passage (a URL
+   text fragment, highlighted by the browser on
+   arrival) or a ready-made citation.
+───────────────────────────────────────────── */
+function initToast() {
+  let toast = document.querySelector('.toast');
+  if (!toast) {
+    toast = document.createElement('p');
+    toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    document.body.appendChild(toast);
+  }
+  let timer;
+  return message => {
+    toast.textContent = message;
+    toast.classList.add('is-visible');
+    clearTimeout(timer);
+    timer = setTimeout(() => toast.classList.remove('is-visible'), 2800);
+  };
+}
+
+// Text-fragment directives reserve - , & so they must be escaped inside the terms
+const encodeFragmentTerm = text =>
+  encodeURIComponent(text).replace(/-/g, '%2D');
+
+function passageUrl(text) {
+  const words = text.replace(/\s+/g, ' ').trim().split(' ');
+  const base = `${window.location.origin}${window.location.pathname}`;
+  if (words.length <= 8) return `${base}#:~:text=${encodeFragmentTerm(words.join(' '))}`;
+  const start = words.slice(0, 4).join(' ');
+  const end = words.slice(-4).join(' ');
+  return `${base}#:~:text=${encodeFragmentTerm(start)},${encodeFragmentTerm(end)}`;
+}
+
+// Text fragments only match whole words, so widen a selection that cuts one in half
+function wholeWords(range) {
+  const r = range.cloneRange();
+  const { startContainer: s, endContainer: e } = r;
+  if (s.nodeType === Node.TEXT_NODE) {
+    let i = r.startOffset;
+    while (i > 0 && /\S/.test(s.data[i - 1])) i--;
+    r.setStart(s, i);
+  }
+  if (e.nodeType === Node.TEXT_NODE) {
+    let i = r.endOffset;
+    while (i < e.data.length && /[^\s.,;:!?)”"]/.test(e.data[i])) i++;
+    r.setEnd(e, i);
+  }
+  return r;
+}
+
+async function copyText(text, notify, message) {
+  try {
+    await navigator.clipboard.writeText(text);
+    notify(message);
+  } catch {
+    notify('Copying is blocked in this browser.');
+  }
+}
+
+function initCitations() {
+  const content = document.querySelector('.post-content');
+  if (!content) return;
+
+  const notify = initToast();
+  const title = content.dataset.title || document.title;
+  const date = content.dataset.date || '';
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  content.querySelectorAll(':scope > h2[id]').forEach(h => {
+    const mark = document.createElement('a');
+    mark.className = 'section-mark';
+    mark.href = `#${h.id}`;
+    mark.textContent = '§';
+    mark.setAttribute('aria-label', `Copy link to section: ${h.textContent.trim()}`);
+    mark.addEventListener('click', () => {
+      history.replaceState(null, '', `#${h.id}`);
+      copyText(window.location.href, notify, 'Section link copied.');
+    });
+    h.appendChild(mark);
+  });
+
+  content.querySelectorAll(':scope > p').forEach(p => {
+    const text = p.textContent; // Read before the ¶ joins the paragraph
+    if (countWords(text) < 12) return;
+    const mark = document.createElement('button');
+    mark.type = 'button';
+    mark.className = 'para-mark';
+    mark.textContent = '¶';
+    mark.setAttribute('aria-label', 'Copy link to this paragraph');
+    mark.addEventListener('click', () =>
+      copyText(passageUrl(text), notify, 'Paragraph link copied. It opens highlighted.')
+    );
+    p.appendChild(mark);
+  });
+
+  if (!finePointer) return;
+
+  const popover = document.createElement('div');
+  popover.className = 'cite-pop';
+  popover.setAttribute('role', 'toolbar');
+  popover.setAttribute('aria-label', 'Selected passage');
+  popover.innerHTML = `
+    <button type="button" data-cite="link">Link to passage</button>
+    <button type="button" data-cite="quote">Copy as quote</button>
+  `;
+  popover.hidden = true;
+  document.body.appendChild(popover);
+
+  let selected = '';
+  const hide = () => {
+    popover.hidden = true;
+  };
+
+  const show = () => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) return hide();
+    const range = sel.getRangeAt(0);
+    if (!content.contains(range.commonAncestorContainer)) return hide();
+    const text = wholeWords(range).toString().replace(/\s+/g, ' ').trim();
+    if (text.length < 8 || text.length > 1200) return hide();
+
+    selected = text;
+    const rect = range.getBoundingClientRect();
+    popover.hidden = false;
+    const x = Math.min(
+      Math.max(rect.left + rect.width / 2 - popover.offsetWidth / 2, 8),
+      document.documentElement.clientWidth - popover.offsetWidth - 8
+    );
+    const above = rect.top - popover.offsetHeight - 10;
+    const y = above > 70 ? above : rect.bottom + 10;
+    popover.style.left = `${x + window.scrollX}px`;
+    popover.style.top = `${y + window.scrollY}px`;
+  };
+
+  content.addEventListener('mouseup', () => requestAnimationFrame(show));
+  content.addEventListener('keyup', e => {
+    if (e.shiftKey) show();
+  });
+  document.addEventListener('selectionchange', () => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed) hide();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') hide();
+  });
+
+  popover.addEventListener('mousedown', e => e.preventDefault()); // Keep the selection alive
+  popover.addEventListener('click', e => {
+    const action = e.target.closest('button')?.dataset.cite;
+    if (!action) return;
+    const url = passageUrl(selected);
+    if (action === 'link') {
+      copyText(url, notify, 'Passage link copied. It opens highlighted.');
+    } else {
+      const citation = `“${selected}”\n— Pedro Dias, “${title}”, digitaldias.com${date ? `, ${date}` : ''}\n${url}`;
+      copyText(citation, notify, 'Quote copied with its citation.');
+    }
+    hide();
+  });
+}
 /* ─────────────────────────────────────────────
    Image lightbox
    Click any figure image in post content to view
@@ -248,7 +680,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initScrollReveal();
   initSmoothScroll();
-  initReadingProgress();
+  initChart();
+  initReaderMemory();
+  initReadMarks();
+  initCitations();
   initImageLightbox();
   initKofiTracking();
 });
