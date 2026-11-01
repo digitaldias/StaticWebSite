@@ -38,8 +38,12 @@
   </header>
 
   {{- with $cover.src }}
+  {{- $w := 0 -}}{{- $h := 0 -}}
+  {{- if and (hasPrefix . "/") (fileExists (printf "static%s" .)) -}}
+    {{- with imageConfig (printf "static%s" .) -}}{{- $w = .Width -}}{{- $h = .Height -}}{{- end -}}
+  {{- end }}
   <figure class="a-hero">
-    <div class="ph"><img src="{{ . }}" alt="{{ $cover.alt }}" fetchpriority="high" decoding="async"></div>
+    <div class="ph"><img src="{{ . }}" alt="{{ $cover.alt }}"{{ if $w }} width="{{ $w }}" height="{{ $h }}"{{ end }} fetchpriority="high" decoding="async"></div>
     {{- with $.Params.imageCredit }}
     <figcaption class="m">{{ . }}</figcaption>
     {{- else }}{{ if $cover.generated }}

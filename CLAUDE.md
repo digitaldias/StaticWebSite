@@ -187,6 +187,6 @@ Model new posts on the 2026 posts (from `2026-04-06-…` on); the 2025 posts car
 
 - Hero: `static/images/blog/<post-file-name>/featured.jpg`, 1920×1080, JPEG ~82%, ~200–300 KB. Inline: 1200×800, ~150–200 KB. `python scripts/optimize-image.py <in> hero|inline <out>` produces both.
 - MakeImage is Pedro's local image generator (`makeImage`, Krea 2 Turbo on ComfyUI, about a minute per image; run it in the background). `just cover <post-file-name> "<prompt>" [seed]` generates a landscape image and writes the optimised `featured.jpg`. For other images: `makeImage --no-input -p landscape -s <seed> -o <folder> "<prompt>"`, then `optimize-image.py`.
-- Prompts end with "no text"; generated letters come out garbled. Show Pedro the result before using it; regenerate with a new seed rather than accept a weak image.
+- Prompts are long and specific (50 to 120 words), and the model renders text in images sharply: quote the exact words, say where they appear, and say what stays blank. Add "no text" only when a picture should have none. Full recipe in `~/.claude/docs/makeimage.md`. Show Pedro the result before using it; regenerate with a new seed rather than accept a weak image.
 - Photos of Pedro's children stay on Flickr; they never go on this site. Pedro's Flickr (`digitaldias`) holds 172 photos for landscape, dog, studio and still-life imagery.
 - Keep `static/llm.txt` updated when the site structure changes (new sections, content types, or technologies).
