@@ -1,0 +1,6 @@
+# Alt text for generated covers found by convention (layouts/partials/cover.html).
+# Key: the post's file name without .md. Image: static/images/blog/<key>/featured.jpg.
+2025-09-30-gpt5-codex-static-site:
+  alt: "Cyanotype print of a single-board computer with jumper wires, white on deep blue"
+2025-11-19-from-html-to-hugo-migration:
+  alt: "Cyanotype print of a laptop, a keyboard and a mouse, white on deep blue"

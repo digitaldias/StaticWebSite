@@ -47,11 +47,12 @@
 {{- $ogImageWidth := "1200" -}}
 {{- $ogImageHeight := "630" -}}
 {{- $ogImageAlt := "" -}}
-{{- if and (not .IsHome) .Params.featuredImage -}}
-{{- $ogImage = .Params.featuredImage | absURL -}}
+{{- $cover := partial "cover.html" . -}}
+{{- if and (not .IsHome) $cover.src -}}
+{{- $ogImage = $cover.src | absURL -}}
 {{- $ogImageWidth = "1920" -}}
 {{- $ogImageHeight = "1080" -}}
-{{- $ogImageAlt = .Params.featuredAlt | default .Title -}}
+{{- $ogImageAlt = $cover.alt | default .Title -}}
 {{- else -}}
 {{- $ogImage = printf "%simages/dog-hero.jpg" .Site.BaseURL -}}
 {{- $ogImageAlt = .Site.Title -}}
@@ -172,14 +173,14 @@
     "@type": "WebPage",
     "@id": "{{ .Permalink }}"
   }
-  {{- if .Params.featuredImage -}},
+  {{- if $cover.src -}},
   "image": {
     "@type": "ImageObject",
-    "url": "{{ .Params.featuredImage | absURL }}",
+    "url": "{{ $cover.src | absURL }}",
     "width": 1920,
     "height": 1080
-    {{- if .Params.featuredAlt -}},
-    "caption": {{ .Params.featuredAlt | jsonify | safeJS }}
+    {{- if $cover.alt -}},
+    "caption": {{ $cover.alt | jsonify | safeJS }}
     {{- end -}}
   }
   {{- end -}}
