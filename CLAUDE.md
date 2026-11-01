@@ -131,6 +131,10 @@ Push to `main` triggers `.github/workflows/deploy-to-azure.yml`, which builds wi
 
 The `src/isableFastRender/` directory is a Hugo server artifact — ignore it.
 
+The nightly briefing publisher (newsstream, early morning) commits `briefing/` in this checkout, then runs `git pull` and `git push origin main`; it refuses to publish while `main` is ahead of `origin/main`. Never leave unpushed commits on `main` overnight: finish work on a branch, or push it.
+
+The deploy workflow has no `concurrency` group, so back-to-back pushes deploy in parallel and the run that finishes last wins the upload. After two quick pushes, check in `gh run list` that the newest commit's run finished last.
+
 ### Known deploy race: do not verify a fresh deploy against the live CDN URL
 
 `upload-batch` uploads many files without guaranteeing order, so a page's HTML can become servable a moment before every fingerprinted asset it references (`css/styles.min.<hash>.css`, `js/main.min.<hash>.js`) is actually live at the origin. Cloudflare caches static-looking extensions (`.css`, `.js`, `.jpg`, …) **by default, including non-2xx responses**, and this site's zone currently returns `Cache-Control: max-age=14400` on those — so a single request that lands in that few-second window gets a 404 pinned at the edge for up to 4 hours, for everyone, until purged. This has caused a real outage (2026-09-19): the live site rendered unstyled because `styles.min.*.css` 404'd once, immediately after deploy, and stayed cached.
