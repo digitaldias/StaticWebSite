@@ -6,15 +6,21 @@
       {{- with .Site.Params.photo }}
       <div class="portrait"><img src="{{ .src }}" alt="{{ .alt }}" width="240" height="240"></div>
       {{- end }}
-      <h1 class="d split-words">Pedro <em>Dias</em></h1>
+      <p class="k side__name">Pedro Dias</p>
+      <h1 class="d split-words">The Digital <em>Dias</em></h1>
+      {{- with .Site.Params.motto }}
+      <p class="motto lift">
+        {{- range $i, $part := split . " · " }}{{ if $i }}<span class="motto__dot">&nbsp;· </span>{{ end }}<span>{{ $part }}</span>{{ end -}}
+      </p>
+      {{- end }}
       {{- with .Site.Params.bio }}
       <p class="lift">{{ . }}</p>
       {{- end }}
       {{- with .Site.Params.positions }}
       <h2 class="k">Positions held</h2>
       <ol>
-        {{- range . }}
-        <li>{{ .text }}</li>
+        {{- range $p := . }}
+        <li>{{ with $p.post }}<a href="{{ . }}">{{ $p.text }}</a>{{ else }}{{ $p.text }}{{ end }}</li>
         {{- end }}
       </ol>
       {{- end }}

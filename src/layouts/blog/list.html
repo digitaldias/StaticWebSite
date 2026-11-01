@@ -1,10 +1,20 @@
 {{- define "main" -}}
+{{- $posts := .Pages -}}
+{{- $oldest := index (last 1 $posts) 0 -}}
+{{- $minutes := 0 -}}
+{{- range $posts }}{{ $minutes = add $minutes .ReadingTime }}{{ end -}}
 <div class="wrap">
   <header class="page-head">
     <h1 class="d split-words">Writ<em>ing</em></h1>
     <p class="lift">Technical posts, opinions, and the occasional rant. Mostly useful.</p>
   </header>
+  <dl class="tally">
+    <div><dt>Entries</dt><dd>{{ len $posts }}</dd></div>
+    <div><dt>Since</dt><dd>{{ $oldest.Date.Format "Jan 2006" }}</dd></div>
+    <div><dt>Categories</dt><dd>{{ len .Site.Taxonomies.categories }}</dd></div>
+    <div><dt>Reading time</dt><dd>&asymp; {{ div $minutes 60 }} h {{ mod $minutes 60 }} min</dd></div>
+  </dl>
   {{- partial "category-filter.html" . }}
-  {{- partial "stream.html" (dict "pages" .Pages "lead" false) }}
+  {{- partial "archive.html" (dict "pages" $posts "front" true) }}
 </div>
 {{- end -}}

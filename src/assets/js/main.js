@@ -315,8 +315,8 @@ function initReaderMemory() {
   window.addEventListener('load', () => requestAnimationFrame(offerResume), { once: true });
 }
 
-const READ_MARK_CARDS = '.stream article, .see-also__item, .next';
-const READ_MARK_SKIP = '.post-content, .respond, .chart, .nav, .revision-record';
+const READ_MARK_CARDS = '.stream article, .card, .see-also__item, .next';
+const READ_MARK_SKIP = '.post-content, .respond, .chart, .nav, .revision-record, .side';
 
 function readMarkFor(entry) {
   const mark = document.createElement('span');
@@ -424,6 +424,61 @@ async function copyText(text, notify, message) {
   } catch {
     notify('Copying is blocked in this browser.');
   }
+}
+
+function legacyCopy(text) {
+  const area = document.createElement('textarea');
+  area.value = text;
+  area.setAttribute('readonly', '');
+  area.style.cssText = 'position:fixed;top:0;opacity:0';
+  document.body.appendChild(area);
+  area.select();
+  const ok = document.execCommand('copy');
+  area.remove();
+  return ok;
+}
+
+async function writeClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return legacyCopy(text);
+  }
+}
+
+function initCodeBlocks() {
+  const blocks = document.querySelectorAll('.post-content .highlight');
+  if (!blocks.length) return;
+
+  const notify = initToast();
+  blocks.forEach(block => {
+    const code = block.querySelector('pre code');
+    if (!code) return;
+
+    const lang = code.dataset.lang === 'text' ? 'plain text' : code.dataset.lang || 'code';
+    const bar = document.createElement('div');
+    bar.className = 'code-bar';
+    const label = document.createElement('span');
+    label.className = 'code-lang';
+    label.textContent = lang;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'code-copy';
+    button.textContent = 'Copy';
+    button.setAttribute('aria-label', `Copy ${lang} to clipboard`);
+    button.addEventListener('click', async () => {
+      if (!(await writeClipboard(code.textContent.replace(/\n$/, '')))) {
+        notify('Copying is blocked in this browser.');
+        return;
+      }
+      button.textContent = 'Copied';
+      notify('Copied to clipboard.');
+      setTimeout(() => { button.textContent = 'Copy'; }, 1800);
+    });
+    bar.append(label, button);
+    block.prepend(bar);
+  });
 }
 
 function initCitations() {
@@ -623,9 +678,7 @@ function initHeadlineRise() {
 const GISCUS_ORIGIN = 'https://giscus.app';
 
 const giscusTheme = () => {
-  const root = document.documentElement;
-  const osDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return (root.dataset.theme || (osDark ? 'dark' : 'light')) === 'dark' ? 'transparent_dark' : 'light';
+  return document.documentElement.dataset.theme === 'dark' ? 'transparent_dark' : 'light';
 };
 
 function initGiscus() {
@@ -676,6 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initReaderMemory();
   initReadMarks();
   initCitations();
+  initCodeBlocks();
   initImageLightbox();
   initGiscus();
   initKofiTracking();

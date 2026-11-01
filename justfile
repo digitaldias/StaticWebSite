@@ -18,3 +18,7 @@ cover post prompt seed="":
 # Build with drafts into a scratch folder to catch template and front-matter errors; never into src/public
 check:
     hugo --quiet --minify --buildDrafts --source src --destination "{{scratch}}"
+
+# Pedro's most-played Spotify albums of the last four weeks, for Now / Listening (one-time setup: scripts/spotify-top.py)
+listening:
+    $env:PYTHONUTF8 = "1"; python scripts/spotify-top.py

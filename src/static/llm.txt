@@ -66,7 +66,7 @@ Pedro Dias
 "Sea Glass": a cool Nordic palette, newspaper structure, light and dark themes.
 
 - **Colours:** ground `#f4f6f4` / dark `#0f1a1b`, ink `#14201f` / `#e3ebe9`, muted `#4f5f5d` / `#9db1ae`, rule `#cdd8d5` / `#2a3b3d`, one accent teal `#0b5d63` / `#5fc3c2`, depth tints `#d7ebe8`, `#a9d3cf`, `#5aa5a3`. No warm accent.
-- **Themes:** Follows the OS setting; a header switch stores the reader's choice in the browser.
+- **Themes:** Light by default; a header switch turns on dark and remembers the choice in the browser.
 - **Layout:** Ruled columns and folio lines instead of cards; full-colour photographs.
 - **Motion:** Headline word rise, image wipe, scroll-driven reveals, a reading-progress hairline and cross-page view transitions. All of it is off for readers who prefer reduced motion.
 - Tokens live in `src/assets/css/tokens.css`, the single source for every page.

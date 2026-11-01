@@ -8,6 +8,6 @@
     <p class="lift">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</p>
   </header>
   {{- if eq .Data.Plural "categories" }}{{ partial "category-filter.html" . }}{{ end }}
-  {{- partial "stream.html" (dict "pages" .Pages "lead" false) }}
+  {{- partial "archive.html" (dict "pages" .Pages "front" false) }}
 </div>
 {{- end -}}

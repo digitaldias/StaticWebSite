@@ -1,0 +1,19 @@
+{{- /* One post as an archive card. Context: dict "page" "all" (every blog post) "class". */ -}}
+{{- $p := .page -}}
+{{- $cover := partial "cover.html" $p -}}
+{{- $lead := eq .class "card--lead" -}}
+<article class="card {{ .class }}">
+  {{- with $cover.src }}
+  <a class="ph" href="{{ $p.RelPermalink }}" tabindex="-1" aria-hidden="true"><img src="{{ . }}" alt=""{{ if $lead }} fetchpriority="high"{{ else }} loading="lazy"{{ end }} decoding="async"></a>
+  {{- end }}
+  <div class="meta-line m">
+    <span class="entry-no">Entry {{ printf "%03d" (len (where .all "Date" "le" $p.Date)) }}</span>
+    {{- with $p.Params.categories }}<span>{{ index . 0 }}</span>{{ end }}
+    <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "2 Jan 2006" }}</time>
+    <span>{{ replace (partial "read-time.html" $p) " minute read" " min" }}</span>
+  </div>
+  <h3 class="d"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h3>
+  {{- with $p.Params.excerpt | default $p.Description }}
+  <p>{{ . }}</p>
+  {{- end }}
+</article>

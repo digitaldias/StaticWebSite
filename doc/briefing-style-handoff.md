@@ -47,11 +47,12 @@ This needs no runtime link between the two, adds no extra request and keeps the 
 | `--mono` | Geist Mono | | new, replaces JetBrains Mono | Meta row, dates, counts, sources |
 | `--ease-out` | `cubic-bezier(.16, 1, .3, 1)` | | new | Motion curve |
 | `--transition` | `150ms ease` | | new | Hover and focus transitions |
+| `--page` | `1440px` | | new | Widest page column: the header and `.page` |
 | (removed) | | | `--accent-gold` | Defined but unused in the briefing CSS |
 
 The brick red `#b83c2c` retires with `--accent`. The redesign has no warm accent at all, so no orange, terracotta or coral comes back in any form.
 
-Every colour token switches with `light-dark()`, so the page follows the OS without any script. Contrast on `--ground` is at least 6:1 for `--muted` and `--teal` in both themes.
+Every colour token carries both values through `light-dark()`. The page is light by default and turns dark only when the reader has picked dark (section 3). Contrast on `--ground` is at least 6:1 for `--muted` and `--teal` in both themes.
 
 Paste-in fallback, only if the publisher cannot read the repo file. It is a copy and will drift:
 
@@ -63,7 +64,7 @@ Paste-in fallback, only if the publisher cannot read the repo file. It is a copy
    ============================================================================= */
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light; /* Light by default; dark only when the reader picks it */
 
   /* Colour: light value first, dark value second */
   --ground:   light-dark(#f4f6f4, #0f1a1b);
@@ -82,19 +83,22 @@ Paste-in fallback, only if the publisher cannot read the repo file. It is a copy
   --text:    "Source Serif 4", Georgia, serif;
   --mono:    "Geist Mono", ui-monospace, monospace;
 
+  /* Layout: the widest the page column gets on large screens */
+  --page: 1440px;
+
   /* Motion */
   --ease-out:   cubic-bezier(.16, 1, .3, 1);
   --transition: 150ms ease;
 }
 
-/* A stored reader choice (theme.js) overrides the OS setting */
+/* The reader's stored choice (theme.js) */
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"]  { color-scheme: dark; }
 ```
 
 ## 3. Light and dark
 
-The site stores the reader's choice under `localStorage` key `dd-theme` (`light` or `dark`; absent means follow the OS) and sets it as `data-theme` on `<html>`. The briefing is on the same origin, so it shares the choice.
+The site is light by default. It stores the reader's choice under `localStorage` key `dd-theme` (`light` or `dark`; absent means light) and sets it as `data-theme` on `<html>`. The briefing is on the same origin, so it shares the choice.
 
 The publish layer copies `src/assets/js/theme.js` from this repo into `briefing/theme.js`, next to `catbar.js`, every night. It loads in `<head>` without `defer`, so a stored choice applies before first paint:
 
@@ -105,11 +109,10 @@ The publish layer copies `src/assets/js/theme.js` from this repo into `briefing/
 
 `theme.js` also wires every `[data-theme-toggle]` button, which the site header in section 4 contains. It needs no other change.
 
-Replace the page's `theme-color` (if any) with a pair:
+Set the page's `theme-color` to the light ground; `theme.js` switches it when the reader picks dark:
 
 ```html
-<meta name="theme-color" content="#f4f6f4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0f1a1b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f4f6f4">
 ```
 
 ## 4. Fonts and markup
@@ -157,7 +160,7 @@ This block replaces the generator's whole `<style>`. It expects the tokens from 
 
 | Class | Was | Becomes |
 | --- | --- | --- |
-| `.page` | 1200 px, 32 px gutters | 1280 px with the site's `clamp(16px, 4vw, 44px)` gutters, aligned with the header |
+| `.page` | 1200 px, 32 px gutters | `var(--page)` (1440 px) with the site's `clamp(16px, 4vw, 44px)` gutters, aligned with the header |
 | `.meta-row` | Mono 11 px, 2 px ink rule | The site's `.m` meta line: Geist Mono .76rem, muted, hairline below; the italic centre in Source Serif 4 |
 | `.datestrip` | Centred, ink chip for today | Left-aligned mono chips like the site's category filter; today is teal on `--on-teal` |
 | `.masthead`, `.wordmark`, `.tagline` | Centred Lora 56 px | The Log page's `.page-head`: display 750 up to 5.6rem, left-aligned; tagline in muted serif beside it from 900 px; 2 px ink rule below |
@@ -188,7 +191,7 @@ a:hover{color:var(--teal);}
 
 /* Site header, inserted by the publish layer: identical to the site's */
 .mast{position:sticky;top:0;z-index:40;background:var(--ground);border-bottom:1px solid var(--rule);}
-.mast .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(16px,4vw,44px);display:flex;align-items:center;gap:28px;height:60px;}
+.mast .wrap{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px);display:flex;align-items:center;gap:28px;height:60px;}
 .mast .wordmark{font:800 1.45rem/1 var(--display);letter-spacing:-.04em;color:var(--ink);}
 .mast .wordmark b{font-weight:inherit;color:var(--teal);}
 .nav{display:flex;gap:22px;margin-left:auto;font:600 .85rem/1 var(--display);}
@@ -200,7 +203,7 @@ a:hover{color:var(--teal);}
 .theme-toggle:hover{border-color:var(--teal);}
 
 /* Page column: aligned with the header */
-.page{max-width:1280px;margin:0 auto;padding:0 clamp(16px,4vw,44px) 60px;}
+.page{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px) 60px;}
 
 /* Meta row: the site's mono meta line */
 .meta-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0 12px;border-bottom:1px solid var(--rule);font:400 .76rem/1.4 var(--mono);letter-spacing:.02em;color:var(--muted);}

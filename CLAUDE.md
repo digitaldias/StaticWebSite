@@ -4,11 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Repeatable commands live in the root `justfile` (`just --list`): `new-post`, `cover`, `check`. Add a recipe there rather than re-deriving a command twice.
+Repeatable commands live in the root `justfile` (`just --list`): `new-post`, `cover`, `check`, `listening`. Add a recipe there rather than re-deriving a command twice.
 
 ```bash
 just new-post my-slug     # src/content/blog/<today>-my-slug.md from src/archetypes/blog.md
 just check                # build with drafts into %TEMP%, never src/public
+just listening            # Pedro's most-played Spotify albums of the last 4 weeks (setup: scripts/spotify-top.py)
 cd src && hugo server -D  # dev server at http://localhost:1313
 ```
 
@@ -33,14 +34,14 @@ src/
 │   ├── _default/      # baseof.html, taxonomy/term
 │   ├── blog/          # list.html + single.html
 │   ├── log/ photography/ about/   # list.html each (the sections render from _index.md)
-│   ├── partials/      # head, header, footer, stream, cover, category-filter
+│   ├── partials/      # head, header, footer, stream (homepage), archive + archive-card (Writing, taxonomies), cover, category-filter
 │   ├── shortcodes/    # callout, img, pullquote (see below)
 │   └── index.html     # Homepage: identity sidebar beside the post stream
 ├── static/            # Favicons, robots.txt, llm.txt, images/
 └── public/            # Build output — do not edit
 ```
 
-**Homepage values** come from `[params]` in `hugo.toml`: `bio`, `photo`, `[[params.positions]]` (`text`, optional `since` YYYY-MM and `post` path), `[params.currently]`. Edit there, not in the template. Do not create `content/_index.md`.
+**Homepage values** come from `[params]` in `hugo.toml`: `bio`, `motto`, `photo`, `[[params.positions]]` (`text`, optional `since` YYYY-MM and `post` path), `[params.currently]`. Edit there, not in the template. Do not create `content/_index.md`.
 
 **Data files.** `data/log.yaml` holds the Ship's log notes (published posts join it automatically). `data/photos.yaml` is the Photographs selection; never add photos of the children. `data/track.yaml` is the About page's milestone list. `data/covers.yaml` holds alt text for generated covers.
 
@@ -103,13 +104,14 @@ Cool Nordic palette, newspaper structure (ruled columns, folio lines, no cards),
 --on-teal:  #f4f6f4 / #0f1a1b   /* text on a teal fill */
 --ease-out: cubic-bezier(.16, 1, .3, 1)
 --transition: 150ms ease
+--page: 1440px              /* max page width (header, footer, every page column) */
 ```
 
 No orange, terracotta, coral or any other warm accent: it reads as AI-made. Use the tokens only; don't add colours.
 
 Typography: `--display` Schibsted Grotesk (headlines, labels, UI), `--text` Source Serif 4 (reading text), `--mono` Geist Mono (meta, dates, code), loaded from Google Fonts in `head.html`. Utility classes: `.d` display headline (`<em>` inside turns teal), `.k` kicker label, `.m` mono meta, `.note` muted aside.
 
-Light/dark: `light-dark()` follows the OS. The header switch (`[data-theme-toggle]`, `theme.js`) stores `light` or `dark` under `localStorage` key `dd-theme` and sets `<html data-theme>`. `theme.js` loads without `defer` in `<head>` because the CSP's `script-src-elem` blocks an inline pre-paint script. It emits `theme:change`; `initGiscus` in `main.js` re-themes Giscus from it.
+Light/dark: the site is light by default, whatever the OS says; dark applies only when the reader picks it. The header switch (`[data-theme-toggle]`, `theme.js`) stores `light` or `dark` under `localStorage` key `dd-theme` and sets `<html data-theme>`. `theme.js` loads without `defer` in `<head>` because the CSP's `script-src-elem` blocks an inline pre-paint script. It emits `theme:change`; `initGiscus` in `main.js` re-themes Giscus from it.
 
 Motion: headline word rise (`.split-words`, `initHeadlineRise`), image wipe (`.wipe`), entrance (`.lift`), scroll-driven reveals (`.reveal`) and the progress hairline (`animation-timeline`, behind `@supports`), and cross-document view transitions (`lead-image`, `lead-title`, `portrait`). Every animation sits inside `@media (prefers-reduced-motion: no-preference)`; under reduce, transitions drop to zero and nothing is split, so the page is still. Use `requestAnimationFrame` for scroll work in JS.
 
@@ -151,21 +153,30 @@ When Pedro brings an idea for a post, run these steps in order. Each ends on its
 4. **Front matter.** Fill every field in the block above: `description` at most 160 characters, `excerpt` one or two sentences, `categories` from the list below, specific `tags`, `featuredAlt` describing the image. Omit `readTime`.
    Every new post gets a `tldr`: the claim and its payoff in two or three plain sentences, written for a reader who stops there. Say what the reader learns or can do, not what the post covers. Word it differently from `description`: the TL;DR is visible page content (good for skimmers, featured snippets and AI answers), while `description` is the search-result snippet.
 5. **Images.** Prefer Pedro's own photos or real screenshots. When the post needs an illustration, generate it locally with MakeImage (see below). Done when `featured.jpg` exists at the hero spec and every image has alt text.
-6. **Positions held and Now.** Every new post is a chance to refresh the homepage sidebar, so ask about it every time. Ask Pedro one question at a time (`AskUserQuestion`): first whether the post adds or sharpens a position in `[[params.positions]]`, then whether any `[params.currently]` field (Building, Tinkering, Listening, Annoyed by) has changed. Each question offers two or three concrete options drafted from the post and the current values (a new position the post argues, a sharper rewording of an existing one, the position it replaces, "Keep as is"), with Pedro's own wording through the built-in "Other". A new or reworded position records `since` (the post's month) and `post` (the post's path) so the About page can link to where it is argued. Keep four to five positions; when one is added, ask which one retires. Done when `hugo.toml` holds Pedro's answers or he chose to keep everything.
+6. **Positions held and Now.** The homepage sidebar and the Log's Now box should change as the writing does, so ask about them with every new post. Ask Pedro one question at a time (`AskUserQuestion`), all five, in this order, never skipped or merged:
+   1. **Position.** Does the post add or sharpen a position in `[[params.positions]]`? Options: a new position the post argues, a sharper rewording of an existing one, "Keep as is". A new or reworded position records `post` (the post's path; the homepage links the position to it) and `since` (the post's month, `YYYY-MM`). Keep four to five positions; when one is added, ask which one retires.
+   2. **Building** (`building`): options drafted from the post and the current value, plus "Keep as is".
+   3. **Tinkering** (`tinkering`): the same.
+   4. **Listening** (`listening`): run `just listening` first. It prints Pedro's three most-played albums on Spotify over the last four weeks as `Album, Artist`; offer those three lines as the options. If it fails (no `SPOTIFY_CLIENT_ID` or no network), offer the current value and "Keep as is".
+   5. **Annoyed by** (`annoyed_by`): one or two candidates the post or the session surfaced, plus "Keep as is".
+
+   Pedro's own wording always goes through the built-in "Other". Done when `hugo.toml` holds his answers to all five.
 7. **Check.** `just check` passes, then show Pedro the draft on his running dev server. Pedro sets `draft: false` and decides when to commit and push; a push deploys (see the deploy race above).
 
 ### Voice
 
 Model new posts on the 2026 posts (from `2026-04-06-…` on); the 2025 posts carry habits Pedro has since dropped.
 
-- First person, direct, dry. Pedro tells what he did, what broke, and what he concluded. Opinions are stated flat, then reasoned ("Local wins that one."). Humour is understated self-deprecation.
+- **Value first.** Every post gives the reader something to use: a prompt to paste into their own Claude, a code snippet that runs, a command, a checklist, a number they can reproduce. Test every snippet and prompt before it goes in, and say which versions it was tested on. A post that only reports what Pedro did, like a school report, is not done; ask what the reader can try in the next 15 minutes.
+- **Talk to the reader.** Write to "you" and keep "I" for evidence ("I tested this on Ollama 0.40"), not for reminiscing. Show the excitement of a nerd who found something that works, in measured doses: one or two lines of plain enthusiasm per post ("This is the part I like"), never superlatives or exclamation marks. Lead with what the reader gets, then how.
+- First person where it carries evidence, direct, dry. Pedro tells what he did, what broke, and what he concluded. Opinions are stated flat, then reasoned ("Local wins that one."). Humour is understated self-deprecation.
 - Rhythm: about 12 words per sentence on average, with frequent short lines and fragments for emphasis ("Not a battery problem."). Paragraphs of two to four sentences. "Not X, but Y" contrasts recur.
 - Open on a concrete scene or personal fact ("I have a drawer. You probably have one too."). End on a short punchline, then a `## FAQ` of real reader questions with `###` questions.
 - Specific numbers, named tools and links over adjectives. Estimates are labelled as estimates; caveats are numeric, not hedged. Disclose edits to screenshots or data briefly.
 - Titles and headings are sentence case. Titles are a claim, a question or a small story ("I tried to fix a Wi-Fi camera. I built a weather station."); headings are descriptive with a light twist ("Why F12 fails you here").
 - Plain punctuation: no emoji, no exclamation marks, commas or colons instead of em dashes, and no hype vocabulary.
-- `{{< img >}}` for every in-post image, `{{< callout >}}` sparingly. Fenced code blocks name their language.
-- Posts are in English. Categories: Architecture, Azure, AI, Development, DevOps, Family, Photography. Tags are specific (`MediatR`, `Blazor`), never generic (`web`, `code`).
+- `{{< img >}}` for every in-post image, `{{< callout >}}` sparingly. Fenced code blocks name their language. Every fenced block gets a language label and a Copy button from `initCodeBlocks` in `main.js`, so write each snippet as something a reader can paste and run as is. Write prompts as ```` ```text ```` blocks with one paragraph or list item per line (the site wraps them and Copy returns them clean), never hard-wrapped. Hugo's Chroma classes `.k` and `.m` collide with the `.k` and `.m` utilities in `styles.css`; the `.highlight` rules reset them, so keep them.
+- Posts are always English (`en-us`, matching `languageCode`), even when Pedro briefs in Norwegian or asks for Norwegian; the site has no Norwegian posts. Explain Norwegian terms in English where they matter. Categories: Architecture, Azure, AI, Development, DevOps, Family, Photography. Tags are specific (`MediatR`, `Blazor`), never generic (`web`, `code`).
 - HTML is allowed in Markdown (`unsafe = true`), but prefer the shortcodes.
 
 ### Images and MakeImage

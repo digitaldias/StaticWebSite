@@ -1,9 +1,26 @@
 {{- define "main" -}}
+{{- $s := site.Params.social -}}
+{{- $elsewhere := slice
+  (dict "name" "LinkedIn" "url" $s.linkedin)
+  (dict "name" "GitHub" "url" $s.github)
+  (dict "name" "Flickr" "url" $s.flickr)
+  (dict "name" "YouTube, tech" "url" $s.youtube_digitaldias)
+  (dict "name" "YouTube, family" "url" $s.youtube_digitalhome) -}}
 <div class="wrap">
   <section class="about">
-    {{- with site.Params.photo }}
-    <div class="portrait"><img src="{{ .src }}" alt="{{ .alt }}" width="600" height="600" fetchpriority="high"></div>
-    {{- end }}
+    <div class="about-side">
+      {{- with site.Params.photo }}
+      <div class="portrait"><img src="{{ .src }}" alt="{{ .alt }}" width="600" height="600" fetchpriority="high"></div>
+      {{- end }}
+      <nav class="elsewhere" aria-label="Pedro elsewhere">
+        <span class="k">Elsewhere</span>
+        <ul>
+          {{- range $link := $elsewhere }}{{ with $link.url }}
+          <li><a href="{{ . }}" rel="me noopener noreferrer" target="_blank"><span>{{ $link.name }}</span><span>{{ strings.TrimPrefix "https://" . }}</span></a></li>
+          {{- end }}{{ end }}
+        </ul>
+      </nav>
+    </div>
     <div>
       <span class="k">About</span>
       <h1 class="d split-words">{{ .Params.headline | default .Title | markdownify }}</h1>
@@ -14,17 +31,6 @@
       <div class="track">
         {{- range . }}
         <div class="reveal"><span>{{ .year | default "—" }}</span>{{ .text }}</div>
-        {{- end }}
-      </div>
-      {{- end }}
-      {{- with site.Params.positions }}
-      <div class="positions-full">
-        <span class="k">Positions held</span>
-        {{- range . }}
-        <blockquote class="reveal">
-          <q>{{ .text }}</q>
-          <span class="m">Held{{ with .since }} since {{ (time.AsTime (printf "%s-01" .)).Format "Jan 2006" }}{{ end }} · {{ with .post }}{{ with site.GetPage (strings.TrimSuffix "/" .) }}argued in <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ else }}no post yet{{ end }}</span>
-        </blockquote>
         {{- end }}
       </div>
       {{- end }}

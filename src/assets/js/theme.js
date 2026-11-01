@@ -1,7 +1,7 @@
 /**
  * Light/dark choice, shared by digitaldias.com and /briefing/.
  * Loaded without defer in <head> so the stored choice applies before first
- * paint. No stored choice means the page follows the OS via light-dark().
+ * paint. The site is light by default; dark only when the reader picks it.
  * Buttons marked [data-theme-toggle] flip the theme and remember it.
  * Emits `theme:change` on document so embeds (Giscus) can follow.
  */
@@ -10,7 +10,6 @@
 
   var KEY = 'dd-theme';
   var root = document.documentElement;
-  var osDark = window.matchMedia('(prefers-color-scheme: dark)');
 
   function stored() {
     try {
@@ -21,7 +20,13 @@
   }
 
   function current() {
-    return root.dataset.theme || (osDark.matches ? 'dark' : 'light');
+    return root.dataset.theme || 'light';
+  }
+
+  // The browser chrome follows the page
+  function paintChrome() {
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', current() === 'dark' ? '#0f1a1b' : '#f4f6f4');
   }
 
   function label(button) {
@@ -42,6 +47,7 @@
       /* Storage blocked: the choice lasts for this page only */
     }
     labelAll();
+    paintChrome();
     document.dispatchEvent(new CustomEvent('theme:change', { detail: { theme: theme } }));
   }
 
@@ -49,17 +55,12 @@
   if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
 
   document.addEventListener('DOMContentLoaded', function () {
+    paintChrome();
     document.querySelectorAll('[data-theme-toggle]').forEach(function (button) {
       label(button);
       button.addEventListener('click', function () {
         choose(current() === 'dark' ? 'light' : 'dark');
       });
     });
-  });
-
-  osDark.addEventListener('change', function () {
-    if (root.dataset.theme) return;
-    labelAll();
-    document.dispatchEvent(new CustomEvent('theme:change', { detail: { theme: current() } }));
   });
 })();

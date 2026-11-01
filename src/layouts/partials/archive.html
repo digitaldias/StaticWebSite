@@ -1,0 +1,31 @@
+{{- /* The Writing archive: optionally a front of the three newest posts, then the rest grouped
+       by year as image cards. Context: dict "pages" (posts, newest first) "front" (bool). */ -}}
+{{- $all := where site.RegularPages "Section" "blog" -}}
+{{- $rest := .pages -}}
+{{- if .front }}
+{{- $rest = after 3 .pages }}
+<div class="front">
+  {{- range $i, $p := first 3 .pages }}
+  {{- if eq $i 0 }}
+  {{- partial "archive-card.html" (dict "page" $p "all" $all "class" "card--lead") }}
+  <div class="front__side">
+  {{- else }}
+  {{- partial "archive-card.html" (dict "page" $p "all" $all "class" "card--side") }}
+  {{- end }}
+  {{- end }}
+  </div>
+</div>
+{{- end }}
+{{- range $rest.GroupByDate "2006" }}
+<section class="year" aria-labelledby="year-{{ .Key }}">
+  <div class="year__label">
+    <h2 id="year-{{ .Key }}" class="d">{{ .Key }}</h2>
+    <span class="m">{{ len .Pages }} {{ if eq (len .Pages) 1 }}entry{{ else }}entries{{ end }}</span>
+  </div>
+  <div class="cards">
+    {{- range .Pages }}
+    {{- partial "archive-card.html" (dict "page" . "all" $all "class" "reveal") }}
+    {{- end }}
+  </div>
+</section>
+{{- end }}

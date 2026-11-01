@@ -1,12 +1,18 @@
 {{- define "main" -}}
 <div class="wrap error-page">
-  <header class="page-head">
-    <h1 class="d split-words">Not <em>found</em></h1>
-    <p class="lift">This page doesn't exist. Neither does the perfect audio system, but that doesn't stop me from looking.</p>
-  </header>
-  <nav aria-label="Recovery links">
-    <a href="/">&larr; Back home</a>
-    <a href="/blog/">Read something instead</a>
-  </nav>
+  <section class="lost">
+    <div>
+      <span class="k">Error 404</span>
+      <h1 class="d split-words">Not <em>found</em></h1>
+      <p class="lift">This page doesn't exist. Neither does the perfect audio system, but that doesn't stop me from looking.</p>
+      <nav aria-label="Recovery links">
+        <a href="/">&larr; Back home</a>
+        <a href="/blog/">Read something instead</a>
+      </nav>
+    </div>
+    <figure class="lost__art wipe">
+      <img src="/images/404-bug.jpg" alt="A glossy teal and violet cartoon beetle holding a magnifying glass, looking sad because it found nothing" width="1200" height="800" fetchpriority="high">
+    </figure>
+  </section>
 </div>
 {{- end -}}

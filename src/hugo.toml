@@ -35,6 +35,8 @@ enableGitInfo = true
   email = 'pedro.dias@tradesolution.no'
   # Homepage sidebar line under the name
   bio = "Acting Chief AI Officer at Tradesolution. Writing code since 1982. Too many strong opinions about software, AI and speaker placement."
+  # Homepage motto under the name; " · " separates the phrases
+  motto = "Norwegian pragmatism · Portuguese stubbornness · Too much code"
   
   # Social links
   [params.social]
@@ -59,7 +61,7 @@ enableGitInfo = true
   [params.currently]
     building   = "A local, Jev-compatible decision API on oMLX"
     listening  = "Ghost Notes, Mono Neon"
-    tinkering  = "Tuning oMLX's concurrency and cache settings on the M5 Pro"
+    tinkering  = "Scoring news stories with a small decision model"
     annoyed_by = "My back pain"
 
   [params.photo]
@@ -79,6 +81,10 @@ enableGitInfo = true
     post  = "/blog/2026-05-23-ai-at-the-workbench/"
   [[params.positions]]
     text  = "Keep your home automations simple."
+  [[params.positions]]
+    text  = "Let a local model do the first pass of your news. Keep the last pass yourself."
+    since = "2026-11"
+    post  = "/blog/2026-11-01-local-models-news-filter/"
 
   # Giscus comments configuration
   [params.giscus]
