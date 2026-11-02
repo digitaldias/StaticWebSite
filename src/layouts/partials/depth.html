@@ -1,0 +1,34 @@
+{{- /* A post's reading levels from data/depth.yaml. Context: the page. Returns nil when the post is unscored,
+   else dict: from, to (100-400), sections (slice of dict id level), stop (the first section past the gist,
+   when the post opens at 200 or below), skip (the FAQ heading's id, where a gist reader can jump to). */ -}}
+{{- $out := dict -}}
+{{- with .File }}{{ with index site.Data.depth .ContentBaseName }}
+  {{- $cut := site.Params.depth.cutoffs -}}
+  {{- $ids := dict -}}
+  {{- $skip := "" -}}
+  {{- range $id, $h := $.Fragments.HeadingsMap -}}
+    {{- $key := $h.Title | plainify | htmlUnescape | lower | replaceRE `[^a-z0-9]` "" -}}
+    {{- $ids = merge $ids (dict $key $id) -}}
+    {{- if and (eq $h.Level 2) (in (slice "faq" "commonquestions") $key) }}{{ $skip = $id }}{{ end -}}
+  {{- end -}}
+  {{- $sections := slice -}}
+  {{- $to := 100 -}}
+  {{- $stop := dict -}}
+  {{- $shallow := true -}}
+  {{- range $i, $s := .sections -}}
+    {{- $lv := 100 -}}
+    {{- range $cut }}{{ if ge $s.score . }}{{ $lv = add $lv 100 }}{{ end }}{{ end -}}
+    {{- $id := cond (eq $s.heading "(opening)") "article-text" (index $ids ($s.heading | lower | replaceRE `[^a-z0-9]` "")) -}}
+    {{- with $id }}{{ $sections = $sections | append (dict "id" . "level" $lv) }}{{ end -}}
+    {{- if gt $lv $to }}{{ $to = $lv }}{{ end -}}
+    {{- if and $shallow (ge $lv 300) -}}
+      {{- if and (gt $i 0) $id }}{{ $stop = dict "id" $id "heading" $s.heading "level" $lv }}{{ end -}}
+      {{- $shallow = false -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $sections -}}
+    {{- $from := (index . 0).level -}}
+    {{- $out = dict "from" $from "to" $to "sections" . "stop" (cond (le $from 200) $stop dict) "skip" $skip -}}
+  {{- end -}}
+{{- end }}{{ end -}}
+{{- return (cond (gt (len $out) 0) $out nil) -}}

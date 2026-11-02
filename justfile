@@ -19,6 +19,10 @@ cover post prompt seed="":
 check:
     hugo --quiet --minify --buildDrafts --source src --destination "{{scratch}}"
 
+# Score each section's reader depth (100-400) with the local decision model into src/data/depth.yaml, e.g. `just depth 2026-11-01-my-slug` or `just depth --all`
+depth +posts:
+    $env:PYTHONUTF8 = "1"; python scripts/depth-score.py {{posts}}
+
 # Pedro's most-played Spotify albums of the last four weeks, for Now / Listening (one-time setup: scripts/spotify-top.py)
 listening:
     $env:PYTHONUTF8 = "1"; python scripts/spotify-top.py

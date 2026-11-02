@@ -228,6 +228,51 @@ function initChart() {
 }
 
 /* ─────────────────────────────────────────────
+   Reading levels
+   Tags each Chart waypoint with its section's
+   level, 100 to 400 (data-depth on .post-content,
+   from partials/depth.html), and marks the first
+   section past the gist. The folio's level key
+   opens the level card on tap.
+───────────────────────────────────────────── */
+const LEVELS = [100, 200, 300, 400];
+
+function levelSteps(level) {
+  const steps = LEVELS.map(n => `<i${n === level ? ' class="on"' : ''}></i>`).join('');
+  return `<span class="steps" aria-hidden="true">${steps}</span><span class="visually-hidden">Level ${level}</span>`;
+}
+
+function initLevelMarks() {
+  const content = document.querySelector('.post-content[data-depth]');
+  if (!content) return;
+  const turn = content.querySelector('.turnout + h2');
+  JSON.parse(content.dataset.depth).forEach(({ id, level }) => {
+    const link = document.querySelector(`.chart__route a[href="#${CSS.escape(id)}"]`);
+    if (!link) return;
+    link.querySelector('.chart__mins').insertAdjacentHTML('afterbegin', levelSteps(level));
+    if (turn && turn.id === id) link.parentElement.dataset.turn = '';
+  });
+}
+
+function initLevelKey() {
+  const key = document.querySelector('.level-key');
+  if (!key) return;
+  const cell = key.closest('.folio__level');
+  const setOpen = open => {
+    key.setAttribute('aria-expanded', String(open));
+    cell.classList.toggle('is-open', open);
+  };
+  key.addEventListener('click', () => setOpen(key.getAttribute('aria-expanded') !== 'true'));
+  cell.querySelectorAll('.level-card a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('click', e => {
+    if (!cell.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+}
+
+/* ─────────────────────────────────────────────
    Reader memory
    On an article: remember the reader's place,
    and offer to resume on return. Everywhere:
@@ -726,6 +771,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeadlineRise();
   initSmoothScroll();
   initChart();
+  initLevelMarks();
+  initLevelKey();
   initReaderMemory();
   initReadMarks();
   initCitations();

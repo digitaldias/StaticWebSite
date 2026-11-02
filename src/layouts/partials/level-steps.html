@@ -1,0 +1,4 @@
+{{- /* The four-step level glyph: steps from .from to .to are inked. Context: dict "from" "to". */ -}}
+<span class="steps" aria-hidden="true">
+  {{- range seq 100 100 400 }}<i{{ if and (ge . $.from) (le . $.to) }} class="on"{{ end }}></i>{{ end -}}
+</span>

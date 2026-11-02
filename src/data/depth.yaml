@@ -1,0 +1,414 @@
+{
+  "2025-09-30-gpt5-codex-static-site": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 166
+      },
+      {
+        "heading": "Why GPT5-Codex was the perfect co-pilot",
+        "score": 179
+      },
+      {
+        "heading": "Hosting thrills with Azure Storage Static Websites",
+        "score": 209
+      },
+      {
+        "heading": "Key considerations for your own build",
+        "score": 225
+      },
+      {
+        "heading": "What's next?",
+        "score": 148
+      }
+    ]
+  },
+  "2025-11-19-from-html-to-hugo-migration": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 159
+      },
+      {
+        "heading": "The revelation: static generators + AI = content freedom",
+        "score": 162
+      },
+      {
+        "heading": "Why Hugo? (and how to actually install it)",
+        "score": 222
+      },
+      {
+        "heading": "The migration process: AI as co-architect",
+        "score": 245
+      },
+      {
+        "heading": "The results: benefits beyond expectations",
+        "score": 223
+      },
+      {
+        "heading": "What I learned: AI as migration partner",
+        "score": 203
+      },
+      {
+        "heading": "Recommendations for your migration",
+        "score": 231
+      },
+      {
+        "heading": "The bottom line",
+        "score": 173
+      },
+      {
+        "heading": "Getting started: your quick-start guide",
+        "score": 225
+      }
+    ]
+  },
+  "2025-11-21-cursor-github-pipelines-agentic-magic": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 182
+      },
+      {
+        "heading": "The Setup",
+        "score": 184
+      },
+      {
+        "heading": "What Happened",
+        "score": 205
+      },
+      {
+        "heading": "Why This Matters",
+        "score": 176
+      },
+      {
+        "heading": "Strategic Impact",
+        "score": 185
+      },
+      {
+        "heading": "Cost Justification",
+        "score": 171
+      },
+      {
+        "heading": "Try it yourself",
+        "score": 205
+      }
+    ]
+  },
+  "2025-12-29-beyond-comfort": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 155
+      },
+      {
+        "heading": "Leaving the comfort of C#",
+        "score": 177
+      },
+      {
+        "heading": "Foosball tracker: from prompt to polished Foosh",
+        "score": 257
+      },
+      {
+        "heading": "Woosh audio manager in Qt and C++: taming waveforms",
+        "score": 264
+      },
+      {
+        "heading": "DirectX and assembler: animating fractals without waste",
+        "score": 248
+      },
+      {
+        "heading": "How I prompt and review",
+        "score": 190
+      },
+      {
+        "heading": "What surprised me about agentic coding",
+        "score": 175
+      },
+      {
+        "heading": "What still needs my hands",
+        "score": 231
+      },
+      {
+        "heading": "Patterns that transfer across stacks",
+        "score": 222
+      },
+      {
+        "heading": "Where to go next",
+        "score": 213
+      },
+      {
+        "heading": "Try it yourself",
+        "score": 213
+      }
+    ]
+  },
+  "2026-03-05-navigate-to-handler": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 299
+      },
+      {
+        "heading": "Why F12 fails you here",
+        "score": 268
+      },
+      {
+        "heading": "The extension: Navigate to Handler",
+        "score": 172
+      },
+      {
+        "heading": "What it looks like in practice",
+        "score": 294
+      },
+      {
+        "heading": "Why this matters more in large solutions",
+        "score": 190
+      },
+      {
+        "heading": "Why I built it",
+        "score": 180
+      },
+      {
+        "heading": "Get it",
+        "score": 171
+      }
+    ]
+  },
+  "2026-03-07-claude-lsp-microservices": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 237
+      },
+      {
+        "heading": "What \"root level\" actually means here",
+        "score": 228
+      },
+      {
+        "heading": "The first requirement: CLAUDE.md as your system map",
+        "score": 203
+      },
+      {
+        "heading": "The second requirement: LSP, and why it stops being optional at root level",
+        "score": 209
+      },
+      {
+        "heading": "Installing the plugins",
+        "score": 274
+      },
+      {
+        "heading": "What changes in practice",
+        "score": 236
+      },
+      {
+        "heading": "What's next: MCPs",
+        "score": 172
+      }
+    ]
+  },
+  "2026-03-27-switching-to-mac": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 148
+      },
+      {
+        "heading": "This isn't a \"Windows is bad\" post",
+        "score": 168
+      },
+      {
+        "heading": "The role changed everything",
+        "score": 149
+      },
+      {
+        "heading": "Why Mac for AI work, not Windows",
+        "score": 180
+      },
+      {
+        "heading": "I'm not replacing Windows, I'm adding Mac",
+        "score": 184
+      },
+      {
+        "heading": "What I'm actually dreading about switching to Mac",
+        "score": 174
+      },
+      {
+        "heading": "The three-year commitment",
+        "score": 164
+      },
+      {
+        "heading": "What comes next",
+        "score": 155
+      }
+    ]
+  },
+  "2026-04-06-local-llms-are-not-there-yet": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 170
+      },
+      {
+        "heading": "What local models are excellent at",
+        "score": 184
+      },
+      {
+        "heading": "Where local models fall apart",
+        "score": 176
+      },
+      {
+        "heading": "Where local models do belong in your coding workflow",
+        "score": 250
+      },
+      {
+        "heading": "The math doesn't favor the rig",
+        "score": 166
+      },
+      {
+        "heading": "What I'd tell someone evaluating this",
+        "score": 182
+      },
+      {
+        "heading": "The shift that matters more than the benchmarks",
+        "score": 158
+      }
+    ]
+  },
+  "2026-05-23-ai-at-the-workbench": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 158
+      },
+      {
+        "heading": "The wiring problem",
+        "score": 233
+      },
+      {
+        "heading": "ESPHome in ten minutes",
+        "score": 262
+      },
+      {
+        "heading": "The enclosure problem",
+        "score": 203
+      },
+      {
+        "heading": "What actually changed",
+        "score": 171
+      }
+    ]
+  },
+  "2026-07-27-pi4-weather-station": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 215
+      },
+      {
+        "heading": "The relay that wouldn't hold",
+        "score": 275
+      },
+      {
+        "heading": "What the Pi was good for",
+        "score": 178
+      },
+      {
+        "heading": "Building the weather station",
+        "score": 229
+      },
+      {
+        "heading": "Fighting a browser from 2019",
+        "score": 238
+      },
+      {
+        "heading": "Adding a birthday calendar",
+        "score": 273
+      },
+      {
+        "heading": "Where it ended up",
+        "score": 176
+      }
+    ]
+  },
+  "2026-09-19-jev-before-the-waitlist": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 197
+      },
+      {
+        "heading": "The stack",
+        "score": 193
+      },
+      {
+        "heading": "What a typed question looks like",
+        "score": 205
+      },
+      {
+        "heading": "Why this is bigger than another chatbot",
+        "score": 190
+      },
+      {
+        "heading": "The numbers hold up",
+        "score": 187
+      },
+      {
+        "heading": "Tuning it for real load",
+        "score": 319
+      },
+      {
+        "heading": "The rest of the machine",
+        "score": 217
+      },
+      {
+        "heading": "What this sets up",
+        "score": 239
+      }
+    ]
+  },
+  "2026-11-01-local-models-news-filter": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 245
+      },
+      {
+        "heading": "Why filter by role",
+        "score": 200
+      },
+      {
+        "heading": "Save the big model for the big jobs",
+        "score": 202
+      },
+      {
+        "heading": "Get the details right first",
+        "score": 241
+      },
+      {
+        "heading": "One question, three levels",
+        "score": 287
+      },
+      {
+        "heading": "The bill is electricity",
+        "score": 228
+      },
+      {
+        "heading": "Find out whether it works",
+        "score": 200
+      },
+      {
+        "heading": "Three bugs that cost me an evening",
+        "score": 324
+      },
+      {
+        "heading": "Build the whole thing with Claude Code",
+        "score": 280
+      },
+      {
+        "heading": "What 0.77 does not prove",
+        "score": 220
+      }
+    ]
+  }
+}

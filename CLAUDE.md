@@ -10,6 +10,7 @@ Repeatable commands live in the root `justfile` (`just --list`): `new-post`, `co
 just new-post my-slug     # src/content/blog/<today>-my-slug.md from src/archetypes/blog.md
 just check                # build with drafts into %TEMP%, never src/public
 just listening            # Pedro's most-played Spotify albums of the last 4 weeks (setup: scripts/spotify-top.py)
+just depth <post-file>     # score each section's reading level (100-400) with the local decision model into data/depth.yaml
 cd src && hugo server -D  # dev server at http://localhost:1313
 ```
 
@@ -43,7 +44,7 @@ src/
 
 **Homepage values** come from `[params]` in `hugo.toml`: `bio`, `motto`, `photo`, `[[params.positions]]` (`text`, optional `since` YYYY-MM and `post` path), `[params.currently]`. Edit there, not in the template. Do not create `content/_index.md`.
 
-**Data files.** `data/log.yaml` holds the Ship's log notes (published posts join it automatically). `data/photos.yaml` is the Photographs selection; never add photos of the children. `data/track.yaml` is the About page's milestone list. `data/covers.yaml` holds alt text for generated covers.
+**Data files.** `data/log.yaml` holds the Ship's log notes (published posts join it automatically). `data/photos.yaml` is the Photographs selection; never add photos of the children. `data/track.yaml` is the About page's milestone list. `data/covers.yaml` holds alt text for generated covers. `data/depth.yaml` holds the decision model's raw score per `## ` section (`just depth`, model `d3:4b-q8_0` on Ollama, which newsstream also uses: coordinate before running it). `partials/depth.html` turns the scores into levels with `[params.depth]` cutoffs in `hugo.toml`, and renders the folio's level key and card, the turnout where the gist ends, and the level marks on cards and the Chart. Recalibrate the cutoffs against Pedro's labels with `python scripts/depth-score.py --calibrate` (Spearman 0.85 on 10 sections, 2026-11-02). The levels follow Microsoft's conference session scale (Mike Hall, MSDN 2008): the scorer asks two questions, what the section assumes the reader knows (weight 0.75) and what its code does (0.25).
 
 **Assets are processed by Hugo Pipes** — CSS and JS are minified and fingerprinted at build time.
 
@@ -146,6 +147,7 @@ Rules that follow from this:
 - **The only deterministic fix once a URL is poisoned is a Cloudflare cache purge** (dashboard: Caching → Configuration → Purge Cache — purge the specific URL, or Purge Everything). Claude Code has no Cloudflare API token in this environment and cannot do this; ask Pedro to purge when this happens.
 - **The real fix belongs in Cloudflare, not this repo**: a Cache Rule that bypasses cache for non-2xx origin responses (e.g. "Bypass cache when Origin Status Code ≥ 400") would prevent this class of bug entirely. This needs to be set up once in the Cloudflare dashboard — flag it to Pedro rather than trying to work around it repo-side again.
 - Hugo's minifier strips comments before fingerprinting, so a comment-only edit to `styles.css`/`main.js` does **not** change the hash. Bumping the fingerprint on purpose requires an actual rule/value change.
+- **Replacing an image under the same URL does not show up.** Cloudflare keeps the old bytes for up to 4 hours (`max-age=14400`, `cf-cache-status: HIT`), and browsers do too, even though the deploy log shows the new blob uploaded (found 2026-11-01: `featured.jpg` kept serving the old 185131-byte file after a successful deploy). When regenerating an image for a published post, save it under a new file name and update the reference, or ask Pedro to purge the URL in Cloudflare. To check without guessing, `curl -sIL <image url>` and compare `Content-Length` with the local file.
 
 ## Writing a new blog post
 
@@ -165,7 +167,7 @@ When Pedro brings an idea for a post, run these steps in order. Each ends on its
    5. **Annoyed by** (`annoyed_by`): one or two candidates the post or the session surfaced, plus "Keep as is".
 
    Pedro's own wording always goes through the built-in "Other". Done when `hugo.toml` holds his answers to all five.
-7. **Check.** `just check` passes, then show Pedro the draft on his running dev server. Pedro sets `draft: false` and decides when to commit and push; a push deploys (see the deploy race above).
+7. **Check.** `just depth <post-file-name>` scores the post's reading levels, `just check` passes, then show Pedro the draft on his running dev server. Pedro sets `draft: false` and decides when to commit and push; a push deploys (see the deploy race above).
 
 ### Voice
 

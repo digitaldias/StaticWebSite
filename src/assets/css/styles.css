@@ -267,6 +267,49 @@ h1, h2, h3, h4 { margin: 0; }
 .folio dt { font: 600 .62rem/1.6 var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 .folio dd { margin: 0; font: 500 .85rem var(--mono); }
 .folio .folio__revised dt, .folio .folio__revised a { color: var(--teal); }
+
+/* Reading level: four steps, 100 to 400, inked from where a post opens to how deep it goes */
+.steps { display: inline-flex; align-items: flex-end; gap: 2px; height: .78em; flex: none; }
+.steps i { width: 3px; background: var(--rule); }
+.steps i:nth-child(1) { height: 28%; }
+.steps i:nth-child(2) { height: 52%; }
+.steps i:nth-child(3) { height: 76%; }
+.steps i:nth-child(4) { height: 100%; }
+.steps i.on { background: var(--teal); }
+.level-mark { display: inline-flex; align-items: center; gap: 6px; }
+
+/* The level key opens the level card: on hover with a mouse, on tap or Enter anywhere */
+.folio { position: relative; }
+.level-key { display: inline-flex; align-items: center; gap: 8px; padding: 0; background: none; border: 0; font: inherit; color: var(--ink); cursor: pointer; text-decoration: underline dotted var(--deep-3); text-underline-offset: 4px; }
+.level-key:hover, .folio__level.is-open .level-key { color: var(--teal); }
+.level-key:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+.folio .folio__level .level-card { position: absolute; right: 0; top: 100%; z-index: 40; width: min(440px, 100%); margin: 0; padding: 16px 20px 14px; border: 1px solid var(--rule); border-top: 2px solid var(--ink); background: var(--ground); box-shadow: 0 22px 40px -28px color-mix(in srgb, var(--ink) 45%, transparent); visibility: hidden; opacity: 0; }
+.folio__level.is-open .level-card { visibility: visible; opacity: 1; }
+@media (hover: hover) { .folio__level:hover .level-card { visibility: visible; opacity: 1; } }
+.level-card__title { margin: 0 0 10px; font: 600 .95rem/1.3 var(--display); color: var(--ink); }
+.level-card__scale { list-style: none; margin: 0; padding: 0; }
+.level-card__scale li { position: relative; display: grid; grid-template-columns: 14px 3.4ch minmax(0, 1fr); grid-template-areas: "s n name" ". . reader"; column-gap: 10px; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--rule); color: var(--muted); }
+.level-card__scale .steps { grid-area: s; align-self: center; }
+.level-card__scale .steps i.on { background: var(--deep-2); }
+.level-card__n { grid-area: n; font: 500 .9rem var(--mono); }
+.level-card__name { grid-area: name; font: 600 .88rem/1.3 var(--display); }
+.level-card__reader { grid-area: reader; font: 400 .86rem/1.45 var(--text); }
+.level-card__scale li.in { color: var(--ink); }
+.level-card__scale li.in .level-card__n { color: var(--teal); }
+.level-card__scale li.in .steps i.on { background: var(--teal); }
+/* A teal bar down the card's edge spans the levels this post covers */
+.level-card__scale li.in::before { content: ""; position: absolute; left: -21px; top: -1px; bottom: 0; width: 3px; background: var(--teal); transform-origin: top; }
+.level-card__note { margin: 10px 0 0; padding-top: 10px; border-top: 1px solid var(--rule); font: 400 .9rem/1.5 var(--text); color: var(--ink); }
+.level-card__source { margin: 8px 0 0; font: 400 .68rem/1.4 var(--mono); color: var(--muted); }
+.level-card__note a { color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
+
+/* The turnout: a break in the text where the gist ends and the hands-on part begins */
+.turnout { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; align-items: baseline; margin: 2.6em 0 2em; padding: 14px 0 14px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.turnout .steps { height: 1.05em; gap: 3px; align-self: center; }
+.turnout .steps i { width: 4px; }
+.turnout p { margin: 0; font-size: .98rem; line-height: 1.5; color: var(--muted); }
+.turnout strong { font: 600 1rem var(--display); color: var(--ink); }
+.turnout__skip { grid-column: 2; justify-self: start; margin-top: 4px; font: 600 .82rem var(--display); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
 @media (max-width: 520px) { .folio div { padding-right: 14px; margin-right: 14px; } }
 
 .a-hero { max-width: var(--page); margin: 26px auto 0; padding: 0 clamp(16px, 4vw, 44px); }
@@ -375,6 +418,12 @@ h1, h2, h3, h4 { margin: 0; }
 .chart__waypoint[data-state="current"] a::before { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 0 4px var(--deep-1); }
 .chart__waypoint a:hover { color: var(--teal); }
 .chart__mins { font: 400 .7rem var(--mono); color: var(--muted); }
+.chart__waypoint .steps { margin-right: 7px; vertical-align: -1px; }
+.chart__waypoint .steps i.on { background: var(--deep-3); }
+.chart__waypoint[data-state="current"] .steps i.on { background: var(--teal); }
+/* Where the gist ends: marked on the route above the first section past it */
+.chart__waypoint[data-turn] { margin-top: 20px; }
+.chart__waypoint[data-turn]::before { content: "The gist ends here"; position: absolute; left: 22px; top: -15px; font: 400 .66rem var(--mono); color: var(--teal); }
 
 @media (min-width: 1180px) {
   .chart { grid-column: 1; grid-row: 1; justify-self: end; align-self: start; width: min(14rem, 100%); max-height: calc(100vh - 90px); overflow-y: auto; margin: 0; padding: 24px 0 16px; background: none; border: 0; scrollbar-width: thin; }
@@ -547,6 +596,16 @@ h1, h2, h3, h4 { margin: 0; }
   @keyframes settle { from { transform: scale(1.12); } }
   .lift { animation: lift 800ms 450ms var(--ease-out) both; }
   @keyframes lift { from { opacity: 0; transform: translateY(18px); } }
+
+  /* The level card settles in, then its teal range bar draws down the levels the post covers */
+  .level-card { transform: translateY(-4px); transition: opacity 200ms var(--ease-out), transform 260ms var(--ease-out), visibility 200ms; }
+  .folio__level.is-open .level-card { transform: none; }
+  .level-card__scale li.in::before { transform: scaleY(0); transition: transform 320ms var(--ease-out); transition-delay: calc(80ms + var(--i, 0) * 70ms); }
+  .folio__level.is-open .level-card__scale li.in::before { transform: none; }
+  @media (hover: hover) {
+    .folio__level:hover .level-card { transform: none; }
+    .folio__level:hover .level-card__scale li.in::before { transform: none; }
+  }
 
   .lightbox[open] { animation: zoom-in 300ms var(--ease-out); }
   @keyframes zoom-in { from { opacity: 0; transform: scale(.96); } }

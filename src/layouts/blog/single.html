@@ -6,6 +6,18 @@
 {{- $entry := len (where $posts "Date" "le" .Date) -}}
 {{- $cover := partial "cover.html" . -}}
 {{- $category := index (.Params.categories | default slice) 0 -}}
+{{- $depth := partial "depth.html" . -}}
+{{- $content := .Content -}}
+{{- with $depth }}{{ with .stop -}}
+  {{- /* The turnout: where a gist reader can stop, set just before the first section past the gist */ -}}
+  {{- $next := index (where site.Params.depth.levels "n" .level) 0 -}}
+  {{- $turnout := printf `<aside class="turnout" aria-label="Where the gist ends">%s<p><strong>The gist ends here.</strong> The rest is %s: %s</p>%s</aside>`
+      (partial "level-steps.html" (dict "from" .level "to" .level))
+      (lower $next.name)
+      (replaceRE `^[^:]+: ` "" $next.reader)
+      (cond (ne $depth.skip "") (printf `<a class="turnout__skip" href="#%s">Skip to the questions</a>` $depth.skip) "") -}}
+  {{- $content = replace $content (printf `<h2 id="%s"` .id) (printf `%s<h2 id="%s"` $turnout .id) 1 -}}
+{{- end }}{{ end -}}
 <article>
   <header class="a-head">
     <p class="k">{{ with $category }}<a href="/categories/{{ . | urlize }}/">{{ . }}</a> · {{ end }}Entry {{ printf "%03d" $entry }}</p>
@@ -34,6 +46,36 @@
         <dt>By</dt>
         <dd>Pedro Dias</dd>
       </div>
+      {{- with $depth }}
+      {{- $d := . }}
+      <div class="folio__level">
+        <dt>Level</dt>
+        <dd>
+          <button type="button" class="level-key" aria-expanded="false" aria-controls="level-card">
+            {{- partial "level-steps.html" . }}<span class="visually-hidden">Reading level </span>{{ partial "level-range.html" . -}}
+          </button>
+      <div class="level-card" id="level-card">
+        <p class="level-card__title">How deep this goes</p>
+        <ol class="level-card__scale">
+          {{- range site.Params.depth.levels }}
+          <li{{ if and (ge .n $d.from) (le .n $d.to) }} class="in" style="--i: {{ div (sub .n $d.from) 100 }}"{{ end }}>
+            {{- partial "level-steps.html" (dict "from" .n "to" .n) -}}
+            <span class="level-card__n">{{ .n }}</span>
+            <span class="level-card__name">{{ .name }}</span>
+            <span class="level-card__reader">{{ .reader }}</span>
+          </li>
+          {{- end }}
+        </ol>
+        <p class="level-card__note">
+          {{- if eq $d.from $d.to }}This one stays at {{ $d.from }} throughout.
+          {{- else }}This one opens at {{ $d.from }} and climbs to {{ $d.to }}.{{ end }}
+          {{- with $d.stop }} Only after the gist? Stop at <a href="#{{ .id }}">{{ .heading }}</a>.{{ end -}}
+        </p>
+        <p class="level-card__source">Microsoft's conference session levels, applied to writing.</p>
+      </div>
+        </dd>
+      </div>
+      {{- end }}
     </dl>
   </header>
 
@@ -55,11 +97,11 @@
   <div class="a-body">
     {{- /* The Chart: section route, built by main.js from the article's h2s */}}
     <nav class="chart" aria-label="Article sections" hidden></nav>
-    <div class="post-content" data-title="{{ .Title }}" data-date="{{ .Date.Format "2 Jan 2006" }}">
+    <div class="post-content" data-title="{{ .Title }}" data-date="{{ .Date.Format "2 Jan 2006" }}"{{ with $depth }} data-depth="{{ .sections | jsonify }}"{{ end }}>
       {{- with .Params.tldr }}
       <aside class="tldr" aria-label="Summary"><p class="tldr__label">TL;DR</p><p>{{ . }}</p></aside>
       {{- end }}
-      {{ .Content | safeHTML }}
+      {{ $content | safeHTML }}
     </div>
   </div>
 

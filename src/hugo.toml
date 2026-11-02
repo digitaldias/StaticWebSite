@@ -104,6 +104,29 @@ enableGitInfo = true
     repo = "https://github.com/digitaldias/StaticWebSite"
     contentPath = "src/content"
 
+  # Reading levels on Microsoft's 100-400 conference session scale. data/depth.yaml holds the
+  # decision model's raw score per section (`just depth`); a score at or above a cutoff climbs a
+  # level. Recalibrate against scripts/depth-labels.json with `python scripts/depth-score.py --calibrate`.
+  # `reader` starts with who the level is for, then a colon; the turnout quotes what follows it.
+  [params.depth]
+    cutoffs = [180, 255, 320]
+    [[params.depth.levels]]
+      n = 100
+      name = "The gist"
+      reader = "No prior knowledge: what it is, why it matters and where it is heading."
+    [[params.depth.levels]]
+      n = 200
+      name = "The overview"
+      reader = "You have heard of it: what it can do, where it fits, and a little code to make a point."
+    [[params.depth.levels]]
+      n = 300
+      name = "Hands-on"
+      reader = "You have used it: how to build the solution, with real code and how the parts fit together."
+    [[params.depth.levels]]
+      n = 400
+      name = "Full geek"
+      reader = "You build with it: the internals, why it was designed that way, and what that means in practice."
+
 # An explicit front-matter lastmod always wins over git history
 [frontmatter]
   lastmod = ['lastmod', ':git', 'date']

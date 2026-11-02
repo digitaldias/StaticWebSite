@@ -1,0 +1,2 @@
+{{- /* A level range as text: "300" or "200–400". Context: dict "from" "to". */ -}}
+{{- if eq .from .to }}{{ .from }}{{ else }}{{ .from }}–{{ .to }}{{ end -}}
