@@ -37,7 +37,7 @@ Norwegian does sell Wi-Fi on board, and its CEO said in February 2026 that the a
 
 ## Can you charge a MacBook Pro from the seat?
 
-Some planes have USB outlets in the seat. Norwegian had none on my flights, so I could not test this myself. Here is what I found in the vendors' own documentation, which counts as marketing, not measurement.
+Some planes have USB outlets in the seat. On my Norwegian flights the plugs were there, but they no longer deliver power, so I could not test this myself. Here is what I found in the vendors' own documentation, which counts as marketing, not measurement.
 
 Older USB-A outlets give about 15 watts at most, according to [Panasonic Avionics](https://www.panasonic.aero/blog/blog-post/why-your-airline-needs-to-adopt-in-flight-usb-c-fast-charging). That charges a phone. A laptop running a model draws far more, so the outlet can slow the drain but not stop it.
 
@@ -53,7 +53,37 @@ Two checks give you a real answer once you sit down. Open System Information, go
 
 ## What I ran
 
-I let Claude pick the setup. It benchmarked a few models for speed and battery use, researched the topic, and landed on a Qwen model served by Ollama and driven through the Claude Code harness. `[Pedro: exact Qwen tag and size, and the commands or environment variables that point Claude Code at Ollama]`
+I let Claude pick the setup. It benchmarked three Qwen builds on my M5 Pro with 64 GB of memory, on Ollama 0.40.12, and landed on `qwen3.6:35b`: a 36-billion-parameter mixture-of-experts model, 23 GB on disk, served by Ollama and driven through the Claude Code harness.
+
+It won on speed, because Claude Code resends a large context on every turn:
+
+| Model | Prefill, about 16k tokens | Decode | Memory at 256K context |
+|---|---|---|---|
+| `qwen3.6:35b` | 2050 tokens/s (7.8 s) | about 69 tokens/s | 23 to 24 GB |
+| `qwen3.8:27b-nvfp4` | 458 tokens/s (35 s) | about 46 tokens/s | 18 to 21 GB |
+| `qwen3.8:27b-q8_0` | 370 tokens/s (43 s) | about 10 tokens/s | 46 GB |
+
+All three passed the same two coding tasks, so quality did not separate them. Two tasks per model is a tiny sample.
+
+The default context window is 256K tokens, and every turn reprocesses it. So Claude built a lean variant with a 32K window and a lower temperature. That is the one I flew with. Save this as `Modelfile`:
+
+```text
+FROM qwen3.6:35b
+PARAMETER num_ctx 32768
+PARAMETER temperature 0.3
+PARAMETER top_p 0.9
+PARAMETER repeat_penalty 1.1
+```
+
+Then build it and start Claude Code against it, while you still have a connection to pull the base model:
+
+```bash
+ollama pull qwen3.6:35b
+ollama create qwen3.6:35b-lean -f Modelfile
+CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 ollama launch claude --model qwen3.6:35b-lean
+```
+
+`ollama launch claude` points Claude Code at the local Ollama server for you, no environment variables to set. `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` stops Claude Code from reaching for the internet for updates and telemetry. I wrapped all of this in a small script called `planemode`, which also starts the Ollama server, preloads the model, and unloads it on exit to spare the battery.
 
 I am not sure it was the best pick. It was the pick Claude could justify from the numbers it collected.
 
@@ -116,7 +146,7 @@ On some flights, yes. On a Norwegian flight from Faro to Oslo it was offered at 
 
 ### Can I charge my MacBook from a USB port on a plane?
 
-It depends on the port. A 15 watt USB-A outlet will not keep a laptop running a model alive. A seat with a 60 watt USB-C port may hold the battery steady under light work. I did not test this, because Norwegian had no seat power on my flights.
+It depends on the port. A 15 watt USB-A outlet will not keep a laptop running a model alive. A seat with a 60 watt USB-C port may hold the battery steady under light work. I did not test this, because the USB plugs in my Norwegian seats gave no power.
 
 ### Can I run an LLM completely offline on a laptop?
 

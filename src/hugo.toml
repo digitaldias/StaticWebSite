@@ -59,10 +59,10 @@ enableGitInfo = true
     kofi = 'https://ko-fi.com/digitaldias'
   
   [params.currently]
-    building   = "A local, Jev-compatible decision API on oMLX"
+    building   = "planemode: Claude Code on a local model, no internet"
     listening  = "Ghost Notes, Mono Neon"
-    tinkering  = "Scoring news stories with a small decision model"
-    annoyed_by = "My back pain"
+    tinkering  = "Shrinking context windows to make local models usable"
+    annoyed_by = "Norwegian no longer has USB power in its seats, even though the plugs are there"
 
   [params.photo]
     src = "/images/pedro.jpg"
@@ -80,11 +80,13 @@ enableGitInfo = true
     text  = "Buy a 3D printer for your household."
     post  = "/blog/2026-05-23-ai-at-the-workbench/"
   [[params.positions]]
-    text  = "Keep your home automations simple."
-  [[params.positions]]
     text  = "Let a local model do the first pass of your news. Keep the last pass yourself."
     since = "2026-11"
     post  = "/blog/2026-11-01-local-models-news-filter/"
+  [[params.positions]]
+    text  = "On a flight, write the spec offline. Let a frontier model code it when you land."
+    since = "2026-11"
+    post  = "/blog/2026-11-02-local-llm-on-a-plane/"
 
   # Giscus comments configuration
   [params.giscus]
