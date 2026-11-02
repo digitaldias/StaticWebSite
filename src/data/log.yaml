@@ -1,5 +1,11 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
+- date: 2026-11-02
+  tag: Shipped
+  text: "Reading levels on Microsoft's 100-400 scale. Every post shows how deep it goes and marks where the gist ends, scored per section by a local decision model."
+- date: 2026-11-02
+  tag: Fixed
+  text: "The DigitalHome YouTube link on the About page pointed at a channel that doesn't exist."
 - date: 2026-11-01
   tag: Shipped
   text: "Reader tools: a route chart in the margin, a resume slip, and quotable paragraphs."

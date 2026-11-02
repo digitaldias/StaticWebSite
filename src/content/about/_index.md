@@ -32,4 +32,4 @@ digitaldias.com is where I write about software architecture, Azure, AI, and the
 
 If something I wrote helped you, that's the whole point.
 
-You can find me on [LinkedIn](https://linkedin.com/in/digitaldias), [GitHub](https://github.com/digitaldias), and [Flickr](https://flickr.com/photos/digitaldias). On YouTube I run two channels: [digitaldias](https://youtube.com/@digitaldias) for tech, code, and home automation, and [digitalhome](https://youtube.com/@digitalhome) for family, friends, and the occasional audio tangent.
+You can find me on [LinkedIn](https://linkedin.com/in/digitaldias), [GitHub](https://github.com/digitaldias), and [Flickr](https://flickr.com/photos/digitaldias). On YouTube I run two channels: [digitaldias](https://youtube.com/@digitaldias) for tech, code, and home automation, and [digitalhome](https://www.youtube.com/channel/UC03xD6JiBNZebtFOv9zqTVg) for family, friends, and the occasional audio tangent.
