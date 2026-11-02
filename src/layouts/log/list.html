@@ -5,7 +5,7 @@
   {{- $days.Add (time.Format "2006-01-02" .date) (slice (dict "tag" .tag "html" (.text | markdownify))) -}}
 {{- end -}}
 {{- range where site.RegularPages "Section" "blog" -}}
-  {{- $days.Add (.Date.Format "2006-01-02") (slice (dict "tag" "Published" "url" .RelPermalink "title" .Title)) -}}
+  {{- $days.Add (.Date.Format "2006-01-02") (slice (dict "tag" "Published" "url" .RelPermalink "title" .Title "depth" (partial "depth.html" .))) -}}
 {{- end -}}
 {{- $dates := slice -}}
 {{- range $date, $_ := $days.Values }}{{ $dates = $dates | append $date }}{{ end -}}
@@ -32,7 +32,7 @@
         <time datetime="{{ . }}">{{ (time.AsTime .).Format "Mon 2 Jan 2006" }}</time>
         <ul>
           {{- range $e := $days.Get . }}
-          <li><span class="tag{{ if not (in (slice "Shipped" "Published") $e.tag) }} q{{ end }}">{{ $e.tag }}</span>{{ with $e.url }}<a href="{{ . }}">{{ $e.title }}</a>{{ else }}{{ $e.html }}{{ end }}</li>
+          <li><span class="tag{{ if not (in (slice "Shipped" "Published") $e.tag) }} q{{ end }}">{{ $e.tag }}</span>{{ with $e.url }}<a href="{{ . }}">{{ $e.title }}</a>{{ with $e.depth }} <span class="level-mark m">{{ partial "level-steps.html" . }}<span class="visually-hidden">Reading level </span>{{ partial "level-range.html" . }}</span>{{ end }}{{ else }}{{ $e.html }}{{ end }}</li>
           {{- end }}
         </ul>
       </li>

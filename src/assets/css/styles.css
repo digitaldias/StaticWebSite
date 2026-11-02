@@ -276,7 +276,8 @@ h1, h2, h3, h4 { margin: 0; }
 .steps i:nth-child(3) { height: 76%; }
 .steps i:nth-child(4) { height: 100%; }
 .steps i.on { background: var(--teal); }
-.level-mark { display: inline-flex; align-items: center; gap: 6px; }
+.level-mark { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.days .level-mark { margin-left: 6px; font-size: .72rem; color: var(--muted); }
 
 /* The level key opens the level card: on hover with a mouse, on tap or Enter anywhere */
 .folio { position: relative; }
