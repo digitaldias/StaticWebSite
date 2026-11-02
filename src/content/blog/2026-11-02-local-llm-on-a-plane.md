@@ -1,7 +1,7 @@
 ---
 title: "Can you run a local LLM offline on a flight? What to check before you board"
 date: 2026-11-02
-draft: true
+draft: false
 description: "Planning to use a local LLM on a plane? A pre-flight checklist and a ten-minute battery test, from one flight with Ollama and Qwen on an M5 MacBook Pro."
 excerpt: "I packed a local coding model for a flight with no Wi-Fi. It was slower, weaker and thirstier than I hoped. Here is the checklist and the ten-minute ground test I wish I had run first."
 tldr: "A local model can run on a plane, but on a laptop it is far weaker than a frontier model, its small context window makes it lose track early, and it drains the battery fast. Download it before you board, run a ten-minute test on the ground, and decide from the results whether to bring it."
@@ -51,49 +51,13 @@ When the source delivers less than the laptop demands, the Mac makes up the diff
 
 Two checks give you a real answer once you sit down. Open System Information, go to Power, and read the charger wattage the Mac reports. Then run `pmset -g batt` and see whether it says the battery is charging or discharging. Use a cable rated for the wattage, such as the one that came with your charger.
 
-## What I ran
-
-I let Claude pick the setup. It benchmarked three Qwen builds on my M5 Pro with 64 GB of memory, on Ollama 0.40.12, and landed on `qwen3.6:35b`: a 36-billion-parameter mixture-of-experts model, 23 GB on disk, served by Ollama and driven through the Claude Code harness.
-
-It won on speed, because Claude Code resends a large context on every turn:
-
-| Model | Prefill, about 16k tokens | Decode | Memory at 256K context |
-|---|---|---|---|
-| `qwen3.6:35b` | 2050 tokens/s (7.8 s) | about 69 tokens/s | 23 to 24 GB |
-| `qwen3.8:27b-nvfp4` | 458 tokens/s (35 s) | about 46 tokens/s | 18 to 21 GB |
-| `qwen3.8:27b-q8_0` | 370 tokens/s (43 s) | about 10 tokens/s | 46 GB |
-
-All three passed the same two coding tasks, so quality did not separate them. Two tasks per model is a tiny sample.
-
-The default context window is 256K tokens, and every turn reprocesses it. So Claude built a lean variant with a 32K window and a lower temperature. That is the one I flew with. Save this as `Modelfile`:
-
-```text
-FROM qwen3.6:35b
-PARAMETER num_ctx 32768
-PARAMETER temperature 0.3
-PARAMETER top_p 0.9
-PARAMETER repeat_penalty 1.1
-```
-
-Then build it and start Claude Code against it, while you still have a connection to pull the base model:
-
-```bash
-ollama pull qwen3.6:35b
-ollama create qwen3.6:35b-lean -f Modelfile
-CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 ollama launch claude --model qwen3.6:35b-lean
-```
-
-`ollama launch claude` points Claude Code at the local Ollama server for you, no environment variables to set. `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` stops Claude Code from reaching for the internet for updates and telemetry. I wrapped all of this in a small script called `planemode`, which also starts the Ollama server, preloads the model, and unloads it on exit to spare the battery.
-
-I am not sure it was the best pick. It was the pick Claude could justify from the numbers it collected.
-
 ## What it felt like
 
 Frontier models set a bar you stop noticing. You ask for a change across three files and it happens. The local model asked me to clarify things I had already said, edited the wrong file, and needed a second attempt on tasks Claude handles in one.
 
 My April post, [Local LLMs are not there yet](/blog/2026-04-06-local-llms-are-not-there-yet/), made the same point from a desk with an RTX 5090. A laptop on a tray table is a harder place to be right about it.
 
-The biggest limit was the small context window. The context window is the amount of text the model can keep in mind at once: your instructions, the files it has read and the conversation so far. A coding agent fills it fast. Mine started to hallucinate much earlier than I could accept, inventing file names and details, and the results were bad.
+The biggest limit was the small context window. The context window is the amount of text the model can keep in mind at once: your instructions, the files it has read and the conversation so far. A coding agent fills it fast, and I had cut mine to 32K to get usable speed, as the setup section below explains. Mine started to hallucinate much earlier than I could accept, inventing file names and details, and the results were bad.
 
 The battery fell quickly. Inference keeps the GPU busy for the whole response, and a coding agent sends many responses.
 
@@ -127,6 +91,42 @@ Run through this the day before.
 4. **Check your agent's offline behaviour.** Some tools call home for updates, telemetry or login checks. Test with Wi-Fi off, not just with the model running.
 5. **Plan the battery.** Know your charge, your flight length and whether your seat has a USB-C port strong enough to help. Run the ten-minute battery test above.
 6. **Pick a task that fits.** Small, well-defined edits suit a small model. Refactors across many files do not.
+
+## What I ran
+
+I let Claude pick the setup. It benchmarked three Qwen builds on my M5 Pro with 64 GB of memory, on Ollama 0.40.12, and landed on `qwen3.6:35b`: a 35-billion-parameter mixture-of-experts model that activates about 3 billion parameters per token (Qwen3.6-35B-A3B on [Hugging Face](https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF)), 23 GB on disk, served by Ollama and driven through the Claude Code harness.
+
+It won on speed, because Claude Code resends a large context on every turn:
+
+| Model | Prefill, about 16k tokens | Decode | Memory at 256K context |
+|---|---|---|---|
+| `qwen3.6:35b` | 2050 tokens/s (7.8 s) | about 69 tokens/s | 23 to 24 GB |
+| `qwen3.8:27b-nvfp4` | 458 tokens/s (35 s) | about 46 tokens/s | 18 to 21 GB |
+| `qwen3.8:27b-q8_0` | 370 tokens/s (43 s) | about 10 tokens/s | 46 GB |
+
+All three passed the same two coding tasks, so quality did not separate them. Two tasks per model is a tiny sample.
+
+These models have a native context window of 256K tokens. At that size the model was very slow for me, so Claude recommended cutting the context to speed up the answers. It built a lean variant with a 32K window and a lower temperature. That is the one I flew with, and the small window is the price I paid for the speed. Save this as `Modelfile`:
+
+```text
+FROM qwen3.6:35b
+PARAMETER num_ctx 32768
+PARAMETER temperature 0.3
+PARAMETER top_p 0.9
+PARAMETER repeat_penalty 1.1
+```
+
+Then build it and start Claude Code against it, while you still have a connection to pull the base model:
+
+```bash
+ollama pull qwen3.6:35b
+ollama create qwen3.6:35b-lean -f Modelfile
+CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 ollama launch claude --model qwen3.6:35b-lean
+```
+
+`ollama launch claude` points Claude Code at the local Ollama server for you, no environment variables to set. `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` stops Claude Code from reaching for the internet for updates and telemetry. I wrapped all of this in a small script called `planemode`, which also starts the Ollama server, preloads the model, and unloads it on exit to spare the battery.
+
+I am not sure it was the best pick. It was the pick Claude could justify from the numbers it collected.
 
 ## What to do on the plane instead
 
