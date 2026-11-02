@@ -1,4 +1,4 @@
 {{- /* Returns the read time label: front-matter readTime overrides Hugo's word-count estimate */ -}}
-{{- $label := printf "%d minute read" .ReadingTime -}}
+{{- $label := i18n "readTime" (dict "n" .ReadingTime) -}}
 {{- with .Params.readTime }}{{ $label = . }}{{ end -}}
 {{- return $label -}}

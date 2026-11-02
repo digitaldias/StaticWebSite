@@ -8,16 +8,16 @@
     <div>
       <div class="meta-line m">
         {{- with $p.Params.categories }}<span>{{ index . 0 }}</span>{{ end -}}
-        <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "2 Jan 2006" }}</time>
-        <span>{{ replace (partial "read-time.html" $p) " minute read" " min" }}</span>
-        {{- with partial "depth.html" $p }}<span class="level-mark">{{ partial "level-steps.html" . }}<span class="visually-hidden">Reading level </span>{{ partial "level-range.html" . }}</span>{{ end }}
+        <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" $p.Date }}</time>
+        <span>{{ partial "read-time-short.html" $p }}</span>
+        {{- with partial "depth.html" $p }}<span class="level-mark">{{ partial "level-steps.html" . }}<span class="visually-hidden">{{ i18n "readingLevel" }} </span>{{ partial "level-range.html" . }}</span>{{ end }}
       </div>
       <h2 class="d{{ if $isLead }} split-words{{ end }}"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
       {{- with $p.Params.excerpt | default $p.Description }}
       <p{{ if $isLead }} class="lift"{{ end }}>{{ . }}</p>
       {{- end }}
       {{- if $cover.generated }}
-      <span class="cover-note">Cyanotype cover · MakeImage</span>
+      <span class="cover-note">{{ i18n "coverNote" }}</span>
       {{- end }}
     </div>
     {{- with $cover.src }}

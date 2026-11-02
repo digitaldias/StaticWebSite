@@ -10,7 +10,7 @@
   {{- if fileExists (printf "static/%s" $path) -}}
     {{- $src = printf "/%s" $path -}}
     {{- $generated = true -}}
-    {{- with index site.Data.covers $name }}{{ $alt = .alt }}{{ end -}}
+    {{- with index site.Data.covers $name }}{{ $alt = partial "loc.html" (dict "d" . "k" "alt") }}{{ end -}}
   {{- end -}}
 {{- end -}}
 {{- return dict "src" $src "alt" $alt "generated" $generated -}}

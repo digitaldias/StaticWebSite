@@ -11,6 +11,10 @@
     {{- $ids = merge $ids (dict $key $id) -}}
     {{- if and (eq $h.Level 2) (in (slice "faq" "commonquestions") $key) }}{{ $skip = $id }}{{ end -}}
   {{- end -}}
+  {{- /* Translations: the same h2s in the same order, so match by position when the text does not match */ -}}
+  {{- $h2 := slice -}}
+  {{- range $.Fragments.Headings }}{{ range .Headings }}{{ if eq .Level 2 }}{{ $h2 = $h2 | append . }}{{ end }}{{ end }}{{ end -}}
+  {{- $offset := cond (eq (index .sections 0).heading "(opening)") 1 0 -}}
   {{- $sections := slice -}}
   {{- $to := 100 -}}
   {{- $stop := dict -}}
@@ -19,10 +23,16 @@
     {{- $lv := 100 -}}
     {{- range $cut }}{{ if ge $s.score . }}{{ $lv = add $lv 100 }}{{ end }}{{ end -}}
     {{- $id := cond (eq $s.heading "(opening)") "article-text" (index $ids ($s.heading | lower | replaceRE `[^a-z0-9]` "")) -}}
+    {{- $title := $s.heading -}}
+    {{- if and (not $id) (ne site.Language.Lang "en") (ne $s.heading "(opening)") -}}
+      {{- $k := sub $i $offset -}}
+      {{- if lt $k (len $h2) }}{{ $id = (index $h2 $k).ID }}{{ $title = (index $h2 $k).Title | plainify | htmlUnescape }}{{ end -}}
+    {{- end -}}
+    {{- if and $id (in (slice "faq" "commonquestions") ($s.heading | lower | replaceRE `[^a-z0-9]` "")) }}{{ $skip = $id }}{{ end -}}
     {{- with $id }}{{ $sections = $sections | append (dict "id" . "level" $lv) }}{{ end -}}
     {{- if gt $lv $to }}{{ $to = $lv }}{{ end -}}
     {{- if and $shallow (ge $lv 300) -}}
-      {{- if and (gt $i 0) $id }}{{ $stop = dict "id" $id "heading" $s.heading "level" $lv }}{{ end -}}
+      {{- if and (gt $i 0) $id }}{{ $stop = dict "id" $id "heading" $title "level" $lv }}{{ end -}}
       {{- $shallow = false -}}
     {{- end -}}
   {{- end -}}

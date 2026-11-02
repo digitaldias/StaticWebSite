@@ -1,0 +1,76 @@
+/**
+ * UI strings for main.js, English and Norwegian bokmål. The page language comes
+ * from <html lang>; an unknown language falls back to English. Concatenated
+ * ahead of main.js at build time (layouts/_default/baseof.html).
+ */
+'use strict';
+
+const STRINGS = {
+  en: {
+    arrived: 'Arrived',
+    opening: 'Opening',
+    course: 'The course',
+    arrivalIn: 'Arrival in',
+    port: 'port',
+    toGo: 'to go',
+    resumeAria: 'Resume reading',
+    resumeLabel: 'Continued',
+    resumeText: (p, m) => `You left off at <em></em>, ${p}% of the way through. ${m} min to go.`,
+    resumeGo: 'Resume reading &darr;',
+    resumeSkip: 'Start from the top',
+    read: 'Read',
+    copyBlocked: 'Copying is blocked in this browser.',
+    copy: 'Copy',
+    copyAria: lang => `Copy ${lang} to clipboard`,
+    copied: 'Copied',
+    copiedNote: 'Copied to clipboard.',
+    sectionAria: title => `Copy link to section: ${title}`,
+    sectionCopied: 'Section link copied.',
+    paraAria: 'Copy link to this paragraph',
+    paraCopied: 'Paragraph link copied. It opens highlighted.',
+    selectedAria: 'Selected passage',
+    linkToPassage: 'Link to passage',
+    copyAsQuote: 'Copy as quote',
+    passageCopied: 'Passage link copied. It opens highlighted.',
+    quoteCopied: 'Quote copied with its citation.',
+    lightboxAria: 'Enlarged image',
+    close: 'Close',
+    level: 'Level',
+  },
+  nb: {
+    arrived: 'Fremme',
+    opening: 'Innledning',
+    course: 'Kursen',
+    arrivalIn: 'Ankomst',
+    port: 'i havn',
+    toGo: 'igjen',
+    resumeAria: 'Fortsett å lese',
+    resumeLabel: 'Der du slapp',
+    resumeText: (p, m) => `Du stoppet ved <em></em>, ${p} % ut i teksten. ${m} min igjen.`,
+    resumeGo: 'Fortsett å lese &darr;',
+    resumeSkip: 'Begynn på nytt',
+    read: 'Lest',
+    copyBlocked: 'Nettleseren blokkerer kopiering.',
+    copy: 'Kopier',
+    copyAria: lang => `Kopier ${lang} til utklippstavlen`,
+    copied: 'Kopiert',
+    copiedNote: 'Kopiert til utklippstavlen.',
+    sectionAria: title => `Kopier lenke til seksjonen: ${title}`,
+    sectionCopied: 'Lenken til seksjonen er kopiert.',
+    paraAria: 'Kopier lenke til dette avsnittet',
+    paraCopied: 'Lenken til avsnittet er kopiert. Den åpner med avsnittet uthevet.',
+    selectedAria: 'Markert utdrag',
+    linkToPassage: 'Lenke til utdraget',
+    copyAsQuote: 'Kopier som sitat',
+    passageCopied: 'Lenken til utdraget er kopiert. Den åpner med utdraget uthevet.',
+    quoteCopied: 'Sitatet er kopiert med kildehenvisning.',
+    lightboxAria: 'Forstørret bilde',
+    close: 'Lukk',
+    level: 'Nivå',
+  },
+};
+
+const t = key => {
+  const lang = (document.documentElement.lang || 'en').slice(0, 2);
+  return (STRINGS[lang] || STRINGS.en)[key] ?? STRINGS.en[key];
+};

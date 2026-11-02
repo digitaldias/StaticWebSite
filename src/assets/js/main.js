@@ -40,7 +40,7 @@ const countWords = text => (text.trim().match(/\S+/g) || []).length;
 
 const formatMinutes = minutes => {
   const m = Math.ceil(minutes);
-  return m <= 0 ? 'Arrived' : `${m} min`;
+  return m <= 0 ? t('arrived') : `${m} min`;
 };
 
 /* ─────────────────────────────────────────────
@@ -82,7 +82,7 @@ function writeReadingLog(log) {
 ───────────────────────────────────────────── */
 function buildSections(content) {
   if (!content.id) content.id = 'article-text';
-  const sections = [{ id: content.id, title: 'Opening', anchor: content, words: 0 }];
+  const sections = [{ id: content.id, title: t('opening'), anchor: content, words: 0 }];
 
   Array.from(content.children).forEach(el => {
     if (el.tagName === 'H2' && el.id) {
@@ -112,7 +112,7 @@ function initChart() {
   const minutesFor = words => words / WORDS_PER_MINUTE;
 
   chart.innerHTML = `
-    <p class="chart__label">The course</p>
+    <p class="chart__label">${t('course')}</p>
     <button type="button" class="chart__strip" aria-expanded="false" aria-controls="chart-route">
       <span class="chart__leg"></span>
       <span class="chart__here"></span>
@@ -130,7 +130,7 @@ function initChart() {
           </a>
         </li>`).join('')}
     </ol>
-    <p class="chart__arrival"><span class="chart__arrival-label">Arrival in</span> <span class="chart__arrival-value"></span></p>
+    <p class="chart__arrival"><span class="chart__arrival-label">${t('arrivalIn')}</span> <span class="chart__arrival-value"></span></p>
   `;
   chart.hidden = false;
 
@@ -191,8 +191,8 @@ function initChart() {
 
     const minutesLeft = minutesFor(totalWords - wordsRead);
     const progress = totalWords ? wordsRead / totalWords : 0;
-    eta.textContent = minutesLeft <= 0.05 ? 'Arrived' : `${formatMinutes(minutesLeft)} to go`;
-    arrival.textContent = minutesLeft <= 0.05 ? 'port' : formatMinutes(minutesLeft);
+    eta.textContent = minutesLeft <= 0.05 ? t('arrived') : `${formatMinutes(minutesLeft)} ${t('toGo')}`;
+    arrival.textContent = minutesLeft <= 0.05 ? t('port') : formatMinutes(minutesLeft);
 
     if (current !== lastIndex) {
       lastIndex = current;
@@ -239,7 +239,7 @@ const LEVELS = [100, 200, 300, 400];
 
 function levelSteps(level) {
   const steps = LEVELS.map(n => `<i${n === level ? ' class="on"' : ''}></i>`).join('');
-  return `<span class="steps" aria-hidden="true">${steps}</span><span class="visually-hidden">Level ${level}</span>`;
+  return `<span class="steps" aria-hidden="true">${steps}</span><span class="visually-hidden">${t('level')} ${level}</span>`;
 }
 
 function initLevelMarks() {
@@ -331,13 +331,13 @@ function initReaderMemory() {
     const slip = document.createElement('div');
     slip.className = 'resume';
     slip.setAttribute('role', 'region');
-    slip.setAttribute('aria-label', 'Resume reading');
+    slip.setAttribute('aria-label', t('resumeAria'));
     slip.innerHTML = `
-      <p class="resume__label">Continued</p>
-      <p class="resume__text">You left off at <em></em>, ${Math.round(saved.p * 100)}% of the way through. ${saved.m} min to go.</p>
+      <p class="resume__label">${t('resumeLabel')}</p>
+      <p class="resume__text">${t('resumeText')(Math.round(saved.p * 100), saved.m)}</p>
       <div class="resume__actions">
-        <button type="button" class="resume__go">Resume reading &darr;</button>
-        <button type="button" class="resume__dismiss">Start from the top</button>
+        <button type="button" class="resume__go">${t('resumeGo')}</button>
+        <button type="button" class="resume__dismiss">${t('resumeSkip')}</button>
       </div>
     `;
     slip.querySelector('em').textContent = saved.s;
@@ -367,7 +367,7 @@ function readMarkFor(entry) {
   const mark = document.createElement('span');
   if (entry.done) {
     mark.className = 'read-mark read-mark--done';
-    mark.textContent = 'Read';
+    mark.textContent = t('read');
   } else {
     mark.className = 'read-mark';
     mark.style.setProperty('--read', entry.p);
@@ -467,7 +467,7 @@ async function copyText(text, notify, message) {
     await navigator.clipboard.writeText(text);
     notify(message);
   } catch {
-    notify('Copying is blocked in this browser.');
+    notify(t('copyBlocked'));
   }
 }
 
@@ -510,16 +510,16 @@ function initCodeBlocks() {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'code-copy';
-    button.textContent = 'Copy';
-    button.setAttribute('aria-label', `Copy ${lang} to clipboard`);
+    button.textContent = t('copy');
+    button.setAttribute('aria-label', t('copyAria')(lang));
     button.addEventListener('click', async () => {
       if (!(await writeClipboard(code.textContent.replace(/\n$/, '')))) {
-        notify('Copying is blocked in this browser.');
+        notify(t('copyBlocked'));
         return;
       }
-      button.textContent = 'Copied';
-      notify('Copied to clipboard.');
-      setTimeout(() => { button.textContent = 'Copy'; }, 1800);
+      button.textContent = t('copied');
+      notify(t('copiedNote'));
+      setTimeout(() => { button.textContent = t('copy'); }, 1800);
     });
     bar.append(label, button);
     block.prepend(bar);
@@ -539,10 +539,10 @@ function initCitations() {
     const mark = document.createElement('a');
     mark.className = 'section-mark';
     mark.href = `#${h.id}`;
-    mark.setAttribute('aria-label', `Copy link to section: ${h.textContent.trim()}`);
+    mark.setAttribute('aria-label', t('sectionAria')(h.textContent.trim()));
     mark.addEventListener('click', () => {
       history.replaceState(null, '', `#${h.id}`);
-      copyText(window.location.href, notify, 'Section link copied.');
+      copyText(window.location.href, notify, t('sectionCopied'));
     });
     h.appendChild(mark);
   });
@@ -554,9 +554,9 @@ function initCitations() {
     mark.type = 'button';
     mark.className = 'para-mark';
     mark.tabIndex = -1; // Keyboard readers have § and selection; a stop per paragraph is noise
-    mark.setAttribute('aria-label', 'Copy link to this paragraph');
+    mark.setAttribute('aria-label', t('paraAria'));
     mark.addEventListener('click', () =>
-      copyText(passageUrl(text), notify, 'Paragraph link copied. It opens highlighted.')
+      copyText(passageUrl(text), notify, t('paraCopied'))
     );
     p.appendChild(mark);
   });
@@ -566,10 +566,10 @@ function initCitations() {
   const popover = document.createElement('div');
   popover.className = 'cite-pop';
   popover.setAttribute('role', 'toolbar');
-  popover.setAttribute('aria-label', 'Selected passage');
+  popover.setAttribute('aria-label', t('selectedAria'));
   popover.innerHTML = `
-    <button type="button" data-cite="link">Link to passage</button>
-    <button type="button" data-cite="quote">Copy as quote</button>
+    <button type="button" data-cite="link">${t('linkToPassage')}</button>
+    <button type="button" data-cite="quote">${t('copyAsQuote')}</button>
   `;
   popover.hidden = true;
   document.body.appendChild(popover);
@@ -618,10 +618,10 @@ function initCitations() {
     if (!action) return;
     const url = passageUrl(selected);
     if (action === 'link') {
-      copyText(url, notify, 'Passage link copied. It opens highlighted.');
+      copyText(url, notify, t('passageCopied'));
     } else {
       const citation = `“${selected}”\n— Pedro Dias, “${title}”, digitaldias.com${date ? `, ${date}` : ''}\n${url}`;
-      copyText(citation, notify, 'Quote copied with its citation.');
+      copyText(citation, notify, t('quoteCopied'));
     }
     hide();
   });
@@ -638,9 +638,9 @@ function lightboxDialog() {
 
   const box = document.createElement('dialog');
   box.className = 'lightbox';
-  box.setAttribute('aria-label', 'Enlarged image');
+  box.setAttribute('aria-label', t('lightboxAria'));
   box.innerHTML = `
-    <form method="dialog"><button class="lightbox__close">Close</button></form>
+    <form method="dialog"><button class="lightbox__close">${t('close')}</button></form>
     <img class="lightbox__img" alt="">
     <p class="lightbox__caption m"></p>
   `;

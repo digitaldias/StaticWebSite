@@ -2,7 +2,7 @@
 {{- /* Days: the hand-written notes in data/log.yaml, plus a Published row per post */ -}}
 {{- $days := newScratch -}}
 {{- range site.Data.log -}}
-  {{- $days.Add (time.Format "2006-01-02" .date) (slice (dict "tag" .tag "html" (.text | markdownify))) -}}
+  {{- $days.Add (time.Format "2006-01-02" .date) (slice (dict "tag" .tag "html" ((partial "loc.html" (dict "d" . "k" "text")) | markdownify))) -}}
 {{- end -}}
 {{- range where site.RegularPages "Section" "blog" -}}
   {{- $days.Add (.Date.Format "2006-01-02") (slice (dict "tag" "Published" "url" .RelPermalink "title" .Title "depth" (partial "depth.html" .))) -}}
@@ -11,28 +11,28 @@
 {{- range $date, $_ := $days.Values }}{{ $dates = $dates | append $date }}{{ end -}}
 <div class="wrap">
   <header class="page-head">
-    <h1 class="d split-words">Ship's <em>log</em></h1>
+    <h1 class="d split-words">{{ i18n "logTitleA" }} <em>{{ i18n "logTitleB" }}</em></h1>
     {{- with .Description }}
     <p class="lift">{{ . }}</p>
     {{- end }}
   </header>
   <div class="log-grid">
     {{- with site.Params.currently }}
-    <aside class="now reveal" aria-label="Now">
-      <span class="k">Now</span>
-      {{- with .building }}<div><span class="m">Building</span><p>{{ . }}</p></div>{{ end }}
-      {{- with .tinkering }}<div><span class="m">Tinkering</span><p>{{ . }}</p></div>{{ end }}
-      {{- with partial "listening-now.html" $ }}<div><span class="m">Listening</span><p>{{ . }}</p></div>{{ end }}
-      {{- with .annoyed_by }}<div><span class="m">Annoyed by</span><p>{{ . }}</p></div>{{ end }}
+    <aside class="now reveal" aria-label="{{ i18n "now" }}">
+      <span class="k">{{ i18n "now" }}</span>
+      {{- with .building }}<div><span class="m">{{ i18n "building" }}</span><p>{{ . }}</p></div>{{ end }}
+      {{- with .tinkering }}<div><span class="m">{{ i18n "tinkering" }}</span><p>{{ . }}</p></div>{{ end }}
+      {{- with partial "listening-now.html" $ }}<div><span class="m">{{ i18n "listening" }}</span><p>{{ . }}</p></div>{{ end }}
+      {{- with .annoyed_by }}<div><span class="m">{{ i18n "annoyedBy" }}</span><p>{{ . }}</p></div>{{ end }}
     </aside>
     {{- end }}
     <ol class="days">
       {{- range sort $dates "value" "desc" }}
       <li class="day reveal">
-        <time datetime="{{ . }}">{{ (time.AsTime .).Format "Mon 2 Jan 2006" }}</time>
+        <time datetime="{{ . }}">{{ time.Format "Mon 2 Jan 2006" . }}</time>
         <ul>
           {{- range $e := $days.Get . }}
-          <li><span class="tag{{ if not (in (slice "Shipped" "Published") $e.tag) }} q{{ end }}">{{ $e.tag }}</span>{{ with $e.url }}<a href="{{ . }}">{{ $e.title }}</a>{{ with $e.depth }} <span class="level-mark m">{{ partial "level-steps.html" . }}<span class="visually-hidden">Reading level </span>{{ partial "level-range.html" . }}</span>{{ end }}{{ else }}{{ $e.html }}{{ end }}</li>
+          <li><span class="tag{{ if not (in (slice "Shipped" "Published") $e.tag) }} q{{ end }}">{{ i18n (printf "tag%s" $e.tag) }}</span>{{ with $e.url }}<a href="{{ . }}">{{ $e.title }}</a>{{ with $e.depth }} <span class="level-mark m">{{ partial "level-steps.html" . }}<span class="visually-hidden">{{ i18n "readingLevel" }} </span>{{ partial "level-range.html" . }}</span>{{ end }}{{ else }}{{ $e.html }}{{ end }}</li>
           {{- end }}
         </ul>
       </li>

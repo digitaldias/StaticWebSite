@@ -7,11 +7,11 @@
   <a class="ph" href="{{ $p.RelPermalink }}" tabindex="-1" aria-hidden="true"><img src="{{ . }}" alt=""{{ if $lead }} fetchpriority="high"{{ else }} loading="lazy"{{ end }} decoding="async"></a>
   {{- end }}
   <div class="meta-line m">
-    <span class="entry-no">Entry {{ printf "%03d" (len (where .all "Date" "le" $p.Date)) }}</span>
+    <span class="entry-no">{{ i18n "entryWord" }} {{ printf "%03d" (len (where .all "Date" "le" $p.Date)) }}</span>
     {{- with $p.Params.categories }}<span>{{ index . 0 }}</span>{{ end }}
-    <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "2 Jan 2006" }}</time>
-    <span>{{ replace (partial "read-time.html" $p) " minute read" " min" }}</span>
-    {{- with partial "depth.html" $p }}<span class="level-mark">{{ partial "level-steps.html" . }}<span class="visually-hidden">Reading level </span>{{ partial "level-range.html" . }}</span>{{ end }}
+    <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" $p.Date }}</time>
+    <span>{{ partial "read-time-short.html" $p }}</span>
+    {{- with partial "depth.html" $p }}<span class="level-mark">{{ partial "level-steps.html" . }}<span class="visually-hidden">{{ i18n "readingLevel" }} </span>{{ partial "level-range.html" . }}</span>{{ end }}
   </div>
   <h3 class="d"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h3>
   {{- with $p.Params.excerpt | default $p.Description }}

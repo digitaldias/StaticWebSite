@@ -1,0 +1,4 @@
+{{- /* Returns the short read time, "5 min": the number from a front-matter readTime, else Hugo's estimate */ -}}
+{{- $n := .ReadingTime -}}
+{{- with .Params.readTime }}{{ with findRE `^[0-9]+` . }}{{ $n = int (index . 0) }}{{ end }}{{ end -}}
+{{- return printf "%d min" $n -}}

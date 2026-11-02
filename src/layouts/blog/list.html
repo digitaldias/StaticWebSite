@@ -5,14 +5,14 @@
 {{- range $posts }}{{ $minutes = add $minutes .ReadingTime }}{{ end -}}
 <div class="wrap">
   <header class="page-head">
-    <h1 class="d split-words">Writ<em>ing</em></h1>
-    <p class="lift">Technical posts, opinions, and the occasional rant. Mostly useful.</p>
+    <h1 class="d split-words">{{ i18n "writingA" }}<em>{{ i18n "writingB" }}</em></h1>
+    <p class="lift">{{ i18n "writingLead" }}</p>
   </header>
   <dl class="tally">
-    <div><dt>Entries</dt><dd>{{ len $posts }}</dd></div>
-    <div><dt>Since</dt><dd>{{ $oldest.Date.Format "Jan 2006" }}</dd></div>
-    <div><dt>Categories</dt><dd>{{ len .Site.Taxonomies.categories }}</dd></div>
-    <div><dt>Reading time</dt><dd>&asymp; {{ div $minutes 60 }} h {{ mod $minutes 60 }} min</dd></div>
+    <div><dt>{{ i18n "tallyEntries" }}</dt><dd>{{ len $posts }}</dd></div>
+    <div><dt>{{ i18n "tallySince" }}</dt><dd>{{ time.Format "Jan 2006" $oldest.Date }}</dd></div>
+    <div><dt>{{ i18n "tallyCategories" }}</dt><dd>{{ len .Site.Taxonomies.categories }}</dd></div>
+    <div><dt>{{ i18n "tallyReading" }}</dt><dd>&asymp; {{ div $minutes 60 }} h {{ mod $minutes 60 }} min</dd></div>
   </dl>
   {{- partial "category-filter.html" . }}
   {{- partial "archive.html" (dict "pages" $posts "front" true) }}

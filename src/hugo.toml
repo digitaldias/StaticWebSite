@@ -173,27 +173,46 @@ defaultContentLanguage = 'en'
     languageName = 'NO'
     weight = 2
     [languages.nb.params]
-      description = 'Programvarearkitekt, innholdsprodusent og familiemann fra Frogner, Lillestrøm'
-      bio = "Konstituert Chief AI Officer i Tradesolution. Har skrevet kode siden 1982. Altfor mange sterke meninger om programvare, AI og plassering av høyttalere."
-      motto = "Norsk pragmatisme · Portugisisk sta · For mye kode"
+      description = 'Programvarearkitekt, innholdsprodusent og familiemann på Frogner i Lillestrøm'
+      bio = "Konstituert Chief AI Officer i Tradesolution. Har skrevet kode siden 1982. Altfor mange sterke meninger om programvare, AI og høyttalerplassering."
+      motto = "Norsk pragmatisme · Portugisisk stahet · For mye kode"
+      [languages.nb.params.giscus]
+        lang = "no"
+      [languages.nb.params.depth]
+        [[languages.nb.params.depth.levels]]
+          n = 100
+          name = "Hovedpoenget"
+          reader = "Ingen forkunnskaper: hva det er, hvorfor det er viktig og hvor det er på vei."
+        [[languages.nb.params.depth.levels]]
+          n = 200
+          name = "Oversikten"
+          reader = "Du har hørt om det: hva det kan gjøre, hvor det passer inn og litt kode som viser poenget."
+        [[languages.nb.params.depth.levels]]
+          n = 300
+          name = "Praksis"
+          reader = "Du har brukt det: hvordan du bygger løsningen, med kode som kjører, og hvordan delene henger sammen."
+        [[languages.nb.params.depth.levels]]
+          n = 400
+          name = "Full nerd"
+          reader = "Du bygger med det: hvordan det virker innvendig, hvorfor det er laget slik og hva det betyr i praksis."
       [languages.nb.params.currently]
         building   = "planemode: Claude Code på en lokal modell, uten internett"
-        tinkering  = "Å krympe kontekstvinduer så lokale modeller blir brukbare"
-        annoyed_by = "Norwegian har ikke lenger USB-strøm i setene, selv om kontaktene fortsatt sitter der"
+        tinkering  = "Krymping av kontekstvinduer så lokale modeller blir brukbare"
+        annoyed_by = "Norwegian-flyene har ikke lenger USB-strøm i setene, selv om kontaktene fortsatt sitter der"
       [[languages.nb.params.positions]]
-        text  = "Typede beslutnings-API-er som Jev er AIs neste store skifte for programvare."
+        text  = "Typede beslutnings-API-er som Jev er det neste store AI-skiftet for programvare."
         since = "2026-09"
         post  = "/blog/2026-09-19-jev-before-the-waitlist/"
       [[languages.nb.params.positions]]
-        text  = "Utløpet av Claude Codes cache er en skjult kostnad ingen snakker om."
+        text  = "At cachen i Claude Code utløper, er en skjult kostnad ingen snakker om."
       [[languages.nb.params.positions]]
-        text  = "Kjøp en 3D-printer til husholdningen."
+        text  = "Kjøp en 3D-printer til hjemmet."
         post  = "/blog/2026-05-23-ai-at-the-workbench/"
       [[languages.nb.params.positions]]
-        text  = "La en lokal modell ta første runde av nyhetene dine. Ta siste runde selv."
+        text  = "La en lokal modell sortere nyhetene dine først. Den siste gjennomgangen tar du selv."
         since = "2026-11"
         post  = "/blog/2026-11-01-local-models-news-filter/"
       [[languages.nb.params.positions]]
-        text  = "På en flytur: skriv spesifikasjonen offline. La en frontier-modell kode den når du lander."
+        text  = "Skriv spesifikasjonen offline på flyet. La en frontier-modell kode den når du lander."
         since = "2026-11"
         post  = "/blog/2026-11-02-local-llm-on-a-plane/"

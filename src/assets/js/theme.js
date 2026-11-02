@@ -31,7 +31,8 @@
 
   function label(button) {
     var next = current() === 'dark' ? 'light' : 'dark';
-    button.setAttribute('aria-label', 'Switch to ' + next + ' theme');
+    var nb = (root.lang || '').slice(0, 2) === 'nb';
+    button.setAttribute('aria-label', nb ? 'Bytt til ' + (next === 'dark' ? 'mørkt' : 'lyst') + ' tema' : 'Switch to ' + next + ' theme');
     button.dataset.current = current();
   }
 

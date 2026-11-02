@@ -1,0 +1,4 @@
+{{- /* Localised field: <key>_<lang> (for example text_nb) wins when present, else <key>. */ -}}
+{{- $v := index .d .k -}}
+{{- with index .d (printf "%s_%s" .k site.Language.Lang) }}{{ $v = . }}{{ end -}}
+{{- return $v -}}

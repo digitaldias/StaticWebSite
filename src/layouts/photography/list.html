@@ -2,19 +2,19 @@
 {{- $photos := site.Data.photos -}}
 <div class="wrap">
   <header class="page-head">
-    <h1 class="d split-words">Photo<em>graphs</em></h1>
+    <h1 class="d split-words">{{ i18n "photosTitleA" }}<em>{{ i18n "photosTitleB" }}</em></h1>
     {{- with .Description }}
     <p class="lift">{{ . }}</p>
     {{- end }}
   </header>
   <div class="gallery">
     {{- range $photos }}
-    <button type="button" class="reveal{{ with .size }} {{ . }}{{ end }}" data-page="{{ .page }}"><img src="{{ .src }}" alt="{{ .alt }}" loading="lazy" decoding="async"><span>{{ .title }}</span></button>
+    <button type="button" class="reveal{{ with .size }} {{ . }}{{ end }}" data-page="{{ .page }}"><img src="{{ .src }}" alt="{{ partial "loc.html" (dict "d" . "k" "alt") }}" loading="lazy" decoding="async"><span>{{ partial "loc.html" (dict "d" . "k" "title") }}</span></button>
     {{- end }}
   </div>
   <div class="flickr-link m">
-    <span>{{ len $photos }} of {{ site.Params.stats.photos }} frames. Click a frame to see it large.</span>
-    {{- with site.Params.social.flickr }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">The full collection on Flickr &rarr;</a>{{ end }}
+    <span>{{ i18n "photosCount" (dict "n" (len $photos) "total" site.Params.stats.photos) }}</span>
+    {{- with site.Params.social.flickr }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">{{ i18n "photosFlickr" }} &rarr;</a>{{ end }}
   </div>
 </div>
 {{- end -}}

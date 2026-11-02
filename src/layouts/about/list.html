@@ -4,16 +4,16 @@
   (dict "name" "LinkedIn" "url" $s.linkedin)
   (dict "name" "GitHub" "url" $s.github)
   (dict "name" "Flickr" "url" $s.flickr)
-  (dict "name" "YouTube, tech" "url" $s.youtube_digitaldias)
-  (dict "name" "YouTube, family" "url" $s.youtube_digitalhome) -}}
+  (dict "name" (i18n "youtubeTech") "url" $s.youtube_digitaldias)
+  (dict "name" (i18n "youtubeFamily") "url" $s.youtube_digitalhome) -}}
 <div class="wrap">
   <section class="about">
     <div class="about-side">
       {{- with site.Params.photo }}
       <div class="portrait"><img src="{{ .src }}" alt="{{ .alt }}" width="600" height="600" fetchpriority="high"></div>
       {{- end }}
-      <nav class="elsewhere" aria-label="Pedro elsewhere">
-        <span class="k">Elsewhere</span>
+      <nav class="elsewhere" aria-label="{{ i18n "elsewhereLabel" }}">
+        <span class="k">{{ i18n "elsewhere" }}</span>
         <ul>
           {{- range $link := $elsewhere }}{{ with $link.url }}
           <li><a href="{{ . }}" rel="me noopener noreferrer" target="_blank"><span>{{ $link.name }}</span><span>{{ strings.TrimPrefix "https://" . }}</span></a></li>
@@ -22,7 +22,7 @@
       </nav>
     </div>
     <div>
-      <span class="k">About</span>
+      <span class="k">{{ i18n "navAbout" }}</span>
       <h1 class="d split-words">{{ .Params.headline | default .Title | markdownify }}</h1>
       <div class="about-text lift">
         {{ .Content | safeHTML }}
@@ -30,7 +30,7 @@
       {{- with site.Data.track }}
       <div class="track">
         {{- range . }}
-        <div class="reveal"><span>{{ .year | default "—" }}</span>{{ .text }}</div>
+        <div class="reveal"><span>{{ if eq .year "Now" }}{{ i18n "now" }}{{ else }}{{ .year | default "—" }}{{ end }}</span>{{ partial "loc.html" (dict "d" . "k" "text") }}</div>
         {{- end }}
       </div>
       {{- end }}

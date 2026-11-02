@@ -2,12 +2,12 @@
 {{- $posts := where .Site.RegularPages "Section" "blog" -}}
 <div class="wrap">
   <div class="split">
-    <aside class="side" aria-label="About the author">
+    <aside class="side" aria-label="{{ i18n "aboutAuthor" }}">
       {{- with .Site.Params.photo }}
       <div class="portrait"><img src="{{ .src }}" alt="{{ .alt }}" width="240" height="240"></div>
       {{- end }}
       <p class="k side__name">Pedro Dias</p>
-      <h1 class="d split-words">The Digital <em>Dias</em></h1>
+      <h1 class="d split-words">{{ i18n "homeTitleA" }} <em>{{ i18n "homeTitleB" }}</em></h1>
       {{- with .Site.Params.motto }}
       <p class="motto lift">
         {{- range $i, $part := split . " · " }}{{ if $i }}<span class="motto__dot">&nbsp;· </span>{{ end }}<span>{{ $part }}</span>{{ end -}}
@@ -31,7 +31,7 @@
         {{- with partial "listening-now.html" $ }}<dt>{{ i18n "listening" }}</dt><dd>{{ . }}</dd>{{ end }}
       </dl>
       {{- end }}
-      <a class="m more" href="/log/">{{ i18n "fullLog" }} &rarr;</a>
+      <a class="m more" href="{{ "/log/" | relLangURL }}">{{ i18n "fullLog" }} &rarr;</a>
     </aside>
     <div>
       {{- partial "stream.html" (dict "pages" (first 12 $posts) "lead" true) }}

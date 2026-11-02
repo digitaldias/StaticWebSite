@@ -20,7 +20,7 @@
 <section class="year" aria-labelledby="year-{{ .Key }}">
   <div class="year__label">
     <h2 id="year-{{ .Key }}" class="d">{{ .Key }}</h2>
-    <span class="m">{{ len .Pages }} {{ if eq (len .Pages) 1 }}entry{{ else }}entries{{ end }}</span>
+    <span class="m">{{ i18n "entries" (len .Pages) }}</span>
   </div>
   <div class="cards">
     {{- range .Pages }}

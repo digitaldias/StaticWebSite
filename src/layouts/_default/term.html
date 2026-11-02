@@ -5,7 +5,7 @@
       {{- with .Parent }}<a class="k" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
       <h1 class="d split-words">{{ .Title }}</h1>
     </div>
-    <p class="lift">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}</p>
+    <p class="lift">{{ i18n "postsCount" (len .Pages) }}</p>
   </header>
   {{- if eq .Data.Plural "categories" }}{{ partial "category-filter.html" . }}{{ end }}
   {{- partial "archive.html" (dict "pages" .Pages "front" false) }}

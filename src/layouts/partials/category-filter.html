@@ -1,5 +1,6 @@
-<nav class="category-filter" aria-label="Filter by category">
-  <a href="/blog/"{{ if eq .RelPermalink "/blog/" }} aria-current="page"{{ end }}>All <span>{{ len (where .Site.RegularPages "Section" "blog") }}</span></a>
+{{- $blog := "/blog/" | relLangURL -}}
+<nav class="category-filter" aria-label="{{ i18n "filterByCategory" }}">
+  <a href="{{ $blog }}"{{ if eq .RelPermalink $blog }} aria-current="page"{{ end }}>{{ i18n "all" }} <span>{{ len (where .Site.RegularPages "Section" "blog") }}</span></a>
   {{- range .Site.Taxonomies.categories.Alphabetical }}
   <a href="{{ .Page.RelPermalink }}"{{ if eq $.RelPermalink .Page.RelPermalink }} aria-current="page"{{ end }}>{{ .Page.Title }} <span>{{ .Count }}</span></a>
   {{- end }}

@@ -2,7 +2,7 @@
 <div class="wrap">
   <header class="page-head">
     <h1 class="d split-words">{{ .Title }}</h1>
-    <p class="lift">{{ len .Pages }} {{ if eq (len .Pages) 1 }}term{{ else }}terms{{ end }}</p>
+    <p class="lift">{{ i18n "termsCount" (len .Pages) }}</p>
   </header>
   <ul class="taxonomy-list">
     {{- range .Pages }}

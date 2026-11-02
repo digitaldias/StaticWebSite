@@ -6,11 +6,11 @@ headline: "Writing code since 1982. *Still finds it interesting.*"
 
 I've been writing code since 1982 — a ZX Spectrum 48K was my first computer. By the time the web showed up I was already mildly annoyed by it.
 
-Currently I'm Acting Chief AI Officer at [Tradesolution AS](https://www.tradesolution.no) in Norway, where I help a food industry company figure out what AI actually means for their business — as opposed to what the sales brochures say it means. Before that I was Chief Architect at the same company. Before *that* I spent years at Microsoft helping companies adopt Azure before most of them knew what a cloud was.
+Currently I'm Acting Chief AI Officer at [Tradesolution AS](https://www.tradesolution.no) in Norway, where I help a company in the grocery industry figure out what AI actually means for their business — as opposed to what the sales brochures say it means. Before that I was Chief Architect at the same company. Before *that* I spent years at Microsoft helping companies adopt Azure before most of them knew what a cloud was.
 
 ## Background
 
-I hold a bachelor's degree in computer science from Høyskolen i Oslo og Akershus, Norway (1999). I've been Microsoft-certified longer than several of my colleagues have been alive, with 40+ years of coding experience and over two decades focused on .NET, Azure, and enterprise architecture.
+I'm a høgskoleingeniør in computer engineering from Høyskolen i Oslo, Norway (1999), the Norwegian engineering degree of its day. I've been Microsoft-certified longer than several of my colleagues have been alive, with 40+ years of coding experience and over two decades focused on .NET, Azure, and enterprise architecture.
 
 ## What I do now
 

@@ -11,16 +11,17 @@
 {{- with $depth }}{{ with .stop -}}
   {{- /* The turnout: where a gist reader can stop, set just before the first section past the gist */ -}}
   {{- $next := index (where site.Params.depth.levels "n" .level) 0 -}}
-  {{- $turnout := printf `<aside class="turnout" aria-label="Where the gist ends">%s<p><strong>The gist ends here.</strong> The rest is %s: %s</p>%s</aside>`
+  {{- $turnout := printf `<aside class="turnout" aria-label="%s">%s<p><strong>%s</strong> %s</p>%s</aside>`
+      (i18n "turnoutLabel")
       (partial "level-steps.html" (dict "from" .level "to" .level))
-      (lower $next.name)
-      (replaceRE `^[^:]+: ` "" $next.reader)
-      (cond (ne $depth.skip "") (printf `<a class="turnout__skip" href="#%s">Skip to the questions</a>` $depth.skip) "") -}}
+      (i18n "turnoutHeading")
+      (i18n "turnoutRest" (dict "name" (lower $next.name) "reader" (replaceRE `^[^:]+: ` "" $next.reader)))
+      (cond (ne $depth.skip "") (printf `<a class="turnout__skip" href="#%s">%s</a>` $depth.skip (i18n "turnoutSkip")) "") -}}
   {{- $content = replace $content (printf `<h2 id="%s"` .id) (printf `%s<h2 id="%s"` $turnout .id) 1 -}}
 {{- end }}{{ end -}}
 <article>
   <header class="a-head">
-    <p class="k">{{ with $category }}<a href="/categories/{{ . | urlize }}/">{{ . }}</a> · {{ end }}Entry {{ printf "%03d" $entry }}</p>
+    <p class="k">{{ with $category }}<a href="{{ printf "/categories/%s/" (. | urlize) | relLangURL }}">{{ . }}</a> · {{ end }}{{ i18n "entryWord" }} {{ printf "%03d" $entry }}</p>
     <h1 class="d">{{ .Title }}</h1>
     {{- with .Description }}
     <p class="dek lift">{{ . }}</p>
@@ -29,33 +30,33 @@
     {{- /* Folio line: the record of when this was filed, revised, and how long it is */}}
     <dl class="folio">
       <div>
-        <dt>Filed</dt>
-        <dd><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time></dd>
+        <dt>{{ i18n "filed" }}</dt>
+        <dd><time datetime="{{ .Date.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" .Date }}</time></dd>
       </div>
       {{- if $isRevised }}
       <div class="folio__revised">
-        <dt>Revised</dt>
-        <dd><a href="#revision-record"><time datetime="{{ $revised.Format "2006-01-02" }}">{{ $revised.Format "2 Jan 2006" }}</time></a></dd>
+        <dt>{{ i18n "revised" }}</dt>
+        <dd><a href="#revision-record"><time datetime="{{ $revised.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" $revised }}</time></a></dd>
       </div>
       {{- end }}
       <div>
-        <dt>Length</dt>
-        <dd>{{ lang.FormatNumberCustom 0 .WordCount }} w · {{ replace (partial "read-time.html" .) " minute read" " min" }}</dd>
+        <dt>{{ i18n "length" }}</dt>
+        <dd>{{ lang.FormatNumber 0 .WordCount }} {{ i18n "words" }} · {{ partial "read-time-short.html" . }}</dd>
       </div>
       <div>
-        <dt>By</dt>
+        <dt>{{ i18n "by" }}</dt>
         <dd>Pedro Dias</dd>
       </div>
       {{- with $depth }}
       {{- $d := . }}
       <div class="folio__level">
-        <dt>Level</dt>
+        <dt>{{ i18n "level" }}</dt>
         <dd>
           <button type="button" class="level-key" aria-expanded="false" aria-controls="level-card">
-            {{- partial "level-steps.html" . }}<span class="visually-hidden">Reading level </span>{{ partial "level-range.html" . -}}
+            {{- partial "level-steps.html" . }}<span class="visually-hidden">{{ i18n "readingLevel" }} </span>{{ partial "level-range.html" . -}}
           </button>
       <div class="level-card" id="level-card">
-        <p class="level-card__title">How deep this goes</p>
+        <p class="level-card__title">{{ i18n "levelTitle" }}</p>
         <ol class="level-card__scale">
           {{- range site.Params.depth.levels }}
           <li{{ if and (ge .n $d.from) (le .n $d.to) }} class="in" style="--i: {{ div (sub .n $d.from) 100 }}"{{ end }}>
@@ -67,11 +68,11 @@
           {{- end }}
         </ol>
         <p class="level-card__note">
-          {{- if eq $d.from $d.to }}This one stays at {{ $d.from }} throughout.
-          {{- else }}This one opens at {{ $d.from }} and climbs to {{ $d.to }}.{{ end }}
-          {{- with $d.stop }} Only after the gist? Stop at <a href="#{{ .id }}">{{ .heading }}</a>.{{ end -}}
+          {{- if eq $d.from $d.to }}{{ i18n "levelStays" (dict "n" $d.from) }}
+          {{- else }}{{ i18n "levelClimbs" (dict "from" $d.from "to" $d.to) }}{{ end }}
+          {{- with $d.stop }}{{ i18n "levelStop" (dict "link" (printf `<a href="#%s">%s</a>` .id .heading)) | safeHTML }}{{ end -}}
         </p>
-        <p class="level-card__source">Microsoft's conference session levels, applied to writing.</p>
+        <p class="level-card__source">{{ i18n "levelSource" }}</p>
       </div>
         </dd>
       </div>
@@ -89,17 +90,17 @@
     {{- with $.Params.imageCredit }}
     <figcaption class="m">{{ . }}</figcaption>
     {{- else }}{{ if $cover.generated }}
-    <figcaption class="m">Cyanotype cover · MakeImage</figcaption>
+    <figcaption class="m">{{ i18n "coverNote" }}</figcaption>
     {{- end }}{{ end }}
   </figure>
   {{- end }}
 
   <div class="a-body">
     {{- /* The Chart: section route, built by main.js from the article's h2s */}}
-    <nav class="chart" aria-label="Article sections" hidden></nav>
-    <div class="post-content" data-title="{{ .Title }}" data-date="{{ .Date.Format "2 Jan 2006" }}"{{ with $depth }} data-depth="{{ .sections | jsonify }}"{{ end }}>
+    <nav class="chart" aria-label="{{ i18n "articleSections" }}" hidden></nav>
+    <div class="post-content" data-title="{{ .Title }}" data-date="{{ time.Format "2 Jan 2006" .Date }}"{{ with $depth }} data-depth="{{ .sections | jsonify }}"{{ end }}>
       {{- with .Params.tldr }}
-      <aside class="tldr" aria-label="Summary"><p class="tldr__label">TL;DR</p><p>{{ . }}</p></aside>
+      <aside class="tldr" aria-label="{{ i18n "summary" }}"><p class="tldr__label">TL;DR</p><p>{{ . }}</p></aside>
       {{- end }}
       {{ $content | safeHTML }}
     </div>
@@ -107,7 +108,7 @@
 
   {{- if or $isRevised .Params.updates }}
   <aside id="revision-record" class="revision-record column" aria-labelledby="revision-record-title">
-    <h2 id="revision-record-title" class="k revision-record__label">Revision record</h2>
+    <h2 id="revision-record-title" class="k revision-record__label">{{ i18n "revisionRecord" }}</h2>
     <ol class="revision-record__log">
       {{- range sort (.Params.updates | default slice) "date" "desc" }}
       <li>
@@ -117,17 +118,17 @@
       {{- end }}
       {{- if $isRevised }}
       <li>
-        <time datetime="{{ $revised.Format "2006-01-02" }}">{{ $revised.Format "2 Jan 2006" }}</time>
-        <span>Last revised.</span>
+        <time datetime="{{ $revised.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" $revised }}</time>
+        <span>{{ i18n "lastRevised" }}</span>
       </li>
       {{- end }}
       <li>
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time>
-        <span>First filed.</span>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" .Date }}</time>
+        <span>{{ i18n "firstFiled" }}</span>
       </li>
     </ol>
     {{- with .Site.Params.source }}{{ with $.File }}
-    <p class="revision-record__source">Every change to this article is on the public record. <a href="{{ $.Site.Params.source.repo }}/commits/main/{{ $.Site.Params.source.contentPath }}/{{ .Path | replaceRE `\\` "/" }}" rel="noopener">Read the full revision history</a>.</p>
+    <p class="revision-record__source">{{ i18n "revisionSource" }} <a href="{{ $.Site.Params.source.repo }}/commits/main/{{ $.Site.Params.source.contentPath }}/{{ .Path | replaceRE `\\` "/" }}" rel="noopener">{{ i18n "revisionHistory" }}</a>.</p>
     {{- end }}{{ end }}
   </aside>
   {{- end }}
@@ -139,7 +140,7 @@
   <div class="column">
     <a class="next reveal" href="{{ $next.RelPermalink }}">
       <div>
-        <span class="k">{{ if .PrevInSection }}Next entry{{ else }}Latest entry{{ end }}</span>
+        <span class="k">{{ if .PrevInSection }}{{ i18n "nextEntry" }}{{ else }}{{ i18n "latestEntry" }}{{ end }}</span>
         <h3 class="d">{{ $next.Title }}</h3>
         {{- with $next.Params.categories }}<span class="m">{{ index . 0 }}</span>{{ end }}
       </div>
@@ -151,12 +152,12 @@
   {{- end }}
 
   {{- /* Reader response: one quiet Ko-fi line, then Giscus (injected by main.js with the current theme) */}}
-  <section class="respond column" aria-label="Reader response">
+  <section class="respond column" aria-label="{{ i18n "readerResponse" }}">
     {{- with .Site.Params.support.kofi }}
-    <p class="thanks">If this saved you an afternoon, you can <a href="{{ . }}" data-cta="kofi" target="_blank" rel="noopener noreferrer">buy me a coffee</a>.</p>
+    <p class="thanks">{{ i18n "thanksA" }} <a href="{{ . }}" data-cta="kofi" target="_blank" rel="noopener noreferrer">{{ i18n "thanksLink" }}</a>.</p>
     {{- end }}
     {{- with .Site.Params.giscus }}
-    <h2 class="k">Reactions and comments</h2>
+    <h2 class="k">{{ i18n "reactions" }}</h2>
     <div class="giscus"
          data-repo="{{ .repo }}"
          data-repo-id="{{ .repoId }}"
@@ -181,7 +182,7 @@
   {{- $myTags := slice -}}
   {{- range $.Params.tags }}{{ $myTags = $myTags | append (lower .) }}{{ end }}
   <section class="see-also wrap" aria-labelledby="see-also-title">
-    <h2 id="see-also-title" class="k see-also__label">See also</h2>
+    <h2 id="see-also-title" class="k see-also__label">{{ i18n "seeAlso" }}</h2>
     <ol class="see-also__list">
       {{- range . }}
       {{- $shared := slice -}}
@@ -192,11 +193,11 @@
         {{- with .Params.excerpt | default .Description }}<p class="see-also__dek">{{ . }}</p>{{ end }}
         <p class="see-also__why">
           {{- if $shared -}}
-          Shares {{ delimit (first 3 $shared) ", " " and " }}
+          {{ i18n "shares" (dict "list" (delimit (first 3 $shared) ", " (printf " %s " (i18n "and")))) }}
           {{- else if and $category (in .Params.categories $category) -}}
-          More in {{ $category }}
+          {{ i18n "moreIn" (dict "category" $category) }}
           {{- else -}}
-          Recent writing · {{ .Date.Format "Jan 2006" }}
+          {{ i18n "recentWriting" }} · {{ time.Format "Jan 2006" .Date }}
           {{- end -}}
         </p>
       </li>

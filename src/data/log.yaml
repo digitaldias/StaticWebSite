@@ -1,23 +1,34 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-02
+  tag: Fixed
+  text: "The Norwegian side was missing the Log, Photographs and About pages, the reading level names and the labels on the article page. All of it is translated now."
+  text_nb: "Den norske siden manglet Logg, Fotografier og Om meg, navnene på lesenivåene og tekstene på artikkelsiden. Alt er oversatt nå."
+- date: 2026-11-02
   tag: Shipped
   text: "Listening on the homepage now picks an artist from my top artists on the Spotify API. It links to a page with the history of earlier picks."
+  text_nb: "«Hører på» på forsiden velger nå en artist blant de jeg spiller mest, hentet via Spotify-API-et. Den lenker til en side med tidligere valg."
 - date: 2026-11-02
   tag: Shipped
   text: "English or Norwegian. A switch in the header picks the language and the site remembers it. Every post now exists in both."
+  text_nb: "Engelsk eller norsk. En bryter øverst på siden velger språk, og nettstedet husker valget. Alle innlegg finnes nå på begge språk."
 - date: 2026-11-02
   tag: Shipped
   text: "Reading levels on Microsoft's 100-400 scale. Every post shows how deep it goes and marks where the gist ends, scored per section by a local decision model."
+  text_nb: "Lesenivåer på Microsofts skala fra 100 til 400. Hvert innlegg viser hvor dypt det går og markerer hvor hovedpoenget slutter. En lokal beslutningsmodell vurderer hver seksjon."
 - date: 2026-11-02
   tag: Fixed
   text: "The DigitalHome YouTube link on the About page pointed at a channel that doesn't exist."
+  text_nb: "YouTube-lenken til DigitalHome på Om meg-siden pekte på en kanal som ikke finnes."
 - date: 2026-11-01
   tag: Shipped
   text: "Reader tools: a route chart in the margin, a resume slip, and quotable paragraphs."
+  text_nb: "Leseverktøy: et rutekart i margen, en lapp som husker hvor du slapp, og avsnitt du kan sitere."
 - date: 2026-11-01
   tag: Site
   text: "Article furniture: folio line, revision record, See also. New posts open with a TL;DR."
+  text_nb: "Artikkeldetaljer: foliolinje, endringslogg og «Se også». Nye innlegg åpner med et TL;DR."
 - date: 2026-09-19
   tag: Fixed
   text: "The live stylesheet went unstyled behind a cached 404 at the CDN. Forced a new fingerprint and wrote the deploy race down."
+  text_nb: "Nettstedet mistet all stil fordi CDN-et hadde bufret en 404 for stilarket. Jeg tvang fram et nytt fingeravtrykk og dokumenterte kappløpet i deployen."
