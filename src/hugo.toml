@@ -4,6 +4,7 @@ title = 'DigitalDias - Pedro Dias'
 author = 'Pedro Dias'
 copyright = '© 2025 Pedro Dias. All rights reserved.'
 enableGitInfo = true
+defaultContentLanguage = 'en'
 
 # Pagination
 [pagination]
@@ -60,7 +61,6 @@ enableGitInfo = true
   
   [params.currently]
     building   = "planemode: Claude Code on a local model, no internet"
-    listening  = "Ghost Notes, Mono Neon"
     tinkering  = "Shrinking context windows to make local models usable"
     annoyed_by = "Norwegian no longer has USB power in its seats, even though the plugs are there"
 
@@ -160,3 +160,40 @@ enableGitInfo = true
   home = ['HTML', 'RSS', 'JSON']
   section = ['HTML', 'RSS']
   blog = ['HTML', 'RSS', 'JSON']
+
+# Languages: English is the default, Norwegian lives under /nb/. A post is translated by a
+# sibling file named <post>.nb.md; pages without a translation stay English.
+[languages]
+  [languages.en]
+    languageCode = 'en-us'
+    languageName = 'EN'
+    weight = 1
+  [languages.nb]
+    languageCode = 'nb-NO'
+    languageName = 'NO'
+    weight = 2
+    [languages.nb.params]
+      description = 'Programvarearkitekt, innholdsprodusent og familiemann fra Frogner, Lillestrøm'
+      bio = "Konstituert Chief AI Officer i Tradesolution. Har skrevet kode siden 1982. Altfor mange sterke meninger om programvare, AI og plassering av høyttalere."
+      motto = "Norsk pragmatisme · Portugisisk sta · For mye kode"
+      [languages.nb.params.currently]
+        building   = "planemode: Claude Code på en lokal modell, uten internett"
+        tinkering  = "Å krympe kontekstvinduer så lokale modeller blir brukbare"
+        annoyed_by = "Norwegian har ikke lenger USB-strøm i setene, selv om kontaktene fortsatt sitter der"
+      [[languages.nb.params.positions]]
+        text  = "Typede beslutnings-API-er som Jev er AIs neste store skifte for programvare."
+        since = "2026-09"
+        post  = "/blog/2026-09-19-jev-before-the-waitlist/"
+      [[languages.nb.params.positions]]
+        text  = "Utløpet av Claude Codes cache er en skjult kostnad ingen snakker om."
+      [[languages.nb.params.positions]]
+        text  = "Kjøp en 3D-printer til husholdningen."
+        post  = "/blog/2026-05-23-ai-at-the-workbench/"
+      [[languages.nb.params.positions]]
+        text  = "La en lokal modell ta første runde av nyhetene dine. Ta siste runde selv."
+        since = "2026-11"
+        post  = "/blog/2026-11-01-local-models-news-filter/"
+      [[languages.nb.params.positions]]
+        text  = "På en flytur: skriv spesifikasjonen offline. La en frontier-modell kode den når du lander."
+        since = "2026-11"
+        post  = "/blog/2026-11-02-local-llm-on-a-plane/"

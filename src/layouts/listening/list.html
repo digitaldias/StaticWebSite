@@ -1,0 +1,37 @@
+{{- define "main" -}}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="d split-words">{{ i18n "listeningTitleA" }} <em>{{ i18n "listeningTitleB" }}</em></h1>
+    {{- with .Description }}
+    <p class="lift">{{ . }}</p>
+    {{- end }}
+  </header>
+  <ol class="days">
+    {{- range $i, $e := site.Data.listening }}
+    <li class="day reveal">
+      <time datetime="{{ time.Format "2006-01-02" $e.date }}">{{ time.Format "2 Jan 2006" $e.date }}</time>
+      <ul>
+        <li>
+          <span class="tag{{ if $i }} q{{ end }}">{{ if $i }}{{ i18n "listeningEarlier" }}{{ else }}{{ i18n "now" }}{{ end }}</span>
+          {{- with $e.song_url }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">{{ $e.song }}</a>{{ else }}{{ $e.song }}{{ end }}, {{ with $e.spotify }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">{{ $e.artist }}</a>{{ else }}{{ $e.artist }}{{ end }}
+          {{- with $e.guest }} {{ i18n "feat" }} {{ . }}{{ end }}
+          {{- with $e.genres }} <span class="m">{{ delimit . ", " }}</span>{{ end }}
+          {{- with index $e (printf "note_%s" site.Language.Lang) }}
+          <p class="note">{{ . }}</p>
+          {{- end }}
+          {{- with $e.image }}
+          <figure class="pick-fig">
+            <img src="{{ . }}" alt="{{ index $e (printf "image_alt_%s" site.Language.Lang) }}" width="1200" height="800" loading="lazy">
+            <figcaption>
+              {{- with index $e (printf "image_caption_%s" site.Language.Lang) }}{{ . }} {{ end -}}
+              {{- with $e.image_credit }}{{ i18n "photo" }}: <a href="{{ .source_url }}" rel="noopener noreferrer" target="_blank">{{ .author }}</a>, <a href="{{ .license_url }}" rel="noopener noreferrer" target="_blank">{{ .license }}</a>, {{ i18n "viaCommons" }}. {{ i18n "resized" }}{{ end -}}
+            </figcaption>
+          </figure>
+          {{- end }}
+        </li>
+      </ul>
+    </li>
+    {{- end }}
+  </ol>
+</div>
+{{- end -}}

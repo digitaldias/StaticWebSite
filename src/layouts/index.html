@@ -17,26 +17,26 @@
       <p class="lift">{{ . }}</p>
       {{- end }}
       {{- with .Site.Params.positions }}
-      <h2 class="k">Positions held</h2>
+      <h2 class="k">{{ i18n "positionsHeld" }}</h2>
       <ol>
         {{- range $p := . }}
-        <li>{{ with $p.post }}<a href="{{ . }}">{{ $p.text }}</a>{{ else }}{{ $p.text }}{{ end }}</li>
+        <li>{{ with $p.post }}<a href="{{ with $.Site.GetPage . }}{{ .RelPermalink }}{{ else }}{{ . }}{{ end }}">{{ $p.text }}</a>{{ else }}{{ $p.text }}{{ end }}</li>
         {{- end }}
       </ol>
       {{- end }}
       {{- with .Site.Params.currently }}
-      <h2 class="k">Now</h2>
+      <h2 class="k">{{ i18n "now" }}</h2>
       <dl>
-        {{- with .building }}<dt>Building</dt><dd>{{ . }}</dd>{{ end }}
-        {{- with .listening }}<dt>Listening</dt><dd>{{ . }}</dd>{{ end }}
+        {{- with .building }}<dt>{{ i18n "building" }}</dt><dd>{{ . }}</dd>{{ end }}
+        {{- with partial "listening-now.html" $ }}<dt>{{ i18n "listening" }}</dt><dd>{{ . }}</dd>{{ end }}
       </dl>
       {{- end }}
-      <a class="m more" href="/log/">The full log &rarr;</a>
+      <a class="m more" href="/log/">{{ i18n "fullLog" }} &rarr;</a>
     </aside>
     <div>
       {{- partial "stream.html" (dict "pages" (first 12 $posts) "lead" true) }}
       {{- if gt (len $posts) 12 }}
-      <a class="m stream-more" href="/blog/">All writing &rarr;</a>
+      <a class="m stream-more" href="{{ "/blog/" | relLangURL }}">{{ i18n "allWriting" }} &rarr;</a>
       {{- end }}
     </div>
   </div>

@@ -22,7 +22,7 @@
       <span class="k">Now</span>
       {{- with .building }}<div><span class="m">Building</span><p>{{ . }}</p></div>{{ end }}
       {{- with .tinkering }}<div><span class="m">Tinkering</span><p>{{ . }}</p></div>{{ end }}
-      {{- with .listening }}<div><span class="m">Listening</span><p>{{ . }}</p></div>{{ end }}
+      {{- with partial "listening-now.html" $ }}<div><span class="m">Listening</span><p>{{ . }}</p></div>{{ end }}
       {{- with .annoyed_by }}<div><span class="m">Annoyed by</span><p>{{ . }}</p></div>{{ end }}
     </aside>
     {{- end }}

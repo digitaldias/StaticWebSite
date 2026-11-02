@@ -41,7 +41,7 @@
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
 <meta property="og:description" content="{{ $description }}">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="{{ if eq .Language.Lang "nb" }}nb_NO{{ else }}en_US{{ end }}">
 {{- $ogImage := "" -}}
 {{- $ogImageWidth := "1200" -}}
 {{- $ogImageHeight := "630" -}}
@@ -66,7 +66,7 @@
 <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
 {{- end -}}
 <meta property="article:author" content="{{ .Site.Params.author }}">
-<meta property="article:locale" content="en_US">
+<meta property="article:locale" content="{{ if eq .Language.Lang "nb" }}nb_NO{{ else }}en_US{{ end }}">
 {{- if .Params.categories -}}
 <meta property="article:section" content="{{ index .Params.categories 0 }}">
 {{- end -}}
@@ -98,6 +98,16 @@
 <!-- Main stylesheet: Sea Glass tokens first, then the site -->
 {{- $css := slice (resources.Get "css/tokens.css") (resources.Get "css/styles.css") | resources.Concat "css/styles.css" | resources.Minify | resources.Fingerprint -}}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+
+<!-- Language alternates, then the language choice: redirects before first paint, so no defer -->
+{{- if .IsTranslated }}
+<link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}">
+{{- range .Translations }}
+<link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}">
+{{- end }}
+{{- end }}
+{{- $lang := resources.Get "js/lang.js" | resources.Minify | resources.Fingerprint }}
+<script src="{{ $lang.RelPermalink }}"></script>
 
 <!-- Light/dark choice: runs before first paint, so no defer (the CSP blocks inline scripts) -->
 {{- $theme := resources.Get "js/theme.js" | resources.Minify | resources.Fingerprint -}}

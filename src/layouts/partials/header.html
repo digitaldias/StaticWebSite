@@ -1,12 +1,13 @@
 {{- $inWriting := or .IsHome (eq .Section "blog") (eq .Kind "taxonomy") (eq .Kind "term") -}}
 <header class="mast" role="banner">
   <div class="wrap">
-    <a class="wordmark" href="/">digital<b>dias</b></a>
+    <a class="wordmark" href="{{ "/" | relLangURL }}">digital<b>dias</b></a>
     <nav class="nav" aria-label="Main navigation">
-      {{- range slice (dict "url" "/blog/" "name" "Writing" "on" $inWriting) (dict "url" "/log/" "name" "Log" "on" (eq .Section "log")) (dict "url" "/photography/" "name" "Photographs" "on" (eq .Section "photography")) (dict "url" "/about/" "name" "About" "on" (eq .Section "about")) }}
+      {{- range slice (dict "url" ("/blog/" | relLangURL) "name" (i18n "navWriting") "on" $inWriting) (dict "url" "/log/" "name" (i18n "navLog") "on" (eq .Section "log")) (dict "url" "/photography/" "name" (i18n "navPhotographs") "on" (eq .Section "photography")) (dict "url" "/about/" "name" (i18n "navAbout") "on" (eq .Section "about")) }}
       <a href="{{ .url }}"{{ if eq $.RelPermalink .url }} aria-current="page"{{ else if .on }} aria-current="true"{{ end }}>{{ .name }}</a>
       {{- end }}
     </nav>
+    {{- partial "lang-switch.html" . }}
     <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
   </div>
 </header>

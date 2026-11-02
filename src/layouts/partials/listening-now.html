@@ -1,0 +1,3 @@
+{{- with index site.Data.listening 0 -}}
+<a href="{{ "/listening/" | relLangURL }}">{{ .song }}, {{ .artist }}{{ with .guest }} {{ i18n "feat" }} {{ . }}{{ end }}</a>
+{{- end -}}

@@ -1,0 +1,28 @@
+# History of the homepage "Listening" pick, newest first. The first entry shows in the Now box.
+# artist and song are required; guest, genres, spotify (artist URL), song_url and note_en / note_nb are optional.
+# Facts come from the Spotify API. It returns no genres, so none are listed.
+- date: 2026-11-02
+  artist: SOHO Blues Band
+  spotify: https://open.spotify.com/artist/3pRAhuz8fKrLHLBOwRUf80
+  song: Midnight
+  song_url: https://open.spotify.com/track/1SyCeoNSWvamxyCf43mZmr
+  note_en: 'A blues band with a bit of the same sound as Dusty Strings, but calmer and less intense. "Midnight" is from their album "Nightfall".'
+  note_nb: 'Et bluesband med noe av det samme lydbildet som Dusty Strings, men roligere og ikke fullt så intenst. «Midnight» står på albumet «Nightfall».'
+- date: 2026-09-19
+  artist: Ghost-Note
+  spotify: https://open.spotify.com/artist/55BOGnEb0pUuAgbxAwwbKV
+  song: "Smack 'em"
+  song_url: https://www.youtube.com/watch?v=JIOf_rR4BmU
+  guest: Mono Neon
+  note_en: 'A funk, hip-hop and jazz band from Dallas, led by Snarky Puppy members Robert "Sput" Searight and Nate Werth. They started it in 2014 to build a band around percussion and what they call "conscious funk", and have toured since 2015. The studio version of this track is on "Swagism" (2018), but in the video MonoNeon plays with the band. Turn it up.'
+  image: /images/listening/mononeon.jpg
+  image_alt_en: "A man in a yellow flower-shaped costume and a colourful knitted hat plays a bass with rainbow strings and an orange body."
+  image_alt_nb: "En mann i gul blomsterformet drakt og fargerik strikkelue spiller bass med regnbuefargede strenger og orange kropp."
+  image_caption_en: "MonoNeon, who plays with the band in the video."
+  image_caption_nb: "MonoNeon, som spiller med bandet i videoen."
+  image_credit:
+    author: Jamesallen2
+    license: CC BY 4.0
+    license_url: https://creativecommons.org/licenses/by/4.0/
+    source_url: https://commons.wikimedia.org/wiki/File:MonoNeon_with_his_quarter-tone_bass_(2021).png
+  note_nb: 'Funk, hiphop og jazz fra Dallas, med Snarky Puppy-medlemmene Robert «Sput» Searight og Nate Werth i spissen. De startet bandet i 2014 for å bygge det rundt perkusjon og det de kaller «conscious funk», og har turnert siden 2015. Studioversjonen av låten ligger på «Swagism» (2018), men i videoen spiller MonoNeon med. Skru opp.'

@@ -23,6 +23,6 @@ check:
 depth +posts:
     $env:PYTHONUTF8 = "1"; python scripts/depth-score.py {{posts}}
 
-# Pedro's most-played Spotify albums of the last four weeks, for Now / Listening (one-time setup: scripts/spotify-top.py)
+# Pedro's most-played Spotify artists of the last four weeks, as suggestions for Now / Listening (one-time setup: scripts/spotify-top.py)
 listening:
     $env:PYTHONUTF8 = "1"; python scripts/spotify-top.py

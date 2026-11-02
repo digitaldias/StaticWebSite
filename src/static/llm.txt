@@ -30,6 +30,7 @@ Pedro Dias
 
 ### Main Sections
 
+- **Languages:** Every post exists in English (`/blog/...`) and Norwegian bokmål (`/nb/blog/...`). The home page and Writing list also exist under `/nb/`. The reader's choice is remembered in the browser.
 - **Home** (`/`): A sidebar with portrait, short bio, Positions held and Now, beside the stream of posts with the newest as the lead story
 - **Writing** (`/blog/`): Every post, filterable by category
 - **Log** (`/log/`): Short dated notes on what Pedro is building, shipping and fixing, plus a row for every published post

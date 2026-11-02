@@ -1,0 +1,19 @@
+{{- $page := . -}}
+{{- if gt (len site.Languages) 1 }}
+<div class="lang-switch m" role="group" aria-label="{{ i18n "language" }}">
+  {{- range $i, $l := site.Languages }}
+  {{- if $i }}<span aria-hidden="true">|</span>{{ end }}
+  {{- if eq $l.Lang $page.Language.Lang }}
+  <span aria-current="true" lang="{{ $l.LanguageCode }}">{{ $l.LanguageName }}</span>
+  {{- else }}
+  {{- $target := false }}
+  {{- range $page.Translations }}{{ if eq .Language.Lang $l.Lang }}{{ $target = . }}{{ end }}{{ end }}
+  {{- if $target }}
+  <a href="{{ $target.RelPermalink }}" hreflang="{{ $l.Lang }}" lang="{{ $l.LanguageCode }}" data-lang="{{ $l.Lang }}">{{ $l.LanguageName }}</a>
+  {{- else }}
+  <span class="lang-switch__off" lang="{{ $l.LanguageCode }}" title="{{ i18n "noTranslation" }}">{{ $l.LanguageName }}</span>
+  {{- end }}
+  {{- end }}
+  {{- end }}
+</div>
+{{- end }}

@@ -1,6 +1,6 @@
-"""Print Pedro's most-played Spotify music of the last four weeks, for the Now / Listening field.
+"""Print Pedro's most-played Spotify artists of the last four weeks, as suggestions for the Now / Listening field.
 
-Uses the Spotify Web API (GET /v1/me/top/tracks and /v1/me/top/artists, time_range=short_term)
+Uses the Spotify Web API (GET /v1/me/top/artists, time_range=short_term, the shortest window Spotify offers)
 with the Authorization Code + PKCE flow, so no client secret is involved.
 
 One-time setup:
@@ -10,7 +10,7 @@ One-time setup:
   3. Run `just listening`. The first run opens the browser once to grant the user-top-read scope.
 
 The refresh token is cached outside the repo, in ~/.config/digitaldias/spotify-token.json.
-Output: up to three lines "Album, Artist" (from the top tracks, one per album), then the top artists.
+Output: the top five artists, one per line.
 """
 
 import base64
@@ -113,14 +113,8 @@ def main() -> None:
         sys.exit("SPOTIFY_CLIENT_ID is not set. See the one-time setup at the top of scripts/spotify-top.py.")
     token = access_token(client_id)
 
-    albums: list[str] = []
-    for track in top("tracks", token, 20):
-        line = f"{track['album']['name']}, {track['album']['artists'][0]['name']}"
-        if line not in albums:
-            albums.append(line)
-    for line in albums[:3]:
-        print(line)
-    print("Top artists: " + ", ".join(artist["name"] for artist in top("artists", token, 3)))
+    for artist in top("artists", token, 5):
+        print(artist["name"])
 
 
 if __name__ == "__main__":

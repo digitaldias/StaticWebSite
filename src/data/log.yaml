@@ -2,6 +2,12 @@
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-02
   tag: Shipped
+  text: "Listening on the homepage now picks an artist from my top artists on the Spotify API. It links to a page with the history of earlier picks."
+- date: 2026-11-02
+  tag: Shipped
+  text: "English or Norwegian. A switch in the header picks the language and the site remembers it. Every post now exists in both."
+- date: 2026-11-02
+  tag: Shipped
   text: "Reading levels on Microsoft's 100-400 scale. Every post shows how deep it goes and marks where the gist ends, scored per section by a local decision model."
 - date: 2026-11-02
   tag: Fixed

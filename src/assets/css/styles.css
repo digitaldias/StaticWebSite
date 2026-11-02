@@ -51,6 +51,11 @@ h1, h2, h3, h4 { margin: 0; }
 .nav a[aria-current]::after { transform: scaleX(1); }
 
 /* Light/dark switch: a half-inked disc; theme.js keeps its label current */
+.lang-switch { display: flex; gap: 6px; align-items: center; flex: none; font-size: .78rem; color: var(--muted); }
+.lang-switch a { color: var(--muted); text-decoration: none; transition: color var(--transition); }
+.lang-switch a:hover { color: var(--teal); }
+.lang-switch [aria-current] { color: var(--ink); font-weight: 500; }
+.lang-switch__off { opacity: .45; cursor: default; }
 .theme-toggle { flex: none; display: grid; place-items: center; width: 32px; height: 32px; margin-left: -6px; padding: 0; background: none; border: 1px solid var(--rule); border-radius: 50%; color: var(--ink); cursor: pointer; transition: border-color var(--transition); }
 .theme-toggle::before { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); transition: transform 300ms var(--ease-out); }
 .theme-toggle[data-current="dark"]::before { transform: rotate(180deg); }
@@ -69,7 +74,8 @@ h1, h2, h3, h4 { margin: 0; }
 @media (max-width: 339px) {
   .mast .wrap { flex-wrap: wrap; height: auto; padding-block: 10px; row-gap: 6px; }
   .nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; }
-  .theme-toggle { margin-left: auto; }
+  .lang-switch { margin-left: auto; }
+  .theme-toggle { margin-left: 0; }
 }
 
 .foot { margin-top: 70px; border-top: 2px solid var(--ink); padding: 26px 0 64px; display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; }
@@ -221,6 +227,9 @@ h1, h2, h3, h4 { margin: 0; }
 .day ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .day li { line-height: 1.45; }
 .day li a { text-decoration-color: var(--teal); }
+.pick-fig { margin: 14px 0 0; max-width: 520px; }
+.pick-fig img { display: block; width: 100%; height: auto; }
+.pick-fig figcaption { margin-top: 6px; font: 400 .72rem/1.5 var(--mono); color: var(--muted); }
 .tag { font: 600 .62rem/1 var(--display); letter-spacing: .1em; text-transform: uppercase; background: var(--teal); color: var(--on-teal); padding: 3px 6px; margin-right: 8px; vertical-align: 2px; }
 .tag.q { background: var(--deep-1); color: var(--teal); }
 
