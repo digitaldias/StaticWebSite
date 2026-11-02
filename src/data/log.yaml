@@ -2,6 +2,10 @@
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-02
   tag: Fixed
+  text: "Comments and reactions failed to load on Norwegian posts. Giscus has no Norwegian translation, so the comment box stays in English there."
+  text_nb: "Kommentarer og reaksjoner lastet ikke på norske innlegg. Giscus finnes ikke på norsk, så kommentarfeltet er på engelsk der."
+- date: 2026-11-02
+  tag: Fixed
   text: "The Norwegian side was missing the Log, Photographs and About pages, the reading level names and the labels on the article page. All of it is translated now."
   text_nb: "Den norske siden manglet Logg, Fotografier og Om meg, navnene på lesenivåene og tekstene på artikkelsiden. Alt er oversatt nå."
 - date: 2026-11-02

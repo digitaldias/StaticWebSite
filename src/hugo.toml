@@ -176,8 +176,6 @@ defaultContentLanguage = 'en'
       description = 'Programvarearkitekt, innholdsprodusent og familiemann på Frogner i Lillestrøm'
       bio = "Konstituert Chief AI Officer i Tradesolution. Har skrevet kode siden 1982. Altfor mange sterke meninger om programvare, AI og høyttalerplassering."
       motto = "Norsk pragmatisme · Portugisisk stahet · For mye kode"
-      [languages.nb.params.giscus]
-        lang = "no"
       [languages.nb.params.depth]
         [[languages.nb.params.depth.levels]]
           n = 100
