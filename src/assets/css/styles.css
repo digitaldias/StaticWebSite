@@ -434,6 +434,7 @@ h1, h2, h3, h4 { margin: 0; }
 /* Where the gist ends: marked on the route above the first section past it */
 .chart__waypoint[data-turn] { margin-top: 20px; }
 .chart__waypoint[data-turn]::before { content: "The gist ends here"; position: absolute; left: 22px; top: -15px; font: 400 .66rem var(--mono); color: var(--teal); }
+:lang(nb) .chart__waypoint[data-turn]::before { content: "Hovedpoenget slutter her"; }
 
 @media (min-width: 1180px) {
   .chart { grid-column: 1; grid-row: 1; justify-self: end; align-self: start; width: min(14rem, 100%); max-height: calc(100vh - 90px); overflow-y: auto; margin: 0; padding: 24px 0 16px; background: none; border: 0; scrollbar-width: thin; }
