@@ -78,10 +78,32 @@ h1, h2, h3, h4 { margin: 0; }
   .theme-toggle { margin-left: 0; }
 }
 
-.foot { margin-top: 70px; border-top: 2px solid var(--ink); padding: 26px 0 64px; display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; }
-.foot nav { display: flex; flex-wrap: wrap; gap: 6px 14px; }
-.foot a { text-decoration: none; color: var(--muted); transition: color var(--transition); }
-.foot a:hover { color: var(--teal); }
+/* Footer: the back page. A double rule like the masthead, four columns, then the
+   colophon line that ends on -30-, the newsroom mark for the end of a story */
+.foot { margin-top: 80px; padding: 30px 0 56px; border-top: 3px double var(--ink); }
+.foot__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 34px 24px; }
+.foot__id, .foot__coffee { grid-column: 1 / -1; }
+.foot .wordmark { font-size: 1.9rem; }
+.foot__motto { margin: 12px 0 4px; font-size: .74rem; line-height: 1.6; color: var(--ink); }
+.foot__place { margin: 0; font-size: .74rem; color: var(--muted); }
+.foot__col { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; font: 500 .95rem/1.3 var(--display); }
+.foot h2 { margin: 0 0 6px; }
+.foot__col a { color: var(--ink); text-decoration: none; background: linear-gradient(var(--deep-2), var(--deep-2)) 0 92% / 0 .26em no-repeat; transition: background-size 350ms var(--ease-out); }
+.foot__col a:hover, .foot__col a:focus-visible { background-size: 100% .26em; }
+.foot__coffee p { max-width: 34ch; margin: 0 0 12px; font: 400 1rem/1.5 var(--text); color: var(--muted); }
+.foot__coffee a { font: 600 .95rem var(--display); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 4px; }
+.foot__coffee a:hover { text-decoration-color: var(--teal); }
+.foot__base { display: flex; justify-content: space-between; align-items: baseline; gap: 12px 24px; margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: .72rem; color: var(--muted); }
+.foot__base p { margin: 0; max-width: 72ch; line-height: 1.6; }
+.foot__base a { color: var(--muted); text-underline-offset: 3px; }
+.foot__base a:hover { color: var(--teal); }
+.foot__end { display: flex; align-items: center; gap: 18px; margin: 44px 0 0; }
+.foot__end::before, .foot__end::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+.foot__end abbr { font: 800 1.5rem/1 var(--display); letter-spacing: .02em; color: var(--teal); text-decoration: none; cursor: help; }
+@media (min-width: 760px) {
+  .foot__grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, .8fr) minmax(0, .8fr) minmax(0, 1.3fr); gap: 24px 40px; }
+  .foot__id, .foot__coffee { grid-column: auto; }
+}
 
 /* =============================================================================
    4. PAGE HEAD — Writing, Log, Photographs, taxonomies

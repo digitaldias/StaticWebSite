@@ -1,24 +1,45 @@
+{{- /* The back page: who writes this, where to read on, where else to find Pedro, and a
+       quiet coffee. Ends on -30-, the newsroom mark for the end of a story. */ -}}
 <div class="wrap">
-  <footer class="foot m" role="contentinfo">
-    <span>&copy; {{ now.Year }} Pedro Dias · Schibsted Grotesk, Source Serif 4, Geist Mono · Hugo</span>
-    <nav aria-label="{{ i18n "elsewhere" }}">
-      <a href="/index.xml">RSS</a>
-      <a href="/llm.txt">llm.txt</a>
-      {{- with .Site.Params.social.flickr }}
-      <a href="{{ . }}" rel="noopener noreferrer" target="_blank">Flickr</a>
+  <footer class="foot" role="contentinfo">
+    <div class="foot__grid">
+      <div class="foot__id">
+        <a class="wordmark" href="{{ "/" | relLangURL }}">digital<b>dias</b></a>
+        {{- with .Site.Params.motto }}
+        <p class="m foot__motto">{{ . }}</p>
+        {{- end }}
+        {{- with .Site.Params.location }}
+        <p class="m foot__place">{{ . }}</p>
+        {{- end }}
+      </div>
+      <nav class="foot__col" aria-label="{{ i18n "footRead" }}">
+        <h2 class="k">{{ i18n "footRead" }}</h2>
+        <a href="{{ "/blog/" | relLangURL }}">{{ i18n "navWriting" }}</a>
+        <a href="/briefing/">{{ i18n "briefingName" }}</a>
+        <a href="{{ "/log/" | relLangURL }}">{{ i18n "navLog" }}</a>
+        <a href="{{ "/photography/" | relLangURL }}">{{ i18n "navPhotographs" }}</a>
+        <a href="{{ "/about/" | relLangURL }}">{{ i18n "navAbout" }}</a>
+        <a href="{{ "/index.xml" | relLangURL }}">RSS</a>
+      </nav>
+      <nav class="foot__col" aria-label="{{ i18n "elsewhereLabel" }}">
+        <h2 class="k">{{ i18n "elsewhere" }}</h2>
+        {{- with .Site.Params.social.github }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">GitHub</a>{{ end }}
+        {{- with .Site.Params.social.linkedin }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">LinkedIn</a>{{ end }}
+        {{- with .Site.Params.social.youtube_digitaldias }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">YouTube</a>{{ end }}
+        {{- with .Site.Params.social.youtube_digitalhome }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">{{ i18n "youtubeHome" }}</a>{{ end }}
+        {{- with .Site.Params.social.flickr }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">Flickr</a>{{ end }}
+      </nav>
+      {{- with .Site.Params.support.kofi }}
+      <div class="foot__coffee">
+        <h2 class="k">{{ i18n "footCoffee" }}</h2>
+        <p>{{ i18n "footCoffeeText" }}</p>
+        <a href="{{ . }}" data-cta="kofi" rel="noopener noreferrer" target="_blank">{{ i18n "footCoffeeLink" }}</a>
+      </div>
       {{- end }}
-      {{- with .Site.Params.social.github }}
-      <a href="{{ . }}" rel="noopener noreferrer" target="_blank">GitHub</a>
-      {{- end }}
-      {{- with .Site.Params.social.linkedin }}
-      <a href="{{ . }}" rel="noopener noreferrer" target="_blank">LinkedIn</a>
-      {{- end }}
-      {{- with .Site.Params.social.youtube_digitaldias }}
-      <a href="{{ . }}" rel="noopener noreferrer" target="_blank">YouTube</a>
-      {{- end }}
-      {{- with .Site.Params.social.youtube_digitalhome }}
-      <a href="{{ . }}" rel="noopener noreferrer" target="_blank">{{ i18n "youtubeHome" }}</a>
-      {{- end }}
-    </nav>
+    </div>
+    <div class="m foot__base">
+      <p>&copy; {{ now.Year }} Pedro Dias. {{ i18n "footColophon" }} <a href="/llm.txt">llm.txt</a></p>
+    </div>
+    <p class="foot__end"><abbr title="{{ i18n "footEnd" }}">-30-</abbr></p>
   </footer>
 </div>

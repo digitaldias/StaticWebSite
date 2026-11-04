@@ -1,6 +1,10 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-04
+  tag: Site
+  text: "A new footer: where to read on, where else to find me, a quiet way to buy me a coffee, and -30-, the newsroom mark for the end of a story."
+  text_nb: "Ny bunntekst: hvor du kan lese videre, hvor du ellers finner meg, en stille måte å spandere en kaffe på, og -30-, avisjargong for slutten på en sak."
+- date: 2026-11-04
   tag: Shipped
   text: "The homepage opens on today's [morning briefing](/briefing/): how many news stories a local model read overnight and how many it kept, one mark per story. It updates with each new edition."
   text_nb: "Forsiden åpner med dagens [morgenbriefing](/briefing/): hvor mange nyhetssaker en lokal modell leste i natt og hvor mange den beholdt, én strek per sak. Den oppdateres med hver nye utgave."
