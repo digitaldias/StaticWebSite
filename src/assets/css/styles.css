@@ -169,20 +169,35 @@ h1, h2, h3, h4 { margin: 0; }
 .edition__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; margin: 12px 0 0; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font-size: .74rem; color: var(--muted); }
 .edition__foot a { font: 500 .74rem var(--mono); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
 
-/* Supporters page: a ruled list of everyone who kept their coffee public, or, while
-   there is nobody yet, the hopeful dog and a way to be first */
-.supporters { list-style: none; margin: 34px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0 40px; }
-.supporter { padding: 18px 0 22px; border-top: 1px solid var(--rule); }
-.supporter__name { margin: 0; font: 650 1.45rem/1.15 var(--display); letter-spacing: -.02em; }
-.supporter__message { margin: 10px 0 0; font: italic 400 1.02rem/1.5 var(--text); color: var(--ink); }
-.supporter__date { display: block; margin-top: 10px; font-size: .72rem; color: var(--muted); }
+/* Supporters page: the latest coffee in the spotlight, one teal cup per coffee, a wall of
+   earlier names that shrink with age, and their kind words. While there is nobody yet,
+   the hopeful dog and a way to be first */
+.cheers { --cup: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 8h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8zm12 1h1.5a2.5 2.5 0 0 1 0 5H16v-1.6h1.5a.9.9 0 0 0 0-1.8H16V9zM7 3.5c.6.7.6 1.6 0 2.3M10 2.5c.7.9.7 2 0 2.9M13 3.5c.6.7.6 1.6 0 2.3' fill='black' stroke='black' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E"); margin-top: 34px; }
+.cheers__tally { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.cheers__count { margin: 0; font-size: .78rem; color: var(--muted); }
+.cheers__cups { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; }
+.cheers__cup { width: 32px; height: 32px; background: var(--teal); -webkit-mask: var(--cup) center / contain no-repeat; mask: var(--cup) center / contain no-repeat; }
+.cheers__latest { padding: 26px 0 30px; border-top: 3px double var(--ink); border-bottom: 1px solid var(--rule); }
+.cheers__tally + * { margin-top: 36px; }
+.cheers__latest .k { margin: 0 0 8px; color: var(--teal); }
+.cheers__name { margin: 0; font: 800 clamp(2.4rem, 1.4rem + 4vw, 5rem)/1 var(--display); letter-spacing: -.035em; text-wrap: balance; }
+.cheers__quote { max-width: 34ch; margin: 18px 0 0; padding-left: 18px; border-left: 3px solid var(--teal); font: italic 400 clamp(1.2rem, 1rem + .8vw, 1.6rem)/1.4 var(--text); }
+.cheers__date { display: block; margin-top: 16px; font-size: .74rem; color: var(--muted); }
+.cheers__earlier, .cheers__notes { margin-top: 36px; }
+.cheers h2 { margin: 0 0 14px; }
+.cheers__wall { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px; margin: 0; padding: 0; list-style: none; }
+.cheers__wall li { font: 650 max(1.05rem, calc(2.1rem - var(--age) * .12rem))/1.2 var(--display); letter-spacing: -.02em; }
+.cheers__notes ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px 36px; margin: 0; padding: 0; list-style: none; }
+.cheers__notes li { padding-top: 14px; border-top: 1px solid var(--rule); }
+.cheers__notes blockquote { margin: 0; font: italic 400 1rem/1.5 var(--text); }
+.cheers__notes .m { margin: 8px 0 0; font-size: .74rem; color: var(--muted); }
 .supporters-empty { display: grid; gap: 22px 48px; margin: 34px 0 0; align-items: center; }
 .supporters-empty__fig { margin: 0; background: var(--ground-2); }
 .supporters-empty__fig img { display: block; width: 100%; height: auto; }
 .supporters-empty__text h2 { margin: 0 0 12px; font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); line-height: 1.1; text-wrap: balance; }
 .supporters-empty__text p { max-width: 42ch; margin: 0 0 16px; font: 400 1.05rem/1.55 var(--text); color: var(--muted); }
 .supporters-empty__text a { font: 600 1rem var(--display); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 4px; }
-.supporters[hidden], .supporters-empty[hidden] { display: none; }
+.cheers[hidden], .supporters-empty[hidden] { display: none; }
 .supporters-how { max-width: 65ch; margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: .95rem; }
 @media (min-width: 900px) {
   .supporters-empty { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
@@ -685,6 +700,10 @@ h1, h2, h3, h4 { margin: 0; }
   /* The kept marks sweep in once on load: the one moving thing in the ear */
   .edition__tally::after { animation: tally 1400ms 500ms var(--ease-out) both; }
   @keyframes tally { from { clip-path: inset(0 100% 0 0); } }
+
+  /* Supporters: the cups pop in one by one, the one celebration moment on the page */
+  .cheers__cup { animation: cup-in 520ms var(--ease-out) both; animation-delay: calc(200ms + var(--i) * 90ms); }
+  @keyframes cup-in { from { opacity: 0; transform: translateY(10px) scale(.6); } }
 
   .lightbox[open] { animation: zoom-in 300ms var(--ease-out); }
   @keyframes zoom-in { from { opacity: 0; transform: scale(.96); } }

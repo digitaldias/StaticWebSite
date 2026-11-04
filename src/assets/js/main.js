@@ -799,36 +799,79 @@ async function initSupporters() {
   line.hidden = false;
 }
 
-function supporterItem(entry) {
-  const item = document.createElement('li');
-  item.className = 'supporter reveal';
-  const name = document.createElement('p');
-  name.className = 'supporter__name';
-  name.textContent = entry.name;
-  item.append(name);
-  if (entry.message) {
-    const message = document.createElement('blockquote');
-    message.className = 'supporter__message';
-    message.textContent = entry.message;
-    item.append(message);
+/* Supporters page: the newest coffee in the spotlight, one cup per coffee, a wall of
+   earlier names that shrink with age, and the others' messages as small quotes */
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text != null) node.textContent = text;
+  return node;
+}
+
+function supporterDate(entry) {
+  const date = el('time', 'm cheers__date');
+  date.dateTime = entry.date;
+  date.textContent = new Date(`${entry.date}T12:00:00Z`).toLocaleDateString(document.documentElement.lang || 'en', { day: 'numeric', month: 'long', year: 'numeric' });
+  return date;
+}
+
+function cheersCups(count) {
+  const cups = el('p', 'cheers__cups');
+  cups.setAttribute('aria-label', t('cheersCount')(count));
+  for (let i = 0; i < count; i++) {
+    const cup = el('span', 'cheers__cup');
+    cup.style.setProperty('--i', i);
+    cup.setAttribute('aria-hidden', 'true');
+    cups.append(cup);
   }
-  if (entry.date) {
-    const date = document.createElement('time');
-    date.className = 'm supporter__date';
-    date.dateTime = entry.date;
-    date.textContent = new Date(`${entry.date}T12:00:00Z`).toLocaleDateString(document.documentElement.lang || 'en', { day: 'numeric', month: 'long', year: 'numeric' });
-    item.append(date);
-  }
-  return item;
+  return cups;
+}
+
+function cheersLatest(entry) {
+  const latest = el('article', 'cheers__latest');
+  latest.append(el('p', 'k', t('cheersLatest')), el('p', 'cheers__name', entry.name));
+  if (entry.message) latest.append(el('blockquote', 'cheers__quote', entry.message));
+  if (entry.date) latest.append(supporterDate(entry));
+  return latest;
+}
+
+function cheersWall(earlier) {
+  const section = el('section', 'cheers__earlier');
+  const wall = el('ol', 'cheers__wall');
+  earlier.forEach((entry, age) => {
+    const name = el('li', null, entry.name);
+    name.style.setProperty('--age', age);
+    wall.append(name);
+  });
+  section.append(el('h2', 'k', t('cheersEarlier')), wall);
+  return section;
+}
+
+function cheersNotes(earlier) {
+  const notes = el('section', 'cheers__notes');
+  const list = el('ul');
+  earlier.filter(entry => entry.message).forEach(entry => {
+    const note = el('li');
+    note.append(el('blockquote', null, entry.message), el('p', 'm', entry.name));
+    list.append(note);
+  });
+  notes.append(el('h2', 'k', t('cheersWords')), list);
+  return notes;
 }
 
 async function initSupporterPage() {
-  const list = document.querySelector('[data-supporter-list]');
-  if (!list) return;
+  const page = document.querySelector('[data-supporter-list]');
+  if (!page) return;
   const supporters = await loadSupporters();
   if (!supporters.length) return;
-  list.replaceChildren(...supporters.map(supporterItem));
-  list.hidden = false;
+  const [latest, ...earlier] = supporters;
+  const tally = el('div', 'cheers__tally');
+  tally.append(cheersCups(supporters.length), el('p', 'm cheers__count', t('cheersCount')(supporters.length)));
+  const parts = [cheersLatest(latest), tally];
+  if (earlier.length) parts.push(cheersWall(earlier));
+  if (earlier.some(entry => entry.message)) parts.push(cheersNotes(earlier));
+  page.replaceChildren(...parts);
+  page.hidden = false;
   document.querySelector('[data-supporter-empty]')?.setAttribute('hidden', '');
 }
 
