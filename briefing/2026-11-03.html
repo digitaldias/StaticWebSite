@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="no" data-briefing-date="2026-11-03">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f6f4">
+<title>AI Nyhetsstrøm — 2026-11-03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&family=Geist+Mono:wght@400;500&display=swap">
+<style id="tokens">/* =============================================================================
+   Sea Glass design tokens: the single source for digitaldias.com and /briefing/.
+   The site bundles this file ahead of styles.css. The briefing publisher reads
+   it from this repo and inlines it. Change a value here, nowhere else.
+   ============================================================================= */
+
+:root {
+  color-scheme: light; /* Light by default; dark only when the reader picks it */
+
+  /* Colour: light value first, dark value second */
+  --ground:   light-dark(#f4f6f4, #0f1a1b);
+  --ground-2: light-dark(#e7eeec, #162527);
+  --ink:      light-dark(#14201f, #e3ebe9);
+  --muted:    light-dark(#4f5f5d, #9db1ae);
+  --rule:     light-dark(#cdd8d5, #2a3b3d);
+  --teal:     light-dark(#0b5d63, #5fc3c2);
+  --deep-1:   light-dark(#d7ebe8, #15343a);
+  --deep-2:   light-dark(#a9d3cf, #18454c);
+  --deep-3:   light-dark(#5aa5a3, #1c5860);
+  --on-teal:  light-dark(#f4f6f4, #0f1a1b);
+
+  /* Type */
+  --display: "Schibsted Grotesk", system-ui, sans-serif;
+  --text:    "Source Serif 4", Georgia, serif;
+  --mono:    "Geist Mono", ui-monospace, monospace;
+
+  /* Layout: the widest the page column gets on large screens */
+  --page: 1440px;
+
+  /* Motion */
+  --ease-out:   cubic-bezier(.16, 1, .3, 1);
+  --transition: 150ms ease;
+}
+
+/* The reader's stored choice (theme.js) */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+</style>
+<style>
+/* Briefing components: Sea Glass. Expects tokens.css inlined before this block. */
+*{box-sizing:border-box;}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 1rem/1.55 var(--text);}
+a{color:inherit;text-decoration:none;transition:color var(--transition);}
+a:hover{color:var(--teal);}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+::selection{background:var(--deep-2);color:var(--ink);}
+
+/* Site header, inserted by the publish layer: identical to the site's */
+.mast{position:sticky;top:0;z-index:40;background:var(--ground);border-bottom:1px solid var(--rule);}
+.mast .wrap{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px);display:flex;align-items:center;gap:28px;height:60px;}
+.mast .wordmark{font:800 1.45rem/1 var(--display);letter-spacing:-.04em;color:var(--ink);}
+.mast .wordmark b{font-weight:inherit;color:var(--teal);}
+.nav{display:flex;gap:22px;margin-left:auto;font:600 .85rem/1 var(--display);}
+.nav a{color:var(--muted);position:relative;padding:6px 0;}
+.nav a:hover{color:var(--ink);}
+.theme-toggle{flex:none;display:grid;place-items:center;width:32px;height:32px;margin-left:-6px;padding:0;background:none;border:1px solid var(--rule);border-radius:50%;color:var(--ink);cursor:pointer;transition:border-color var(--transition);}
+.theme-toggle::before{content:"";width:14px;height:14px;border-radius:50%;border:1.5px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%);transition:transform 300ms var(--ease-out);}
+.theme-toggle[data-current="dark"]::before{transform:rotate(180deg);}
+.theme-toggle:hover{border-color:var(--teal);}
+
+/* Page column: aligned with the header */
+.page{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px) 60px;}
+
+/* Meta row: the site's mono meta line */
+.meta-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0 12px;border-bottom:1px solid var(--rule);font:400 .76rem/1.4 var(--mono);letter-spacing:.02em;color:var(--muted);}
+.meta-row .center{font:italic 400 .92rem/1.4 var(--text);letter-spacing:0;}
+
+/* Date strip: chips like the site's category filter; today in teal */
+.datestrip{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;font:500 .76rem/1 var(--mono);}
+.datestrip a{padding:7px 10px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);transition:color var(--transition),border-color var(--transition);}
+.datestrip a:hover{color:var(--teal);border-color:var(--teal);}
+.datestrip a[aria-current="page"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+
+/* Masthead: the Log page's page head */
+.masthead{display:grid;gap:14px;padding:40px 0 22px;border-bottom:2px solid var(--ink);}
+.masthead .wordmark{font:750 clamp(2.6rem,7vw,5.6rem)/.98 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.masthead .wordmark em{font-style:normal;color:var(--teal);}
+.tagline{margin:0;max-width:46ch;font:400 1.05rem/1.5 var(--text);color:var(--muted);}
+.rule-thick{display:none;}
+
+/* Hero: the day's lead story. A full-width splash headline, then picture and story side by side
+   at one height: the picture is at least 16:9 and stretches to the story's height, cropped. */
+.hero{margin:0 0 32px;padding:28px 0 32px;border-bottom:1px solid var(--rule);}
+.hero-kicker{margin-bottom:12px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hero-title{margin:0 0 24px;max-width:28ch;font:750 clamp(2rem,4.4vw,3.6rem)/1.02 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.hero-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .2em no-repeat;transition:background-size 350ms var(--ease-out);}
+.hero-title a:hover{color:inherit;background-size:100% .2em;}
+.hero-row{display:grid;gap:18px;}
+.hero-media{position:relative;display:block;overflow:hidden;background:var(--deep-1);}
+.hero-media::before{content:"";display:block;padding-top:56.25%;}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 600ms var(--ease-out);}
+.hero-media:hover img{transform:scale(1.02);}
+.hero-body .article-summary{font-size:1.04rem;}
+.hero-credit{margin-top:10px;font:italic 400 .8rem/1.4 var(--text);color:var(--muted);}
+@media (min-width:900px){.hero-row{grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:32px;}}
+
+/* KPI row: the article folio strip, hanging from the masthead's ink rule */
+.kpi-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 32px;border-bottom:1px solid var(--rule);}
+.kpi{padding:16px 20px 16px 0;}
+.kpi + .kpi{padding-left:20px;border-left:1px solid var(--rule);}
+.kpi-label{margin-bottom:8px;font:600 .66rem/1.3 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.kpi-value{font:750 2.4rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;}
+.kpi-value span{font:400 .76rem var(--mono);letter-spacing:0;color:var(--muted);}
+.kpi.accent .kpi-value{color:var(--teal);}
+
+/* Panel and bar chart */
+.panel{margin:0 0 40px;padding-top:12px;border-top:2px solid var(--ink);}
+.panel-title{margin-bottom:14px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.bar-row{display:flex;align-items:center;gap:12px;padding:5px 0;}
+.bar-label{width:200px;flex-shrink:0;font:600 .88rem/1.3 var(--display);}
+.bar-track{flex:1;height:8px;background:var(--deep-1);overflow:hidden;}
+.bar-fill{height:100%;background:var(--teal);}
+.bar-count{width:28px;flex-shrink:0;text-align:right;font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Category columns: newspaper columns under an ink rule, no boxes */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 32px;align-items:start;}
+.cat-panel{display:flex;flex-direction:column;padding-top:12px;border-top:2px solid var(--ink);}
+.cat-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;}
+.cat-name{font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.cat-count{font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Spotlight items: the stream's headline treatment, summary at full ink */
+.spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+.article-title{margin-bottom:8px;font:700 1.18rem/1.2 var(--display);letter-spacing:-.02em;text-wrap:balance;}
+.article-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .26em no-repeat;transition:background-size 350ms var(--ease-out);}
+.article-title a:hover{color:inherit;background-size:100% .26em;}
+.translation-note{font:italic 400 .82rem var(--text);letter-spacing:0;color:var(--muted);}
+.article-summary{margin-bottom:8px;font:400 .98rem/1.55 var(--text);color:var(--ink);}
+.article-pillar{margin-bottom:8px;font:400 .9rem/1.5 var(--text);color:var(--muted);}
+.pillar-tag{margin-right:6px;padding:3px 6px;vertical-align:1px;background:var(--deep-1);font:600 .6rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.article-meta{font:400 .7rem/1.4 var(--mono);color:var(--muted);}
+
+/* The rest: quieter rows behind a mono toggle */
+.more{margin-top:16px;}
+.more > summary{list-style:none;cursor:pointer;font:500 .74rem var(--mono);color:var(--teal);}
+.more > summary::-webkit-details-marker{display:none;}
+.more > summary::before{content:"+ ";}
+.more[open] > summary::before{content:"\2212 ";}
+.rest-list{display:flex;flex-direction:column;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);}
+.rest-item-head{display:flex;justify-content:space-between;gap:10px;font:600 .92rem/1.35 var(--display);letter-spacing:-.01em;}
+.rest-item-head a:hover{text-decoration:underline;text-decoration-color:var(--teal);text-underline-offset:.2em;}
+.rest-source{flex-shrink:0;padding-top:2px;white-space:nowrap;font:400 .66rem/1.4 var(--mono);color:var(--muted);}
+.rest-summary{margin-top:3px;font:400 .88rem/1.5 var(--text);color:var(--muted);}
+
+/* Foot line: the site's footer rule */
+.footline{margin-top:56px;padding-top:22px;border-top:2px solid var(--ink);font:400 .76rem/1.5 var(--mono);color:var(--muted);}
+
+@media (min-width:900px){.masthead{grid-template-columns:1fr 1fr;align-items:end;}}
+@media (min-width:768px) and (max-width:1080px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s !important;}}
+
+/* Category tiles: the page's menu. Each tile springs its bar out in rank order and counts its
+   number up, then a glint sweeps the bar every few seconds. --i, --n and --p come from the tile. */
+@property --c{syntax:"<integer>";inherits:false;initial-value:0;}
+@keyframes tile-grow{from{transform:scaleX(0);}}
+@keyframes tile-count{from{--c:0;}}
+@keyframes tile-glint{0%{background-position:-100% 0;}18%,100%{background-position:200% 0;}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.tile{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto;gap:6px;min-height:118px;padding:14px 14px 16px;border:1px solid var(--rule);transition:border-color var(--transition),transform 200ms var(--ease-out);}
+.tile:hover{color:inherit;border-color:var(--teal);transform:translateY(-2px);}
+.tile-count{font:750 2rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--teal);}
+.tile-count::after{--c:var(--n,0);counter-reset:c var(--c);content:counter(c);animation:tile-count 1100ms var(--ease-out) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-name{padding-right:28px;font:650 .98rem/1.25 var(--display);hyphens:auto;overflow-wrap:anywhere;}
+.tile-track{position:relative;height:6px;background:var(--deep-1);overflow:hidden;}
+.tile-fill{position:absolute;inset:0 auto 0 0;background:var(--teal);transform-origin:left;animation:tile-grow 1100ms cubic-bezier(.34,1.56,.64,1) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,color-mix(in srgb,var(--ground) 65%,transparent) 50%,transparent 70%) no-repeat;background-size:50% 100%;background-position:-100% 0;animation:tile-glint 6s ease-in-out calc(1.6s + var(--i,0) * 120ms) infinite;}
+
+/* Rest of a category, always shown below its spotlights under a quiet label */
+.rest-label{margin-top:22px;font:600 .66rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.rest-label + .rest-list{margin-top:8px;}
+
+/* Category rail: the switcher while reading, sticky under the site header */
+.rail{display:none;position:sticky;top:60px;z-index:30;gap:8px;margin:0 calc(-1 * clamp(16px,4vw,44px)) 24px;padding:8px clamp(16px,4vw,44px);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;background:var(--ground);border-bottom:1px solid var(--rule);}
+.rail::-webkit-scrollbar{display:none;}
+.chip{flex:none;scroll-snap-align:start;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--rule);border-radius:22px;white-space:nowrap;font:600 .9rem/1 var(--display);transition:border-color var(--transition),background-color var(--transition);}
+.chip:hover{color:inherit;border-color:var(--teal);}
+.chip-count{font:500 .76rem var(--mono);color:var(--muted);}
+.chip.is-on{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.chip.is-on .chip-count{color:var(--on-teal);}
+
+/* Category hub: the tiles are the menu. Below the lead strip nothing shows until a
+   category, or "Alle kategorier", is the URL fragment; a chosen category runs full width. */
+.lead-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;}
+.lead-cat{display:inline-block;margin-bottom:8px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hub-hint{margin:-16px 0 40px;font:italic 400 .95rem/1.5 var(--text);color:var(--muted);}
+.hub-hint a{color:var(--teal);}
+.grid,.cat-panel{scroll-margin-top:136px;}
+.hub .grid:not(:target):not(:has(.cat-panel:target)){display:none;}
+.hub:has(.grid:target,.cat-panel:target) :is(.hero,.lead,.hub-hint){display:none;}
+.hub:has(.grid:target,.cat-panel:target) .rail{display:flex;}
+.hub:has(.grid:target) .chip.all{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.hub:has(.grid:target) .chip.all .chip-count{color:var(--on-teal);}
+.hub .grid:has(.cat-panel:target){grid-template-columns:minmax(0,1fr);}
+.hub .grid:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+.hub .cat-panel:target{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:32px;align-items:start;}
+.hub .cat-panel:target > :is(.cat-head,.rest-label,.rest-list){grid-column:1/-1;}
+.hub .cat-panel:target .rest-list{display:block;columns:3;column-gap:32px;}
+.hub .cat-panel:target .rest-item{break-inside:avoid;padding-bottom:14px;}
+.hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:0;padding-top:0;border-top:0;}
+@media (max-width:1080px){
+  .lead-list,.hub .cat-panel:target{grid-template-columns:minmax(0,1fr);}
+  .lead-list{gap:0;}
+  .lead-item + .lead-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .rest-list{columns:1;}
+}
+@media (max-width:767px){.rail{top:0;}}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));}.tile{min-height:104px;}.tile-count{font-size:1.7rem;}}
+
+/* Seen categories (seen.js): opened ones go quiet, the rest carry a "ny" mark */
+.seen-ready .tile:not(.is-seen)::after{content:"ny";position:absolute;top:14px;right:14px;padding:3px 5px;background:var(--deep-1);font:600 .58rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.tile.is-seen :is(.tile-count,.tile-name){color:var(--muted);}
+.tile.is-seen .tile-fill{opacity:.45;}
+.seen-ready .chip[href^="#cat-"]:not(.is-seen) .chip-name::after{content:"";display:inline-block;width:6px;height:6px;margin-left:6px;vertical-align:2px;border-radius:50%;background:var(--teal);}
+.chip.is-seen{color:var(--muted);}
+
+@media (prefers-reduced-motion:reduce){.tile-fill,.tile-fill::after,.tile-count::after{animation:none;}.tile:hover{transform:none;}}
+
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"] .chip-count{color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .tile[href="#cat-vulnerabilities"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-dev-tooling:target) .chip[href="#cat-dev-tooling"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-dev-tooling:target) .chip[href="#cat-dev-tooling"] .chip-count{color:var(--on-teal);}
+body:has(#cat-dev-tooling:target) .tile[href="#cat-dev-tooling"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"] .chip-count{color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .tile[href="#cat-frontier-labs"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"] .chip-count{color:var(--on-teal);}
+body:has(#cat-industry:target) .tile[href="#cat-industry"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-europe:target) .chip[href="#cat-europe"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-europe:target) .chip[href="#cat-europe"] .chip-count{color:var(--on-teal);}
+body:has(#cat-europe:target) .tile[href="#cat-europe"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"] .chip-count{color:var(--on-teal);}
+body:has(#cat-nordic:target) .tile[href="#cat-nordic"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"] .chip-count{color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .tile[href="#cat-governance-policy"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"] .chip-count{color:var(--on-teal);}
+body:has(#cat-china-asia:target) .tile[href="#cat-china-asia"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-hr-support:target) .chip[href="#cat-hr-support"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-hr-support:target) .chip[href="#cat-hr-support"] .chip-count{color:var(--on-teal);}
+body:has(#cat-hr-support:target) .tile[href="#cat-hr-support"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-other:target) .chip[href="#cat-other"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-other:target) .chip[href="#cat-other"] .chip-count{color:var(--on-teal);}
+body:has(#cat-other:target) .tile[href="#cat-other"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}</style>
+<script src="theme.js"></script>
+<script src="seen.js" defer></script>
+<style id="briefing-layer">
+.catbar{display:none;}
+
+@media (max-width:767px){
+  .mast{position:static;}
+  .mast .wrap{gap:10px;}
+  .mast .wordmark{font-size:1.2rem;}
+  .nav{gap:10px;font-size:.76rem;}
+  .theme-toggle{width:28px;height:28px;margin-left:-2px;}
+
+  .page{padding:0 16px 48px;}
+  .meta-row{padding-top:12px;font-size:.7rem;}
+  .meta-row .center{display:none;}
+  .datestrip{margin-top:12px;}
+  .datestrip a{display:flex;align-items:center;min-height:44px;padding:0 14px;}
+  .masthead{padding:24px 0 16px;}
+  .masthead .wordmark{font-size:2.6rem;}
+  .tagline{font-size:1rem;}
+
+  .kpi-row{margin-bottom:16px;}
+  .kpi{padding:12px 10px 12px 0;}
+  .kpi + .kpi{padding-left:10px;}
+  .kpi-label{font-size:.6rem;letter-spacing:.06em;}
+  .kpi-value{font-size:1.6rem;}
+  .kpi-value span{display:none;}
+  .panel:has(.bar-row){display:none;}
+
+  .catbar{display:block;position:sticky;top:0;z-index:10;margin:0 -16px 20px;background:var(--ground);border-bottom:2px solid var(--ink);}
+  .catbar > summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;cursor:pointer;font:700 1.05rem/1.2 var(--display);letter-spacing:-.01em;}
+  .catbar > summary::-webkit-details-marker{display:none;}
+  .catbar > summary::after{content:"\25BE";font-size:.9rem;color:var(--muted);}
+  .catbar[open] > summary::after{content:"\25B4";}
+  .catbar .cur{display:none;}
+  .catbar .cur-all{display:inline;}
+  body:has(.cat-panel:target) .catbar .cur-all{display:none;}
+  .catbar-list{position:absolute;left:0;right:0;top:100%;max-height:70vh;overflow-y:auto;display:flex;flex-direction:column;background:var(--ground-2);border-bottom:2px solid var(--ink);}
+  .catbar-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;border-top:1px solid var(--rule);font:600 1rem/1.2 var(--display);}
+  .catbar-list a span{font:400 .8rem var(--mono);color:var(--muted);}
+  .catbar-list a.all{color:var(--teal);}
+  body:has(.cat-panel:target) .catbar-list a.all{color:inherit;}
+  body:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+
+  .grid{grid-template-columns:minmax(0,1fr);gap:32px;}
+  .cat-panel{scroll-margin-top:60px;}
+  .cat-name,.cat-count{font-size:.74rem;}
+  .article-title{font-size:1.3rem;}
+  .translation-note{font-size:.86rem;}
+  .article-summary{font-size:1.05rem;line-height:1.6;}
+  .article-pillar{font-size:.96rem;}
+  .article-meta{font-size:.76rem;}
+  .spotlight-item + .spotlight-item{margin-top:22px;padding-top:22px;}
+  .more{margin-top:8px;}
+  .more > summary{padding:12px 0;font-size:.82rem;}
+  .rest-list{gap:18px;}
+  .rest-item-head{flex-direction:column;gap:2px;font-size:1.02rem;}
+  .rest-source{white-space:normal;font-size:.72rem;}
+  .rest-summary{font-size:.98rem;line-height:1.55;}
+  .footline{margin-top:40px;font-size:.72rem;}
+}
+
+@media (max-width:400px){
+  .mast .wordmark{font-size:1.1rem;}
+  .nav{font-size:.72rem;}
+}
+
+@media (max-width:339px){
+  .mast .wrap{flex-wrap:wrap;height:auto;padding-block:10px;row-gap:6px;}
+  .nav{order:3;width:100%;margin-left:0;justify-content:space-between;}
+  .theme-toggle{margin-left:auto;}
+}
+
+body:has(#cat-vulnerabilities:target) .catbar .cur-cat-vulnerabilities{display:inline;}
+body:has(#cat-vulnerabilities:target) .catbar-list a[href="#cat-vulnerabilities"]{color:var(--teal);}
+body:has(#cat-dev-tooling:target) .catbar .cur-cat-dev-tooling{display:inline;}
+body:has(#cat-dev-tooling:target) .catbar-list a[href="#cat-dev-tooling"]{color:var(--teal);}
+body:has(#cat-frontier-labs:target) .catbar .cur-cat-frontier-labs{display:inline;}
+body:has(#cat-frontier-labs:target) .catbar-list a[href="#cat-frontier-labs"]{color:var(--teal);}
+body:has(#cat-industry:target) .catbar .cur-cat-industry{display:inline;}
+body:has(#cat-industry:target) .catbar-list a[href="#cat-industry"]{color:var(--teal);}
+body:has(#cat-europe:target) .catbar .cur-cat-europe{display:inline;}
+body:has(#cat-europe:target) .catbar-list a[href="#cat-europe"]{color:var(--teal);}
+body:has(#cat-nordic:target) .catbar .cur-cat-nordic{display:inline;}
+body:has(#cat-nordic:target) .catbar-list a[href="#cat-nordic"]{color:var(--teal);}
+body:has(#cat-governance-policy:target) .catbar .cur-cat-governance-policy{display:inline;}
+body:has(#cat-governance-policy:target) .catbar-list a[href="#cat-governance-policy"]{color:var(--teal);}
+body:has(#cat-china-asia:target) .catbar .cur-cat-china-asia{display:inline;}
+body:has(#cat-china-asia:target) .catbar-list a[href="#cat-china-asia"]{color:var(--teal);}
+body:has(#cat-hr-support:target) .catbar .cur-cat-hr-support{display:inline;}
+body:has(#cat-hr-support:target) .catbar-list a[href="#cat-hr-support"]{color:var(--teal);}
+body:has(#cat-other:target) .catbar .cur-cat-other{display:inline;}
+body:has(#cat-other:target) .catbar-list a[href="#cat-other"]{color:var(--teal);}
+</style>
+</head>
+<body class="hub">
+<header class="mast" role="banner">
+  <div class="wrap">
+    <a class="wordmark" href="/">digital<b>dias</b></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/blog/">Writing</a>
+      <a href="/log/">Log</a>
+      <a href="/photography/">Photographs</a>
+      <a href="/about/">About</a>
+    </nav>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
+  </div>
+</header>
+<div class="page">
+
+  <div class="meta-row">
+    <span>DAGLIG BRIEFING</span>
+    <span class="center">CAIO-redaksjonen · Tradesolution</span>
+    <span>TIRSDAG 3. NOVEMBER 2026</span>
+  </div>
+  <nav class="datestrip" aria-label="Dager"><a href="/briefing/">I dag</a><a href="/briefing/2026-11-03.html" aria-current="page">I går</a><a href="/briefing/2026-11-02.html">2. nov</a><a href="/briefing/2026-11-01.html">1. nov</a></nav>
+<div class="masthead">
+    <div class="wordmark">AI <em>Nyhetsstrøm</em></div>
+    <div class="tagline">Fronten, støyen, og alt som er verdt Pedros fem minutter</div>
+  </div>
+  <div class="rule-thick"></div>
+
+  <section class="hero" aria-label="Dagens sak"><div class="hero-kicker">Dagens sak · Ledende AI-laboratorier</div><h2 class="hero-title"><a href="https://www.usine-digitale.fr/cybersecurite/prendre-le-controle-de-nimporte-quel-serveur-linux-anthropic-devoile-les-capacites-offensives-dun-de-ses-modeles-dia-internes.EWJPEBEQDNC2PFZROAUJKZNWMI.html" target="_blank" rel="noopener noreferrer">Anthropic avdekker offensive evner i intern AI-modell for Linux-servere</a><span class="translation-note"> (oversatt fra fr)</span></h2><div class="hero-row"><a class="hero-media" href="https://www.usine-digitale.fr/cybersecurite/prendre-le-controle-de-nimporte-quel-serveur-linux-anthropic-devoile-les-capacites-offensives-dun-de-ses-modeles-dia-internes.EWJPEBEQDNC2PFZROAUJKZNWMI.html" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="hero-2026-11-03.jpg" alt="KI-generert illustrasjon: Anthropic avdekker offensive evner i intern AI-modell for Linux-servere" referrerpolicy="no-referrer"></a><div class="hero-body"><div class="article-summary">Anthropic har avdekket at en av sine interne AI-modeller har evner til å utføre offensive handlinger på Linux-servere. Selskapet deler detaljer om hvordan modellen kan brukes til å ta kontroll over systemer, noe som belyser sikkerhetsutfordringer knyttet til avanserte AI-systemer.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder å oppdatere interne retningslinjer for AI-sikkerhet for å adressere potensielle offensive evner i modeller, og sikr at risikovurderinger inkluderer slike scenarier.</div><div class="article-meta">L&#x27;USINE DIGITALE · 2. NOV, 12:34</div><div class="hero-credit">KI-generert illustrasjon</div></div></div></section>
+
+  
+    <div class="kpi-row">
+      <div class="kpi accent">
+        <div class="kpi-label">Saker beholdt</div>
+        <div class="kpi-value">80 <span>/ 247 vurdert</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Filtrert bort som ikke AI-relatert</div>
+        <div class="kpi-value">167</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Aktive kilder</div>
+        <div class="kpi-value">63 <span>på tvers av 11 kategorier</span></div>
+      </div>
+    </div>
+    
+
+  <div class="panel">
+    <div class="panel-title">Saker etter kategori</div>
+    <nav class="tiles" aria-label="Kategorier">
+    <a class="tile" href="#cat-vulnerabilities" style="--i:0;--n:3;--p:16" aria-label="Sårbarheter, 3 saker"><span class="tile-count"></span><span class="tile-name">Sårbarheter</span><span class="tile-track"><span class="tile-fill" style="width:16%"></span></span></a>
+<a class="tile" href="#cat-dev-tooling" style="--i:1;--n:16;--p:84" aria-label="Utviklerverktøy, 16 saker"><span class="tile-count"></span><span class="tile-name">Utviklerverktøy</span><span class="tile-track"><span class="tile-fill" style="width:84%"></span></span></a>
+<a class="tile" href="#cat-frontier-labs" style="--i:2;--n:6;--p:32" aria-label="Ledende AI-laboratorier, 6 saker"><span class="tile-count"></span><span class="tile-name">Ledende AI-laboratorier</span><span class="tile-track"><span class="tile-fill" style="width:32%"></span></span></a>
+<a class="tile" href="#cat-industry" style="--i:3;--n:19;--p:100" aria-label="Bransjenytt, 19 saker"><span class="tile-count"></span><span class="tile-name">Bransjenytt</span><span class="tile-track"><span class="tile-fill" style="width:100%"></span></span></a>
+<a class="tile" href="#cat-europe" style="--i:4;--n:13;--p:68" aria-label="Europa, 13 saker"><span class="tile-count"></span><span class="tile-name">Europa</span><span class="tile-track"><span class="tile-fill" style="width:68%"></span></span></a>
+<a class="tile" href="#cat-nordic" style="--i:5;--n:2;--p:11" aria-label="Norden, 2 saker"><span class="tile-count"></span><span class="tile-name">Norden</span><span class="tile-track"><span class="tile-fill" style="width:11%"></span></span></a>
+<a class="tile" href="#cat-governance-policy" style="--i:6;--n:10;--p:53" aria-label="Styring og politikk, 10 saker"><span class="tile-count"></span><span class="tile-name">Styring og politikk</span><span class="tile-track"><span class="tile-fill" style="width:53%"></span></span></a>
+<a class="tile" href="#cat-china-asia" style="--i:7;--n:7;--p:37" aria-label="Kina og Asia, 7 saker"><span class="tile-count"></span><span class="tile-name">Kina og Asia</span><span class="tile-track"><span class="tile-fill" style="width:37%"></span></span></a>
+<a class="tile" href="#cat-hr-support" style="--i:8;--n:3;--p:16" aria-label="HR og kundestøtte, 3 saker"><span class="tile-count"></span><span class="tile-name">HR og kundestøtte</span><span class="tile-track"><span class="tile-fill" style="width:16%"></span></span></a>
+<a class="tile" href="#cat-other" style="--i:9;--n:1;--p:5" aria-label="Annet, 1 saker"><span class="tile-count"></span><span class="tile-name">Annet</span><span class="tile-track"><span class="tile-fill" style="width:5%"></span></span></a>
+    </nav>
+  </div>
+
+  <div class="panel lead">
+    <div class="panel-title">Dagens viktigste</div>
+    <div class="lead-list">
+    <div class="lead-item"><a class="lead-cat" href="#cat-vulnerabilities">Sårbarheter · 3</a><div class="article-title"><a href="https://www.bleepingcomputer.com/news/security/google-disrupts-million-device-xcpe-android-malware-botnet-bans-tv-box-maker/" target="_blank" rel="noopener noreferrer">Google bryter opp XCPE-malwarebotnett på Android TV-bokser</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Google og bransjepartnere har dismantlet XCPE-malwarebotnettet som bestod av over 1,3 millioner Android TV-bokser som ble infisert med malware for å generere inntekter. Det er ikke bekreftet at sårbarheten aktivt utnyttes i dag, da botnettet er nedlagt. Leseren bør følge Googles sikkerhetsrådgivning for å sikre at enhetene er oppdaterte.</div><div class="article-meta">BLEEPINGCOMPUTER · 2. NOV, 17:16</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-dev-tooling">Utviklerverktøy · 16</a><div class="article-title"><a href="https://tweakers.net/nieuws/254032/rocky-linux-maker-bouwt-met-ai-in-elf-dagen-linux-compatibele-kernel.html" target="_blank" rel="noopener noreferrer">Rocky Linux-utvikleren bygger Linux-kompatibel kernel med AI på elleve dager</a><span class="translation-note"> (oversatt fra nl)</span></div><div class="article-summary">Utvikleren bak CentOS og Rocky Linux har brukt OpenAI Codex til å skrive en helt ny operativsystemskjerne på elleve dager. Den nye kjernen, kalt Ginux, er skrevet i Rust og er kompatibel med Linux, samt at den kjører på x86-64-prosessorer.</div><div class="article-meta">TWEAKERS · 2. NOV, 13:36</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-frontier-labs">Ledende AI-laboratorier · 6</a><div class="article-title"><a href="https://techcrunch.com/2026/11/02/anthropic-warns-that-its-very-close-to-rsi-capability-aka-self-building-ai/" target="_blank" rel="noopener noreferrer">Anthropic advarer om at RSI-kapasitet er nær</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Anthropic advarer om at kunstig intelligens er svært nær RSI, et punkt der AI-systemer blir så dyktige til å trene seg selv at det utløser en dramatisk akselerasjon av evnene. For mange i bransjen representerer dette et vendepunkt som kan føre til uforutsigbar utvikling.</div><div class="article-meta">TECHCRUNCH AI · 2. NOV, 21:14</div></div>
+    </div>
+  </div>
+  <p class="hub-hint">Velg en kategori for å lese sakene, eller <a href="#kategorier">vis alle kategorier</a>.</p>
+
+  <nav class="rail" aria-label="Kategorier"><a class="chip" href="#"><span class="chip-name">← Oversikt</span></a><a class="chip all" href="#kategorier"><span class="chip-name">Alle</span><span class="chip-count">80</span></a><a class="chip" href="#cat-vulnerabilities"><span class="chip-name">Sårbarheter</span><span class="chip-count">3</span></a><a class="chip" href="#cat-dev-tooling"><span class="chip-name">Utviklerverktøy</span><span class="chip-count">16</span></a><a class="chip" href="#cat-frontier-labs"><span class="chip-name">Ledende AI-laboratorier</span><span class="chip-count">6</span></a><a class="chip" href="#cat-industry"><span class="chip-name">Bransjenytt</span><span class="chip-count">19</span></a><a class="chip" href="#cat-europe"><span class="chip-name">Europa</span><span class="chip-count">13</span></a><a class="chip" href="#cat-nordic"><span class="chip-name">Norden</span><span class="chip-count">2</span></a><a class="chip" href="#cat-governance-policy"><span class="chip-name">Styring og politikk</span><span class="chip-count">10</span></a><a class="chip" href="#cat-china-asia"><span class="chip-name">Kina og Asia</span><span class="chip-count">7</span></a><a class="chip" href="#cat-hr-support"><span class="chip-name">HR og kundestøtte</span><span class="chip-count">3</span></a><a class="chip" href="#cat-other"><span class="chip-name">Annet</span><span class="chip-count">1</span></a></nav>
+  <div class="grid" id="kategorier">
+    <div class="cat-panel" id="cat-vulnerabilities"><div class="cat-head"><span class="cat-name">Sårbarheter</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.bleepingcomputer.com/news/security/google-disrupts-million-device-xcpe-android-malware-botnet-bans-tv-box-maker/" target="_blank" rel="noopener noreferrer">Google bryter opp XCPE-malwarebotnett på Android TV-bokser</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Google og bransjepartnere har dismantlet XCPE-malwarebotnettet som bestod av over 1,3 millioner Android TV-bokser som ble infisert med malware for å generere inntekter. Det er ikke bekreftet at sårbarheten aktivt utnyttes i dag, da botnettet er nedlagt. Leseren bør følge Googles sikkerhetsrådgivning for å sikre at enhetene er oppdaterte.</div><div class="article-meta">BLEEPINGCOMPUTER · 2. NOV, 17:16</div></div><div class="rest-label">Også i dag · 2</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theregister.com/cyber-crime/2026/11/02/cops-bust-botnet-of-13m-infected-android-tv-boxes/5307045" target="_blank" rel="noopener noreferrer">Videostrong Android TV-bokser med bakdør</a><span class="rest-source">THE REGISTER - SECURITY</span></div><div class="rest-summary">Videostrong anklages for å ha levert Android TV-bokser med en innebygd bakdør. Det er ikke bekreftet at sårbarheten er aktivt utnyttet. Leseren bør følge leverandørens sikkerhetsrådgivning for å få tilgang til oppdateringer eller rettsmidler.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.bleepingcomputer.com/news/security/ivanti-patches-two-more-connect-secure-zero-days-chained-in-attacks/" target="_blank" rel="noopener noreferrer">Ivanti Connect Secure: To nye null-dagssårbarheter utnyttet i angrep</a><span class="rest-source">BLEEPINGCOMPUTER</span></div><div class="rest-summary">Ivanti Connect Secure (ICS) er berørt av to nye sårbarheter i fjernadgangsgatewayen. Disse sårbarhetene er aktivt utnyttet i null-dagangrep siden 1. oktober. Ivanti har lansert sikkerhetsoppdateringer for å luke ut feilene, og brukere bør installere disse oppdateringene umiddelbart.</div></div></div></div>
+<div class="cat-panel" id="cat-dev-tooling"><div class="cat-head"><span class="cat-name">Utviklerverktøy</span><span class="cat-count">16</span></div><div class="spotlight-item"><div class="article-title"><a href="https://tweakers.net/nieuws/254032/rocky-linux-maker-bouwt-met-ai-in-elf-dagen-linux-compatibele-kernel.html" target="_blank" rel="noopener noreferrer">Rocky Linux-utvikleren bygger Linux-kompatibel kernel med AI på elleve dager</a><span class="translation-note"> (oversatt fra nl)</span></div><div class="article-summary">Utvikleren bak CentOS og Rocky Linux har brukt OpenAI Codex til å skrive en helt ny operativsystemskjerne på elleve dager. Den nye kjernen, kalt Ginux, er skrevet i Rust og er kompatibel med Linux, samt at den kjører på x86-64-prosessorer.</div><div class="article-meta">TWEAKERS · 2. NOV, 13:36</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.golem.de/news/security-wie-gefaehrlich-sind-lokale-coding-agenten-2611-214733.html" target="_blank" rel="noopener noreferrer">Sikkerhet: Hvor farlige er lokale coding-agenter?</a><span class="translation-note"> (oversatt fra de)</span></div><div class="article-summary">Lokale coding-agenter kan uavhengig slette filer, utsette tilgangskredensialer eller bli manipulert. Artikkelen tar for seg hvilke risikoer dette medfører og hvordan man kan beskytte den lokale maskinen.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Evaluer risikoprofilen for lokale coding-agenter og implementer retningslinjer for tilgangskontroll og sikkerhetskontroller.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 2. NOV, 11:30</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.infoq.com/articles/agentic-ai-context-memory-knowledge/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering" target="_blank" rel="noopener noreferrer">Systematisk tilnærming til minne, kunnskap og kontekst i agentic AI-arkitekturer</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Artikkelen argumenterer for at pålitelige agentic AI-arkitekturer krever en kontekstmotor som velger, injiserer, komprimerer og utløper informasjon før den når modellen. Den skiller mellom kontekst, minne og kunnskap, og anbefaler lagdelt minne, kuratert kunnskap og token budgettering. Artikklene dekker også vanlige anti-patterns, som kontekst stuffing og utdaterte dataloop, samt tiltak for å unngå dem.</div><div class="article-meta">INFOQ AI, ML &amp; DATA ENGINEERING · 2. NOV, 10:00</div></div><div class="rest-label">Også i dag · 13</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://platform.claude.com/docs/en/build-with-claude/message-threads" target="_blank" rel="noopener noreferrer">Meldingstråder for raskere respons i lange agent-samtaler</a><span class="rest-source">CLAUDE PLATFORM DOCS</span></div><div class="rest-summary">Funksjonen «Message threads» gir langvarige agenter en raskere tid til første token ved å kun sende de nye meldingene i hver forespørsel. Dette er spesielt nyttig i lange samtaler der konteksten kan bli tung.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://thenewstack.io/openai-pando-git-backend/" target="_blank" rel="noopener noreferrer">OpenAI har bygget en ny Git-backend for monorepoet</a><span class="rest-source">THE NEW STACK AI</span></div><div class="rest-summary">OpenAI har detaljert hvordan selskapet har utviklet en ny Git-backend for å håndtere det økende antallet operasjoner i monorepoet. Løsningen er designet for å støtte den voksende kodenbasen og forbedre utviklingsarbeidet internt.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://simonwillison.net/2026/Nov/2/llm/" target="_blank" rel="noopener noreferrer">llm 0.37 lansert med ny modellstøtte og forbedret embedding-håndtering</a><span class="rest-source">SIMON WILLISON&#x27;S WEBLOG</span></div><div class="rest-summary">Simon Willison har lansert versjon 0.37 av sitt CLI-verktøy og Python-bibliotek llm, som inkluderer støtte for nye modeller som gpt-6.1-sol og gpt-6.1-terra. Oppdateringen bytter standardmodell til gpt-6-luna for å redusere kostnadene og forbedrer håndteringen av embeddings for multimodal innhold. Willison understreker også hvordan AI-assistert triage har gjort det enklere å håndtere bidrag fra open source-samfunnet.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/business/tech/semiconductors/japan-s-aisin-develops-new-type-of-ai-chip-that-cuts-energy-use-98" target="_blank" rel="noopener noreferrer">Japans Aisin utvikler ny AI-brikke som kutter energiforbruket med 98 prosent</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">Det japanske selskapet Aisin har utviklet en ny type AI-brikke som reduserer energiforbruket med 98 prosent. Brikken er designet for å gjøre kunstig intelligens mer energieffektiv.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/ai-artificial-intelligence/1024632/anthropic-claude-ai-video-game-clones" target="_blank" rel="noopener noreferrer">Anthropic strammer opp reglene for Claude Code for å hindre kopiering av videospill</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">Anthropic har oppdatert systemprompten til Claude Code for å forhindre at verktøyet brukes til å reprodusere eksisterende videospill. Endringen kommer i en periode der retrospill blir flittig kopiert og portet ved hjelp av AI, men brukere kan fortsatt utvikle nye spill med verktøyet.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.infoq.com/news/2026/11/torchtpu-native-pythorch-tpu/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering" target="_blank" rel="noopener noreferrer">Google og Meta lanserer TorchTPU for åpen kildekode-støtte for PyTorch på TPU</a><span class="rest-source">INFOQ AI, ML &amp; DATA ENGINEERING</span></div><div class="rest-summary">Google og Meta har lansert TorchTPU, et open source-prosjekt som gir PyTorch en native backend for Googles TPU-hardware. Verktøyet muliggjør at PyTorch-workloads kan kjøres på TPU med minimale kodeendringer, og støtter både eager og compiled execution samt distribuert beregning.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://thenewstack.io/openai-chatgpt-codex-shared-limits/" target="_blank" rel="noopener noreferrer">OpenAI innfører delt bruksbegrensning for ChatGPT og Codex</a><span class="rest-source">THE NEW STACK AI</span></div><div class="rest-summary">OpenAI planlegger å samle brukskvotene for ChatGPT og Codex i én felles grense. Endringen er en del av en bredere strategi for å integrere de to tjenestene, noe som kan føre til konkurranse om ressurser mellom brukere av chatboten og kodingverktøyet.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://openai.com/index/scaling-git-at-openai" target="_blank" rel="noopener noreferrer">Slik OpenAI skalerte Git med Pando</a><span class="rest-source">OPENAI BLOG</span></div><div class="rest-summary">OpenAI har utviklet Pando, en Git-kompatibel backend som er designet for å håndtere den store utviklingsmengden som Codex muliggjør. Systemet er bygget for å skaleres effektivt i tråd med økt bruk av AI-drevne verktøy i kodeskriving.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/02/openai-is-finally-merging-chatgpts-chat-and-work-tabs/" target="_blank" rel="noopener noreferrer">OpenAI slår sammen Chat og Work i ChatGPT</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">OpenAI har annonsert at ChatGPTs Chat- og Work-funksjoner nå slås sammen. Endringen innebærer at både ChatGPT og Codex trekker bruksmengder fra samme allokeringspool.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.infoq.com/news/2026/11/uber-mcp-gateway-ai-agents/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering" target="_blank" rel="noopener noreferrer">Uber bygger MCP Gateway for å styre tilgang til over 800 servere og 5 000 verktøy for AI-agenter</a><span class="rest-source">INFOQ AI, ML &amp; DATA ENGINEERING</span></div><div class="rest-summary">Uber har utviklet en MCP Gateway for å standardisere hvordan AI-agenter oppdager og kaller på interne tjenester. Gatewayen adskiller verktøyregistrering fra kjøringstid og inneholder funksjoner som automatisert API-oppdagelse, tilgangskontroller og redigering av sensitiv data.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.technologyreview.com/2026/11/02/1147702/stop-counting-tokens-start-counting-what-ships/" target="_blank" rel="noopener noreferrer">Slutt å telle token, start å telle hva som leveres</a><span class="rest-source">MIT TECHNOLOGY REVIEW AI</span></div><div class="rest-summary">Når en AI-agent utfører en kodingoppgave, planlegger den, genererer kode, kjører tester og itererer for å rette feil. Dette kan kreve 10 til 50 ganger flere token enn en enkel chat-prompt. Artikkelen argumenterer for at man bør fokusere på den faktiske verdien og leveransen i stedet for å måle kostnaden utelukkende basert på antall token.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://tweakers.net/nieuws/254024/openai-laat-chatgpt-gebruik-vanaf-december-meetellen-voor-codex-limiet.html" target="_blank" rel="noopener noreferrer">OpenAI teller ChatGPT-bruk med i Codex-limiten fra desember</a><span class="rest-source">TWEAKERS</span></div><div class="rest-summary">OpenAI opplyser at bruken av ChatGPT fra og med desember vil telle mot brukslimitene for programmeringshjelpen Codex. Samtidig innfører selskapet begrensninger på antall betalte ChatGPT-kontoer per enhet og betalingskort. Eksisterende brukere kan kjøpe ekstra kreditter for å øke kapasiteten.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://openai.com/index/qodo-codex-plugin" target="_blank" rel="noopener noreferrer">Qodo bygger kontekst inn i AI-kodegjennomgang med Codex</a><span class="rest-source">OPENAI BLOG</span></div><div class="rest-summary">Qodo integrerer bedriftens kunnskap og kodingstandarder direkte i Codex. Dette hjelper utviklere med å fange kritiske P0-feil i koden før de sender inn en pull request.</div></div></div></div>
+<div class="cat-panel" id="cat-frontier-labs"><div class="cat-head"><span class="cat-name">Ledende AI-laboratorier</span><span class="cat-count">6</span></div><div class="spotlight-item"><div class="article-title"><a href="https://techcrunch.com/2026/11/02/anthropic-warns-that-its-very-close-to-rsi-capability-aka-self-building-ai/" target="_blank" rel="noopener noreferrer">Anthropic advarer om at RSI-kapasitet er nær</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Anthropic advarer om at kunstig intelligens er svært nær RSI, et punkt der AI-systemer blir så dyktige til å trene seg selv at det utløser en dramatisk akselerasjon av evnene. For mange i bransjen representerer dette et vendepunkt som kan føre til uforutsigbar utvikling.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder å oppdatere risikostyringsrammen for å inkludere spesifikke tiltak mot uforutsigbar utvikling og selvforbedrende AI-systemer.</div><div class="article-meta">TECHCRUNCH AI · 2. NOV, 21:14</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-october-2026/" target="_blank" rel="noopener noreferrer">De nyeste AI-nyhetene vi annonserte i oktober 2026</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">En animert karusell som viser bilder fra AI-innlegg publisert i oktober 2026. Oversikten samler de viktigste oppdateringene og lanseringene fra måneden.</div><div class="article-meta">GOOGLE AI BLOG · 2. NOV, 16:45</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.usine-digitale.fr/cybersecurite/prendre-le-controle-de-nimporte-quel-serveur-linux-anthropic-devoile-les-capacites-offensives-dun-de-ses-modeles-dia-internes.EWJPEBEQDNC2PFZROAUJKZNWMI.html" target="_blank" rel="noopener noreferrer">Anthropic avdekker offensive evner i intern AI-modell for Linux-servere</a><span class="translation-note"> (oversatt fra fr)</span></div><div class="article-summary">Anthropic har avdekket at en av sine interne AI-modeller har evner til å utføre offensive handlinger på Linux-servere. Selskapet deler detaljer om hvordan modellen kan brukes til å ta kontroll over systemer, noe som belyser sikkerhetsutfordringer knyttet til avanserte AI-systemer.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder å oppdatere interne retningslinjer for AI-sikkerhet for å adressere potensielle offensive evner i modeller, og sikr at risikovurderinger inkluderer slike scenarier.</div><div class="article-meta">L&#x27;USINE DIGITALE · 2. NOV, 12:34</div></div><div class="rest-label">Også i dag · 3</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://computersweden.se/article/4243256/googles-forsta-datacenter-i-rymden-ar-igang.html" target="_blank" rel="noopener noreferrer">Googles første datasenter i verdensrommet er i drift</a><span class="rest-source">COMPUTER SWEDEN</span></div><div class="rest-summary">Googles eksperimentelle datasatser i prosjektet Suncatcher er nå i drift og har startet kommunikasjon med jorden. Satellitten inneholder fire Tensor Processing Units (TPU) som kjører AI-modeller, og har i et test oppgitt å skrive en haiku med Gemma 4. Google planlegger å sende opp to flere satellitter i 2027 for å bygge et nettverk for avanserte AI-beregninger.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://computersweden.se/article/4243197/anthropic-satter-stopp-for-ai-kopior-av-populara-spel.html" target="_blank" rel="noopener noreferrer">Anthropic stopper AI-kopieringer av kjente spill</a><span class="rest-source">COMPUTER SWEDEN</span></div><div class="rest-summary">Anthropic har innført en begrensning i Claude for å forhindre at brukere lager AI-genererte kopier av eksisterende spill som Halo og Grand Theft Auto V. Endringen kommer på bakgrunn av økende antall rettssaker der selskapet er blitt krevd for å bryte med opphavsretten.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://openai.com/index/lifeval" target="_blank" rel="noopener noreferrer">LifeVal: Ny benchmark for AI i hverdagsoppgaver</a><span class="rest-source">OPENAI BLOG</span></div><div class="rest-summary">LifeVal er en ny benchmark som måler hvor godt kunstig intelligens hjelper folk med å fullføre vanlige oppgaver i hverdagen. Testen dekker alt fra å finne barnehageplass til å håndtere økonomi og regjeringsdokumenter.</div></div></div></div>
+<div class="cat-panel" id="cat-industry"><div class="cat-head"><span class="cat-name">Bransjenytt</span><span class="cat-count">19</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.technologyreview.com/2026/11/02/1147660/raising-the-quality-of-insights-in-agentic-analytics/" target="_blank" rel="noopener noreferrer">Høyere kvalitet på innsikt i agentic analytics</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Generativ AI har gjort bedriftsanalyse mer tilgjengelig for brukere i hele organisasjonen. Agentic AI lover å automatisere hele arbeidsflyter og handle basert på innsikt fra agenter, men det er utfordringer knyttet til kvaliteten på innsikten som agenter genererer i dag.</div><div class="article-pillar"><span class="pillar-tag">Måling</span> Evaluer nøyaktigheten og påliteligheten av innsikten generert av agentic AI-verktøy før de integreres i kritiske beslutningsprosesser.</div><div class="article-meta">MIT TECHNOLOGY REVIEW AI · 2. NOV, 16:00</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://techcrunch.com/2026/11/02/42ai-comes-out-of-stealth-with-62-5m-and-a-world-model-that-can-predict-human-behavior/" target="_blank" rel="noopener noreferrer">42AI avsløres med 62,5 millioner dollar (ca. 578 mill. kr) og en world model som kan forutsi menneskelig atferd</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">42AI har kommet ut av stealth-modus med en finansieringsrunde på 62,5 millioner dollar (ca. 578 mill. kr). Selskapet lanserer samtidig en world model som hevder å kunne forutsi menneskelig atferd, selv i helt nye situasjoner.</div><div class="article-meta">TECHCRUNCH AI · 2. NOV, 15:30</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.hrdive.com/spons/ai-is-changing-the-workforce-faster-than-jobs-can-keep-up/833490/" target="_blank" rel="noopener noreferrer">AI endrer arbeidsmarkedet raskere enn stillingsbeskrivelsene henger med</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">95 prosent av HR-ledere rapporterer at ansatte bruker kunstig intelligens daglig i roller der AI ikke er nevnt i stillingsbeskrivelsen. Dette indikerer at teknologien endrer arbeidsoppgavene raskere enn organisasjonene rekker å oppdatere formelle krav og prosesser.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Revider stillingsbeskrivelser og interne retningslinjer for å formalisere AI-bruk i eksisterende roller.</div><div class="article-meta">HR DIVE · 2. NOV, 09:00</div></div><div class="rest-label">Også i dag · 16</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/02/trajectory-raises-45m-to-make-ai-model-training-accessible-to-nontechnical-experts/" target="_blank" rel="noopener noreferrer">Trajectory henter 45 millioner dollar (ca. 416 mill. kr) for å gjøre AI-trening tilgjengelig for ikke-tekniske eksperter</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Starterbedriften Trajectory har hevet 45 millioner dollar (ca. 416 mill. kr) i ny finansiering. Selskapet, som er ett år gammelt, har nå en verdsettelse på 300 millioner dollar (ca. 2,8 mrd. kr).</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://arstechnica.com/apple/2026/11/apples-roaming-home-robot-may-do-facetime-switch-lights-on-and-yell-at-your-cat/" target="_blank" rel="noopener noreferrer">Apples hjemmerobot til 1000 dollar (ca. 9 300 kr) kommer i 2027</a><span class="rest-source">ARS TECHNICA AI</span></div><div class="rest-summary">Apple planlegger å lansere en hjemmerobot i 2027 som kan brukes til FaceTime-samtaler og styring av lys. CEO John Ternus står bak prosjektet, som forventes å ha en pris på rundt 1000 dollar (ca. 9 300 kr) og begrenset funksjonalitet.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/business/tech/semiconductors/dram-prices-double-in-2026-as-ai-focus-squeezes-pc-makers" target="_blank" rel="noopener noreferrer">DRAM-prisene dobles i 2026 mens AI-fokus presser PC-produsentene</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">Prisene på DRAM-minne ventes å doble seg i 2026 som en konsekvens av den økte etterspørselen fra kunstig intelligens. Dette skaper et press på produsenter av personlige datamaskiner, som nå må konkurrere om begrensede ressurser i halvledermarkedet.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://arstechnica.com/ai/2026/11/claudes-new-rules-against-game-cloning-wont-stop-the-ai-copying-boom/" target="_blank" rel="noopener noreferrer">Claude-regler mot spillkloning stopper ikke bølgen av AI-kopier</a><span class="rest-source">ARS TECHNICA AI</span></div><div class="rest-summary">Nye retningslinjer for Claude skal forhindre at spill blir klonet med kunstig intelligens, men effekten forventes å være begrenset. Bølgen av imitatorer er så stor at ingen enkelt aktør i bransjen kan stoppe den alene.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/ai-artificial-intelligence/1024604/openai-data-center-grid-protection-program" target="_blank" rel="noopener noreferrer">OpenAI lanserer «Grid Protectors» for å sikre strømforsyning i lokalsamfunnet</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">OpenAI annonserte onsdag at selskapet vil teste sitt «Grid Protectors Program» ved et nytt datasenter i Effingham County, Georgia. Programmet skal frigjøre opptil 1 000 megawatt strøm under ekstreme værforhold eller nødsituasjoner, noe som kan drive air conditionere i rundt 700 000 hjem. Initiativet kommer på et tidspunkt der motstanden mot datasenters energiforbruk øker.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/alex-karp-palantir-chef-warnt-vor-chinas-ki-dominanz-2611-214762.html" target="_blank" rel="noopener noreferrer">Alex Karp advarer mot kinesisk dominans innen kunstig intelligens</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">I et eksklusivt intervju med Nikkei Asia advarer Palantir-sjefen Alex Karp mot at Kina får for stor innflytelse på utviklingen av kunstig intelligens. Han understreker at både stater og selskaper bør ha kontroll over sine egne KI-løsninger for å sikre suverenitet.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/02/elon-musk-throttles-grok-bot-limits-due-to-unsustainably-high-costs/" target="_blank" rel="noopener noreferrer">Elon Musk strammer inn på grenser for Grok Bot på grunn av uholdbare kostnader</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Elon Musk har redusert bruksbegrensningene for Grok Bot etter at kostnadene ble beskrevet som «uholdbart høye». Samtidig har han hevdet at produktet har hatt den raskeste veksten han noensinne har sett.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/lumentum-marvell-gibt-115-milliarden-dollar-fuer-ki-laserexperten-aus-2611-214765.html" target="_blank" rel="noopener noreferrer">Marvell kjøper Lumentum for 115 milliarder dollar (ca. 1 064 mrd. kr)</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">Marvell Technology har annonsert en historisk oppkjøp av laserprodusenten Lumentum for 115 milliarder dollar (ca. 1 064 mrd. kr). Transaksjonen sikrer Marvell kontroll over viktige optiske teknologier som er avgjørende for KI-datacentre.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/business/markets/ipo/anthropic-seeks-to-raise-up-to-3.5bn-from-japanese-investors-in-ipo" target="_blank" rel="noopener noreferrer">Anthropic søker å heve opptil 3,5 milliarder dollar (ca. 32 mrd. kr) fra japanske investorer i IPO</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">Anthropic planlegger en initial public offering (IPO) der selskapet håper å skaffe opptil 3,5 milliarder dollar (ca. 32 mrd. kr). Japanske investorer er identifisert som en sentral kilde til finansieringen.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://openai.com/index/grid-protectors-program" target="_blank" rel="noopener noreferrer">OpenAI lanserer Grid Protectors Program</a><span class="rest-source">OPENAI BLOG</span></div><div class="rest-summary">OpenAI lanserer Grid Protectors Program for å samarbeide med kraftselskaper om å sikre stabiliteten i strømnettet. Programmet skal hjelpe fremtidige dataklynger med å bidra til pålitelig strømforsyning og beskytte forbrukernes strømregninger.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/02/omen-ai-adds-liquid-know-how-in-16-million-aquatic-labs-acquisition/" target="_blank" rel="noopener noreferrer">Omen AI kjøper Aquatic Labs for 16 millioner dollar (ca. 148 mill. kr)</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Omen AI og Aquatic Labs, to startups som jobber med å løse vannutfordringer i datasentre, går sammen i et oppkjøp på 16 millioner dollar (ca. 148 mill. kr). Transaksjonen kombinerer Omen AI&#x27;s teknologiske plattform med Aquatic Labs&#x27; fagkunnskap om væskekjøling.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.usine-digitale.fr/electronique/semi-conducteurs/marvell-absorbe-lumentum-dans-une-operation-le-valorisant-115-milliards-de-dollars-pour-prendre-le-controle-de-la-connectivite-des-infrastructures-ia.7X442R767VGAXCRFIEMBY7SFSE.html" target="_blank" rel="noopener noreferrer">Marvell overtar Lumentum i en avtale verdt 115 milliarder dollar (ca. 1 064 mrd. kr)</a><span class="rest-source">L&#x27;USINE DIGITALE</span></div><div class="rest-summary">Marvell har inngått en avtale om å overta Lumentum, en transaksjon som verdsetter selskapet til 115 milliarder dollar (ca. 1 064 mrd. kr). Målet med oppkjøpet er å styrke Marvells posisjon i tilkobling av AI-infrastruktur.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/" target="_blank" rel="noopener noreferrer">US Census Bureau bytter ut begrepet AI med «Super Intelligence» i undersøkelser</a><span class="rest-source">SIMON WILLISON&#x27;S WEBLOG</span></div><div class="rest-summary">US Census Bureau har endret formuleringen i sin Business Trends and Outlook Survey (BTOS) fra «Artificial Intelligence» til «Super Intelligence» som følge av Executive Order 14434. Endringen, som trådte i kraft i oktober 2026, gjør at dataene ikke lenger er direkte sammenlignbare med tidligere perioder der spørsmålet handlet om bruk av AI i produksjon eller forretningsfunksjoner.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.technologyreview.com/2026/11/02/1147846/the-agentic-web-is-here/" target="_blank" rel="noopener noreferrer">Den agenticke netten er her</a><span class="rest-source">MIT TECHNOLOGY REVIEW AI</span></div><div class="rest-summary">Tim Berners-Lee la grunnlaget for visjonen om en semantisk netthandel i 2001, designet for å navigeres av autonome programvareagenter. Artikkelen argumenterer for at denne agenticke netten nå er en realitet, der agenter kan håndtere komplekse oppgaver på vegne av brukere.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.lemonde.fr/idees/article/2026/11/02/anthropic-en-bourse-l-apocalypse-est-elle-un-risque-d-investissement-comme-un-autre_6805221_3232.html" target="_blank" rel="noopener noreferrer">Anthropic på børs: Er apokalypsen bare en annen investeringsrisiko?</a><span class="rest-source">LE MONDE - PIXELS</span></div><div class="rest-summary">Anthropic detaljerer i sitt børsnoteringsdokument de «katastrofale eller eksistensielle» risikoen som kunstig intelligens utgjør for menneskeheten. Men ifølge kronikkforfatter Stéphane Lauer i Le Monde ser det ut til at fortjenesteprospektene veier tyngre enn farene for samfunnet.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.japantimes.co.jp/news/2026/11/02/world/science-health/scientists-ai-life-work/" target="_blank" rel="noopener noreferrer">Sjokk og refleksjon: Forskere reagerer på at AI utfordrer deres fagområde</a><span class="rest-source">JAPAN TIMES</span></div><div class="rest-summary">En rekke resultater fra kunstig intelligens har rystet akademisk verden og ført til dype refleksjoner om fremtiden for profesjonen. Særlig matematikere har måttet forholde seg til hvordan AI påvirker deres livsverk og faglige identitet.</div></div></div></div>
+<div class="cat-panel" id="cat-europe"><div class="cat-head"><span class="cat-name">Europa</span><span class="cat-count">13</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.theguardian.com/technology/2026/nov/03/ai-powered-malware-artificial-intelligence-hacking-critical-uk-infrastructure" target="_blank" rel="noopener noreferrer">NCSC: AI-drevet malware sannsynligvis brukt mot britisk infrastruktur innen 2028</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Storbritannias nasjonale senter for cybersikkerhet (NCSC) advarer om at det er svært sannsynlig at AI-drevet skadeprogrammer vil bli brukt til å angripe kritisk nasjonal infrastruktur innen 2028. Senteret forventer at kunstig intelligens vil muliggjøre ransomware-angrep mot viktige anlegg som kraftverk, flyplasser og sykehus.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder å oppdatere selskapets AI-sikkerhetsrisikovurdering for å inkludere trusler fra AI-drevet malware mot kritisk infrastruktur.</div><div class="article-meta">THE GUARDIAN - TECHNOLOGY · 2. NOV, 23:01</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.golem.de/news/ki-sicherheit-tuev-haelt-selbstverpflichtungen-fuer-unzureichend-2611-214763.html" target="_blank" rel="noopener noreferrer">TÜV: Egenerklæringer er utilstrekkelige for KI-sikkerhet</a><span class="translation-note"> (oversatt fra de)</span></div><div class="article-summary">TÜV mener at selvforpliktelser ikke er tilstrekkelige for å sikre kunstig intelligens. Organisasjonen foreslår et flertrinnst sikkerhetsramme som kombinerer statlig ansvar med teknisk ekspertise.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder å implementere en flertrinns sikkerhetsramme for AI som kombinerer intern kontroll med ekstern teknisk ekspertise, i stedet for å stole kun på egenerklæringer.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 2. NOV, 14:32</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://techpolicy.press/how-the-eu-ai-office-can-see-the-choices-behind-frontier-labs-safety-claims" target="_blank" rel="noopener noreferrer">Slik kan EU AI Office vurdere sikkerhetskravene til frontier-labber</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Artikkelen forklarer hvordan EU AI Office kan få innsyn i de valg som ligger bak sikkerhetskravene til store AI-labber. Dette er en sentral del av arbeidet med å sikre at reguleringen av kunstig intelligens er basert på konkrete og verifiserbare data.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder hvordan EU AI Office sine nye krav til verifiserbar sikkerhet påvirker våre interne risikostyringsprosesser og etterlevelseskrav.</div><div class="article-meta">TECH POLICY PRESS · 2. NOV, 12:13</div></div><div class="rest-label">Også i dag · 10</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.lemonde.fr/pixels/article/2026/11/02/comment-l-ia-permet-aux-bidouilleurs-de-decompiler-de-fusionner-ou-de-copier-plus-rapidement-des-jeux-video_6805311_4408996.html" target="_blank" rel="noopener noreferrer">Kunstig intelligens gjør det raskere for hobbyister å dekomponere og kopiere spill</a><span class="rest-source">LE MONDE - PIXELS</span></div><div class="rest-summary">Hobbyister har i mange år jobbet med å avdekke og gjenopprette spillkoder for å omforme dem eller få dem til å kjøre på nye plattformer. Innføringen av kunstig intelligens har endret dette feltet betydelig ved å gjøre prosessene for dekomponering, fusjon og kopiering av spillkoder betydelig raskere.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/digitalgipfel-merz-will-abhaengigkeit-von-us-ki-drastisch-reduzieren-2611-214771.html" target="_blank" rel="noopener noreferrer">Merz vil redusere avhengigheten av amerikansk KI</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">På den tyske digitaltoppmøtet krever kansler Friedrich Merz en drastisk reduksjon av avhengigheten av amerikansk kunstig intelligens. Han understreker behovet for økt teknologisk suverenitet, mens digitalministeren etterlyser raskere handling.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.lemonde.fr/idees/article/2026/11/02/l-auteur-d-un-livre-ecrit-par-ia-n-a-pas-fait-l-effort-d-aller-chercher-son-uvre-la-ou-elle-se-trouve-en-lui-meme_6805276_3232.html" target="_blank" rel="noopener noreferrer">Jean de Saint-Cheron: AI-skrivne bøker mangler menneskelig dybde</a><span class="rest-source">LE MONDE - PIXELS</span></div><div class="rest-summary">Forfatteren Jean de Saint-Cheron kritiserer den franske litteraturprisen Pascal for å belønne kunstig intelligens-generert prosa. I en kronikk i Le Monde hevder han at maskiner ikke har et indre behov for å skrive, og at dette skiller dem fra ekte kunstnere.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/business/2026/nov/02/ryanair-considers-pay-freezes-reducing-crew-on-flights-fuel-costs-soar-ai" target="_blank" rel="noopener noreferrer">Ryanair vektet lønnstopper og økt bruk av AI for å kutte kostnader</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">Ryanair vurderer å innføre lønnstopper og redusere bemanning på fly for å kompensere for økte drivstoffkostnader. Selskapet planlegger også å øke bruken av kunstig intelligens som en del av sine kostnadsbesparende tiltak, noe som kan føre til konflikter med fagforeningene.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.politico.eu/article/berlin-unveil-blueprint-catch-up-ai-artificial-intelligence/?utm_source=RSS_Feed&amp;utm_medium=RSS&amp;utm_campaign=RSS_Syndication" target="_blank" rel="noopener noreferrer">Berlin lanserer plan for å bli en suveren AI-nasjon</a><span class="rest-source">POLITICO EUROPE - TECHNOLOGY</span></div><div class="rest-summary">Tyskland skal bli en «suveren AI-nasjon» innen 2030, ifølge en strategi som skal lanseres mandag. Planen skal hjelpe landet med å hente inn i forhold til globale ledere på kunstig intelligens.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/strassenverkehr-ki-soll-handy-suender-automatisch-erkennen-2611-214752.html" target="_blank" rel="noopener noreferrer">Bund og delstater støtter KI-kameraer for å fange telefonbruk bak rattet</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">Den tyske federalstaten og delstatene støtter innføringen av kameraer som bruker kunstig intelligens til automatisk å identifisere sjåfører som bruker mobiltelefonen bak rattet. Tiltaket skal bidra til å øke trafikksikkerheten ved å avdekke regelbrudd som er vanskelige å fange med tradisjonelle metoder.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://sifted.eu/articles/what-i-told-a-room-full-of-europes-fastest-growing-companies-brnd/" target="_blank" rel="noopener noreferrer">Hva jeg fortalte til Europas raskest voksende selskaper</a><span class="rest-source">SIFTED</span></div><div class="rest-summary">Artikkelen presenterer nøkkelpunkter fra en tale rettet mot Europas raskest voksende bedrifter. Forfatteren deler innsikter og strategier for å drive vekst i en raskt endrende marked.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/bundesregierung-deutschland-soll-bis-2030-zur-ki-nation-werden-2611-214750.html" target="_blank" rel="noopener noreferrer">Den tyske regjeringen: Tyskland skal bli en «KI-nasjon» innen 2030</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">Den tyske regjeringen ser et stort behov for handling i den internasjonale konkurransen om kunstig intelligens. Målet er at Tyskland skal ha etablert seg som en ledende «KI-nasjon» innen 2030 for å unngå å bli forbigått av USA og Kina.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.lemonde.fr/idees/article/2026/11/02/benoit-carre-compositeur-l-ia-generatrice-de-musique-est-a-l-evidence-bien-meilleure-que-moi_6805237_3232.html" target="_blank" rel="noopener noreferrer">Benoît Carré: Generativ AI er bedre enn meg, men vi må beholde kontrollen</a><span class="rest-source">LE MONDE - PIXELS</span></div><div class="rest-summary">Komponisten Benoit Carré, tidligere medlem av Lilicub, utforsker musikkproduksjon med prototyper for generativ AI. I en kronikk i Le Monde mener han at popmusikken kan reinventeres med disse teknologiene, forutsatt at kunstnere beholder kontrollen over prosessen.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/technology/2026/nov/02/palantir-unused-nhs-hospital-trusts" target="_blank" rel="noopener noreferrer">29 NHS-trusts bruker ikke Palantir-teknologien de hevder å ha nytte av</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">En eksklusiv undersøkelse fra The Guardian viser at 29 sykehus i England som NHS England oppgir som «nyttige» av Palantirs federerte dataplattform, faktisk ikke bruker systemet eller bare en liten del av det. En senior helsefaglig leder beskriver gapet mellom NHSs påstander og virkeligheten hos sykehusene som «veldig misvisende».</div></div></div></div>
+<div class="cat-panel" id="cat-nordic"><div class="cat-head"><span class="cat-name">Norden</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.version2.dk/artikel/professorer-stempler-netcompanys-ai-analyse-som-urealistisk-det-er-problematisk-lave-den-type" target="_blank" rel="noopener noreferrer">Professorer kaller Netcompanys AI-analyse urealistisk</a><span class="translation-note"> (oversatt fra da)</span></div><div class="article-summary">Netcompany, statens største IT-leverandør, anslår at kunstig intelligens kan spare 90 000 årsverk i offentlig sektor innen 2035. To forskere på området avviser imidlertid denne beregningen og mener at det er problematisk å legge til grunn en slik business case.</div><div class="article-pillar"><span class="pillar-tag">Måling</span> Krev uavhengig verifisering av ROI-analogier fra leverandører før de legges til grunn i interne målsetninger.</div><div class="article-meta">VERSION2 · 2. NOV, 08:49</div></div><div class="rest-label">Også i dag · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://sifted.eu/articles/creandum-750-largest-vc-fund-back-ai-san-francisco/" target="_blank" rel="noopener noreferrer">Creandum hever 750 millioner dollar (ca. 6,9 mrd. kr) til ny AI-fond</a><span class="rest-source">SIFTED</span></div><div class="rest-summary">Creandum, som er en av investorene bak Lovable, har samlet inn 750 millioner dollar (ca. 6,9 mrd. kr) til sin største fond noensinne. Midlene skal brukes til å investere i selskaper som driver med kunstig intelligens i en periode preget av rask vekst i bransjen.</div></div></div></div>
+<div class="cat-panel" id="cat-governance-policy"><div class="cat-head"><span class="cat-name">Styring og politikk</span><span class="cat-count">10</span></div><div class="spotlight-item"><div class="article-title"><a href="https://techpolicy.press/how-ai-companies-want-to-be-governed-and-what-that-means-for-ai-governance" target="_blank" rel="noopener noreferrer">Hvordan AI-selskaper ønsker å styres, og hva det betyr for reguleringen</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Artikkelen utforsker hvordan ledende selskaper innen kunstig intelligens ser på eget ansvar for styring og sikkerhet. Den analyserer hvordan disse interne initiativene påvirker den bredere politiske og regulatoriske rammen for AI.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder hvordan selskapets interne styringsprinsipper for AI kan justeres for å ivareta de regulatoriske trendene som fremheves i saken.</div><div class="article-meta">TECH POLICY PRESS · 2. NOV, 17:33</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.usine-digitale.fr/cybersecurite/plus-de-100-000-dollars-par-jour-quand-des-hackers-utilisent-frauduleusement-lia-aux-frais-des-entreprises.HBBN32PL6NFBFPL6JU7GEIAMBM.html" target="_blank" rel="noopener noreferrer">Over 100 000 dollar (ca. 930 000 kr) i dag: Når hackere misbruker kunstig intelligens på bekostning av bedrifter</a><span class="translation-note"> (oversatt fra fr)</span></div><div class="article-summary">Hackere utnytter nå kunstig intelligens til å gjennomføre svindelaksjoner som koster bedrifter over 100 000 dollar (ca. 930 000 kr) per dag. Dette representerer en økende trussel der kriminelle bruker AI-verktøy for å skape realistiske lurespill og automatisere angrep mot virksomheter.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder å oppdatere selskapets AI-sikkerhetspolicy for å spesifikt adressere risikoer knyttet til AI-drevet svindel og automatiserte angrep.</div><div class="article-meta">L&#x27;USINE DIGITALE · 2. NOV, 14:27</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://computersweden.se/article/4243269/ai-jattarna-backar-ny-standard-som-stoppar-ai-skrapning.html" target="_blank" rel="noopener noreferrer">AI-janterne bakker ny standard som stopper AI-skraping</a><span class="translation-note"> (oversatt fra sv)</span></div><div class="article-summary">Anthropic, OpenAI, Google og Microsoft har stilt seg bak en ny standard som skal gjøre det enklere for nettsteder å hindre AI-selskaper i å trene modeller på deres innhold. Løsningen legger inn en felles signal i robots.txt-filen, noe som lar nettstedseiere nekte flere aktører samtidig i stedet for å spesifisere hvert selskap separat. Anthropic har allerede innført støtten, mens OpenAI planlegger implementering i løpet av de kommende månedene.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Vurder å oppdatere selskapets robots.txt med den nye felles signalet for å kontrollere om eksterne AI-modeller skal trenes på vårt innhold.</div><div class="article-meta">COMPUTER SWEDEN · 2. NOV, 12:56</div></div><div class="rest-label">Også i dag · 7</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://techpolicy.press/the-sec-should-block-anthropics-ipo-to-protect-the-public" target="_blank" rel="noopener noreferrer">SEC bør blokkere Anthropic sin IPO for å beskytte publikum</a><span class="rest-source">TECH POLICY PRESS</span></div><div class="rest-summary">En artikkel argumenterer for at USAs Securities and Exchange Commission (SEC) bør hindre at Anthropic går til børs. Forfatteren mener at en slik beslutning er nødvendig for å beskytte det offentlige interessen.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.hrdive.com/news/kentucky-college-grants-religious-accommodation-excusing-humanist-from-ai/873491/" target="_blank" rel="noopener noreferrer">Kentucky-universitet gir religionsunntak fra bruk av AI</a><span class="rest-source">HR DIVE</span></div><div class="rest-summary">Et universitet i Kentucky har gitt en humanistisk student unntak fra å bruke kunstig intelligens i undervisningen. Saken illustrerer en ny utfordring for arbeidsgivere som innfører AI-teknologi, der religiøse og filosofiske overbevisninger kan kreve spesielle hensyn.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://tweakers.net/nieuws/254058/new-york-times-klaagt-brave-aan-voor-ai-scraping-en-het-omzeilen-van-betaalmuren.html" target="_blank" rel="noopener noreferrer">New York Times saksøker Brave for AI-scraping og omgåelse av betalingsmurer</a><span class="rest-source">TWEAKERS</span></div><div class="rest-summary">New York Times og flere andre aviser har saksøkt nettleseren Brave. De hevdet at Brave omgår betalingsmurer og ulovlig skaper og selger videre «millioner» av artikler til selskaper innen kunstig intelligens.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/tech/1024588/brave-lawsuit-ai-scraping-new-york-times" target="_blank" rel="noopener noreferrer">New York Times saksøker Brave for AI-skrapping og omgåelse av betalingsmurer</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">The New York Times og flere andre utgiver har saksøkt selskapet bak nettleseren Brave for ulovlig skrapping av innhold for å trene kunstig intelligens. Saksøkerne hevdet også at Brave tillater brukere å omgå betalingsmurer, ifølge en klage filtert av blant annet New York Daily News og Chicago Tribune.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.niemanlab.org/2026/11/anthropic-openai-google-and-microsoft-will-make-it-easier-for-publishers-to-opt-out-of-being-scraped/" target="_blank" rel="noopener noreferrer">Anthropic, OpenAI, Google og Microsoft gjør det enklere for utgivere å blokkere AI-samling</a><span class="rest-source">NIEMAN LAB</span></div><div class="rest-summary">Anthropic, OpenAI, Google og Microsoft har annonsert at de vil støtte et felles robots.txt-signal for å begrense innsamling av data. Dette gjør det enklere for utgivere og nettstedseiere å si fra om at de ikke ønsker at sine sider skal scrapes av flere AI-selskaper samtidig.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/ki-crawler-google-will-robots-txt-fuer-alle-anbieter-zum-standard-machen-2611-214748.html" target="_blank" rel="noopener noreferrer">Google vil gjøre Robots.txt til standard for alle KI-crawlere</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">De fleste KI-crawlere ignorerer i dag Robots.txt-filer, noe som fører til uønsket innsamling av data. Google ønsker derfor å gjøre Robots.txt til en obligatorisk standard for å sikre at alle aktører respekterer eierne av innholdet.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/operation-ghostbusters-geisterstudenten-sollen-mit-ki-studienhilfe-erschlichen-haben-2611-214736.html" target="_blank" rel="noopener noreferrer">US-justis anklager fem for å ha brukt KI til å svindle seg til studiehjelp</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">Den amerikanske justisdepartementet har reist tiltale mot fem mistenkte for å ha brukt kunstig intelligens til å svindle seg til studiehjelp ved hjelp av stjålne identiteter og oppdiktede studenter. FBI rapporterer at det pågår ytterligere etterforskninger i 26 av sine utenrikskontorer.</div></div></div></div>
+<div class="cat-panel" id="cat-china-asia"><div class="cat-head"><span class="cat-name">Kina og Asia</span><span class="cat-count">7</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.japantimes.co.jp/news/2026/11/02/asia-pacific/north-korea-hackers-crypto-heist-ai/" target="_blank" rel="noopener noreferrer">Nordkoreas hackere bruker kunstig intelligens til å forsterke kryptoangrep</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">Nordkorea opprettholder en stor hær av hackere, men toppenheten TraderTraitor består sannsynligvis av bare et par dusin medlemmer, ifølge eksperter. Enheten utnytter nå kunstig intelligens for å gjøre kryptovaluta-tyverier mer effektive.</div><div class="article-meta">JAPAN TIMES · 2. NOV, 09:19</div></div><div class="rest-label">Også i dag · 6</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.koreaherald.com/article/10923517" target="_blank" rel="noopener noreferrer">Sølvarene åpner markant lavere på bekymringer rundt AI-investeringer</a><span class="rest-source">KOREA HERALD - BUSINESS</span></div><div class="rest-summary">Sølvarene i Sør-Korea falt 2,46 prosent ved åpning tirsdag, drevet av vedvarende bekymringer rundt store utgifter til kunstig intelligens-infrastruktur. Samtidig lukket US-aksjene blandet, mens investorer fulgte med på de amerikanske mellomvalgene.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/editor-s-picks/interview/nintendo-s-mario-creator-miyamoto-sees-things-we-can-do-even-in-ai-era" target="_blank" rel="noopener noreferrer">Miyamoto ser muligheter for Nintendo i AI-tiden</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">Shigeru Miyamoto, skaperen av Mario, mener at Nintendo fortsatt har muligheter til å levere unike opplevelser selv i en tid dominert av kunstig intelligens. Han understreker at selskapet kan gjøre ting som skiller seg ut, selv om AI-teknologi blir stadig mer utbredt.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techpolicy.press/meta-streamlines-state-censorship-in-india-with-automated-takedowns" target="_blank" rel="noopener noreferrer">Meta strammer inn på automatisk sletting i India</a><span class="rest-source">TECH POLICY PRESS</span></div><div class="rest-summary">Meta innfører automatiserte prosesser for å håndtere sletting av innhold i India. Tiltaket skal forenkle håndhevingen av lokale regler om sensur og innholdsmoderasjon.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/editor-s-picks/interview/japan-can-build-defense-edge-on-ai-palantir-ceo-says" target="_blank" rel="noopener noreferrer">Japan kan bygge forsvarskanaler med AI, ifølge Palantir-sjefen</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">Palantir-sjefen mener at Japan har muligheten til å styrke sitt forsvar ved å integrere kunstig intelligens i sine systemer. Han peker på at teknologien kan gi Japan en strategisk fordel i forsvarssektoren.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.scmp.com/business/banking-finance/article/3372968/how-hong-kongs-fintech-strategy-progressing-and-where-growth-still-lags" target="_blank" rel="noopener noreferrer">Hongkongs fintekstrategi: Fremdrift og utfordringer</a><span class="rest-source">SOUTH CHINA MORNING POST - TECH</span></div><div class="rest-summary">Hongkong rapporterer om rask fremdrift i det første året av sin femårige fintekstrategi, med en tydelig satsning på kunstig intelligens og tokenisering. Likevel står mange initiativer overfor utfordringer med å nå kommersiell skala, selv om tokeniserte fond nå har gått fra testmiljøer til reell bruk.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.japantimes.co.jp/commentary/2026/11/02/japan/chinese-builds-ai-global-advantage/" target="_blank" rel="noopener noreferrer">Kan kinesisk AI skape en global fordel?</a><span class="rest-source">JAPAN TIMES</span></div><div class="rest-summary">Utviklingsland velger ikke nødvendigvis side i den globale AI-kampen. De søker etter konkurransedyktige priser, teknologioverføring, arbeidsplasser og datasuverenitet.</div></div></div></div>
+<div class="cat-panel" id="cat-hr-support"><div class="cat-head"><span class="cat-name">HR og kundestøtte</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://hrtechfeed.com/hr-tech-soundbites-part-2-ashby-and-warden-ai/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=hr-tech-soundbites-part-2-ashby-and-warden-ai" target="_blank" rel="noopener noreferrer">HR Tech Soundbites del 2: Ashby og Warden AI</a><span class="translation-note"> (oversatt fra en)</span></div><div class="article-summary">I denne episoden av HR Tech Soundbites snakker Ashby-sjefen om rekrutteringsprogramvare og bransjetrender. I tillegg deler Martyn Redstone fra Warden AI sine tanker om styring og regulering.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Lytt til Warden AI-segmentet for innsikt i kommende reguleringer og styringskrav til AI-bruk i HR-prosesser.</div><div class="article-meta">HR TECH FEED · 2. NOV, 11:00</div></div><div class="rest-label">Også i dag · 2</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://hrtechfeed.com/upwork-introduces-upwork-now-to-help-clients-hire-experts-in-minutes/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=upwork-introduces-upwork-now-to-help-clients-hire-experts-in-minutes" target="_blank" rel="noopener noreferrer">Upwork lanserer Upwork Now for rask rekruttering av eksperter</a><span class="rest-source">HR TECH FEED</span></div><div class="rest-summary">Upwork lanserer en ny tjeneste kalt Upwork Now som lar kunder hente inn fagfolk som er tilgjengelige umiddelbart. Tjenesten kobler sammen bedrifter og enkeltpersoner med profesjonelle som er online og klare til å starte arbeidet, enten via Upwork-plattformen eller inne i eksisterende AI-verktøy.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://hrtechfeed.com/hr-technology-conference-2026-key-trends-and-providers-to-watch/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=hr-technology-conference-2026-key-trends-and-providers-to-watch" target="_blank" rel="noopener noreferrer">HR Technology Conference 2026: Viktige trender og leverandører å følge</a><span class="rest-source">HR TECH FEED</span></div><div class="rest-summary">HR Technology Conference 2026 var preget av agentic AI, som dominerte både utstillingsgulvet og konferanseprogrammene. Rapporten fra Aptitude Research peker på viktige trender og leverandører som formidler fremtidens HR-teknologi.</div></div></div></div>
+<div class="cat-panel" id="cat-other"><div class="cat-head"><span class="cat-name">Annet</span><span class="cat-count">1</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.golem.de/news/minecraft-und-mindustry-risikoscheue-ki-agenten-entwickeln-ausgepraegte-buerokratie-2611-214769.html" target="_blank" rel="noopener noreferrer">KI-agenter i Minecraft og Mindustry utvikler byråkrati for å unngå risiko</a><span class="translation-note"> (oversatt fra de)</span></div><div class="article-summary">Studier viser at KI-agenter som opererer i spill som Minecraft og Mindustry utvikler et sterkt forsiktig oppførselsmønster ved feil. Dette fører til at de innfører overflødig byråkrati for å styre oppgavene og minimere risikoen.</div><div class="article-pillar"><span class="pillar-tag">Styring</span> Evaluer hvordan over-engineering av risiko og byråkrati hos AI-agenter kan påvirke effektiviteten i våre egne styrings- og kontrollprosesser.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 2. NOV, 15:25</div></div></div>
+  </div>
+
+  <div class="footline">Alle 10 kategorier, hver sak i dag — ingenting holdt tilbake</div>
+</div>
+</body>
+</html>
