@@ -1,5 +1,9 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
+- date: 2026-11-04
+  tag: Shipped
+  text: "The homepage opens on today's [morning briefing](/briefing/): how many news stories a local model read overnight and how many it kept, one mark per story. It updates with each new edition."
+  text_nb: "Forsiden åpner med dagens [morgenbriefing](/briefing/): hvor mange nyhetssaker en lokal modell leste i natt og hvor mange den beholdt, én strek per sak. Den oppdateres med hver nye utgave."
 - date: 2026-11-02
   tag: Fixed
   text: "Comments and reactions failed to load on Norwegian posts. Giscus has no Norwegian translation, so the comment box stays in English there."

@@ -214,3 +214,13 @@ defaultContentLanguage = 'en'
         text  = "Skriv spesifikasjonen offline på flyet. La en frontier-modell kode den når du lander."
         since = "2026-11"
         post  = "/blog/2026-11-02-local-llm-on-a-plane/"
+
+# The nightly briefing lives at repo root (briefing/), outside src/. Mounting it into
+# assets lets the homepage read today's edition at build time; the publisher's push redeploys.
+[module]
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+  [[module.mounts]]
+    source = "../briefing/index.html"
+    target = "assets/briefing-today.html"

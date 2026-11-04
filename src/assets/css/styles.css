@@ -124,6 +124,26 @@ h1, h2, h3, h4 { margin: 0; }
 .side dd { margin: 0; }
 .side .more { display: inline-block; margin-top: 12px; }
 
+/* Morning briefing ear: today's edition above the stream. The tally is the night's
+   intake, one mark per story read (--of); the teal marks are the ones kept (--kept) */
+.edition { margin: 0 0 38px; padding-top: 12px; border-top: 3px double var(--ink); }
+.edition__head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 0 0 14px; }
+.edition__name { font: 700 .95rem/1 var(--display); letter-spacing: -.01em; color: var(--teal); text-decoration: none; }
+.edition__name:hover { text-decoration: underline; text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
+.edition__date { font-size: .74rem; color: var(--muted); }
+.edition__claim { max-width: 30ch; margin: 0 0 18px; font: 650 clamp(1.45rem, 1.1rem + 1.2vw, 2rem)/1.14 var(--display); letter-spacing: -.02em; text-wrap: balance; }
+.edition__tally { position: relative; height: 22px; background: linear-gradient(90deg, var(--rule) 0 55%, transparent 55%) 0 0 / calc(100% / var(--of)) 100%; }
+.edition__tally::after { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(100% * var(--kept) / var(--of)); background: linear-gradient(90deg, var(--teal) 0 55%, transparent 55%) 0 0 / calc(100% / var(--kept)) 100%; transform-origin: left; }
+/* Under 560 px a mark would be thinner than a pixel and shimmer; the tally turns into two solid bars */
+@media (max-width: 559px) {
+  .edition__tally { height: 14px; background: var(--rule); }
+  .edition__tally::after { background: var(--teal); }
+}
+.edition__lead { margin: 16px 0 0; font: 400 1.05rem/1.45 var(--text); }
+.edition__lead span { font: 600 .8rem var(--display); color: var(--teal); }
+.edition__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; margin: 12px 0 0; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font-size: .74rem; color: var(--muted); }
+.edition__foot a { font: 500 .74rem var(--mono); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
+
 /* =============================================================================
    6. THE STREAM — post rows shared by the homepage, Writing and taxonomies
    ============================================================================= */
@@ -617,6 +637,10 @@ h1, h2, h3, h4 { margin: 0; }
     .folio__level:hover .level-card { transform: none; }
     .folio__level:hover .level-card__scale li.in::before { transform: none; }
   }
+
+  /* The kept marks sweep in once on load: the one moving thing in the ear */
+  .edition__tally::after { animation: tally 1400ms 500ms var(--ease-out) both; }
+  @keyframes tally { from { clip-path: inset(0 100% 0 0); } }
 
   .lightbox[open] { animation: zoom-in 300ms var(--ease-out); }
   @keyframes zoom-in { from { opacity: 0; transform: scale(.96); } }

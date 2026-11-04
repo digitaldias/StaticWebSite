@@ -34,6 +34,7 @@
       <a class="m more" href="{{ "/log/" | relLangURL }}">{{ i18n "fullLog" }} &rarr;</a>
     </aside>
     <div>
+      {{- partial "briefing-ear.html" . }}
       {{- partial "stream.html" (dict "pages" (first 12 $posts) "lead" true) }}
       {{- if gt (len $posts) 12 }}
       <a class="m stream-more" href="{{ "/blog/" | relLangURL }}">{{ i18n "allWriting" }} &rarr;</a>
