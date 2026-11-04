@@ -1,6 +1,10 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-04
+  tag: Site
+  text: "The latest supporter now gets the front page: their name as large as the line allows, with a teal stamp that says thank you and gives their number."
+  text_nb: "Den siste støttespilleren får nå forsiden: navnet så stort som linjen tillater, med et teal stempel som sier takk og gir nummeret deres."
+- date: 2026-11-04
   tag: Shipped
   text: "A [Supporters](/supporters/) page that thanks everyone who bought me a coffee, by name and message. Until the first one arrives, a hopeful dog in a party hat keeps the seat warm."
   text_nb: "En side for [støttespillere](/nb/supporters/) som takker alle som har spandert en kaffe, med navn og melding. Til den første kommer, holder en håpefull hund med festhatt plassen varm."

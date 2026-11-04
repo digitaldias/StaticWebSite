@@ -179,13 +179,24 @@ h1, h2, h3, h4 { margin: 0; }
 .cheers__cup { width: 32px; height: 32px; background: var(--teal); -webkit-mask: var(--cup) center / contain no-repeat; mask: var(--cup) center / contain no-repeat; }
 .cheers__latest { padding: 26px 0 30px; border-top: 3px double var(--ink); border-bottom: 1px solid var(--rule); }
 .cheers__tally + * { margin-top: 36px; }
-.cheers__latest .k { margin: 0 0 8px; color: var(--teal); }
-.cheers__name { margin: 0; font: 800 clamp(2.4rem, 1.4rem + 4vw, 5rem)/1 var(--display); letter-spacing: -.035em; text-wrap: balance; }
-.cheers__quote { max-width: 34ch; margin: 18px 0 0; padding-left: 18px; border-left: 3px solid var(--teal); font: italic 400 clamp(1.2rem, 1rem + .8vw, 1.6rem)/1.4 var(--text); }
-.cheers__date { display: block; margin-top: 16px; font-size: .74rem; color: var(--muted); }
+.cheers__edition { display: flex; flex-wrap: wrap; justify-content: flex-start; align-items: baseline; gap: 6px 18px; margin: 0 0 4px; }
+.cheers__edition .k { color: var(--teal); }
+.cheers__edition .m { font-size: .74rem; color: var(--muted); }
+.cheers__stage { --stamp: clamp(104px, 17vw, 196px); position: relative; padding: 8px calc(var(--stamp) * .62) 0 0; overflow-x: clip; overflow-clip-margin: 12px; }
+.cheers__name { display: inline-block; margin: 0; font: 800 100px/.92 var(--display); letter-spacing: -.045em; white-space: nowrap; }
+.cheers__name.wraps { display: block; white-space: normal; text-wrap: balance; }
+.cheers__stamp { position: absolute; right: 6px; top: 50%; width: var(--stamp); height: auto; color: var(--teal); transform: translateY(-50%) rotate(-14deg); pointer-events: none; }
+.cheers__stamp-line { fill: none; stroke: currentColor; stroke-width: 4; }
+.cheers__stamp-line.thin { stroke-width: 1.6; }
+.cheers__stamp-paper { fill: var(--ground); opacity: .92; }
+.cheers__stamp-rim { fill: currentColor; font: 700 15px var(--display); letter-spacing: .06em; text-transform: uppercase; }
+.cheers__stamp-label { fill: currentColor; font: 600 15px var(--mono); text-anchor: middle; }
+.cheers__stamp-number { fill: currentColor; font: 800 50px var(--display); text-anchor: middle; letter-spacing: -.03em; }
+.cheers__quote { max-width: 36ch; margin: 26px 0 0; padding-left: 20px; border-left: 4px solid var(--teal); font: italic 400 clamp(1.3rem, 1rem + 1.2vw, 2rem)/1.35 var(--text); text-wrap: pretty; }
 .cheers__earlier, .cheers__notes { margin-top: 36px; }
 .cheers h2 { margin: 0 0 14px; }
 .cheers__wall { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px; margin: 0; padding: 0; list-style: none; }
+.cheers__wall .m { margin-right: .4em; font-size: .62rem; font-weight: 500; color: var(--teal); vertical-align: .55em; letter-spacing: 0; }
 .cheers__wall li { font: 650 max(1.05rem, calc(2.1rem - var(--age) * .12rem))/1.2 var(--display); letter-spacing: -.02em; }
 .cheers__notes ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px 36px; margin: 0; padding: 0; list-style: none; }
 .cheers__notes li { padding-top: 14px; border-top: 1px solid var(--rule); }
@@ -701,8 +712,10 @@ h1, h2, h3, h4 { margin: 0; }
   .edition__tally::after { animation: tally 1400ms 500ms var(--ease-out) both; }
   @keyframes tally { from { clip-path: inset(0 100% 0 0); } }
 
-  /* Supporters: the cups pop in one by one, the one celebration moment on the page */
-  .cheers__cup { animation: cup-in 520ms var(--ease-out) both; animation-delay: calc(200ms + var(--i) * 90ms); }
+  /* Supporters: the stamp comes down on the name with a thud, then the cups pop in one by one */
+  .cheers__stamp { animation: stamp-in 560ms 450ms cubic-bezier(.3, 1.5, .5, 1) both; }
+  @keyframes stamp-in { from { opacity: 0; transform: translateY(-50%) rotate(-24deg) scale(1.9); } }
+  .cheers__cup { animation: cup-in 520ms var(--ease-out) both; animation-delay: calc(900ms + var(--i) * 90ms); }
   @keyframes cup-in { from { opacity: 0; transform: translateY(10px) scale(.6); } }
 
   .lightbox[open] { animation: zoom-in 300ms var(--ease-out); }

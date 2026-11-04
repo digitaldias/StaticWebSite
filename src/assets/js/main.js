@@ -808,11 +808,8 @@ function el(tag, className, text) {
   return node;
 }
 
-function supporterDate(entry) {
-  const date = el('time', 'm cheers__date');
-  date.dateTime = entry.date;
-  date.textContent = new Date(`${entry.date}T12:00:00Z`).toLocaleDateString(document.documentElement.lang || 'en', { day: 'numeric', month: 'long', year: 'numeric' });
-  return date;
+function supporterDay(entry) {
+  return new Date(`${entry.date}T12:00:00Z`).toLocaleDateString(document.documentElement.lang || 'en', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 function cheersCups(count) {
@@ -827,11 +824,70 @@ function cheersCups(count) {
   return cups;
 }
 
-function cheersLatest(entry) {
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function svgEl(tag, attributes, text) {
+  const node = document.createElementNS(SVG_NS, tag);
+  Object.entries(attributes).forEach(([name, value]) => node.setAttribute(name, value));
+  if (text != null) node.textContent = text;
+  return node;
+}
+
+/* A rubber stamp: "Thank you for the coffee" around the rim, the supporter's number in
+   the middle, edges roughened by a displacement filter so it reads as inked, not drawn */
+function cheersStamp(number) {
+  const svg = svgEl('svg', { viewBox: '0 0 200 200', class: 'cheers__stamp', 'aria-hidden': 'true' });
+  const filter = svgEl('filter', { id: 'stamp-ink' });
+  filter.append(
+    svgEl('feTurbulence', { type: 'fractalNoise', baseFrequency: '0.8', numOctaves: '2', result: 'grain' }),
+    svgEl('feDisplacementMap', { in: 'SourceGraphic', in2: 'grain', scale: '3' }),
+  );
+  const defs = svgEl('defs', {});
+  defs.append(filter, svgEl('path', { id: 'stamp-rim', d: 'M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0' }));
+  const words = t('stampText');
+  const rim = svgEl('text', { class: 'cheers__stamp-rim' });
+  rim.append(svgEl('textPath', { href: '#stamp-rim', textLength: '460', lengthAdjust: 'spacing' }, words.length < 20 ? `${words} · ${words} · ` : `${words} · `));
+  const ink = svgEl('g', { filter: 'url(#stamp-ink)' });
+  ink.append(
+    svgEl('circle', { cx: 100, cy: 100, r: 97, class: 'cheers__stamp-paper' }),
+    svgEl('circle', { cx: 100, cy: 100, r: 95, class: 'cheers__stamp-line' }),
+    svgEl('circle', { cx: 100, cy: 100, r: 56, class: 'cheers__stamp-line thin' }),
+    rim,
+    svgEl('text', { x: 100, y: 84, class: 'cheers__stamp-label' }, t('stampNo')),
+    svgEl('text', { x: 100, y: 128, class: 'cheers__stamp-number' }, String(number)),
+  );
+  svg.append(defs, ink);
+  return svg;
+}
+
+/* Sets the name as large as its line allows, so a short name becomes a headline and a long one still fits */
+function fitName(name) {
+  const stage = name.parentElement;
+  let lastWidth = 0;
+  const fit = () => {
+    if (stage.clientWidth === lastWidth) return;
+    lastWidth = stage.clientWidth;
+    name.classList.remove('wraps');
+    name.style.fontSize = '100px';
+    const room = stage.clientWidth - parseFloat(getComputedStyle(stage).paddingRight);
+    const size = 100 * (room / name.offsetWidth) * 0.96;
+    name.style.fontSize = `${Math.max(40, Math.min(220, size))}px`;
+    name.classList.toggle('wraps', size < 40);
+  };
+  document.fonts.ready.then(() => { lastWidth = 0; fit(); });
+  new ResizeObserver(fit).observe(stage);
+}
+
+function cheersLatest(entry, number) {
   const latest = el('article', 'cheers__latest');
-  latest.append(el('p', 'k', t('cheersLatest')), el('p', 'cheers__name', entry.name));
+  const edition = el('p', 'cheers__edition');
+  edition.append(el('span', 'k', t('cheersLatest')), el('span', 'm', entry.date ? `${t('stampNo')} ${number} · ${supporterDay(entry)}` : `${t('stampNo')} ${number}`));
+  const stage = el('div', 'cheers__stage');
+  const name = el('p', 'cheers__name', entry.name);
+  stage.append(name, cheersStamp(number));
+  latest.append(edition, stage);
   if (entry.message) latest.append(el('blockquote', 'cheers__quote', entry.message));
-  if (entry.date) latest.append(supporterDate(entry));
+  fitName(name);
   return latest;
 }
 
@@ -839,8 +895,9 @@ function cheersWall(earlier) {
   const section = el('section', 'cheers__earlier');
   const wall = el('ol', 'cheers__wall');
   earlier.forEach((entry, age) => {
-    const name = el('li', null, entry.name);
+    const name = el('li');
     name.style.setProperty('--age', age);
+    name.append(el('span', 'm', `${t('stampNo')} ${earlier.length - age}`), entry.name);
     wall.append(name);
   });
   section.append(el('h2', 'k', t('cheersEarlier')), wall);
@@ -867,7 +924,7 @@ async function initSupporterPage() {
   const [latest, ...earlier] = supporters;
   const tally = el('div', 'cheers__tally');
   tally.append(cheersCups(supporters.length), el('p', 'm cheers__count', t('cheersCount')(supporters.length)));
-  const parts = [cheersLatest(latest), tally];
+  const parts = [cheersLatest(latest, supporters.length), tally];
   if (earlier.length) parts.push(cheersWall(earlier));
   if (earlier.some(entry => entry.message)) parts.push(cheersNotes(earlier));
   page.replaceChildren(...parts);
