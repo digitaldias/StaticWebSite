@@ -35,6 +35,8 @@ Pedro Dias
 - **Writing** (`/blog/`): Every post, filterable by category
 - **Log** (`/log/`): Short dated notes on what Pedro is building, shipping and fixing, plus a row for every published post
 - **Photographs** (`/photography/`): A curated grid of photographs from Flickr, each opening large
+- **Supporters** (`/supporters/`): Thanks everyone who bought Pedro a coffee on Ko-fi and kept it public, by name and message (never the amount). The list is read from `/supporters.json`, which a Ko-fi webhook keeps up to date.
+- **Morning briefing** (`/briefing/`): A daily AI news briefing in Norwegian, sorted overnight by a local model
 - **About** (`/about/`): Portrait, biography, a track list of milestones and the positions Pedro holds, with links to the posts that argue them
 - **Categories** (`/categories/<name>/`): Posts grouped by topic (Architecture, Azure, AI, Development, DevOps, Family, Photography)
 - **Tags** (`/tags/<name>/`): Posts tagged with specific technologies
@@ -57,6 +59,8 @@ Pedro Dias
 - `/log/` - Ship's log
 - `/photography/` - Photographs
 - `/about/` - About Pedro
+- `/supporters/` - Ko-fi supporters
+- `/briefing/` - Morning AI briefing (Norwegian)
 - `/index.xml` - Global RSS feed
 - `/blog/index.xml` - Blog RSS feed
 - `/sitemap.xml` - Full site map
@@ -128,6 +132,7 @@ When helping users with this site:
 - **2025-11-19:** Migrated from hand-coded HTML to Hugo
 - **2026-11-01:** Reader tools: section chart, resume slip, passage citations
 - **2026-11-01:** Sea Glass redesign: new palette and type, light and dark themes, split homepage, Ship's log, Photographs and About pages
+- **2026-11-04:** Morning briefing on the homepage, a new footer, and a Supporters page fed by a Ko-fi webhook
 
 ## Statistics (as of 2026-11-01)
 

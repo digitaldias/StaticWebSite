@@ -30,11 +30,11 @@ public sealed class SupporterTests
     }
 
     [Fact]
-    public void Blank_name_becomes_someone_and_blank_message_is_dropped()
+    public void Blank_name_and_blank_message_are_dropped()
     {
         var supporter = Supporter.From(Payment(name: "  ", message: " "));
 
-        Assert.Equal("Someone", supporter.Name);
+        Assert.Null(supporter.Name);
         Assert.Null(supporter.Message);
     }
 

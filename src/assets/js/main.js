@@ -779,19 +779,57 @@ function supportersLine(names) {
   return `${t('thanksLead')} ${listed}.`;
 }
 
+let supportersRequest;
+
+/* One fetch per page, shared by the footer line and the supporters page; any failure means "none yet" */
+function loadSupporters() {
+  supportersRequest ??= fetch('/supporters.json', { headers: { Accept: 'application/json' } })
+    .then(response => (response.ok ? response.json() : []))
+    .then(list => (Array.isArray(list) ? list.filter(Boolean).map(entry => ({ ...entry, name: entry.name || t('someone') })) : []))
+    .catch(() => []);
+  return supportersRequest;
+}
+
 async function initSupporters() {
   const line = document.querySelector('[data-supporters]');
   if (!line) return;
-  try {
-    const response = await fetch('/supporters.json', { headers: { Accept: 'application/json' } });
-    if (!response.ok) return;
-    const names = (await response.json()).map(entry => entry.name).filter(Boolean);
-    if (!names.length) return;
-    line.textContent = supportersLine(names);
-    line.hidden = false;
-  } catch {
-    /* No list, no line: the footer reads fine without it */
+  const supporters = await loadSupporters();
+  if (!supporters.length) return;
+  line.textContent = supportersLine(supporters.map(entry => entry.name));
+  line.hidden = false;
+}
+
+function supporterItem(entry) {
+  const item = document.createElement('li');
+  item.className = 'supporter reveal';
+  const name = document.createElement('p');
+  name.className = 'supporter__name';
+  name.textContent = entry.name;
+  item.append(name);
+  if (entry.message) {
+    const message = document.createElement('blockquote');
+    message.className = 'supporter__message';
+    message.textContent = entry.message;
+    item.append(message);
   }
+  if (entry.date) {
+    const date = document.createElement('time');
+    date.className = 'm supporter__date';
+    date.dateTime = entry.date;
+    date.textContent = new Date(`${entry.date}T12:00:00Z`).toLocaleDateString(document.documentElement.lang || 'en', { day: 'numeric', month: 'long', year: 'numeric' });
+    item.append(date);
+  }
+  return item;
+}
+
+async function initSupporterPage() {
+  const list = document.querySelector('[data-supporter-list]');
+  if (!list) return;
+  const supporters = await loadSupporters();
+  if (!supporters.length) return;
+  list.replaceChildren(...supporters.map(supporterItem));
+  list.hidden = false;
+  document.querySelector('[data-supporter-empty]')?.setAttribute('hidden', '');
 }
 
 /* ─────────────────────────────────────────────
@@ -811,4 +849,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initGiscus();
   initKofiTracking();
   initSupporters();
+  initSupporterPage();
 });

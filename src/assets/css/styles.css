@@ -101,6 +101,8 @@ h1, h2, h3, h4 { margin: 0; }
 .foot__end { display: flex; align-items: center; gap: 18px; margin: 44px 0 0; }
 .foot__end::before, .foot__end::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
 .foot__end abbr { font: 800 1.5rem/1 var(--display); letter-spacing: .02em; color: var(--teal); text-decoration: none; cursor: help; }
+.foot__coffee .foot__supporters { display: block; width: fit-content; margin-top: 12px; font: 400 .74rem var(--mono); color: var(--muted); text-decoration: none; }
+.foot__coffee .foot__supporters:hover { color: var(--teal); }
 @media (min-width: 760px) {
   .foot__grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, .8fr) minmax(0, .8fr) minmax(0, 1.3fr); gap: 24px 40px; }
   .foot__id, .foot__coffee { grid-column: auto; }
@@ -166,6 +168,25 @@ h1, h2, h3, h4 { margin: 0; }
 .edition__lead span { font: 600 .8rem var(--display); color: var(--teal); }
 .edition__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; margin: 12px 0 0; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font-size: .74rem; color: var(--muted); }
 .edition__foot a { font: 500 .74rem var(--mono); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
+
+/* Supporters page: a ruled list of everyone who kept their coffee public, or, while
+   there is nobody yet, the hopeful dog and a way to be first */
+.supporters { list-style: none; margin: 34px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0 40px; }
+.supporter { padding: 18px 0 22px; border-top: 1px solid var(--rule); }
+.supporter__name { margin: 0; font: 650 1.45rem/1.15 var(--display); letter-spacing: -.02em; }
+.supporter__message { margin: 10px 0 0; font: italic 400 1.02rem/1.5 var(--text); color: var(--ink); }
+.supporter__date { display: block; margin-top: 10px; font-size: .72rem; color: var(--muted); }
+.supporters-empty { display: grid; gap: 22px 48px; margin: 34px 0 0; align-items: center; }
+.supporters-empty__fig { margin: 0; background: var(--ground-2); }
+.supporters-empty__fig img { display: block; width: 100%; height: auto; }
+.supporters-empty__text h2 { margin: 0 0 12px; font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); line-height: 1.1; text-wrap: balance; }
+.supporters-empty__text p { max-width: 42ch; margin: 0 0 16px; font: 400 1.05rem/1.55 var(--text); color: var(--muted); }
+.supporters-empty__text a { font: 600 1rem var(--display); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 4px; }
+.supporters[hidden], .supporters-empty[hidden] { display: none; }
+.supporters-how { max-width: 65ch; margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: .95rem; }
+@media (min-width: 900px) {
+  .supporters-empty { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+}
 
 /* =============================================================================
    6. THE STREAM — post rows shared by the homepage, Writing and taxonomies

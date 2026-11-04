@@ -2,6 +2,10 @@
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-04
   tag: Shipped
+  text: "A [Supporters](/supporters/) page that thanks everyone who bought me a coffee, by name and message. Until the first one arrives, a hopeful dog in a party hat keeps the seat warm."
+  text_nb: "En side for [støttespillere](/nb/supporters/) som takker alle som har spandert en kaffe, med navn og melding. Til den første kommer, holder en håpefull hund med festhatt plassen varm."
+- date: 2026-11-04
+  tag: Shipped
   text: "When someone buys me a coffee on Ko-fi and keeps it public, the footer now says thank you by name. A small Azure Function catches Ko-fi's webhook; the site itself stays static."
   text_nb: "Når noen spanderer en kaffe på Ko-fi og lar det være offentlig, takker bunnteksten nå ved navn. En liten Azure Function tar imot Ko-fi-webhooken, mens selve nettstedet forblir statisk."
 - date: 2026-11-04
