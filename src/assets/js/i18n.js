@@ -36,6 +36,9 @@ const STRINGS = {
     lightboxAria: 'Enlarged image',
     close: 'Close',
     level: 'Level',
+    thanksLead: 'Thanks for the coffee,',
+    and: 'and',
+    others: n => (n === 1 ? '1 other' : `${n} others`),
   },
   nb: {
     arrived: 'Fremme',
@@ -67,6 +70,9 @@ const STRINGS = {
     lightboxAria: 'Forstørret bilde',
     close: 'Lukk',
     level: 'Nivå',
+    thanksLead: 'Takk for kaffen,',
+    and: 'og',
+    others: n => (n === 1 ? '1 annen' : `${n} andre`),
   },
 };
 

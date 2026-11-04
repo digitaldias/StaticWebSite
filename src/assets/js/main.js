@@ -765,6 +765,36 @@ function initKofiTracking() {
 }
 
 /* ─────────────────────────────────────────────
+   Supporters: thank public Ko-fi supporters in the footer.
+   /supporters.json is written by the Ko-fi webhook (functions/KofiSupporters),
+   newest first; a missing or empty file shows nothing.
+───────────────────────────────────────────── */
+const SUPPORTERS_SHOWN = 3;
+
+function supportersLine(names) {
+  const shown = names.slice(0, SUPPORTERS_SHOWN);
+  const rest = names.length - shown.length;
+  const parts = rest > 0 ? [...shown, t('others')(rest)] : shown;
+  const listed = parts.length > 1 ? `${parts.slice(0, -1).join(', ')} ${t('and')} ${parts.at(-1)}` : parts[0];
+  return `${t('thanksLead')} ${listed}.`;
+}
+
+async function initSupporters() {
+  const line = document.querySelector('[data-supporters]');
+  if (!line) return;
+  try {
+    const response = await fetch('/supporters.json', { headers: { Accept: 'application/json' } });
+    if (!response.ok) return;
+    const names = (await response.json()).map(entry => entry.name).filter(Boolean);
+    if (!names.length) return;
+    line.textContent = supportersLine(names);
+    line.hidden = false;
+  } catch {
+    /* No list, no line: the footer reads fine without it */
+  }
+}
+
+/* ─────────────────────────────────────────────
    Boot
 ───────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -780,4 +810,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initImageLightbox();
   initGiscus();
   initKofiTracking();
+  initSupporters();
 });

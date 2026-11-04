@@ -22,11 +22,11 @@ Goal: when someone buys Pedro a coffee and chooses to be public, the blog thanks
 
 ## Steps
 
-- [ ] Function: parse payload, verify token, skip duplicates, append public supporters (unit tests for parsing, token check and the public filter)
-- [ ] Azure: Function App, managed identity role, app setting for the token
-- [ ] Ko-fi: set the webhook URL, send a test tip, confirm `supporters.json` updates, then remove the test entry
-- [ ] Blog: `initSupporters` in `main.js`, strings in `i18n.js` for EN and NO, Ship's log note
-- [ ] Privacy: one line on the About page that a name can be removed on request
+- [x] Function: parse payload, verify token, skip duplicates, append public supporters (unit tests for parsing, token check and the public filter)
+- [x] Azure: Function App, managed identity role, app setting for the token
+- [x] Ko-fi: set the webhook URL, send a test tip, confirm `supporters.json` updates, then remove the test entry
+- [x] Blog: `initSupporters` in `main.js`, strings in `i18n.js` for EN and NO, Ship's log note
+- [x] Privacy: one line on the About page that a name can be removed on request
 
 ## Out of scope
 

@@ -43,3 +43,6 @@ Thumbs.db
 
 # Misc
 *.local
+
+# Written by the Ko-fi webhook in production; a local copy here would overwrite the real list on deploy
+src/static/supporters.json

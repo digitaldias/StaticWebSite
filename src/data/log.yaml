@@ -1,6 +1,10 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-04
+  tag: Shipped
+  text: "When someone buys me a coffee on Ko-fi and keeps it public, the footer now says thank you by name. A small Azure Function catches Ko-fi's webhook; the site itself stays static."
+  text_nb: "Når noen spanderer en kaffe på Ko-fi og lar det være offentlig, takker bunnteksten nå ved navn. En liten Azure Function tar imot Ko-fi-webhooken, mens selve nettstedet forblir statisk."
+- date: 2026-11-04
   tag: Site
   text: "The briefing line on the homepage is worded differently with each edition, from parts that will not repeat as a whole for about six years. The numbers stay the same, only the wording changes."
   text_nb: "Briefinglinjen på forsiden får ny ordlyd for hver utgave, satt sammen av deler som ikke gjentar seg som helhet på rundt seks år. Tallene er de samme, bare formuleringen endres."

@@ -126,6 +126,10 @@ CSS conventions: mobile-first rules; breakpoints at 400 / 520 / 560 / 700 / 760 
 
 Hugo template conventions: in the blog section `.PrevInSection` is the older post and `.NextInSection` the newer one (the "Next entry" link uses `.PrevInSection`); use `{{- -}}` for whitespace control; guard optional params with `{{ with .Params.excerpt }}{{ . }}{{ end }}`; internal links via `.RelPermalink`; render HTML content via `{{ .Content | safeHTML }}`.
 
+## Ko-fi supporters
+
+`functions/KofiSupporters` (.NET 10 isolated, Flex Consumption app `digitaldias-kofi` in Pedro's personal subscription, resource group `puppytrackerRG`) receives Ko-fi's webhook at `/api/kofi`, checks `KOFI_VERIFICATION_TOKEN` (an app setting, never in the repo) and, only when `is_public` is true, adds name, message, type and date to `supporters.json` in the blog's `$web` container (storage account `puppytrackerstorage`, written through the app's managed identity). `initSupporters` in `main.js` reads it for the footer's thank-you line. Never put a `supporters.json` in `src/static`: the deploy's `upload-batch --overwrite` would replace the real list (it is in `.gitignore`). Deploy the function with `func azure functionapp publish digitaldias-kofi --dotnet-isolated` from `functions/KofiSupporters`; tests run with `dotnet test` in `functions/`.
+
 ## CSP
 
 The Content Security Policy is hardcoded in `layouts/partials/head.html`. Any new external resource (font, script, image host) requires updating the CSP there explicitly.
