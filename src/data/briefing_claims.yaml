@@ -1,0 +1,103 @@
+# Phrase parts for the homepage briefing claim ("Overnight, a local model read 306 news
+# stories and kept the 110 about AI."). partials/briefing-claim.html picks one entry from
+# every list by the edition's day number: entry = day modulo the list's length. Every part
+# changes every day, and because the five lengths share no factor (2, 5, 3, 7 and 11) the
+# whole sentence does not repeat for 2 x 5 x 3 x 7 x 11 = 2 310 days.
+#
+# Editing: keep the lengths pairwise coprime (scripts/briefing-claims.py refuses otherwise),
+# then run `python scripts/briefing-claims.py --all` and read every combination: they all
+# go live. Each entry must stay true; "read" and "scored" are, "understood" is not.
+#
+# Patterns: {Time} is a time's lead form, which opens the sentence with its own comma
+# (Norwegian puts one after a leading clause like "Mens du sov," but not after "I natt");
+# {time} is its mid form. {Subject} is capitalised, {subject} is not. Norwegian keeps the
+# verb second, so after {Time} the verb comes before the subject.
+# Reads: verb and rest are split for that inversion ("I natt gikk en modell gjennom ...").
+# Ends: start with " and ..." or ". ...", since they attach straight to the sentence.
+# {of}, {kept}, {share} and {Share} are filled in from the edition's numbers.
+
+en:
+  patterns:
+    - "{Time} {subject} {verb} {rest}{end}"
+    - "{Subject} {verb} {rest} {time}{end}"
+  times:
+    - { lead: "Overnight,", mid: "overnight" }
+    - { lead: "Last night,", mid: "last night" }
+    - { lead: "While you slept,", mid: "while you slept" }
+    - { lead: "Before sunrise,", mid: "before sunrise" }
+    - { lead: "In the small hours,", mid: "in the small hours" }
+  subjects:
+    - "a local model"
+    - "a model on my own PC"
+    - "a small model here at home"
+  reads:
+    - { verb: "read", rest: "{of} news stories" }
+    - { verb: "went", rest: "through {of} news stories" }
+    - { verb: "sifted", rest: "through {of} news stories" }
+    - { verb: "worked", rest: "through {of} news stories" }
+    - { verb: "combed", rest: "through {of} news stories" }
+    - { verb: "sorted", rest: "{of} news stories" }
+    - { verb: "scored", rest: "{of} news stories" }
+  ends:
+    - " and kept the {kept} about AI."
+    - " and held on to the {kept} about AI."
+    - " and kept {share}: the {kept} that are about AI."
+    - ". Only {kept} were about AI."
+    - " and threw out all but the {kept} about AI."
+    - ". {kept} of them were about AI, and those are the ones you get."
+    - " and picked out the {kept} about AI."
+    - " and weeded out everything not about AI. {kept} stories were left."
+    - ". {Share} were about AI: {kept} in all."
+    - " and kept only what was about AI: {kept} stories."
+    - " and found {kept} about AI."
+  shares:
+    - { at: 0.2, name: "a fifth" }
+    - { at: 0.25, name: "a quarter" }
+    - { at: 0.3333, name: "a third" }
+    - { at: 0.5, name: "half" }
+    - { at: 0.6667, name: "two thirds" }
+    - { at: 0.75, name: "three quarters" }
+  qualifiers: { about: "roughly", justOver: "just over", justUnder: "just under", over: "over", under: "under" }
+
+nb:
+  patterns:
+    - "{Time} {verb} {subject} {rest}{end}"
+    - "{Subject} {verb} {rest} {time}{end}"
+  times:
+    - { lead: "I natt", mid: "i natt" }
+    - { lead: "Mens du sov,", mid: "mens du sov" }
+    - { lead: "Før det lysnet,", mid: "før det lysnet" }
+    - { lead: "I løpet av natten", mid: "i løpet av natten" }
+    - { lead: "I de små timer", mid: "i de små timer" }
+  subjects:
+    - "en lokal modell"
+    - "en modell på PC-en min"
+    - "en liten modell her hjemme"
+  reads:
+    - { verb: "leste", rest: "{of} nyhetssaker" }
+    - { verb: "gikk", rest: "gjennom {of} nyhetssaker" }
+    - { verb: "silte", rest: "{of} nyhetssaker" }
+    - { verb: "pløyde", rest: "gjennom {of} nyhetssaker" }
+    - { verb: "saumfor", rest: "{of} nyhetssaker" }
+    - { verb: "sorterte", rest: "{of} nyhetssaker" }
+    - { verb: "vurderte", rest: "{of} nyhetssaker" }
+  ends:
+    - " og beholdt de {kept} som handler om AI."
+    - " og tok vare på de {kept} som handler om AI."
+    - " og beholdt {share}: de {kept} som handler om AI."
+    - ". Bare {kept} handlet om AI."
+    - " og kastet alt unntatt de {kept} som handler om AI."
+    - ". {kept} av dem handlet om AI, og det er dem du får."
+    - " og plukket ut de {kept} som handler om AI."
+    - " og luket bort alt som ikke handler om AI. Igjen står {kept} saker."
+    - ". {Share} handlet om AI, {kept} i alt."
+    - " og beholdt bare det som handler om AI: {kept} saker."
+    - " og fant {kept} som handler om AI."
+  shares:
+    - { at: 0.2, name: "en femtedel" }
+    - { at: 0.25, name: "en fjerdedel" }
+    - { at: 0.3333, name: "en tredjedel" }
+    - { at: 0.5, name: "halvparten" }
+    - { at: 0.6667, name: "to tredjedeler" }
+    - { at: 0.75, name: "tre fjerdedeler" }
+  qualifiers: { about: "rundt", justOver: "litt over", justUnder: "litt under", over: "over", under: "under" }

@@ -1,0 +1,35 @@
+{{- /* The briefing claim, worded anew for each edition. Takes (dict "date" "2026-11-04"
+       "kept" 110 "of" 306) and returns the sentence, built from data/briefing_claims.yaml
+       for the current language. Each part is the edition's day number modulo its list's
+       length; the lengths share no factor, so no sentence repeats until all are used.
+       scripts/briefing-claims.py mirrors this choice; change both together. */ -}}
+{{- $c := index site.Data.briefing_claims site.Language.Lang -}}
+{{- $kept := .kept }}{{ $of := .of -}}
+{{- $day := div (time .date).Unix 86400 -}}
+{{- $pick := slice -}}
+{{- range slice $c.patterns $c.times $c.subjects $c.reads $c.ends }}{{ $pick = $pick | append (mod $day (len .)) }}{{ end -}}
+{{- $pattern := index $c.patterns (index $pick 0) -}}
+{{- $time := index $c.times (index $pick 1) -}}
+{{- $subject := index $c.subjects (index $pick 2) -}}
+{{- $read := index $c.reads (index $pick 3) -}}
+{{- $end := index $c.ends (index $pick 4) -}}
+{{- /* The share in words: the nearest plain fraction, with "about", "just over" and so on */ -}}
+{{- $r := div (float $kept) $of -}}
+{{- $near := index $c.shares 0 -}}
+{{- range $c.shares }}{{ if lt (math.Abs (sub $r .at)) (math.Abs (sub $r $near.at)) }}{{ $near = . }}{{ end }}{{ end -}}
+{{- $d := sub $r $near.at -}}
+{{- $q := $c.qualifiers.about -}}
+{{- if ge $d 0.05 }}{{ $q = $c.qualifiers.over }}{{ else if ge $d 0.015 }}{{ $q = $c.qualifiers.justOver }}{{ else if le $d -0.05 }}{{ $q = $c.qualifiers.under }}{{ else if le $d -0.015 }}{{ $q = $c.qualifiers.justUnder }}{{ end -}}
+{{- $s := replaceRE `\{Time\}` $time.lead $pattern -}}
+{{- $s = replaceRE `\{time\}` $time.mid $s -}}
+{{- $s = replaceRE `\{Subject\}` (strings.FirstUpper $subject) $s -}}
+{{- $s = replaceRE `\{subject\}` $subject $s -}}
+{{- $s = replaceRE `\{verb\}` $read.verb $s -}}
+{{- $s = replaceRE `\{rest\}` $read.rest $s -}}
+{{- $s = replaceRE `\{end\}` $end $s -}}
+{{- $share := printf "%s %s" $q $near.name -}}
+{{- $s = replaceRE `\{Share\}` (strings.FirstUpper $share) $s -}}
+{{- $s = replaceRE `\{share\}` $share $s -}}
+{{- $s = replaceRE `\{kept\}` (string $kept) $s -}}
+{{- $s = replaceRE `\{of\}` (string $of) $s -}}
+{{- return $s -}}

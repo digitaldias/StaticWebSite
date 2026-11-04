@@ -2,6 +2,10 @@
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-04
   tag: Site
+  text: "The briefing line on the homepage is worded differently with each edition, from parts that will not repeat as a whole for about six years. The numbers stay the same, only the wording changes."
+  text_nb: "Briefinglinjen på forsiden får ny ordlyd for hver utgave, satt sammen av deler som ikke gjentar seg som helhet på rundt seks år. Tallene er de samme, bare formuleringen endres."
+- date: 2026-11-04
+  tag: Site
   text: "A new footer: where to read on, where else to find me, a quiet way to buy me a coffee, and -30-, the newsroom mark for the end of a story."
   text_nb: "Ny bunntekst: hvor du kan lese videre, hvor du ellers finner meg, en stille måte å spandere en kaffe på, og -30-, avisjargong for slutten på en sak."
 - date: 2026-11-04

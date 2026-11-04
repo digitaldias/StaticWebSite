@@ -15,7 +15,7 @@
     <a class="edition__name" id="edition-title" href="/briefing/">{{ i18n "briefingName" }}</a>
     <time class="m edition__date" datetime="{{ index $date 1 }}">{{ time.Format ":date_full" (index $date 1) }}</time>
   </p>
-  <p class="edition__claim">{{ i18n "briefingClaim" (dict "Kept" $k "Of" $of) }}</p>
+  <p class="edition__claim">{{ partial "briefing-claim.html" (dict "date" (index $date 1) "kept" $k "of" $of) }}</p>
   <div class="edition__tally" style="--of: {{ $of }}; --kept: {{ $k }}" role="img" aria-label="{{ i18n "briefingTally" (dict "Kept" $k "Of" $of) }}"></div>
   {{- if eq site.Language.Lang "nb" }}
   {{- with index (findRESubmatch `class="hero-title"><a [^>]*>([^<]+)</a>` $html 1) 0 }}
