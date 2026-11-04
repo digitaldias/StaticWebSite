@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="KofiSupporters.Tests/KofiSupporters.Tests.csproj" />
+  <Project Path="KofiSupporters/KofiSupporters.csproj" />
+</Solution>
