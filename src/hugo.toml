@@ -46,7 +46,7 @@ defaultContentLanguage = 'en'
     youtube_digitaldias = 'https://youtube.com/@digitaldias'
     youtube_digitalhome = 'https://www.youtube.com/channel/UC03xD6JiBNZebtFOv9zqTVg'
     flickr = 'https://flickr.com/photos/digitaldias'
-    facebook = 'https://facebook.com/pedrodiaspt'
+    facebook = 'https://www.facebook.com/digitaldias'
   
   # Stats for hero section
   [params.stats]
