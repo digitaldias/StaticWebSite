@@ -1,6 +1,22 @@
 # History of the homepage "Listening" pick, newest first. The first entry shows in the Now box.
 # artist and song are required; guest, genres, spotify (artist URL), song_url and note_en / note_nb are optional.
 # Facts come from the Spotify API. It returns no genres, so none are listed.
+- date: 2026-11-05
+  artist: Heavytones
+  song: Full studio live session
+  song_url: https://www.youtube.com/watch?v=Mj1K6_g5kAE
+  note_en: 'Mostly instrumental funk, soul and jazz, with three horns up front (sax, trumpet, trombone), percussion and a tight rhythm section. They play their own tunes and covers of everyone from James Brown to Michael Jackson. Drummer Herbert Jösch put the band together in 2000 at Stefan Raab''s request, as the house band for his late-night show "TV total", where they played roughly 2,500 broadcasts. This set is from Little Big Beat Studios in Liechtenstein, where the audience sits in the room and everything is recorded analog. In January 2027 they celebrate 25 years with a tour of Germany.'
+  note_nb: 'Stort sett instrumental funk, soul og jazz, med tre blåsere i front (sax, trompet og trombone), perkusjon og et stramt komp. De spiller egne låter og coverlåter av alt fra James Brown til Michael Jackson. Trommeslager Herbert Jösch satte sammen bandet i 2000 etter ønske fra Stefan Raab, som husband for talkshowet hans «TV total», der de spilte rundt 2500 sendinger. Dette settet er fra Little Big Beat Studios i Liechtenstein, der publikum sitter i rommet og alt tas opp analogt. I januar 2027 feirer de 25 år med en turné i Tyskland.'
+  image: /images/listening/heavytones.jpg
+  image_alt_en: "Three horn players on a stage lit in red and blue: a saxophonist, a trumpeter with his horn raised high and a trombonist, with a keyboard player and a percussionist at red congas behind them."
+  image_alt_nb: "Tre blåsere på en scene i rødt og blått lys: en saksofonist, en trompetist med instrumentet løftet høyt og en trombonist, med en keyboardist og en perkusjonist ved røde congas bak."
+  image_caption_en: "The Heavytones horn section at the Leverkusener Jazztage, 2017."
+  image_caption_nb: "Blåserrekken i Heavytones på Leverkusener Jazztage i 2017."
+  image_credit:
+    author: Andreas Lawen, Fotandi
+    license: CC BY-SA 4.0
+    license_url: https://creativecommons.org/licenses/by-sa/4.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Heavytones_-_Leverkusener_Jazztage_2017-2657.jpg
 - date: 2026-11-02
   artist: SOHO Blues Band
   spotify: https://open.spotify.com/artist/3pRAhuz8fKrLHLBOwRUf80

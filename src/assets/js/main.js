@@ -681,8 +681,23 @@ function initImageLightbox() {
    Headline word rise
    Wraps each word of a .split-words headline in
    .w > span so CSS can raise them in sequence.
+   Once per page per browser session: a page the
+   reader comes back to is already standing.
    Under reduced motion nothing is split.
 ───────────────────────────────────────────── */
+const RISEN_KEY = 'dd-risen';
+
+function firstRiseThisSession() {
+  try {
+    const risen = JSON.parse(sessionStorage.getItem(RISEN_KEY)) || [];
+    if (risen.includes(location.pathname)) return false;
+    sessionStorage.setItem(RISEN_KEY, JSON.stringify([...risen, location.pathname]));
+  } catch {
+    // Storage blocked: rise every time, as before
+  }
+  return true;
+}
+
 function splitWords(node, counter) {
   Array.from(node.childNodes).forEach(child => {
     if (child.nodeType !== Node.TEXT_NODE) {
@@ -708,8 +723,10 @@ function splitWords(node, counter) {
 }
 
 function initHeadlineRise() {
-  document.querySelectorAll('.split-words').forEach(h => {
-    if (!prefersReducedMotion()) splitWords(h, { i: 0 });
+  const heads = document.querySelectorAll('.split-words');
+  const rise = heads.length > 0 && !prefersReducedMotion() && firstRiseThisSession();
+  heads.forEach(h => {
+    if (rise) splitWords(h, { i: 0 });
     h.classList.add('is-split');
   });
 }

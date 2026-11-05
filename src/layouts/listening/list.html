@@ -12,6 +12,7 @@
       <time datetime="{{ time.Format "2006-01-02" $e.date }}">{{ time.Format "2 Jan 2006" $e.date }}</time>
       <ul>
         <li>
+          {{- with $e.song_url | default $e.spotify }}{{ partial "source-icon.html" . }}{{ end }}
           <span class="tag{{ if $i }} q{{ end }}">{{ if $i }}{{ i18n "listeningEarlier" }}{{ else }}{{ i18n "now" }}{{ end }}</span>
           {{- with $e.song_url }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">{{ $e.song }}</a>{{ else }}{{ $e.song }}{{ end }}, {{ with $e.spotify }}<a href="{{ . }}" rel="noopener noreferrer" target="_blank">{{ $e.artist }}</a>{{ else }}{{ $e.artist }}{{ end }}
           {{- with $e.guest }} {{ i18n "feat" }} {{ . }}{{ end }}
