@@ -257,6 +257,7 @@ body:has(#cat-other:target) .chip[href="#cat-other"]{background:var(--teal);bord
 body:has(#cat-other:target) .chip[href="#cat-other"] .chip-count{color:var(--on-teal);}
 body:has(#cat-other:target) .tile[href="#cat-other"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}</style>
 <script src="theme.js"></script>
+<script src="lang.js"></script>
 <script src="seen.js" defer></script>
 <style id="briefing-layer">
 .catbar{display:none;}
@@ -329,6 +330,13 @@ body:has(#cat-other:target) .tile[href="#cat-other"]{border-color:var(--teal);bo
   .theme-toggle{margin-left:auto;}
 }
 
+/* Language switch in the site header: EN | NO */
+.lang-switch{display:flex;flex:none;gap:6px;align-items:center;font:400 .78rem/1 var(--mono);color:var(--muted);}
+.lang-switch a{color:var(--muted);}
+.lang-switch a:hover{color:var(--teal);}
+.lang-switch [aria-current]{color:var(--ink);font-weight:500;}
+.lang-switch__off{opacity:.45;cursor:default;}
+
 body:has(#cat-vulnerabilities:target) .catbar .cur-cat-vulnerabilities{display:inline;}
 body:has(#cat-vulnerabilities:target) .catbar-list a[href="#cat-vulnerabilities"]{color:var(--teal);}
 body:has(#cat-dev-tooling:target) .catbar .cur-cat-dev-tooling{display:inline;}
@@ -361,6 +369,7 @@ body:has(#cat-other:target) .catbar-list a[href="#cat-other"]{color:var(--teal);
       <a href="/photography/">Photographs</a>
       <a href="/about/">About</a>
     </nav>
+    <div class="lang-switch" role="group" aria-label="Language"><span class="lang-switch__off" lang="en">EN</span><span aria-hidden="true">|</span><span aria-current="true" lang="nb">NO</span></div>
     <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
   </div>
 </header>
