@@ -1,21 +1,32 @@
 {{- define "main" -}}
 {{- $posts := where .Site.RegularPages "Section" "blog" -}}
 <div class="wrap">
+  {{- /* Reading order: who writes here, the three newest posts, what he stands for, the rest.
+         From 960px the byline and the positions share the left column beside one stream. */}}
   <div class="split">
-    <aside class="side" aria-label="{{ i18n "aboutAuthor" }}">
+    <header class="side side--id" aria-label="{{ i18n "aboutAuthor" }}">
       {{- with .Site.Params.photo }}
       <div class="portrait"><img src="{{ .src }}" alt="{{ .alt }}" width="240" height="240"></div>
       {{- end }}
-      <p class="k side__name">Pedro Dias</p>
-      <h1 class="d split-words">{{ i18n "homeTitleA" }} <em>{{ i18n "homeTitleB" }}</em></h1>
+      <div class="side__who">
+        <p class="k side__name">Pedro Dias</p>
+        <h1 class="d split-words">{{ i18n "homeTitleA" }} <em>{{ i18n "homeTitleB" }}</em></h1>
+      </div>
       {{- with .Site.Params.motto }}
       <p class="motto lift">
         {{- range $i, $part := split . " · " }}{{ if $i }}<span class="motto__dot">&nbsp;· </span>{{ end }}<span>{{ $part }}</span>{{ end -}}
       </p>
       {{- end }}
       {{- with .Site.Params.bio }}
-      <p class="lift">{{ . }}</p>
+      <p class="side__bio lift">{{ . }}</p>
       {{- end }}
+    </header>
+    <div class="split__main">
+      {{- partial "stream.html" (dict "pages" (first 1 $posts) "lead" true) }}
+      {{- partial "briefing-ear.html" . }}
+      {{- partial "stream.html" (dict "pages" (first 2 (after 1 $posts))) }}
+    </div>
+    <aside class="side side--more" aria-label="{{ i18n "positionsHeld" }}">
       {{- with .Site.Params.positions }}
       <h2 class="k">{{ i18n "positionsHeld" }}</h2>
       <ol>
@@ -33,9 +44,8 @@
       {{- end }}
       <a class="m more" href="{{ "/log/" | relLangURL }}">{{ i18n "fullLog" }} &rarr;</a>
     </aside>
-    <div>
-      {{- partial "briefing-ear.html" . }}
-      {{- partial "stream.html" (dict "pages" (first 12 $posts) "lead" true) }}
+    <div class="split__rest">
+      {{- partial "stream.html" (dict "pages" (first 9 (after 3 $posts))) }}
       {{- if gt (len $posts) 12 }}
       <a class="m stream-more" href="{{ "/blog/" | relLangURL }}">{{ i18n "allWriting" }} &rarr;</a>
       {{- end }}

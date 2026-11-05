@@ -67,11 +67,10 @@ h1, h2, h3, h4 { margin: 0; }
   .nav { gap: 10px; font-size: .76rem; }
   .theme-toggle { width: 28px; height: 28px; margin-left: -2px; }
 }
+/* Under 400px the wordmark, four links, EN | NO and the switch need about 385px in one row
+   (measured at 375px, 2026-11-05), so the links drop to a second row */
 @media (max-width: 400px) {
-  .wordmark { font-size: 1.1rem; }
-  .nav { font-size: .72rem; }
-}
-@media (max-width: 339px) {
+  html { scroll-padding-top: 96px; }
   .mast .wrap { flex-wrap: wrap; height: auto; padding-block: 10px; row-gap: 6px; }
   .nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; }
   .lang-switch { margin-left: auto; }
@@ -127,15 +126,36 @@ h1, h2, h3, h4 { margin: 0; }
    5. HOMEPAGE — identity sidebar beside the stream
    ============================================================================= */
 
-.split { display: grid; gap: 40px; padding: 40px 0 20px; }
+/* Phone: a compact byline, three posts, positions and Now, then the rest. From 960px the byline
+   and the positions share the left column; only the positions stay pinned while the stream scrolls. */
+.split { display: grid; gap: 28px; padding: 24px 0 20px; }
+.side--id { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 0 16px; align-items: center; }
+.side--id .motto, .side--id .side__bio { grid-column: 1 / -1; }
+.side--id .motto { margin: 14px 0 6px; }
+.side--id .side__bio { margin: 0; }
+.side--more { padding-top: 12px; border-top: 3px double var(--ink); }
+.side--more h2:first-child { margin-top: 0; }
 @media (min-width: 960px) {
-  .split { grid-template-columns: 340px minmax(0, 1fr); gap: 64px; }
-  .split .side { position: sticky; top: 84px; align-self: start; max-height: calc(100vh - 100px); overflow: auto; scrollbar-width: thin; }
+  .split { grid-template-columns: 340px minmax(0, 1fr); grid-template-areas: "id main" "more main" "more rest"; grid-template-rows: auto auto 1fr; gap: 0 64px; padding-top: 40px; }
+  .side--id { grid-area: id; }
+  .split__main { grid-area: main; }
+  .side--more { grid-area: more; }
+  .split__rest { grid-area: rest; }
+  .side--id { display: block; }
+  .side--id .motto { margin: -2px 0 14px; }
+  .side--id .side__bio { margin: 0 0 18px; }
+  .side--more { position: sticky; top: 84px; align-self: start; max-height: calc(100vh - 100px); overflow: auto; scrollbar-width: thin; padding-top: 0; border-top: 0; }
+  .side--more h2:first-child { margin-top: 26px; }
 }
-.side .portrait { width: 120px; border-radius: 50%; overflow: hidden; background: var(--ground-2); view-transition-name: portrait; }
+.side .portrait { width: 64px; border-radius: 50%; overflow: hidden; background: var(--ground-2); view-transition-name: portrait; }
 .side .portrait img { aspect-ratio: 1; object-fit: cover; width: 100%; }
-.side .side__name { margin: 18px 0 6px; font-size: .7rem; color: var(--teal); }
-.side h1 { font-size: 2.8rem; margin: 0 0 10px; }
+.side .side__name { margin: 0 0 2px; font-size: .7rem; color: var(--teal); }
+.side h1 { font-size: 1.9rem; margin: 0; }
+@media (min-width: 960px) {
+  .side .portrait { width: 120px; }
+  .side .side__name { margin: 18px 0 6px; }
+  .side h1 { font-size: 2.8rem; margin: 0 0 10px; }
+}
 .side p { margin: 0 0 18px; color: var(--muted); font-size: 1rem; line-height: 1.5; }
 .side .motto { margin: -2px 0 14px; font: 500 .74rem/1.6 var(--mono); letter-spacing: .01em; color: var(--ink); }
 .motto span:not(.motto__dot) { white-space: nowrap; }
@@ -149,24 +169,24 @@ h1, h2, h3, h4 { margin: 0; }
 .side dd { margin: 0; }
 .side .more { display: inline-block; margin-top: 12px; }
 
-/* Morning briefing ear: today's edition above the stream. The tally is the night's
+/* Morning briefing ear: a strip under the lead story. The tally is the night's
    intake, one mark per story read (--of); the teal marks are the ones kept (--kept) */
-.edition { margin: 0 0 38px; padding-top: 12px; border-top: 3px double var(--ink); }
-.edition__head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 0 0 14px; }
+.edition { margin: 0; padding: 16px 0 14px; border-bottom: 1px solid var(--rule); }
+.edition__head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 0 0 6px; }
 .edition__name { font: 700 .95rem/1 var(--display); letter-spacing: -.01em; color: var(--teal); text-decoration: none; }
 .edition__name:hover { text-decoration: underline; text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
 .edition__date { font-size: .74rem; color: var(--muted); }
-.edition__claim { max-width: 30ch; margin: 0 0 18px; font: 650 clamp(1.45rem, 1.1rem + 1.2vw, 2rem)/1.14 var(--display); letter-spacing: -.02em; text-wrap: balance; }
-.edition__tally { position: relative; height: 22px; background: linear-gradient(90deg, var(--rule) 0 55%, transparent 55%) 0 0 / calc(100% / var(--of)) 100%; }
+.edition__claim { max-width: 52ch; margin: 0 0 10px; font: 600 1.08rem/1.35 var(--display); letter-spacing: -.01em; text-wrap: pretty; }
+.edition__tally { position: relative; height: 8px; background: linear-gradient(90deg, var(--rule) 0 55%, transparent 55%) 0 0 / calc(100% / var(--of)) 100%; }
 .edition__tally::after { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(100% * var(--kept) / var(--of)); background: linear-gradient(90deg, var(--teal) 0 55%, transparent 55%) 0 0 / calc(100% / var(--kept)) 100%; transform-origin: left; }
 /* Under 560 px a mark would be thinner than a pixel and shimmer; the tally turns into two solid bars */
 @media (max-width: 559px) {
-  .edition__tally { height: 14px; background: var(--rule); }
+  .edition__tally { height: 6px; background: var(--rule); }
   .edition__tally::after { background: var(--teal); }
 }
 .edition__lead { margin: 16px 0 0; font: 400 1.05rem/1.45 var(--text); }
 .edition__lead span { font: 600 .8rem var(--display); color: var(--teal); }
-.edition__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; margin: 12px 0 0; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font-size: .74rem; color: var(--muted); }
+.edition__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; margin: 10px 0 0; font-size: .74rem; color: var(--muted); }
 .edition__foot a { font: 500 .74rem var(--mono); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
 
 /* Supporters page: the latest coffee in the spotlight, one teal cup per coffee, a wall of
@@ -317,6 +337,15 @@ h1, h2, h3, h4 { margin: 0; }
 .day ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .day li { line-height: 1.45; }
 .day li a { text-decoration-color: var(--teal); }
+/* Where a listening pick lives: Spotify or YouTube in their own colours, the one place the
+   palette steps aside, because a brand mark has to stay as its owner made it */
+.src-icon { display: inline-block; height: 21px; margin-right: 8px; vertical-align: middle; line-height: 0; }
+.src-icon svg { height: 100%; width: auto; aspect-ratio: 1; }
+.src-icon--wide svg { aspect-ratio: 4 / 3; }
+.src-icon__spotify { fill: #1ed760; }
+.src-icon__youtube { fill: #ff0000; }
+.src-icon__under { fill: #000; }
+.src-icon--wide .src-icon__under { fill: #fff; }
 .pick-fig { margin: 14px 0 0; max-width: 520px; }
 .pick-fig img { display: block; width: 100%; height: auto; }
 .pick-fig figcaption { margin-top: 6px; font: 400 .72rem/1.5 var(--mono); color: var(--muted); }
@@ -380,12 +409,18 @@ h1, h2, h3, h4 { margin: 0; }
 
 /* The level key opens the level card: on hover with a mouse, on tap or Enter anywhere */
 .folio { position: relative; }
-.level-key { display: inline-flex; align-items: center; gap: 8px; padding: 0; background: none; border: 0; font: inherit; color: var(--ink); cursor: pointer; text-decoration: underline dotted var(--deep-3); text-underline-offset: 4px; }
-.level-key:hover, .folio__level.is-open .level-key { color: var(--teal); }
+/* Drawn as a tinted chip with a caret, so it reads as something to open, not a label */
+.level-key { display: inline-flex; align-items: center; gap: 8px; margin: -3px 0; padding: 3px 9px 3px 8px; background: var(--deep-1); border: 1px solid var(--deep-3); border-radius: 2px; font: inherit; color: var(--ink); cursor: pointer; transition: border-color var(--transition), color var(--transition); }
+.level-key::after { content: ""; width: 5px; height: 5px; margin: -3px 0 0 1px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); transition: transform 200ms var(--ease-out), margin 200ms var(--ease-out); }
+.level-key:hover, .folio__level.is-open .level-key { color: var(--teal); border-color: var(--teal); }
+.folio__level.is-open .level-key::after { margin-top: 3px; transform: rotate(225deg); }
 .level-key:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
 .folio .folio__level .level-card { position: absolute; right: 0; top: 100%; z-index: 40; width: min(440px, 100%); margin: 0; padding: 16px 20px 14px; border: 1px solid var(--rule); border-top: 2px solid var(--ink); background: var(--ground); box-shadow: 0 22px 40px -28px color-mix(in srgb, var(--ink) 45%, transparent); visibility: hidden; opacity: 0; }
 .folio__level.is-open .level-card { visibility: visible; opacity: 1; }
-@media (hover: hover) { .folio__level:hover .level-card { visibility: visible; opacity: 1; } }
+@media (hover: hover) {
+  .folio__level:hover .level-card { visibility: visible; opacity: 1; }
+  .folio__level:hover .level-key::after { margin-top: 3px; transform: rotate(225deg); }
+}
 .level-card__title { margin: 0 0 10px; font: 600 .95rem/1.3 var(--display); color: var(--ink); }
 .level-card__scale { list-style: none; margin: 0; padding: 0; }
 .level-card__scale li { position: relative; display: grid; grid-template-columns: 14px 3.4ch minmax(0, 1fr); grid-template-areas: "s n name" ". . reader"; column-gap: 10px; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--rule); color: var(--muted); }
@@ -410,7 +445,22 @@ h1, h2, h3, h4 { margin: 0; }
 .turnout p { margin: 0; font-size: .98rem; line-height: 1.5; color: var(--muted); }
 .turnout strong { font: 600 1rem var(--display); color: var(--ink); }
 .turnout__skip { grid-column: 2; justify-self: start; margin-top: 4px; font: 600 .82rem var(--display); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
-@media (max-width: 520px) { .folio div { padding-right: 14px; margin-right: 14px; } }
+/* Phone: the first sentence belongs on the first screen. A shorter head, and the folio
+   collapses to mono fields spaced apart, so a wrap starts clean; its labels stay for
+   screen readers, except Revised */
+@media (max-width: 699px) {
+  .a-head { padding-top: 28px; }
+  .a-head h1 { font-size: 2.1rem; margin: 10px 0 12px; }
+  .dek { font-size: 1.08rem; }
+  .folio { align-items: baseline; gap: 6px 16px; margin-top: 18px; padding: 8px 0; font-size: .8rem; }
+  .folio > div { display: flex; align-items: baseline; padding: 0; margin: 0; border: 0; }
+  .folio dt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .folio .folio__revised dt { position: static; width: auto; height: auto; overflow: visible; clip: auto; margin-right: 6px; }
+  .folio dd { font-size: .8rem; }
+  .folio .folio__by { display: none; }
+  .level-key { gap: 6px; padding: 2px 7px 2px 6px; }
+  .a-hero { margin-top: 16px; }
+}
 
 .a-hero { max-width: var(--page); margin: 26px auto 0; padding: 0 clamp(16px, 4vw, 44px); }
 .a-hero .ph { overflow: hidden; background: var(--ground-2); view-transition-name: lead-image; }
@@ -689,13 +739,13 @@ h1, h2, h3, h4 { margin: 0; }
   .split-words:not(.is-split) { opacity: 0; animation: unhide 1ms 1.2s forwards; }
   @keyframes unhide { to { opacity: 1; } }
   .split-words .w { display: inline-block; overflow: clip; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
-  .split-words .w > span { display: inline-block; transform: translateY(105%); animation: word-in 900ms var(--ease-out) forwards; animation-delay: calc(var(--i) * 55ms + 120ms); }
+  .split-words .w > span { display: inline-block; transform: translateY(105%); animation: word-in 650ms var(--ease-out) forwards; animation-delay: calc(min(var(--i), 10) * 32ms + 60ms); }
   @keyframes word-in { to { transform: none; } }
-  .wipe { animation: wipe 1100ms var(--ease-out) both; }
+  .wipe { animation: wipe 750ms var(--ease-out) both; }
   @keyframes wipe { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
-  .wipe img { animation: settle 1600ms var(--ease-out) both; }
+  .wipe img { animation: settle 1100ms var(--ease-out) both; }
   @keyframes settle { from { transform: scale(1.12); } }
-  .lift { animation: lift 800ms 450ms var(--ease-out) both; }
+  .lift { animation: lift 600ms 200ms var(--ease-out) both; }
   @keyframes lift { from { opacity: 0; transform: translateY(18px); } }
 
   /* The level card settles in, then its teal range bar draws down the levels the post covers */
