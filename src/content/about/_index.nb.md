@@ -32,4 +32,6 @@ På digitaldias.com skriver jeg om programvarearkitektur, Azure, AI og innimello
 
 Hvis noe jeg har skrevet har hjulpet deg, er det hele poenget.
 
+Spanderer du en kaffe på [Ko-fi](https://ko-fi.com/digitaldias) og lar den være offentlig, kan navnet ditt dukke opp i bunnteksten som en takk. Bare navnet og meldingen du selv valgte å vise, havner på nettstedet, aldri beløpet. Vil du ha det fjernet, sender du meg en melding på [LinkedIn](https://linkedin.com/in/digitaldias), så fjerner jeg det.
+
 Du finner meg på [LinkedIn](https://linkedin.com/in/digitaldias), [GitHub](https://github.com/digitaldias) og [Flickr](https://flickr.com/photos/digitaldias). På YouTube driver jeg to kanaler: [digitaldias](https://youtube.com/@digitaldias) for teknologi, kode og hjemmeautomatisering, og [digitalhome](https://www.youtube.com/channel/UC03xD6JiBNZebtFOv9zqTVg) for familie, venner og et og annet sidespor om lyd.

@@ -1,0 +1,31 @@
+{{- /* Today's morning briefing as a front-page ear. Reads briefing/index.html (mounted
+       into assets in hugo.toml) at build time; renders nothing if the page or its
+       markup is missing, so a generator change can never break the homepage.
+       The briefing is Norwegian, so its headline shows only on Norwegian pages;
+       every reader gets the overnight numbers as a tally, one mark per story. */ -}}
+{{- with resources.Get "briefing-today.html" -}}
+{{- $html := .Content -}}
+{{- $date := index (findRESubmatch `data-briefing-date="(\d{4}-\d{2}-\d{2})"` $html 1) 0 -}}
+{{- $kept := index (findRESubmatch `class="kpi-value">(\d+)\s*<span>\s*/\s*(\d+)` $html 1) 0 -}}
+{{- $sources := index (findRESubmatch `Aktive kilder</div>\s*<div class="kpi-value">(\d+)` $html 1) 0 -}}
+{{- if and $date $kept -}}
+{{- $k := int (index $kept 1) }}{{ $of := int (index $kept 2) -}}
+<section class="edition" aria-labelledby="edition-title">
+  <p class="edition__head">
+    <a class="edition__name" id="edition-title" href="/briefing/">{{ i18n "briefingName" }}</a>
+    <time class="m edition__date" datetime="{{ index $date 1 }}">{{ time.Format ":date_full" (index $date 1) }}</time>
+  </p>
+  <p class="edition__claim">{{ partial "briefing-claim.html" (dict "date" (index $date 1) "kept" $k "of" $of) }}</p>
+  <div class="edition__tally" style="--of: {{ $of }}; --kept: {{ $k }}" role="img" aria-label="{{ i18n "briefingTally" (dict "Kept" $k "Of" $of) }}"></div>
+  {{- if eq site.Language.Lang "nb" }}
+  {{- with index (findRESubmatch `class="hero-title"><a [^>]*>([^<]+)</a>` $html 1) 0 }}
+  <p class="edition__lead"><span>{{ i18n "briefingLead" }}</span> {{ index . 1 | htmlUnescape }}</p>
+  {{- end }}
+  {{- end }}
+  <p class="edition__foot">
+    <span class="m">{{ with $sources }}{{ i18n "briefingSources" (dict "Sources" (index . 1)) }}{{ end }}</span>
+    <a href="/briefing/">{{ i18n "briefingRead" }}</a>
+  </p>
+</section>
+{{- end -}}
+{{- end -}}

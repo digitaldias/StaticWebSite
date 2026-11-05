@@ -1,5 +1,29 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
+- date: 2026-11-04
+  tag: Site
+  text: "The latest supporter now gets the front page: their name as large as the line allows, with a teal stamp that says thank you and gives their number."
+  text_nb: "Den siste støttespilleren får nå forsiden: navnet så stort som linjen tillater, med et teal stempel som sier takk og gir nummeret deres."
+- date: 2026-11-04
+  tag: Shipped
+  text: "A [Supporters](/supporters/) page that thanks everyone who bought me a coffee, by name and message. Until the first one arrives, a hopeful dog in a party hat keeps the seat warm."
+  text_nb: "En side for [støttespillere](/nb/supporters/) som takker alle som har spandert en kaffe, med navn og melding. Til den første kommer, holder en håpefull hund med festhatt plassen varm."
+- date: 2026-11-04
+  tag: Shipped
+  text: "When someone buys me a coffee on Ko-fi and keeps it public, the footer now says thank you by name. A small Azure Function catches Ko-fi's webhook; the site itself stays static."
+  text_nb: "Når noen spanderer en kaffe på Ko-fi og lar det være offentlig, takker bunnteksten nå ved navn. En liten Azure Function tar imot Ko-fi-webhooken, mens selve nettstedet forblir statisk."
+- date: 2026-11-04
+  tag: Site
+  text: "The briefing line on the homepage is worded differently with each edition, from parts that will not repeat as a whole for about six years. The numbers stay the same, only the wording changes."
+  text_nb: "Briefinglinjen på forsiden får ny ordlyd for hver utgave, satt sammen av deler som ikke gjentar seg som helhet på rundt seks år. Tallene er de samme, bare formuleringen endres."
+- date: 2026-11-04
+  tag: Site
+  text: "A new footer: where to read on, where else to find me, a quiet way to buy me a coffee, and -30-, the newsroom mark for the end of a story."
+  text_nb: "Ny bunntekst: hvor du kan lese videre, hvor du ellers finner meg, en stille måte å spandere en kaffe på, og -30-, avisjargong for slutten på en sak."
+- date: 2026-11-04
+  tag: Shipped
+  text: "The homepage opens on today's [morning briefing](/briefing/): how many news stories a local model read overnight and how many it kept, one mark per story. It updates with each new edition."
+  text_nb: "Forsiden åpner med dagens [morgenbriefing](/briefing/): hvor mange nyhetssaker en lokal modell leste i natt og hvor mange den beholdt, én strek per sak. Den oppdateres med hver nye utgave."
 - date: 2026-11-02
   tag: Fixed
   text: "Comments and reactions failed to load on Norwegian posts. Giscus has no Norwegian translation, so the comment box stays in English there."

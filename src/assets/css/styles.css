@@ -78,10 +78,35 @@ h1, h2, h3, h4 { margin: 0; }
   .theme-toggle { margin-left: 0; }
 }
 
-.foot { margin-top: 70px; border-top: 2px solid var(--ink); padding: 26px 0 64px; display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; }
-.foot nav { display: flex; flex-wrap: wrap; gap: 6px 14px; }
-.foot a { text-decoration: none; color: var(--muted); transition: color var(--transition); }
-.foot a:hover { color: var(--teal); }
+/* Footer: the back page. A double rule like the masthead, four columns, then the
+   colophon line that ends on -30-, the newsroom mark for the end of a story */
+.foot { margin-top: 80px; padding: 30px 0 56px; border-top: 3px double var(--ink); }
+.foot__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 34px 24px; }
+.foot__id, .foot__coffee { grid-column: 1 / -1; }
+.foot .wordmark { font-size: 1.9rem; }
+.foot__motto { margin: 12px 0 4px; font-size: .74rem; line-height: 1.6; color: var(--ink); }
+.foot__place { margin: 0; font-size: .74rem; color: var(--muted); }
+.foot__col { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; font: 500 .95rem/1.3 var(--display); }
+.foot h2 { margin: 0 0 6px; }
+.foot__col a { color: var(--ink); text-decoration: none; background: linear-gradient(var(--deep-2), var(--deep-2)) 0 92% / 0 .26em no-repeat; transition: background-size 350ms var(--ease-out); }
+.foot__col a:hover, .foot__col a:focus-visible { background-size: 100% .26em; }
+.foot__coffee p { max-width: 34ch; margin: 0 0 12px; font: 400 1rem/1.5 var(--text); color: var(--muted); }
+.foot__coffee .foot__thanks { margin-top: -4px; font: italic 400 .95rem/1.5 var(--text); color: var(--ink); }
+.foot__coffee a { font: 600 .95rem var(--display); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 4px; }
+.foot__coffee a:hover { text-decoration-color: var(--teal); }
+.foot__base { display: flex; justify-content: space-between; align-items: baseline; gap: 12px 24px; margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: .72rem; color: var(--muted); }
+.foot__base p { margin: 0; max-width: 72ch; line-height: 1.6; }
+.foot__base a { color: var(--muted); text-underline-offset: 3px; }
+.foot__base a:hover { color: var(--teal); }
+.foot__end { display: flex; align-items: center; gap: 18px; margin: 44px 0 0; }
+.foot__end::before, .foot__end::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+.foot__end abbr { font: 800 1.5rem/1 var(--display); letter-spacing: .02em; color: var(--teal); text-decoration: none; cursor: help; }
+.foot__coffee .foot__supporters { display: block; width: fit-content; margin-top: 12px; font: 400 .74rem var(--mono); color: var(--muted); text-decoration: none; }
+.foot__coffee .foot__supporters:hover { color: var(--teal); }
+@media (min-width: 760px) {
+  .foot__grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, .8fr) minmax(0, .8fr) minmax(0, 1.3fr); gap: 24px 40px; }
+  .foot__id, .foot__coffee { grid-column: auto; }
+}
 
 /* =============================================================================
    4. PAGE HEAD — Writing, Log, Photographs, taxonomies
@@ -123,6 +148,71 @@ h1, h2, h3, h4 { margin: 0; }
 .side dt { font: 600 .64rem/1.9 var(--display); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .side dd { margin: 0; }
 .side .more { display: inline-block; margin-top: 12px; }
+
+/* Morning briefing ear: today's edition above the stream. The tally is the night's
+   intake, one mark per story read (--of); the teal marks are the ones kept (--kept) */
+.edition { margin: 0 0 38px; padding-top: 12px; border-top: 3px double var(--ink); }
+.edition__head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 0 0 14px; }
+.edition__name { font: 700 .95rem/1 var(--display); letter-spacing: -.01em; color: var(--teal); text-decoration: none; }
+.edition__name:hover { text-decoration: underline; text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
+.edition__date { font-size: .74rem; color: var(--muted); }
+.edition__claim { max-width: 30ch; margin: 0 0 18px; font: 650 clamp(1.45rem, 1.1rem + 1.2vw, 2rem)/1.14 var(--display); letter-spacing: -.02em; text-wrap: balance; }
+.edition__tally { position: relative; height: 22px; background: linear-gradient(90deg, var(--rule) 0 55%, transparent 55%) 0 0 / calc(100% / var(--of)) 100%; }
+.edition__tally::after { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(100% * var(--kept) / var(--of)); background: linear-gradient(90deg, var(--teal) 0 55%, transparent 55%) 0 0 / calc(100% / var(--kept)) 100%; transform-origin: left; }
+/* Under 560 px a mark would be thinner than a pixel and shimmer; the tally turns into two solid bars */
+@media (max-width: 559px) {
+  .edition__tally { height: 14px; background: var(--rule); }
+  .edition__tally::after { background: var(--teal); }
+}
+.edition__lead { margin: 16px 0 0; font: 400 1.05rem/1.45 var(--text); }
+.edition__lead span { font: 600 .8rem var(--display); color: var(--teal); }
+.edition__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; margin: 12px 0 0; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font-size: .74rem; color: var(--muted); }
+.edition__foot a { font: 500 .74rem var(--mono); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
+
+/* Supporters page: the latest coffee in the spotlight, one teal cup per coffee, a wall of
+   earlier names that shrink with age, and their kind words. While there is nobody yet,
+   the hopeful dog and a way to be first */
+.cheers { --cup: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 8h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8zm12 1h1.5a2.5 2.5 0 0 1 0 5H16v-1.6h1.5a.9.9 0 0 0 0-1.8H16V9zM7 3.5c.6.7.6 1.6 0 2.3M10 2.5c.7.9.7 2 0 2.9M13 3.5c.6.7.6 1.6 0 2.3' fill='black' stroke='black' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E"); margin-top: 34px; }
+.cheers__tally { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.cheers__count { margin: 0; font-size: .78rem; color: var(--muted); }
+.cheers__cups { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; }
+.cheers__cup { width: 32px; height: 32px; background: var(--teal); -webkit-mask: var(--cup) center / contain no-repeat; mask: var(--cup) center / contain no-repeat; }
+.cheers__latest { padding: 26px 0 30px; border-top: 3px double var(--ink); border-bottom: 1px solid var(--rule); }
+.cheers__tally + * { margin-top: 36px; }
+.cheers__edition { display: flex; flex-wrap: wrap; justify-content: flex-start; align-items: baseline; gap: 6px 18px; margin: 0 0 4px; }
+.cheers__edition .k { color: var(--teal); }
+.cheers__edition .m { font-size: .74rem; color: var(--muted); }
+.cheers__stage { --stamp: clamp(104px, 17vw, 196px); position: relative; padding: 8px calc(var(--stamp) * .62) 0 0; overflow-x: clip; overflow-clip-margin: 12px; }
+.cheers__name { display: inline-block; margin: 0; font: 800 100px/.92 var(--display); letter-spacing: -.045em; white-space: nowrap; }
+.cheers__name.wraps { display: block; white-space: normal; text-wrap: balance; }
+.cheers__stamp { position: absolute; right: 6px; top: 50%; width: var(--stamp); height: auto; color: var(--teal); transform: translateY(-50%) rotate(-14deg); pointer-events: none; }
+.cheers__stamp-line { fill: none; stroke: currentColor; stroke-width: 4; }
+.cheers__stamp-line.thin { stroke-width: 1.6; }
+.cheers__stamp-paper { fill: var(--ground); opacity: .92; }
+.cheers__stamp-rim { fill: currentColor; font: 700 15px var(--display); letter-spacing: .06em; text-transform: uppercase; }
+.cheers__stamp-label { fill: currentColor; font: 600 15px var(--mono); text-anchor: middle; }
+.cheers__stamp-number { fill: currentColor; font: 800 50px var(--display); text-anchor: middle; letter-spacing: -.03em; }
+.cheers__quote { max-width: 36ch; margin: 26px 0 0; padding-left: 20px; border-left: 4px solid var(--teal); font: italic 400 clamp(1.3rem, 1rem + 1.2vw, 2rem)/1.35 var(--text); text-wrap: pretty; }
+.cheers__earlier, .cheers__notes { margin-top: 36px; }
+.cheers h2 { margin: 0 0 14px; }
+.cheers__wall { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px; margin: 0; padding: 0; list-style: none; }
+.cheers__wall .m { margin-right: .4em; font-size: .62rem; font-weight: 500; color: var(--teal); vertical-align: .55em; letter-spacing: 0; }
+.cheers__wall li { font: 650 max(1.05rem, calc(2.1rem - var(--age) * .12rem))/1.2 var(--display); letter-spacing: -.02em; }
+.cheers__notes ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px 36px; margin: 0; padding: 0; list-style: none; }
+.cheers__notes li { padding-top: 14px; border-top: 1px solid var(--rule); }
+.cheers__notes blockquote { margin: 0; font: italic 400 1rem/1.5 var(--text); }
+.cheers__notes .m { margin: 8px 0 0; font-size: .74rem; color: var(--muted); }
+.supporters-empty { display: grid; gap: 22px 48px; margin: 34px 0 0; align-items: center; }
+.supporters-empty__fig { margin: 0; background: var(--ground-2); }
+.supporters-empty__fig img { display: block; width: 100%; height: auto; }
+.supporters-empty__text h2 { margin: 0 0 12px; font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); line-height: 1.1; text-wrap: balance; }
+.supporters-empty__text p { max-width: 42ch; margin: 0 0 16px; font: 400 1.05rem/1.55 var(--text); color: var(--muted); }
+.supporters-empty__text a { font: 600 1rem var(--display); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 4px; }
+.cheers[hidden], .supporters-empty[hidden] { display: none; }
+.supporters-how { max-width: 65ch; margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: .95rem; }
+@media (min-width: 900px) {
+  .supporters-empty { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+}
 
 /* =============================================================================
    6. THE STREAM — post rows shared by the homepage, Writing and taxonomies
@@ -617,6 +707,16 @@ h1, h2, h3, h4 { margin: 0; }
     .folio__level:hover .level-card { transform: none; }
     .folio__level:hover .level-card__scale li.in::before { transform: none; }
   }
+
+  /* The kept marks sweep in once on load: the one moving thing in the ear */
+  .edition__tally::after { animation: tally 1400ms 500ms var(--ease-out) both; }
+  @keyframes tally { from { clip-path: inset(0 100% 0 0); } }
+
+  /* Supporters: the stamp comes down on the name with a thud, then the cups pop in one by one */
+  .cheers__stamp { animation: stamp-in 560ms 450ms cubic-bezier(.3, 1.5, .5, 1) both; }
+  @keyframes stamp-in { from { opacity: 0; transform: translateY(-50%) rotate(-24deg) scale(1.9); } }
+  .cheers__cup { animation: cup-in 520ms var(--ease-out) both; animation-delay: calc(900ms + var(--i) * 90ms); }
+  @keyframes cup-in { from { opacity: 0; transform: translateY(10px) scale(.6); } }
 
   .lightbox[open] { animation: zoom-in 300ms var(--ease-out); }
   @keyframes zoom-in { from { opacity: 0; transform: scale(.96); } }

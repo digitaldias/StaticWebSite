@@ -1,0 +1,27 @@
+{{- define "main" -}}
+{{- /* Supporters: everyone who bought Pedro a coffee and kept it public. The list comes
+       from /supporters.json (written by the Ko-fi webhook) and is filled in by
+       initSupporterPage in main.js; until then, the hopeful dog holds the page. */ -}}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="d split-words">{{ i18n "supportersTitleA" }} <em>{{ i18n "supportersTitleB" }}</em></h1>
+    {{- with .Description }}
+    <p class="lift">{{ . }}</p>
+    {{- end }}
+  </header>
+  <div class="cheers" data-supporter-list hidden></div>
+  <section class="supporters-empty" data-supporter-empty aria-labelledby="supporters-empty-title">
+    <figure class="supporters-empty__fig wipe">
+      <img src="/images/supporters/waiting.jpg" alt="{{ i18n "supportersEmptyAlt" }}" width="1600" height="896">
+    </figure>
+    <div class="supporters-empty__text">
+      <h2 class="d" id="supporters-empty-title">{{ i18n "supportersEmptyTitle" }}</h2>
+      <p>{{ i18n "supportersEmptyText" }}</p>
+      {{- with site.Params.support.kofi }}
+      <a href="{{ . }}" data-cta="kofi" rel="noopener noreferrer" target="_blank">{{ i18n "supportersBeFirst" }}</a>
+      {{- end }}
+    </div>
+  </section>
+  <div class="supporters-how note">{{ .Content }}</div>
+</div>
+{{- end -}}

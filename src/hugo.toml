@@ -46,7 +46,7 @@ defaultContentLanguage = 'en'
     youtube_digitaldias = 'https://youtube.com/@digitaldias'
     youtube_digitalhome = 'https://www.youtube.com/channel/UC03xD6JiBNZebtFOv9zqTVg'
     flickr = 'https://flickr.com/photos/digitaldias'
-    facebook = 'https://facebook.com/pedrodiaspt'
+    facebook = 'https://www.facebook.com/digitaldias'
   
   # Stats for hero section
   [params.stats]
@@ -214,3 +214,13 @@ defaultContentLanguage = 'en'
         text  = "Skriv spesifikasjonen offline på flyet. La en frontier-modell kode den når du lander."
         since = "2026-11"
         post  = "/blog/2026-11-02-local-llm-on-a-plane/"
+
+# The nightly briefing lives at repo root (briefing/), outside src/. Mounting it into
+# assets lets the homepage read today's edition at build time; the publisher's push redeploys.
+[module]
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+  [[module.mounts]]
+    source = "../briefing/index.html"
+    target = "assets/briefing-today.html"

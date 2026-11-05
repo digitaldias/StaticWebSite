@@ -26,3 +26,7 @@ depth +posts:
 # Pedro's most-played Spotify artists of the last four weeks, as suggestions for Now / Listening (one-time setup: scripts/spotify-top.py)
 listening:
     $env:PYTHONUTF8 = "1"; python scripts/spotify-top.py
+
+# Proofread the homepage briefing claim: the next 14 days in both languages, or every combination with `just claims --all`
+claims *args:
+    $env:PYTHONUTF8 = "1"; python scripts/briefing-claims.py {{args}}
