@@ -18,6 +18,12 @@ Every step asks Pedro in chat before anything public happens. Earlier approvals 
 - Account `digitaldias`. Pedro signs in with his Google account. Claude opens the sign-in page in Pedro's Chrome and stops there. Once Pedro says he is signed in, Claude carries on.
 - Drafts, saves and publishes only what Pedro has approved in chat. A cross-post is a short intro with a link to the full post on digitaldias.com, not the full text. Set the canonical URL to the digitaldias.com post.
 
+## LinkedIn (only when the post touches Pedro's CAIO work)
+
+- Suggest this when the post covers Pedro's work at Tradesolution. That includes his work as Chief AI Officer (AI governance, AI adoption in an organisation, measuring AI use, leading teams through AI change, AI policy) and technical work he has done at work or shared with colleagues, such as the model-router mod. A post about a purely personal project gets no LinkedIn suggestion. When it is unclear, ask Pedro whether the work was done at Tradesolution.
+- Draft a short write-up in English for Pedro to paste himself. Claude never posts to LinkedIn. The post's link goes in a comment on the post, not in the post body.
+- Ask Pedro before showing the draft as final. Keep the draft to a few sentences with the takeaway first.
+
 ## Google Search Console
 
 - Property `digitaldias.com` (domain property, verified).
