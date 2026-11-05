@@ -1,5 +1,29 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
+- date: 2026-11-05
+  tag: Shipped
+  text: "The [morning briefing](/briefing/en/) now comes in English too, with a language switch at the top. The Norwegian edition stays at [/briefing/](/briefing/)."
+  text_nb: "[Morgenbriefingen](/briefing/) finnes nå også [på engelsk](/briefing/en/), med språkvelger øverst. Den norske utgaven ligger der den lå."
+- date: 2026-11-05
+  tag: Site
+  text: "On a phone the homepage now opens on the newest post instead of my profile. The morning briefing sits as a slim strip under it, and Positions held and Now follow after three posts."
+  text_nb: "På mobil åpner forsiden nå med det nyeste innlegget i stedet for profilen min. Morgenbriefingen ligger som en smal stripe under, og Standpunkter og Nå kommer etter tre innlegg."
+- date: 2026-11-05
+  tag: Site
+  text: "On a phone an article gets to the point sooner: a smaller headline and the date, length and level on one line, so the TL;DR is on the first screen."
+  text_nb: "På mobil kommer artiklene raskere til saken: mindre tittel og dato, lengde og nivå på én linje, så TL;DR er synlig uten å scrolle."
+- date: 2026-11-05
+  tag: Site
+  text: "The reading level on an article now looks like something you can open, with an arrow that turns when it does. Headlines rise in faster, and only the first time you open a page in a session."
+  text_nb: "Lesenivået på en artikkel ser nå ut som noe du kan åpne, med en pil som snur seg når det åpnes. Titlene glir raskere inn, og bare første gang du åpner en side i en økt."
+- date: 2026-11-05
+  tag: Site
+  text: "Links on the [Listening](/listening/) page now carry a small Spotify or YouTube mark, so you know where they go before you click."
+  text_nb: "Lenkene på [Hører på](/nb/listening/)-siden har nå et lite Spotify- eller YouTube-merke, så du ser hvor de går før du klikker."
+- date: 2026-11-05
+  tag: Fixed
+  text: "On phones about 375 px wide the header pushed the page sideways. The links now get a row of their own below 400 px."
+  text_nb: "På mobiler rundt 375 px brede dyttet toppfeltet siden ut til siden. Under 400 px får lenkene nå en egen rad."
 - date: 2026-11-04
   tag: Site
   text: "The latest supporter now gets the front page: their name as large as the line allows, with a teal stamp that says thank you and gives their number."
