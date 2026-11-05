@@ -23,6 +23,12 @@ Every step asks Pedro in chat before anything public happens. Earlier approvals 
 - Suggest this when the post covers Pedro's work at Tradesolution. That includes his work as Chief AI Officer (AI governance, AI adoption in an organisation, measuring AI use, leading teams through AI change, AI policy) and technical work he has done at work or shared with colleagues, such as the model-router mod. A post about a purely personal project gets no LinkedIn suggestion. When it is unclear, ask Pedro whether the work was done at Tradesolution.
 - Draft a short write-up in English for Pedro to paste himself. Claude never posts to LinkedIn. The post's link goes in a comment on the post, not in the post body.
 - Ask Pedro before showing the draft as final. Keep the draft to a few sentences with the takeaway first.
+- Always make one image to go with the LinkedIn post, with `makeImage` (see `C:\Users\pedro\.claude\docs\makeimage.md`). Save it to a folder on the Desktop, named `linkedin-<post-slug>`, so Pedro can find it in Explorer. Never save it in the repo.
+- Vary the style from post to post: realistic photograph, cartoon, 3D scene, flat illustration, and so on. Don't repeat the previous post's style.
+- Run `makeImage` in PowerShell in the background. Show Pedro the image before he uploads it, and regenerate with a new seed if it's weak.
+- Check any text in the image for spelling. Keep it to one to three words per string.
+- Write in Norwegian humility, in English: modest and honest, never a pitch. Use "I think", "as a starting point", "I've only tested it on my own sessions". No superlatives, no exclamation marks, no claims Pedro hasn't measured. Say where the result may differ.
+- When the work is for colleagues, say what it helps them with (for example, learning which model fits which task) and why it matters, without overstating the result.
 
 ## Google Search Console
 
