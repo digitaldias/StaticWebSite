@@ -2,6 +2,23 @@
 # artist and song are required; guest, genres, spotify (artist URL), song_url and note_en / note_nb are optional.
 # Facts come from the Spotify API. It returns no genres, so none are listed.
 - date: 2026-11-05
+  artist: Simon Phillips
+  spotify: https://open.spotify.com/artist/6pPx8jYe1vzHuQea1st8Iy
+  song: Full studio live session
+  song_url: https://www.youtube.com/watch?v=fV1S6A6MjjA
+  note_en: 'Jazz fusion and rock drummer from London, born in 1957, who played professionally from age 12 in a Dixieland band led by his father. He has played on records by Judas Priest, Jeff Beck and Mike Oldfield, and in 1992 he took over the drum stool in Toto after Jeff Porcaro died. He stayed until 2014. Protocol is his own project, with a new line-up for most albums. This session is the Protocol V line-up: Otmaro Ruiz on keyboards, Ernest Tibbs on bass, Alex Sill on guitar and Jacob Scesney on sax. They play nine tunes in a little over an hour, starting with "Celtic Run", recorded at Little Big Beat Studios in Liechtenstein.'
+  note_nb: 'Jazzfusion- og rocketrommeslager fra London, født i 1957, som spilte profesjonelt fra han var 12 i et dixielandband ledet av faren. Han har spilt inn med blant andre Judas Priest, Jeff Beck og Mike Oldfield, og i 1992 overtok han trommestolen i Toto etter at Jeff Porcaro døde. Han ble til 2014. Protocol er hans eget prosjekt, med nye musikere på de fleste albumene. Denne sesjonen har Protocol V-besetningen: Otmaro Ruiz på keyboard, Ernest Tibbs på bass, Alex Sill på gitar og Jacob Scesney på sax. De spiller ni låter på drøyt en time, med «Celtic Run» først, innspilt i Little Big Beat Studios i Liechtenstein.'
+  image: /images/listening/simon-phillips.jpg
+  image_alt_en: "Simon Phillips behind a large drum kit with copper-coloured cymbals on a stage lit in purple and pink. At right a saxophonist in a pale shirt plays, with a bassist beside him."
+  image_alt_nb: "Simon Phillips bak et stort trommesett med kobberfargede cymbaler på en scene i lilla og rosa lys. Til høyre spiller en saksofonist i lys skjorte, med en bassist ved siden av seg."
+  image_caption_en: "Simon Phillips and Protocol at the Leverkusener Jazztage, 2019."
+  image_caption_nb: "Simon Phillips og Protocol på Leverkusener Jazztage i 2019."
+  image_credit:
+    author: Andreas Lawen, Fotandi
+    license: CC BY-SA 4.0
+    license_url: https://creativecommons.org/licenses/by-sa/4.0/
+    source_url: https://commons.wikimedia.org/wiki/File:Protocol_-_Simon_Phillips_-_Leverkusener_Jazztage_2019-1048.jpg
+- date: 2026-11-05
   artist: Heavytones
   song: Full studio live session
   song_url: https://www.youtube.com/watch?v=Mj1K6_g5kAE

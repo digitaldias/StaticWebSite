@@ -60,9 +60,9 @@ defaultContentLanguage = 'en'
     kofi = 'https://ko-fi.com/digitaldias'
   
   [params.currently]
-    building   = "planemode: Claude Code on a local model, no internet"
-    tinkering  = "Shrinking context windows to make local models usable"
-    annoyed_by = "Norwegian no longer has USB power in its seats, even though the plugs are there"
+    building   = "Claude Code mods: side panes that make Claude's choices visible"
+    tinkering  = "3D printing a shower head holder for a colleague"
+    annoyed_by = "Claude Desktop still has no proper model router built in"
 
   [params.photo]
     src = "/images/pedro.jpg"
@@ -75,7 +75,9 @@ defaultContentLanguage = 'en'
     since = "2026-09"
     post  = "/blog/2026-09-19-jev-before-the-waitlist/"
   [[params.positions]]
-    text  = "Claude Code's cache expiration is a hidden cost nobody talks about."
+    text  = "Pick your Claude model before the first prompt. A switch later costs a cache rewrite."
+    since = "2026-11"
+    post  = "/blog/2026-11-05-model-choice-is-a-bet/"
   [[params.positions]]
     text  = "Buy a 3D printer for your household."
     post  = "/blog/2026-05-23-ai-at-the-workbench/"
@@ -194,15 +196,17 @@ defaultContentLanguage = 'en'
           name = "Full nerd"
           reader = "Du bygger med det: hvordan det virker innvendig, hvorfor det er laget slik og hva det betyr i praksis."
       [languages.nb.params.currently]
-        building   = "planemode: Claude Code på en lokal modell, uten internett"
-        tinkering  = "Krymping av kontekstvinduer så lokale modeller blir brukbare"
-        annoyed_by = "Norwegian-flyene har ikke lenger USB-strøm i setene, selv om kontaktene fortsatt sitter der"
+        building   = "Claude Code-mods: sidepaneler som viser hvilke valg Claude tar"
+        tinkering  = "3D-printer en dusjhodeholder til en kollega"
+        annoyed_by = "Claude Desktop mangler fortsatt en skikkelig innebygd modellruter"
       [[languages.nb.params.positions]]
         text  = "Typede beslutnings-API-er som Jev er det neste store AI-skiftet for programvare."
         since = "2026-09"
         post  = "/blog/2026-09-19-jev-before-the-waitlist/"
       [[languages.nb.params.positions]]
-        text  = "At cachen i Claude Code utløper, er en skjult kostnad ingen snakker om."
+        text  = "Velg Claude-modell før første prompt. Bytter du senere, må hele cachen skrives på nytt."
+        since = "2026-11"
+        post  = "/blog/2026-11-05-model-choice-is-a-bet/"
       [[languages.nb.params.positions]]
         text  = "Kjøp en 3D-printer til hjemmet."
         post  = "/blog/2026-05-23-ai-at-the-workbench/"

@@ -1,6 +1,10 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-05
+  tag: Site
+  text: "Posts can now come with a recipe: plain instructions under `/recipes/` that you hand to your own Claude, which then builds what the post describes. The first one builds the [model router](/recipes/model-router/instructions.md)."
+  text_nb: "Innlegg kan nå ha en oppskrift: rene instruksjoner under `/recipes/` som du gir til din egen Claude, som så bygger det innlegget beskriver. Den første bygger [modellruteren](/recipes/model-router/instructions.md)."
+- date: 2026-11-05
   tag: Shipped
   text: "The [morning briefing](/briefing/en/) now comes in English too, with a language switch at the top. The Norwegian edition stays at [/briefing/](/briefing/)."
   text_nb: "[Morgenbriefingen](/briefing/) finnes nå også [på engelsk](/briefing/en/), med språkvelger øverst. Den norske utgaven ligger der den lå."

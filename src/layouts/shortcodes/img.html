@@ -3,7 +3,7 @@
 {{- $caption := .Get "caption" -}}
 {{- $credit := .Get "credit" -}}
 {{- $w := 0 -}}{{- $h := 0 -}}
-{{- if and (hasPrefix $src "/") (fileExists (printf "static%s" $src)) -}}
+{{- if and (hasPrefix $src "/") (not (hasSuffix $src ".svg")) (fileExists (printf "static%s" $src)) -}}
   {{- with imageConfig (printf "static%s" $src) -}}{{- $w = .Width -}}{{- $h = .Height -}}{{- end -}}
 {{- end -}}
 <figure class="figure">

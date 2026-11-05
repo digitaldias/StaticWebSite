@@ -40,6 +40,7 @@ Pedro Dias
 - **About** (`/about/`): Portrait, biography, a track list of milestones and the positions Pedro holds, with links to the posts that argue them
 - **Categories** (`/categories/<name>/`): Posts grouped by topic (Architecture, Azure, AI, Development, DevOps, Family, Photography)
 - **Tags** (`/tags/<name>/`): Posts tagged with specific technologies
+- **Recipes** (`/recipes/<name>/`): Plain-text instructions written for an AI coding agent such as Claude Code, with the files they need (for example `/recipes/model-router/instructions.md` and `rubric.txt`). A post links its recipe; a reader points their own agent at it.
 
 ### Content Types
 
