@@ -203,3 +203,7 @@ Model new posts on the 2026 posts (from `2026-04-06-…` on); the 2025 posts car
 - Prompts are long and specific (50 to 120 words), and the model renders text in images sharply: quote the exact words, say where they appear, and say what stays blank. Add "no text" only when a picture should have none. Full recipe in `~/.claude/docs/makeimage.md`. Show Pedro the result before using it; regenerate with a new seed rather than accept a weak image.
 - Photos of Pedro's children stay on Flickr; they never go on this site. Pedro's Flickr (`digitaldias`) holds 172 photos for landscape, dog, studio and still-life imagery.
 - Keep `static/llm.txt` updated when the site structure changes (new sections, content types, or technologies).
+
+## Promotion
+
+- After a new post goes live, invoke the `promote-post` skill (`.claude/skills/promote-post/SKILL.md`) and follow it for every promotion step: Hacker News, Dev.to, Google Search Console and stats.

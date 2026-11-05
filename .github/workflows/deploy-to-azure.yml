@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main # or your default branch
+    paths-ignore:
+      - 'CLAUDE.md'
+      - '.claude/**'
 
 jobs:
   build-and-deploy:
