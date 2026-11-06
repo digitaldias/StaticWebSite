@@ -1,0 +1,6 @@
+{
+  "name": "dd-desk",
+  "version": "0.1.0",
+  "description": "Side pane for digitaldias.com: drafts and their workflow steps, push and deploy state, the Now box, and buttons that start the CLAUDE.md workflows",
+  "types": "./types/index.d.ts"
+}

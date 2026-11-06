@@ -1,0 +1,5 @@
+{
+  "name": "digitaldias",
+  "owner": { "name": "Pedro Dias" },
+  "plugins": [{ "name": "dd-desk", "source": "./dd-desk" }]
+}
