@@ -16,37 +16,20 @@ cd src && hugo server -D  # dev server at http://localhost:1313
 
 A Hugo dev server Pedro already has running is his. Reuse it; never start a second one on the same port or restart his.
 
+## Finishing work
+
+- Verify every claim yourself before reporting it: build, grep, curl, run the snippet. A report never contains "not verified", "open questions", "remaining issues" or a list of nits (Pedro, 2026-11-06).
+- Fix the small defects you find along the way (stale notes, dead files, a fact duplicated in two places that can drift) in the same change instead of listing them.
+- Something only Pedro can do (the Cloudflare dashboard, an account, a decision) goes to him as one concrete action, with the exact place to click, as the closing question. Verify the result yourself once he says it is done.
+- Probing the live site with curl is fine, except right after a deploy (see the deploy race).
+
 ## Architecture
 
-This is a **Hugo static site**. The entire Hugo project lives under `src/` — not the repo root.
-
-```
-src/
-├── hugo.toml          # Config (use this — not config.toml or config.yaml), incl. [languages]
-├── i18n/              # en.yaml, nb.yaml: UI strings for templates (`{{ i18n "key" }}`)
-├── assets/
-│   ├── css/tokens.css # Sea Glass tokens: the single source for the site and /briefing/
-│   ├── css/styles.css # The site's CSS, bundled after tokens.css
-│   ├── js/theme.js    # Light/dark choice, loaded without defer in <head>
-│   ├── js/lang.js     # EN/NO choice and redirect, loaded without defer in <head>
-│   └── js/main.js     # Reader tools, lightbox, Giscus, headline rise (vanilla ES6+)
-├── content/           # Markdown posts and section pages (blog, log, photography, about)
-│   └── blog/          # Blog posts (filename: YYYY-MM-DD-slug.md)
-├── data/              # log.yaml, photos.yaml, track.yaml, covers.yaml
-├── layouts/           # Go HTML templates
-│   ├── _default/      # baseof.html, taxonomy/term
-│   ├── blog/          # list.html + single.html
-│   ├── log/ photography/ about/   # list.html each (the sections render from _index.md)
-│   ├── partials/      # head, header, footer, stream (homepage), archive + archive-card (Writing, taxonomies), cover, category-filter
-│   ├── shortcodes/    # callout, img, pullquote (see below)
-│   └── index.html     # Homepage: identity sidebar beside the post stream
-├── static/            # Favicons, robots.txt, llm.txt, images/
-└── public/            # Build output — do not edit
-```
+This is a **Hugo static site**. The entire Hugo project lives under `src/`, not the repo root. Config is `src/hugo.toml` (not config.toml or config.yaml). `src/public/` is build output and `src/isableFastRender/` is a Hugo server artifact: never edit either. `theme.js` and `lang.js` load without `defer` in `<head>`; everything else is in `main.js` (vanilla ES6+).
 
 **Homepage values** come from `[params]` in `hugo.toml`: `bio`, `motto`, `photo`, `[[params.positions]]` (`text`, optional `since` YYYY-MM and `post` path), `[params.currently]`. Edit there, not in the template. Do not create `content/_index.md`.
 
-**Data files.** `data/log.yaml` holds the Ship's log notes (published posts join it automatically). Every reader-visible site feature or fix gets a dated note there (`Shipped`, `Site` or `Fixed`) in the same commit. `data/photos.yaml` is the Photographs selection; never add photos of the children. `data/track.yaml` is the About page's milestone list. `data/listening.yaml` is the history of the homepage Listening pick, newest first (`artist`, `song`, optional `guest`, `genres`, `spotify`, `song_url`); its first entry feeds the Now box on the homepage and the Log, and `/listening/` (and `/nb/listening/`) lists them all. Facts about an artist come from the Spotify API, never from memory. `data/covers.yaml` holds alt text for generated covers. `data/briefing_claims.yaml` holds the phrase parts for the homepage briefing sentence, which `partials/briefing-claim.html` rewords per edition by date; keep its list lengths pairwise coprime and proofread every combination with `just claims --all` after an edit. `data/depth.yaml` holds the decision model's raw score per `## ` section (`just depth`, model `d3:4b-q8_0` on Ollama, which newsstream also uses: coordinate before running it). `partials/depth.html` turns the scores into levels with `[params.depth]` cutoffs in `hugo.toml`, and renders the folio's level key and card, the turnout where the gist ends, and the level marks on the Chart and on every list of posts (`stream.html`, `archive-card.html`, the Ship's log's Published rows). A new place that lists posts gets the level mark too. Recalibrate the cutoffs against Pedro's labels with `python scripts/depth-score.py --calibrate` (Spearman 0.85 on 10 sections, 2026-11-02). The levels follow Microsoft's conference session scale (Mike Hall, MSDN 2008): the scorer asks two questions, what the section assumes the reader knows (weight 0.75) and what its code does (0.25).
+**Data files.** `data/log.yaml` holds the Ship's log notes (published posts join it automatically). Every reader-visible site feature or fix gets a dated note there (`Shipped`, `Site` or `Fixed`) in the same commit. `data/photos.yaml` is the Photographs selection; never add photos of the children. `data/track.yaml` is the About page's milestone list. `data/listening.yaml` is the history of the homepage Listening pick, newest first (`artist`, `song`, optional `guest`, `genres`, `spotify`, `song_url`); its first entry feeds the Now box on the homepage and the Log, and `/listening/` (and `/nb/listening/`) lists them all. Facts about an artist come from the Spotify API, never from memory. `data/covers.yaml` holds alt text for generated covers. `data/briefing_claims.yaml` holds the phrase parts for the homepage briefing sentence, which `partials/briefing-claim.html` rewords per edition by date; keep its list lengths pairwise coprime and proofread every combination with `just claims --all` after an edit. `data/depth.yaml` holds the decision model's raw score per `## ` section (`just depth`, model `d3:4b-q8_0` on Ollama, which newsstream also uses: coordinate before running it). `partials/depth.html` turns the scores into levels with `[params.depth]` cutoffs in `hugo.toml`, and renders the folio's level key and card, the turnout where the gist ends, and the level marks on the Chart and on every list of posts (`stream.html`, `archive-card.html`, the Ship's log's Published rows). A new place that lists posts gets the level mark too. Recalibrate the cutoffs against Pedro's labels with `python scripts/depth-score.py --calibrate`. The levels follow Microsoft's conference session scale (Mike Hall, MSDN 2008): the scorer asks two questions, what the section assumes the reader knows (weight 0.75) and what its code does (0.25).
 
 **Two languages.** English is the default and Norwegian bokmål lives under `/nb/` (`[languages]` in `hugo.toml`). Every post exists in both: `<post>.md` (English) and `<post>.nb.md` (Norwegian) side by side, with the same `date`, `categories`, `tags`, `featuredImage` and `imageCredit`, and translated `title`, `description`, `excerpt`, `tldr`, `featuredAlt` and shortcode `alt`/`caption`. Internal links in a `.nb.md` point at `/nb/blog/...`. The header switch (`partials/lang-switch.html`, `lang.js`) stores `en` or `nb` under `localStorage` key `dd-lang` and redirects to the translation before first paint; a page without a translation stays in its own language and the other language shows dimmed. New UI text goes into both `i18n/*.yaml` files, never hardcoded in a template. Homepage values for Norwegian live in `[languages.nb.params]` in `hugo.toml`: change `bio`, `motto`, `currently` and `positions` there as well as in `[params]`. The Norwegian must be idiomatic bokmål that reads as if a Norwegian wrote it first, never anglicised Norwegian; the full rules and checklist are in `doc/nb-style.md`. Everything a reader sees is translated: template text through `i18n/*.yaml`, `main.js` strings through `assets/js/i18n.js` (picked by `<html lang>`), the depth level names through `[languages.nb.params.depth]`, and data files through `_nb` fields (`text_nb`, `title_nb`, `alt_nb`, `note_nb`) read with `partials/loc.html`. A new template string or data field gets its Norwegian in the same change; only the `404.html` page stays English, because the static host serves one 404. Norwegian pages use `nb/` URLs, so link with `relLangURL`. Text in CSS `content:` (the Chart's "The gist ends here") gets a `:lang(nb)` override in `styles.css`. Hugo gotchas found here: `.Fragments.Headings` has one synthetic level-0 root whose `.Headings` are the h2s; `depth.html` matches a translated post's sections to `data/depth.yaml` by h2 position, because the scored headings are English; and a `hugo server` that hit one template error keeps logging "Rebuild failed" and serving stale pages even after the fix, so restart it (check `hugo --quiet` first).
 
@@ -83,34 +66,13 @@ Each post's `## ` headings drive the reader tools in `main.js`: the Chart (secti
 
 `lastmod` comes from git history (`enableGitInfo`, with `fetch-depth: 0` in CI). A post shows "Revised" in its folio line and a Revision record once its last commit lands more than 7 days after `date`. Any commit to a post counts, so never sweep mechanical front-matter edits across all posts: every one of them would claim a revision that day.
 
-## Available Shortcodes
+## Shortcodes
 
-- `{{< callout >}}` — highlighted callout block (four older posts carry a TL;DR in one; new posts use the `tldr` front-matter field instead)
-- `{{< pullquote >}}` — pull quote styling
-- `{{< img >}}` — image with caption support
-
-Mermaid was fully removed — do not add it back.
+`callout`, `pullquote` and `img` in `layouts/shortcodes/`. New posts put the TL;DR in the `tldr` field, never in a callout. Mermaid was removed; do not add it back.
 
 ## Design System — Sea Glass
 
-Cool Nordic palette, newspaper structure (ruled columns, folio lines, no cards), full-colour photos, light and dark themes. Every token lives in `src/assets/css/tokens.css`, which the site bundles ahead of `styles.css` and the briefing publisher inlines (see `doc/briefing-style-handoff.md`). Change a value there, nowhere else.
-
-```css
-/* light-dark(light, dark) */
---ground:   #f4f6f4 / #0f1a1b   /* page */
---ground-2: #e7eeec / #162527   /* raised surface: code, image wells */
---ink:      #14201f / #e3ebe9   /* text, heavy rules */
---muted:    #4f5f5d / #9db1ae   /* meta, secondary text */
---rule:     #cdd8d5 / #2a3b3d   /* hairlines */
---teal:     #0b5d63 / #5fc3c2   /* the only accent */
---deep-1:   #d7ebe8 / #15343a   /* tint: TL;DR, callouts, Now box, Next entry */
---deep-2:   #a9d3cf / #18454c   /* hover underline sweep, chart markers */
---deep-3:   #5aa5a3 / #1c5860   /* link underline colour; never text */
---on-teal:  #f4f6f4 / #0f1a1b   /* text on a teal fill */
---ease-out: cubic-bezier(.16, 1, .3, 1)
---transition: 150ms ease
---page: 1440px              /* max page width (header, footer, every page column) */
-```
+Cool Nordic palette, newspaper structure (ruled columns, folio lines, no cards), full-colour photos, light and dark themes. Every token lives in `src/assets/css/tokens.css`, which the site bundles ahead of `styles.css` and the briefing publisher inlines (see `doc/briefing-style-handoff.md`). Change a value there, nowhere else; its comments say what each token is for. `--teal` is the only accent, and `--deep-3` is never used for text.
 
 No orange, terracotta, coral or any other warm accent: it reads as AI-made. Use the tokens only; don't add colours.
 
@@ -122,7 +84,7 @@ Motion: headline word rise (`.split-words`, `initHeadlineRise`), image wipe (`.w
 
 CSS conventions: mobile-first rules; breakpoints at 400 / 520 / 560 / 700 / 760 / 900 / 960 / 1180 px (the Chart switches from strip to rail at 1180). Side gutter `clamp(16px, 4vw, 44px)`; nothing may scroll horizontally from 320 px up. Transitions use `var(--transition)` or `var(--ease-out)`.
 
-`main.js` scores 8.4 on `qualify`; `initChart`'s `update` (cc 12) and `initReadMarks` (cc 10) are over the cc 9 threshold. Add new behaviour as small `init*` functions, never inside those two.
+In `main.js`, `initChart`'s `update` and `initReadMarks` are already over `qualify`'s complexity threshold. Add new behaviour as small `init*` functions, never inside those two.
 
 Hugo template conventions: in the blog section `.PrevInSection` is the older post and `.NextInSection` the newer one (the "Next entry" link uses `.PrevInSection`); use `{{- -}}` for whitespace control; guard optional params with `{{ with .Params.excerpt }}{{ . }}{{ end }}`; internal links via `.RelPermalink`; render HTML content via `{{ .Content | safeHTML }}`.
 
@@ -138,24 +100,28 @@ The Content Security Policy is hardcoded in `layouts/partials/head.html`. Any ne
 
 Push to `main` triggers `.github/workflows/deploy-to-azure.yml`, which builds with `hugo --minify` and uploads `src/public/` to Azure Blob Storage (`$web` container) via `az storage blob upload-batch`. Requires `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` secrets in the repo. Cloudflare sits in front of the storage origin as CDN/DNS for the custom domain.
 
-The `src/isableFastRender/` directory is a Hugo server artifact — ignore it.
-
 The nightly briefing publisher (newsstream, early morning) commits `briefing/` in this checkout, then runs `git pull` and `git push origin main`; it refuses to publish while `main` is ahead of `origin/main`. Never leave unpushed commits on `main` overnight: finish work on a branch, or push it.
 
 The deploy workflow has no `concurrency` group, so back-to-back pushes deploy in parallel and the run that finishes last wins the upload. After two quick pushes, check in `gh run list` that the newest commit's run finished last.
 
 ### Known deploy race: do not verify a fresh deploy against the live CDN URL
 
-`upload-batch` uploads many files without guaranteeing order, so a page's HTML can become servable a moment before every fingerprinted asset it references (`css/styles.min.<hash>.css`, `js/main.min.<hash>.js`) is actually live at the origin. Cloudflare caches static-looking extensions (`.css`, `.js`, `.jpg`, …) **by default, including non-2xx responses**, and this site's zone currently returns `Cache-Control: max-age=14400` on those — so a single request that lands in that few-second window gets a 404 pinned at the edge for up to 4 hours, for everyone, until purged. This has caused a real outage (2026-09-19): the live site rendered unstyled because `styles.min.*.css` 404'd once, immediately after deploy, and stayed cached.
+`upload-batch` uploads files in no fixed order, so HTML can go live seconds before the fingerprinted CSS/JS it references. Cloudflare caches static extensions for 4 hours (`max-age=14400`), and one early request used to pin a 404 at the edge for everyone.
 
-Rules that follow from this:
+- Never curl or open the live custom-domain URL right after a deploy: checking is what poisons it. Confirm a deploy from the `upload-batch` step's JSON in the GitHub Actions log, which lists every blob with `eTag` and `Last Modified`.
+- The Cache Rule "Never cache error responses" (`http.response.code ge 400`, `no-store`) keeps new 404s out of the cache; a missing file answers `cf-cache-status: BYPASS`. A missing asset with `cf-cache-status: HIT` means the rule is off (Caching → Cache Rules) or the entry predates it.
+- A poisoned URL needs a Cloudflare purge. Claude has no Cloudflare token: ask Pedro to purge. Re-bumping the fingerprint and re-checking in a loop is not a fix.
+- A comment-only edit to `styles.css` or `main.js` does not change the fingerprint; the minifier strips comments first.
+- A replaced image under the same URL keeps serving the old bytes for up to 4 hours. Save a regenerated image under a new file name and update the reference, or ask Pedro to purge it. Compare `curl -sIL <url>` `Content-Length` with the local file to check.
 
-- **Never curl or open the live custom-domain URL immediately after a deploy finishes**, especially the fingerprinted CSS/JS paths. Checking is what poisons it. If you must confirm a deploy landed, read the `az storage blob upload-batch` step's JSON output in the GitHub Actions log (it lists every blob with its `eTag` and `Last Modified`) — that confirms the origin has the file without ever touching the CDN.
-- **Bumping the Hugo fingerprint is not a reliable fix on its own.** A new hash is a new URL Cloudflare has never cached, which sidesteps an already-poisoned entry — but the new URL can be raced and poisoned the exact same way (an uptime monitor, Cloudflare's own analytics beacon, or your own verification curl can all do it). Don't chase this by re-bumping and re-checking in a loop.
-- **The only deterministic fix once a URL is poisoned is a Cloudflare cache purge** (dashboard: Caching → Configuration → Purge Cache — purge the specific URL, or Purge Everything). Claude Code has no Cloudflare API token in this environment and cannot do this; ask Pedro to purge when this happens.
-- **The Cloudflare fix is in place since 2026-11-05**: a Cache Response Rule named "Never cache error responses" (`http.response.code ge 400`, cache-control `no-store`, Cloudflare only) stops new 404s from being cached; a missing file now answers `cf-cache-status: BYPASS`. It was set up after `featured.jpg` of the model-router post was poisoned on its first deploy. An entry cached before the rule still needs a purge. If a fresh deploy shows a missing asset with `cf-cache-status: HIT`, check that the rule is still active (Caching → Cache Rules) before anything else.
-- Hugo's minifier strips comments before fingerprinting, so a comment-only edit to `styles.css`/`main.js` does **not** change the hash. Bumping the fingerprint on purpose requires an actual rule/value change.
-- **Replacing an image under the same URL does not show up.** Cloudflare keeps the old bytes for up to 4 hours (`max-age=14400`, `cf-cache-status: HIT`), and browsers do too, even though the deploy log shows the new blob uploaded (found 2026-11-01: `featured.jpg` kept serving the old 185131-byte file after a successful deploy). When regenerating an image for a published post, save it under a new file name and update the reference, or ask Pedro to purge the URL in Cloudflare. To check without guessing, `curl -sIL <image url>` and compare `Content-Length` with the local file.
+## AI readers
+
+Most of the site's traffic is AI bots (Cloudflare bot analytics, Pedro's reading). The goal is to be cited with a link in AI answers. The voice still wins: the body keeps its scene, rhythm and punchline, and the agent gets its due in the frame around it.
+
+- `robots.txt` names every AI crawler and agent and allows it, training bots included. A named group does not inherit `User-agent: *`, so each one repeats the `Disallow` lines. Cloudflare can block AI bots at zone level whatever `robots.txt` says, and its managed robots.txt is prepended to ours. Check both with `curl -sL -o /dev/null -w '%{http_code}' -A 'GPTBot/1.2' https://digitaldias.com/blog/` (403 means blocked) and `curl -s https://digitaldias.com/robots.txt` (a `Content-Signal` header or a Cloudflare `Disallow` list means the managed file is on). Since 2026-11-06 the zone's AI Crawler and Agent access policies (Security → Settings → Bot traffic) allow Search, Training and Agents, and Bot Preference Sync is off, so the repo's `robots.txt` is the only one served.
+- The deploy uploads `*.md` and `llms.txt` in their own `upload-batch` calls with an explicit UTF-8 content type, because the extension guess may not know `.md`. A new agent-facing file type gets the same treatment.
+- `/llms.txt` (llmstxt.org) and an `index.md` beside every post's HTML are generated at build time from the content. Never hand-edit a copy in `src/static`. A new section or content type shows up in the `llms.txt` template.
+- What agents get per post: the `tldr`, a first sentence in each `## ` section that states its claim on its own, descriptive headings, the FAQ, dated facts with numbers and versions, and the JSON-LD in `head.html`.
 
 ## Writing a new blog post
 
@@ -163,7 +129,7 @@ When Pedro brings an idea for a post, run these steps in order. Each ends on its
 
 1. **Interview.** Ask Pedro one question at a time (`AskUserQuestion`) until you hold the post's one claim, the story or evidence behind it, and the reader it is for. Done when you can state the claim in one sentence and Pedro agrees with it.
 2. **Scaffold.** `just new-post <slug>`. Done when the file exists with `draft: true`.
-3. **Draft.** Load the `writing-rules` skill first, then write to the voice rules below. Use `## ` sections (at least two, so the reader tools' Chart appears). Write in ascending reading level on Microsoft's 100-400 scale (`[params.depth.levels]` in `hugo.toml`): the opening and the first section are always level 100, a gist a CEO can stop after with no prior knowledge (what it is, why it matters, what to decide); then 200 (what it can do, where it fits, a little code to make a point), 300 (how to build it, with runnable code), and 400 only when the post has internals worth explaining. Cover the whole range when the subject allows, and never skip the 100 gist. Never step back down to 100 or 200 after a 300 section, except for the closing punchline and the FAQ; a late shallow section makes the turnout land in the wrong place. Done when every section serves the one claim and every number, quote and link is real and checked. Mark anything unverified for Pedro instead of guessing. Then write the Norwegian version as `<post>.nb.md` (see Two languages), rebuilt from the meaning and not word for word, with code, URLs, product names and shortcode `src` unchanged and the same `## ` headings in the same order. Then run the idiom pass: a subagent on the Opus model reads `doc/nb-style.md`, edits the `.nb.md` in place and reports; never skip it, Pedro will not ask for it each time. Done when both files have equal counts of `## ` headings, fenced blocks and shortcodes and the idiom pass has run.
+3. **Draft.** Load the `writing-rules` skill first, then write to the voice rules below. Use `## ` sections (at least two, so the reader tools' Chart appears). Write in ascending reading level on Microsoft's 100-400 scale (`[params.depth.levels]` in `hugo.toml`): the opening and the first section are always level 100, a gist a CEO can stop after with no prior knowledge (what it is, why it matters, what to decide); then 200 (what it can do, where it fits, a little code to make a point), 300 (how to build it, with runnable code), and 400 only when the post has internals worth explaining. Cover the whole range when the subject allows, and never skip the 100 gist. Never step back down to 100 or 200 after a 300 section, except for the closing punchline and the FAQ; a late shallow section makes the turnout land in the wrong place. Done when every section serves the one claim and every number, quote and link is real and checked. Ask Pedro for anything only he knows instead of guessing it. Then write the Norwegian version as `<post>.nb.md` (see Two languages), rebuilt from the meaning and not word for word, with code, URLs, product names and shortcode `src` unchanged and the same `## ` headings in the same order. Then run the idiom pass: a subagent on the Opus model reads `doc/nb-style.md`, edits the `.nb.md` in place and reports; never skip it, Pedro will not ask for it each time. Done when both files have equal counts of `## ` headings, fenced blocks and shortcodes and the idiom pass has run.
 4. **Front matter.** Fill every field in the block above: `description` at most 160 characters, `excerpt` one or two sentences, `categories` from the list below, specific `tags`, `featuredAlt` describing the image. Omit `readTime`.
    Every new post gets a `tldr`: the claim and its payoff in two or three plain sentences, written for a reader who stops there. Say what the reader learns or can do, not what the post covers. Word it differently from `description`: the TL;DR is visible page content (good for skimmers, featured snippets and AI answers), while `description` is the search-result snippet.
 5. **Images.** Prefer Pedro's own photos or real screenshots. When the post needs an illustration, generate it locally with MakeImage (see below). Done when `featured.jpg` exists at the hero spec and every image has alt text.
@@ -189,7 +155,8 @@ Model new posts on the 2026 posts (from `2026-04-06-…` on); the 2025 posts car
 - Rhythm: about 12 words per sentence on average, with frequent short lines and fragments for emphasis ("Not a battery problem."). Paragraphs of two to four sentences. "Not X, but Y" contrasts recur.
 - Open on a concrete scene or personal fact ("I have a drawer. You probably have one too."). End on a short punchline, then a `## FAQ` of real reader questions with `###` questions.
 - Specific numbers, named tools and links over adjectives. Estimates are labelled as estimates; caveats are numeric, not hedged. Disclose edits to screenshots or data briefly.
-- Titles and headings are sentence case. Titles are a claim, a question or a small story ("I tried to fix a Wi-Fi camera. I built a weather station."); headings are descriptive with a light twist ("Why F12 fails you here").
+- Titles and headings are sentence case. Titles are a claim, a question or a small story ("I tried to fix a Wi-Fi camera. I built a weather station."). A `## ` heading names its subject first, in the words a reader would search for, and any twist comes after a colon ("Browser DevTools: why F12 fails you here"); agents use headings to pick which part of a page to quote.
+- The first sentence of each `## ` section states that section's claim so it reads correctly when quoted alone. The scene, the build-up and the joke come after it.
 - Plain punctuation: no emoji, no exclamation marks, commas or colons instead of em dashes, and no hype vocabulary.
 - `{{< img >}}` for every in-post image, `{{< callout >}}` sparingly. Fenced code blocks name their language. Every fenced block gets a language label and a Copy button from `initCodeBlocks` in `main.js`, so write each snippet as something a reader can paste and run as is. Write prompts as ```` ```text ```` blocks with one paragraph or list item per line (the site wraps them and Copy returns them clean), never hard-wrapped. Hugo's Chroma classes `.k` and `.m` collide with the `.k` and `.m` utilities in `styles.css`; the `.highlight` rules reset them, so keep them.
 - Norwegian quality is a fixed rule, not a request: every `.nb.md` passes the idiom pass in `doc/nb-style.md` (no calques, no split compounds such as `kontekst vindu`, no English word order, correct number and date formats, «guillemets» for quotes) before it counts as done. Developer terms Norwegians really say in English (commit, pipeline, deploy, prompt) stay.
@@ -201,9 +168,8 @@ Model new posts on the 2026 posts (from `2026-04-06-…` on); the 2025 posts car
 - Hero: `static/images/blog/<post-file-name>/featured.jpg`, 1920×1080, JPEG ~82%, ~200–300 KB. Inline: 1200×800, ~150–200 KB. `python scripts/optimize-image.py <in> hero|inline <out>` produces both.
 - MakeImage is Pedro's local image generator (`makeImage`, Krea 2 Turbo on ComfyUI, about a minute per image; run it in the background). `just cover <post-file-name> "<prompt>" [seed]` generates a landscape image and writes the optimised `featured.jpg`. For other images: `makeImage --no-input -p landscape -s <seed> -o <folder> "<prompt>"`, then `optimize-image.py`.
 - Prompts are long and specific (50 to 120 words), and the model renders text in images sharply: quote the exact words, say where they appear, and say what stays blank. Add "no text" only when a picture should have none. Full recipe in `~/.claude/docs/makeimage.md`. Show Pedro the result before using it; regenerate with a new seed rather than accept a weak image.
-- Photos of Pedro's children stay on Flickr; they never go on this site. Pedro's Flickr (`digitaldias`) holds 172 photos for landscape, dog, studio and still-life imagery.
-- Keep `static/llm.txt` updated when the site structure changes (new sections, content types, or technologies).
+- Photos of Pedro's children stay on Flickr; they never go on this site. Pedro's Flickr (`digitaldias`) holds landscape, dog, studio and still-life imagery.
 
 ## Promotion
 
-- After a new post goes live, invoke the `promote-post` skill (`.claude/skills/promote-post/SKILL.md`) and follow it for every promotion step: Hacker News, Dev.to, Google Search Console and stats.
+- After a new post goes live, invoke the `promote-post` skill (`.claude/skills/promote-post/SKILL.md`) and follow it for every promotion step: Hacker News, Dev.to, Google Search Console and stats, including AI referrals.
