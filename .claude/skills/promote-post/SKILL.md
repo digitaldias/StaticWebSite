@@ -16,7 +16,15 @@ Every step asks Pedro in chat before anything public happens. Earlier approvals 
 ## Dev.to
 
 - Account `digitaldias`. Pedro signs in with his Google account. Claude opens the sign-in page in Pedro's Chrome and stops there. Once Pedro says he is signed in, Claude carries on.
-- Drafts, saves and publishes only what Pedro has approved in chat. A cross-post is a short intro with a link to the full post on digitaldias.com, not the full text. Set the canonical URL to the digitaldias.com post.
+- Drafts, saves and publishes only what Pedro has approved in chat. Show him the full draft first.
+- Never copy the post's content to Dev.to: no sections, code, images or paragraphs lifted from the post. Every cross-post is a fresh summary in this format:
+  - Title: the post's English title. Tags: up to four, lowercase, from the post's subject.
+  - Three or four short paragraphs, about 120 to 180 words, in first person and the voice rules of CLAUDE.md. Open on what Pedro did or noticed, then the idea, then any honest caveat (what is an estimate, unproven or only tested on his own setup).
+  - One paragraph that says what the full post covers and what the reader can take from it (a recipe, a prompt, a rubric).
+  - A last line in bold with the link: `**Read the full post, with <what it gives the reader>:** <post URL>`.
+  - Word the summary a little differently from the post's opening and TL;DR, so it reads as an introduction, not an excerpt.
+  - Reference: https://dev.to/digitaldias/dont-write-like-a-robot-llmstxt-for-ai-agents-1hd5 (2026-11-06).
+- Set the canonical URL (Advanced Options) to the post's URL on `https://digitaldias.com/` and the AI Disclosure to "Some AI (AI-assisted)". Check the Preview before Publish, and confirm "Originally published at digitaldias.com" on the published page.
 
 ## LinkedIn (only when the post touches Pedro's CAIO work)
 
