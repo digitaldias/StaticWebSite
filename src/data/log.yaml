@@ -1,5 +1,9 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
+- date: 2026-11-06
+  tag: Site
+  text: "AI agents can now read the site more easily. Every post has a plain Markdown version at `/blog/<post>/index.md`, an [llms.txt](/llms.txt) lists them all with their TL;DR, and robots.txt welcomes AI crawlers by name. Nothing changes for human readers."
+  text_nb: "KI-agenter har nå lettere for å lese nettstedet. Hvert innlegg har en ren Markdown-versjon på `/nb/blog/<innlegg>/index.md`, en [llms.txt](/llms.txt) lister dem alle med TL;DR, og robots.txt ønsker KI-crawlere velkommen ved navn. For menneskelige lesere er alt som før."
 - date: 2026-11-05
   tag: Site
   text: "Posts can now come with a recipe: plain instructions under `/recipes/` that you hand to your own Claude, which then builds what the post describes. The first one builds the [model router](/recipes/model-router/instructions.md)."

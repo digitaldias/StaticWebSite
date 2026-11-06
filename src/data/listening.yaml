@@ -1,6 +1,13 @@
 # History of the homepage "Listening" pick, newest first. The first entry shows in the Now box.
 # artist and song are required; guest, genres, spotify (artist URL), song_url and note_en / note_nb are optional.
 # Facts come from the Spotify API. It returns no genres, so none are listed.
+- date: 2026-11-06
+  artist: Dire Straits
+  spotify: https://open.spotify.com/artist/0WwSkZ7LtFUFjGjMZBMt6T
+  song: Sultans Of Swing
+  song_url: https://open.spotify.com/track/37Tmv4NnfQeb0ZgUC4fOJj
+  note_en: 'From the band''s first album, Dire Straits, released on 7 October 1978. The album version runs 5:48.'
+  note_nb: 'Fra bandets første album, Dire Straits, utgitt 7. oktober 1978. Albumversjonen varer i 5.48.'
 - date: 2026-11-05
   artist: Simon Phillips
   spotify: https://open.spotify.com/artist/6pPx8jYe1vzHuQea1st8Iy

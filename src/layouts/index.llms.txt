@@ -1,0 +1,53 @@
+# digitaldias.com
+
+> Personal site and technical blog of Pedro Dias, Acting Chief AI Officer at Tradesolution AS. Writing on software architecture, Azure, AI and development, a dated log of what he builds and ships, and photographs. Every post exists in English and Norwegian bokmål, and every post has a plain Markdown version.
+
+## Owner
+
+Pedro Dias
+- Role: Acting Chief AI Officer at Tradesolution AS (previously Chief Architect there, and years at Microsoft)
+- Location: Frogner, Lillestrøm, Norway
+- LinkedIn: https://linkedin.com/in/digitaldias
+- GitHub: https://github.com/digitaldias
+- Flickr: https://flickr.com/photos/digitaldias
+- YouTube: @digitaldias (tech), @digitalhome6575 (family)
+- Writing code since: 1982
+- Licensing: © Pedro Dias. All rights reserved. Content and code are proprietary unless otherwise noted. Photography is personal work (© Pedro Dias) hosted on Flickr.
+
+## Blog posts (English)
+
+{{ range (where site.RegularPages "Section" "blog").ByDate.Reverse -}}
+{{ $md := "" }}{{ with .OutputFormats.Get "markdown" }}{{ $md = .Permalink }}{{ else }}{{ $md = .Permalink }}{{ end -}}
+- [{{ .Title }}]({{ $md }}): {{ .Params.tldr | default .Params.description | replaceRE `\s+` " " | strings.TrimSpace }}
+{{ end }}
+## Norwegian (Norsk)
+
+- [Norsk forside](https://digitaldias.com/nb/): The Norwegian bokmål edition of the site. Every post above has a Norwegian translation.
+{{ range site.Sites -}}{{- if eq .Language.Lang "nb" -}}
+{{ range (where .RegularPages "Section" "blog").ByDate.Reverse -}}
+{{ $md := "" }}{{ with .OutputFormats.Get "markdown" }}{{ $md = .Permalink }}{{ else }}{{ $md = .Permalink }}{{ end -}}
+- [{{ .Title }}]({{ $md }}): {{ .Params.tldr | default .Params.description | replaceRE `\s+` " " | strings.TrimSpace }}
+{{ end }}
+{{- end }}{{ end }}
+## Sections
+
+- [Writing](https://digitaldias.com/blog/): Every post, filterable by category (Architecture, Azure, AI, Development, DevOps, Family, Photography)
+- [Log](https://digitaldias.com/log/): Short dated notes on what Pedro is building, shipping and fixing, plus a row for every published post
+- [Photographs](https://digitaldias.com/photography/): A curated grid of photographs from Flickr
+- [About](https://digitaldias.com/about/): Portrait, biography, milestones and the positions Pedro holds
+- [Supporters](https://digitaldias.com/supporters/): Thanks to everyone who bought Pedro a coffee on Ko-fi
+- [Morning briefing](https://digitaldias.com/briefing/): A daily AI news briefing in Norwegian, with an English edition at /briefing/en/
+- [Recipes](https://digitaldias.com/recipes/model-router/instructions.md): Plain-text instructions written for an AI coding agent such as Claude Code, with the files they need. A post links its recipe; a reader points their own agent at it.
+
+## Feeds
+
+- [Global RSS](https://digitaldias.com/index.xml)
+- [Blog RSS](https://digitaldias.com/blog/index.xml)
+- [Sitemap](https://digitaldias.com/sitemap.xml)
+
+## Technology
+
+- Hugo static site generator; custom CSS and vanilla JavaScript with no framework
+- Hosting: Azure Storage static website behind Cloudflare; deployment by GitHub Actions on push to main
+- Comments and reactions: Giscus (GitHub Discussions)
+- Posts open with a TL;DR, use a clear heading hierarchy, and tag every code block with its language

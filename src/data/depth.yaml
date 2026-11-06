@@ -474,5 +474,33 @@
         "score": 291
       }
     ]
+  },
+  "2026-11-06-robots-txt-llms-txt-ai-agents": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 163
+      },
+      {
+        "heading": "AI readers: the second audience on your blog",
+        "score": 158
+      },
+      {
+        "heading": "The frame: what an agent reads before your prose",
+        "score": 161
+      },
+      {
+        "heading": "robots.txt: let the agents in by name",
+        "score": 249
+      },
+      {
+        "heading": "Audit your blog: one prompt for your own Claude",
+        "score": 217
+      },
+      {
+        "heading": "llms.txt and Markdown copies: a Hugo recipe",
+        "score": 304
+      }
+    ]
   }
 }

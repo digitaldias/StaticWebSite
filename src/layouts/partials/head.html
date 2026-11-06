@@ -117,6 +117,10 @@
 {{ with .OutputFormats.Get "rss" -}}
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
 {{ end -}}
+<!-- Markdown version of the page, for AI agents -->
+{{ with .OutputFormats.Get "markdown" -}}
+    {{ printf `<link rel="alternate" type="%s" href="%s" />` .MediaType.Type .Permalink | safeHTML }}
+{{ end -}}
 <!-- JSON Feed -->
 {{ with .OutputFormats.Get "json" -}}
     {{ printf `<link rel="alternate" type="application/json" href="%s" title="%s (JSON Feed)" />` .Permalink $.Site.Title | safeHTML }}

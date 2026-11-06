@@ -49,13 +49,31 @@ jobs:
             echo "ERROR: src/public directory does not exist after build!"
             exit 1
           fi
+          # Agent-facing text files go up separately with an explicit UTF-8 content type,
+          # because upload-batch guesses it from the extension and may not know .md.
+          mkdir -p agent-md agent-txt
+          (cd src/public && find . -name '*.md' -exec cp --parents {} ../../agent-md/ \; -delete)
+          mv src/public/llms.txt agent-txt/
           echo "Uploading $(find src/public -type f | wc -l) files from src/public/"
-          # Use Azure CLI for authenticated upload
           az storage blob upload-batch \
             --account-name "${AZURE_STORAGE_ACCOUNT}" \
             --account-key "${AZURE_STORAGE_KEY}" \
             --source "src/public" \
             --destination '$web' \
+            --overwrite
+          az storage blob upload-batch \
+            --account-name "${AZURE_STORAGE_ACCOUNT}" \
+            --account-key "${AZURE_STORAGE_KEY}" \
+            --source "agent-md" \
+            --destination '$web' \
+            --content-type "text/markdown; charset=utf-8" \
+            --overwrite
+          az storage blob upload-batch \
+            --account-name "${AZURE_STORAGE_ACCOUNT}" \
+            --account-key "${AZURE_STORAGE_KEY}" \
+            --source "agent-txt" \
+            --destination '$web' \
+            --content-type "text/plain; charset=utf-8" \
             --overwrite
 
       # Unlisted "briefing" section: staged locally by newsstream/scripts/publish_newsstream.py

@@ -71,9 +71,9 @@ defaultContentLanguage = 'en'
   # Positions held: refreshed with every new post (CLAUDE.md, "Writing a new blog post").
   # since = month the position was taken (YYYY-MM); post = path of the post that argues it.
   [[params.positions]]
-    text  = "Typed decision APIs like Jev are AI's next big shift for software."
-    since = "2026-09"
-    post  = "/blog/2026-09-19-jev-before-the-waitlist/"
+    text  = "Keep your voice. Let the agents read the frame."
+    since = "2026-11"
+    post  = "/blog/2026-11-06-robots-txt-llms-txt-ai-agents/"
   [[params.positions]]
     text  = "Pick your Claude model before the first prompt. A switch later costs a cache rewrite."
     since = "2026-11"
@@ -158,10 +158,21 @@ defaultContentLanguage = 'en'
   priority = 0.5
 
 # RSS and JSON Feed configuration
+[outputFormats]
+  [outputFormats.markdown]
+    mediaType = 'text/markdown'
+    baseName = 'index'
+    isPlainText = true
+    notAlternative = false
+  [outputFormats.llms]
+    mediaType = 'text/plain'
+    baseName = 'llms'
+    isPlainText = true
+    notAlternative = true
+
 [outputs]
-  home = ['HTML', 'RSS', 'JSON']
+  home = ['HTML', 'RSS', 'JSON', 'llms']
   section = ['HTML', 'RSS']
-  blog = ['HTML', 'RSS', 'JSON']
 
 # Languages: English is the default, Norwegian lives under /nb/. A post is translated by a
 # sibling file named <post>.nb.md; pages without a translation stay English.
@@ -174,6 +185,8 @@ defaultContentLanguage = 'en'
     languageCode = 'nb-NO'
     languageName = 'NO'
     weight = 2
+    [languages.nb.outputs]
+      home = ['HTML', 'RSS', 'JSON']
     [languages.nb.params]
       description = 'Programvarearkitekt, innholdsprodusent og familiemann på Frogner i Lillestrøm'
       bio = "Konstituert Chief AI Officer i Tradesolution. Har skrevet kode siden 1982. Altfor mange sterke meninger om programvare, AI og høyttalerplassering."
@@ -200,9 +213,9 @@ defaultContentLanguage = 'en'
         tinkering  = "3D-printer en dusjhodeholder til en kollega"
         annoyed_by = "Claude Desktop mangler fortsatt en skikkelig innebygd modellruter"
       [[languages.nb.params.positions]]
-        text  = "Typede beslutnings-API-er som Jev er det neste store AI-skiftet for programvare."
-        since = "2026-09"
-        post  = "/blog/2026-09-19-jev-before-the-waitlist/"
+        text  = "Behold din egen tone. La agentene lese rammen."
+        since = "2026-11"
+        post  = "/blog/2026-11-06-robots-txt-llms-txt-ai-agents/"
       [[languages.nb.params.positions]]
         text  = "Velg Claude-modell før første prompt. Bytter du senere, må hele cachen skrives på nytt."
         since = "2026-11"

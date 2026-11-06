@@ -28,3 +28,71 @@ Allow: /
 
 User-agent: Slurp
 Allow: /
+
+# AI crawlers and agents: explicitly welcome. A named group does not inherit the * group, so the Disallow lines repeat.
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /public/
