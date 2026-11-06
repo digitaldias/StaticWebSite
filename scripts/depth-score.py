@@ -59,8 +59,17 @@ QUESTIONS = {
 
 def sections(text: str) -> list[tuple[str, str]]:
     body = re.split(r"^---\s*$", text, maxsplit=2, flags=re.M)[-1]
-    parts = re.split(r"^## +(.+)$", body, flags=re.M)
-    pairs = [("(opening)", parts[0])] + list(zip(parts[1::2], parts[2::2]))
+    pairs, heading, lines, fenced = [], "(opening)", [], False
+    for line in body.splitlines():
+        if re.match(r"^\s*(```|~~~)", line):
+            fenced = not fenced
+        found = None if fenced else re.match(r"^## +(.+)$", line)
+        if found:
+            pairs.append((heading, "\n".join(lines)))
+            heading, lines = found.group(1), []
+        else:
+            lines.append(line)
+    pairs.append((heading, "\n".join(lines)))
     pairs = [(re.sub(r"\s*\{#[^}]*\}$", "", h).strip(), b.strip()) for h, b in pairs]
     return [(h, b) for h, b in pairs if b and h.lower() not in SKIP]
 
