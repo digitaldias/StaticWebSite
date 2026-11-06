@@ -1,7 +1,7 @@
 ---
 title: "Don't write like a robot: llms.txt for AI agents"
 date: 2026-11-06
-draft: true
+draft: false
 description: "AI agents now read your blog to answer other people. Keep your voice for humans and give agents a frame: robots.txt, llms.txt and a Markdown copy of each post."
 excerpt: "I asked Claude to grill me about writing for AI readers. We ended up keeping my voice and building a frame around it that agents can read."
 tldr: "AI agents read your posts to answer someone else's question. You don't need to rewrite your prose for them. Let them in by name in robots.txt, publish an llms.txt and a Markdown copy of every post, and put the claim at the top of each section. Some of this has evidence behind it and some is a cheap bet; the post says which, and gives you the recipe and an audit prompt for your own blog."

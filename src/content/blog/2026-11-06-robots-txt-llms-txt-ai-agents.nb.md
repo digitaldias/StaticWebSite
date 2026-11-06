@@ -1,7 +1,7 @@
 ---
 title: "Ikke skriv som en robot: llms.txt for AI-agenter"
 date: 2026-11-06
-draft: true
+draft: false
 description: "AI-agenter leser bloggen din for å svare andre. Behold den personlige tonen, og gi agentene en ramme: robots.txt, llms.txt og Markdown-kopier av innleggene."
 excerpt: "Jeg ba Claude grille meg om hvordan jeg skriver for AI-lesere. Til slutt beholdt vi tonen min og bygde en ramme rundt teksten som agenter kan lese."
 tldr: "AI-agenter leser innleggene dine for å svare på spørsmål fra noen andre. Du trenger ikke skrive om teksten for deres skyld. Slipp dem inn ved navn i robots.txt, publiser en llms.txt og en Markdown-kopi av hvert innlegg, og sett påstanden øverst i hver del. Noe av dette har forskning bak seg, og noe er et billig veddemål. Innlegget sier hva som er hva, og gir deg oppskriften og en prompt som sjekker din egen blogg."
