@@ -106,6 +106,8 @@ Push to `main` triggers `.github/workflows/deploy-to-azure.yml`, which builds wi
 
 The nightly briefing publisher (newsstream, early morning) commits `briefing/` in this checkout, then runs `git pull` and `git push origin main`; it refuses to publish while `main` is ahead of `origin/main`. Never leave unpushed commits on `main` overnight: finish work on a branch, or push it.
 
+`upload-batch` never deletes: a file removed from the repo stays live in `$web`. The old `/llm.txt` did, until a Cloudflare Redirect Rule ("Old llm.txt to llms.txt") sent it to `/llms.txt`. When you remove or rename a public file, redirect the old URL in Cloudflare (Rules → Redirect Rules) or ask Pedro to delete the blob.
+
 The deploy workflow has no `concurrency` group, so back-to-back pushes deploy in parallel and the run that finishes last wins the upload. After two quick pushes, check in `gh run list` that the newest commit's run finished last.
 
 ### Known deploy race: do not verify a fresh deploy against the live CDN URL
