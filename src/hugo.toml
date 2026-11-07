@@ -60,7 +60,7 @@ defaultContentLanguage = 'en'
     kofi = 'https://ko-fi.com/digitaldias'
   
   [params.currently]
-    building   = "Claude Code mods: side panes that make Claude's choices visible"
+    building   = "Improving makeImage: identity, negative prompts and editing"
     tinkering  = "3D printing a shower head holder for a colleague"
     annoyed_by = "Claude Desktop still has no proper model router built in"
 
@@ -71,13 +71,13 @@ defaultContentLanguage = 'en'
   # Positions held: refreshed with every new post (CLAUDE.md, "Writing a new blog post").
   # since = month the position was taken (YYYY-MM); post = path of the post that argues it.
   [[params.positions]]
+    text  = "A good team needs a geek who starts and a nerd who finishes."
+    since = "2026-11"
+    post  = "/blog/2026-11-07-nerd-vs-geek/"
+  [[params.positions]]
     text  = "Keep your voice. Let the agents read the frame."
     since = "2026-11"
     post  = "/blog/2026-11-06-robots-txt-llms-txt-ai-agents/"
-  [[params.positions]]
-    text  = "Pick your Claude model before the first prompt. A switch later costs a cache rewrite."
-    since = "2026-11"
-    post  = "/blog/2026-11-05-model-choice-is-a-bet/"
   [[params.positions]]
     text  = "Buy a 3D printer for your household."
     post  = "/blog/2026-05-23-ai-at-the-workbench/"
@@ -209,17 +209,17 @@ defaultContentLanguage = 'en'
           name = "Full nerd"
           reader = "Du bygger med det: hvordan det virker innvendig, hvorfor det er laget slik og hva det betyr i praksis."
       [languages.nb.params.currently]
-        building   = "Claude Code-mods: sidepaneler som viser hvilke valg Claude tar"
+        building   = "Forbedrer makeImage: identitet, negative prompter og redigering"
         tinkering  = "3D-printer en dusjhodeholder til en kollega"
         annoyed_by = "Claude Desktop mangler fortsatt en skikkelig innebygd modellruter"
+      [[languages.nb.params.positions]]
+        text  = "Et godt team trenger en geek som starter og en nerd som fullfører."
+        since = "2026-11"
+        post  = "/blog/2026-11-07-nerd-vs-geek/"
       [[languages.nb.params.positions]]
         text  = "Behold din egen tone. La agentene lese rammen."
         since = "2026-11"
         post  = "/blog/2026-11-06-robots-txt-llms-txt-ai-agents/"
-      [[languages.nb.params.positions]]
-        text  = "Velg Claude-modell før første prompt. Bytter du senere, må hele cachen skrives på nytt."
-        since = "2026-11"
-        post  = "/blog/2026-11-05-model-choice-is-a-bet/"
       [[languages.nb.params.positions]]
         text  = "Kjøp en 3D-printer til hjemmet."
         post  = "/blog/2026-05-23-ai-at-the-workbench/"

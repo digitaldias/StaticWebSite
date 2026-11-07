@@ -502,5 +502,29 @@
         "score": 304
       }
     ]
+  },
+  "2026-11-07-nerd-vs-geek": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 137
+      },
+      {
+        "heading": "Nerd vs geek: what the dictionary says",
+        "score": 130
+      },
+      {
+        "heading": "The floppy disk test",
+        "score": 171
+      },
+      {
+        "heading": "Self-test: nerd or geek at work",
+        "score": 154
+      },
+      {
+        "heading": "makeImage: five hours to get my face right",
+        "score": 216
+      }
+    ]
   }
 }
