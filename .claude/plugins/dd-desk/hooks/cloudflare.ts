@@ -111,6 +111,20 @@ export function brokenLinks(missing: { count: number; path: string }[]): PathCou
     .slice(0, 5)
 }
 
+// The week's 404s include paths published since; keep only those that still answer 404. The Cache Rule never caches a 404.
+async function stillMissing($: Host, paths: PathCount[]): Promise<PathCount[]> {
+  const answers = await Promise.all(
+    paths.map(one =>
+      $.http
+        .fetch(`https://www.digitaldias.com${one.path}`, { method: 'HEAD' })
+        .then(response => response.status)
+        .catch(() => 0),
+    ),
+  )
+
+  return paths.filter((_, index) => answers[index] === 404)
+}
+
 export function postPaths(base: string): string[] {
   return [`/blog/${base}/`, `/nb/blog/${base}/`, `/blog/${base}/index.md`, `/nb/blog/${base}/index.md`]
 }
@@ -259,7 +273,7 @@ export async function traffic($: Host, bases: string[]): Promise<{ traffic: Traf
           agents(zone?.served),
           (account?.referrers ?? []).map(row => ({ count: row.count, host: row.dimensions.refererHost })),
         ),
-        broken: brokenLinks((zone?.missing ?? []).map(row => ({ count: row.count, path: row.dimensions.clientRequestPath }))),
+        broken: await stillMissing($, brokenLinks((zone?.missing ?? []).map(row => ({ count: row.count, path: row.dimensions.clientRequestPath })))),
         perPost: perPost(
           bases,
           days.slice(-7).map(one => one.date),
