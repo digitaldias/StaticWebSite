@@ -1,7 +1,10 @@
 import { expect, test } from 'claude-code/testing'
 
+import { agenda, delta } from '../hooks/agenda'
+import { brokenLinks, countBots, dailyTraffic, envValue, funnel, perPost } from '../hooks/cloudflare'
+import { draftChecks, frontMatter, nowBox } from '../hooks/content'
 import { barChartSvg, sparkline, thousands } from '../hooks/pane'
-import { countBots, dailyTraffic, draftChecks, envValue, frontMatter, nowBox } from '../hooks/register'
+import { postRows } from '../hooks/register'
 import type { Snapshot } from '../types'
 
 const PANE = {
@@ -34,6 +37,8 @@ Opening.
 ## FAQ
 `
 
+const NOW_MS = Date.parse('2026-11-07T12:00:00Z')
+
 const SNAPSHOT: Snapshot = {
   takenAt: 0,
   branch: 'main',
@@ -50,16 +55,34 @@ const SNAPSHOT: Snapshot = {
       ],
     },
   ],
-  latest: { file: '2026-11-06-y.md', title: 'Latest post', date: '2026-11-06', hn: null },
-  now: { building: 'Mods', tinkering: 'A holder', annoyedBy: 'Routers', listening: 'Dire Straits: Sultans Of Swing', listeningDate: '2026-11-06' },
+  posts: [
+    {
+      file: '2026-11-06-y.md',
+      base: '2026-11-06-y',
+      title: 'Latest post',
+      date: '2026-11-06',
+      hn: null,
+      devto: { reactions: 1, comments: 1, url: 'https://dev.to/x' },
+      readers: 12,
+      readerDays: [0, 0, 0, 0, 0, 4, 8],
+      ai: 7,
+      impressions: 36,
+    },
+  ],
+  now: { building: 'Mods', tinkering: 'A holder', annoyedBy: 'Routers', listening: 'Dire Straits: Sultans Of Swing', listeningDate: '2026-10-01' },
   traffic: {
     days: [
       { date: '2026-11-05', pageViews: 519, readers: 120, aiBots: 40 },
       { date: '2026-11-06', pageViews: 1285, readers: 300, aiBots: 90 },
+      { date: '2026-11-07', pageViews: 95, readers: 2, aiBots: 0 },
     ],
     visits: 310,
+    previous: { pageViews: 1500, readers: 400, botTotal: 50 },
     bots: [{ name: 'GPTBot', count: 55 }],
     botTotal: 55,
+    funnel: { crawled: 582, live: 15, referred: 0, liveBy: [{ name: 'ChatGPT-User', count: 6 }], referrers: [] },
+    broken: [{ path: '/blog/old-post/', count: 4 }],
+    perPost: {},
   },
   trafficNote: '',
   search: {
@@ -68,7 +91,9 @@ const SNAPSHOT: Snapshot = {
     clicks: 42,
     impressions: 3100,
     position: 18.4,
+    previous: { clicks: 21, impressions: 2000 },
     queries: [{ query: 'llms.txt hugo', clicks: 7, impressions: 210 }],
+    pages: [],
   },
   searchNote: '',
 }
@@ -83,11 +108,14 @@ test('AI bots are summed by name from their user agents', async () => {
   expect(bots.map(bot => `${bot.name}=${bot.count}`).join(',')).toBe('GPTBot=60,MoonshotBot=50')
 })
 
-test('the token is read from .env and numbers get spaces', async () => {
+test('the token is read from .env and numbers get spaces and arrows', async () => {
   expect(envValue('FOO=1\nCLOUDFLARE_API_TOKEN=abc123\n', 'CLOUDFLARE_API_TOKEN')).toBe('abc123')
   expect(envValue('FOO=1\n', 'CLOUDFLARE_API_TOKEN')).toBe('')
   expect(thousands(3668)).toBe('3 668')
   expect(sparkline([0, 50, 100])).toBe('▁▄█')
+  expect(delta(112, 100)).toBe('↑ 12 %')
+  expect(delta(95, 100)).toBe('↓ 5 %')
+  expect(delta(5, 0)).toBe('')
 })
 
 test('pages per day are split into readers, AI bots and the rest', async () => {
@@ -107,6 +135,80 @@ test('pages per day are split into readers, AI bots and the rest', async () => {
   )
 })
 
+test('the funnel separates crawlers, live fetches and clicks from AI answers', async () => {
+  const result = funnel(
+    [
+      { count: 300, userAgent: 'Mozilla/5.0 (compatible; Claude-SearchBot/1.0)' },
+      { count: 6, userAgent: 'Mozilla/5.0 (compatible; ChatGPT-User/1.0)' },
+      { count: 4, userAgent: 'Mozilla/5.0 (compatible; Claude-User/1.0)' },
+      { count: 900, userAgent: 'Mozilla/5.0 (Windows NT 10.0) Chrome/130' },
+    ],
+    [
+      { count: 3, host: 'chatgpt.com' },
+      { count: 2, host: 'www.perplexity.ai' },
+      { count: 40, host: 'www.google.com' },
+    ],
+  )
+  expect(`${result.crawled}/${result.live}/${result.referred}`).toBe('300/10/5')
+  expect(result.referrers.map(one => one.name).join(',')).toBe('chatgpt.com,perplexity.ai')
+})
+
+test('broken links keep the site’s own paths and drop scanners', async () => {
+  const broken = brokenLinks([
+    { count: 30, path: '/.env' },
+    { count: 17, path: '/images../.env' },
+    { count: 14, path: '/blog/wp-login.php' },
+    { count: 2, path: '/blog/2026-11-06-x/%7B%7B%20.Permalink%20%7D%7D' },
+    { count: 9, path: '/briefing/en/' },
+    { count: 3, path: '/blog/old-post/' },
+  ])
+  expect(broken.map(one => one.path).join(',')).toBe('/briefing/en/,/blog/old-post/')
+})
+
+test('each post gets its readers per day, AI fetches and Google impressions', async () => {
+  const traffic = perPost(
+    ['2026-11-06-y'],
+    ['2026-11-06', '2026-11-07'],
+    [
+      { count: 5, path: '/blog/2026-11-06-y/', userAgent: 'ClaudeBot/1.0' },
+      { count: 2, path: '/nb/blog/2026-11-06-y/index.md', userAgent: 'GPTBot/1.3' },
+      { count: 9, path: '/blog/2026-11-06-y/', userAgent: 'Mozilla/5.0 Chrome/130' },
+    ],
+    [
+      { count: 3, path: '/blog/2026-11-06-y/', date: '2026-11-06' },
+      { count: 1, path: '/nb/blog/2026-11-06-y/', date: '2026-11-07' },
+    ],
+  )
+  expect(JSON.stringify(traffic['2026-11-06-y'])).toBe(JSON.stringify({ readers: 4, readerDays: [3, 1], ai: 7 }))
+  const traffic0 = SNAPSHOT.traffic
+  const search0 = SNAPSHOT.search
+  if (!traffic0 || !search0) {
+    throw new Error('fixture')
+  }
+  const [row] = postRows(
+    [{ file: '2026-11-06-y.md', base: '2026-11-06-y', title: 'Y', date: '2026-11-06', hn: null, devto: null }],
+    { ...traffic0, perPost: traffic },
+    { ...search0, pages: [{ url: 'https://digitaldias.com/blog/2026-11-06-y/', clicks: 0, impressions: 36 }] },
+  )
+  expect(`${row?.readers}/${row?.ai}/${row?.impressions}`).toBe('4/7/36')
+})
+
+test('the agenda puts the push first and covers drafts, promotion, links and Now', async () => {
+  const items = agenda(SNAPSHOT, NOW_MS)
+  expect(items.map(item => item.key).join(',')).toBe('unpushed,draft-2026-11-07-x.md,promote,broken,now')
+  expect(items[0]?.isUrgent).toBe(true)
+  expect(items.find(item => item.key === 'promote')?.text).toBe('«Latest post» er ikke på Hacker News ennå.')
+  const traffic0 = SNAPSHOT.traffic
+  if (!traffic0) {
+    throw new Error('fixture')
+  }
+  const calm = agenda(
+    { ...SNAPSHOT, ahead: 0, drafts: [], posts: [], traffic: { ...traffic0, broken: [] }, now: { ...SNAPSHOT.now, listeningDate: '2026-11-06' } },
+    NOW_MS,
+  )
+  expect(calm.length).toBe(0)
+})
+
 test('the traffic chart stacks three colours per day and outlines today', async () => {
   const svg = barChartSvg([
     { date: '2026-11-05', pageViews: 519, readers: 120, aiBots: 40 },
@@ -116,8 +218,7 @@ test('the traffic chart stacks three colours per day and outlines today', async 
   expect(svg).toContain('>AI-boter<')
   expect((svg.match(/fill-opacity="0.5"/g) ?? []).length).toBe(2)
   expect(svg).toContain('stroke-dasharray="3 2"')
-  expect(svg).toContain('>to<')
-  expect(svg).toContain('>fr<')
+  expect(svg).toContain('<title>to 2026-11-05: 519 sider, 120 lesere, 40 AI-boter, 359 andre</title>')
 })
 
 test('front matter fields are read and unquoted', async () => {
@@ -149,16 +250,16 @@ test('the pane waits for its first reading', async $ => {
   await ui.unmount()
 })
 
-test('the pane draws drafts, the push warning and the buttons', async ($, on) => {
+test('the pane draws the agenda, the funnel, the posts and the buttons', async ($, on) => {
   on('state.get', (_, e) => ({
     value:
       e.key === 'snapshot'
-        ? { value: { shape: 'snapshot-4', value: SNAPSHOT }, version: 1 }
+        ? { value: { shape: 'snapshot-5', value: SNAPSHOT }, version: 1 }
         : e.key === 'busy'
           ? { value: { shape: 'busy-1', value: true }, version: 1 }
           : { value: undefined, version: 0 },
   }))
-  on('clock.now', () => ({ value: Date.parse('2026-11-06T12:00:00Z') }))
+  on('clock.now', () => ({ value: NOW_MS }))
   const prompts: string[] = []
   on('prompt.submit', (_, e) => {
     prompts.push(e.text)
@@ -168,16 +269,16 @@ test('the pane draws drafts, the push warning and the buttons', async ($, on) =>
 
   for (const surface of ['desktop', 'terminal'] as const) {
     const ui = await $.ui.mount({ ...PANE, surface })
-    expect((await ui.find({ type: 'Text', text: /2 commit foran/ }))?.text).toContain('origin/main')
-    expect((await ui.find({ type: 'Text', text: /A draft/ }))?.text).toBe('A draft')
-    expect((await ui.find({ type: 'Text', text: /Sultans Of Swing/ }))?.text).toContain('2026-11-06')
-    expect((await ui.find({ type: 'Text', text: /flest fra/ }))?.text).toBe('flest fra GPTBot')
-    expect((await ui.find({ type: 'Text', text: /besøk/ }))?.text).toBe('310 besøk · 300 i dag')
+    expect((await ui.find({ type: 'Text', text: /commit foran/ }))?.text).toContain('Briefingen publiserer ikke')
     expect((await ui.find({ type: 'Text', text: /henter tall/ }))?.text).toBe('Redaksjonen henter tall …')
+    expect((await ui.find({ type: 'Text', text: /besøk/ }))?.text).toBe('310 besøk · 2 i dag')
+    expect((await ui.find({ type: 'Text', text: /hentet live/ }))?.text).toBe('hentet live til et svar')
+    expect((await ui.find({ type: 'Text', text: /Live: / }))?.text).toContain('ChatGPT-User 6')
+    expect((await ui.find({ type: 'Text', text: /^Latest post$/ }))?.text).toBe('Latest post')
+    expect((await ui.find({ type: 'Text', text: /12 lesere/ }))?.text).toBe('1 d · ▁▁▁▁▁▄█ 12 lesere · 7 AI · 36 visn. · ikke HN · Dev.to 1')
     expect((await ui.find({ type: 'Text', text: /Mangler/ }))?.text).toBe('Mangler: Norsk')
-    expect((await ui.find({ type: 'Text', text: /plass 18/ }))?.text).toBe('3 100 visn. · plass 18.4')
-    expect((await ui.find({ type: 'Text', text: /llms.txt hugo/ }))?.text).toBe('llms.txt hugo')
-    await ui.press({ key: 'resume-2026-11-07-x.md' })
+    expect(await ui.find({ type: 'Text', text: /Sultans Of Swing/ })).toBe(undefined)
+    await ui.press({ key: 'do-draft-2026-11-07-x.md' })
     await ui.unmount()
   }
   expect(prompts.length).toBe(2)

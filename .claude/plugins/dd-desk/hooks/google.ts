@@ -60,9 +60,12 @@ export async function searchStats($: EngineInterface): Promise<{ search: Search 
     const token = await accessToken($)
     const end = isoDate(nowMs - 3 * DAY_MS)
     const start = isoDate(nowMs - 30 * DAY_MS)
-    const [totals, queries] = await Promise.all([
-      query($, token, { startDate: start, endDate: end }),
-      query($, token, { startDate: start, endDate: end, dimensions: ['query'], rowLimit: 5 }),
+    const window = { startDate: start, endDate: end }
+    const [totals, before, queries, pages] = await Promise.all([
+      query($, token, window),
+      query($, token, { startDate: isoDate(nowMs - 58 * DAY_MS), endDate: isoDate(nowMs - 31 * DAY_MS) }),
+      query($, token, { ...window, dimensions: ['query'], rowLimit: 5 }),
+      query($, token, { ...window, dimensions: ['page'], rowLimit: 100 }),
     ])
     const total = totals[0]
     if (!total) {
@@ -76,7 +79,9 @@ export async function searchStats($: EngineInterface): Promise<{ search: Search 
         clicks: total.clicks,
         impressions: total.impressions,
         position: total.position,
+        previous: { clicks: before[0]?.clicks ?? 0, impressions: before[0]?.impressions ?? 0 },
         queries: queries.map(row => ({ query: row.keys?.[0] ?? '', clicks: row.clicks, impressions: row.impressions })),
+        pages: pages.map(row => ({ url: row.keys?.[0] ?? '', clicks: row.clicks, impressions: row.impressions })),
       },
       note: '',
     }

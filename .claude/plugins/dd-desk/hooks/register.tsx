@@ -1,320 +1,40 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-import type {
-  Check,
-  CheckRun,
-  Day,
-  Deploy,
-  Draft,
-  HackerNews,
-  Latest,
-  NowBox,
-  Snapshot,
-  Traffic,
-} from '../types'
+import type { PostRow, Published, Search, Snapshot, Traffic } from '../types'
 
+import { agenda, delta } from './agenda'
+import { traffic as cloudflareTraffic } from './cloudflare'
+import { git, lastDeploy, nowBox, posts } from './content'
 import { searchStats } from './google'
-import { barChartSvg, BOTS_WIDTH, botBarsSvg, CHART_WIDTH, clockTime, progressSvg, relativeTime, SEA, sparkline, thousands, trafficParts } from './pane'
+import { barChartSvg, botBarsSvg, clockTime, progressSvg, relativeTime, SEA, sparkline, thousands, trafficParts } from './pane'
+import { PROMPTS } from './prompts'
 
 const PANE = 'dd-desk'
 const TITLE = 'digitaldias.com'
-const BLOG = 'src/content/blog'
 const NETWORK_EVERY_MS = 10 * 60_000
-
-// Change a tag when its type changes: it declines what an earlier version stored.
-const snapshot = atom({ plugin: 'dd-desk', key: 'snapshot' } as const, null, {
-  shape: 'snapshot-4',
-})
-const checkRun = atom({ plugin: 'dd-desk', key: 'check' } as const, null, {
-  shape: 'check-1',
-})
-const busy = atom({ plugin: 'dd-desk', key: 'busy' } as const, false, {
-  shape: 'busy-1',
-})
-
-export function unquote(value: string): string {
-  const trimmed = value.trim()
-  const quoted = /^"(.*)"$/.exec(trimmed) ?? /^'(.*)'$/.exec(trimmed)
-
-  return quoted?.[1] ?? trimmed
-}
-
-export function frontMatter(text: string): Record<string, string> {
-  const block = /^---\r?\n([\s\S]*?)\r?\n---/.exec(text)?.[1] ?? ''
-  const fields: Record<string, string> = {}
-  for (const line of block.split(/\r?\n/)) {
-    const [, name, value] = /^(\w+):\s*(.*)$/.exec(line) ?? []
-    if (name !== undefined && value !== undefined) {
-      fields[name] = unquote(value)
-    }
-  }
-
-  return fields
-}
-
-export function draftChecks(
-  text: string,
-  fields: Record<string, string>,
-  facts: { hasNb: boolean; hasCover: boolean; isScored: boolean },
-): Check[] {
-  const body = text.replace(/^---[\s\S]*?\n---/, '')
-  const sections = (body.match(/^## (?!FAQ\b)/gm) ?? []).length
-
-  return [
-    { label: '2+ seksjoner', isDone: sections >= 2 },
-    { label: 'TL;DR', isDone: Boolean(fields.tldr) },
-    { label: 'FAQ', isDone: /^## FAQ\b/m.test(body) },
-    { label: 'Norsk', isDone: facts.hasNb },
-    { label: 'Cover', isDone: facts.hasCover },
-    { label: 'Depth', isDone: facts.isScored },
-  ]
-}
-
-function tomlField(block: string, name: string): string {
-  return new RegExp(`^\\s*${name}\\s*=\\s*"(.*)"\\s*$`, 'm').exec(block)?.[1] ?? ''
-}
-
-function yamlField(block: string, name: string): string {
-  return unquote(new RegExp(`^\\s*${name}:\\s*(.*)$`, 'm').exec(block)?.[1] ?? '')
-}
-
-export function nowBox(toml: string, listening: string): NowBox {
-  const block = /^\s*\[params\.currently\]\s*$([\s\S]*?)^\s*\[/m.exec(toml)?.[1] ?? ''
-  const first = listening.split(/^- /m)[1] ?? ''
-  const artist = yamlField(first, 'artist')
-  const song = yamlField(first, 'song')
-
-  return {
-    building: tomlField(block, 'building'),
-    tinkering: tomlField(block, 'tinkering'),
-    annoyedBy: tomlField(block, 'annoyed_by'),
-    listening: song ? `${artist}: ${song}` : artist,
-    listeningDate: yamlField(first, 'date'),
-  }
-}
+const DAY_MS = 86_400_000
+// Box widths count character cells; an Svg's width is CSS pixels. About nine pixels to a cell on desktop.
+const CELL_PX = 9
 
 type Host = EngineInterface
 
-async function git($: Host, args: string[]): Promise<string> {
-  const ran = await $.process.run(['git', ...args]).catch(() => null)
+// Change a tag when its type changes: it declines what an earlier version stored.
+const snapshot = atom({ plugin: 'dd-desk', key: 'snapshot' } as const, null, { shape: 'snapshot-5' })
+const checkRun = atom({ plugin: 'dd-desk', key: 'check' } as const, null, { shape: 'check-1' })
+const busy = atom({ plugin: 'dd-desk', key: 'busy' } as const, false, { shape: 'busy-1' })
+const open = atom({ plugin: 'dd-desk', key: 'open' } as const, [], { shape: 'open-1' })
 
-  return ran?.exitCode === 0 ? ran.stdout.trim() : ''
-}
+// A published post with its numbers from Cloudflare (7 days) and Search Console (28 days).
+export function postRows(published: Published[], traffic: Traffic | null, search: Search | null): PostRow[] {
+  return published.map(post => {
+    const seen = traffic?.perPost[post.base]
+    const impressions = (search?.pages ?? [])
+      .filter(page => page.url.includes(`/blog/${post.base}/`))
+      .reduce((sum, page) => sum + page.impressions, 0)
 
-async function lastDeploy($: Host): Promise<Deploy | null> {
-  const ran = await $.process
-    .run(['gh', 'run', 'list', '-L', '1', '-w', 'deploy-to-azure.yml', '--json', 'status,conclusion,displayTitle,createdAt'])
-    .catch(() => null)
-  if (ran?.exitCode !== 0) {
-    return null
-  }
-  const [run] = JSON.parse(ran.stdout) as {
-    status: string
-    conclusion: string
-    displayTitle: string
-    createdAt: string
-  }[]
-
-  return run
-    ? { title: run.displayTitle, status: run.status, conclusion: run.conclusion, createdAt: run.createdAt }
-    : null
-}
-
-async function hackerNews($: Host, base: string): Promise<HackerNews | null> {
-  const url = `https://hn.algolia.com/api/v1/search?tags=story&restrictSearchableAttributes=url&query=${encodeURIComponent(base)}`
-  const response = await $.http.fetch(url).catch(() => null)
-  if (!response?.ok) {
-    return null
-  }
-  const { hits } = JSON.parse(response.text) as {
-    hits: { url?: string; points?: number; num_comments?: number; objectID: string }[]
-  }
-  const hit = hits.find(one => one.url?.includes('digitaldias.com') && one.url.includes(base))
-
-  return hit
-    ? {
-        points: hit.points ?? 0,
-        comments: hit.num_comments ?? 0,
-        url: `https://news.ycombinator.com/item?id=${hit.objectID}`,
-      }
-    : null
-}
-
-const AI_BOTS = [
-  'GPTBot',
-  'OAI-SearchBot',
-  'ChatGPT-User',
-  'ClaudeBot',
-  'Claude-User',
-  'Claude-SearchBot',
-  'PerplexityBot',
-  'Perplexity-User',
-  'Applebot',
-  'Amazonbot',
-  'Bytespider',
-  'meta-externalagent',
-  'CCBot',
-  'MoonshotBot',
-  'DuckAssistBot',
-  'MistralAI-User',
-  'cohere-ai',
-]
-
-function aiBotName(userAgent: string): string | undefined {
-  return AI_BOTS.find(bot => userAgent.toLowerCase().includes(bot.toLowerCase()))
-}
-
-export function countBots(rows: { count: number; userAgent: string }[]): Traffic['bots'] {
-  const totals = new Map<string, number>()
-  for (const { count, userAgent } of rows) {
-    const name = aiBotName(userAgent)
-    if (name) {
-      totals.set(name, (totals.get(name) ?? 0) + count)
-    }
-  }
-
-  return [...totals].map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count)
-}
-
-// Pages served per day, split into Web Analytics readers and known AI bots; the rest is other bots and unknowns.
-export function dailyTraffic(
-  pages: { count: number; date: string; userAgent: string }[],
-  readers: { count: number; date: string }[],
-): Day[] {
-  const days = new Map<string, Day>()
-  const day = (date: string) => {
-    const known = days.get(date) ?? { date, pageViews: 0, readers: 0, aiBots: 0 }
-    days.set(date, known)
-
-    return known
-  }
-  for (const { count, date, userAgent } of pages) {
-    const one = day(date)
-    one.pageViews += count
-    if (aiBotName(userAgent)) {
-      one.aiBots += count
-    }
-  }
-  for (const { count, date } of readers) {
-    day(date).readers += count
-  }
-
-  return [...days.values()].sort((a, b) => a.date.localeCompare(b.date))
-}
-
-export function envValue(text: string, name: string): string {
-  return unquote(new RegExp(`^\\s*${name}\\s*=(.*)$`, 'm').exec(text)?.[1] ?? '')
-}
-
-let zoneId = ''
-let accountId = ''
-
-async function cloudflareQuery($: Host, token: string, query: string): Promise<unknown> {
-  const response = await $.http.fetch('https://api.cloudflare.com/client/v4/graphql', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query }),
+    return { ...post, readers: seen?.readers ?? 0, readerDays: seen?.readerDays ?? [], ai: seen?.ai ?? 0, impressions }
   })
-  const parsed = JSON.parse(response.text) as { data?: unknown; errors?: { message: string }[] | null }
-  if (parsed.errors?.length) {
-    throw new Error(parsed.errors[0]?.message ?? 'GraphQL error')
-  }
-
-  return parsed.data
-}
-
-async function traffic($: Host): Promise<{ traffic: Traffic | null; note: string }> {
-  const token = envValue(await $.fs.read('.env').catch(() => ''), 'CLOUDFLARE_API_TOKEN')
-  if (!token) {
-    return { traffic: null, note: 'Ingen CLOUDFLARE_API_TOKEN i .env.' }
-  }
-  try {
-    if (!zoneId) {
-      const zones = await $.http.fetch('https://api.cloudflare.com/client/v4/zones?name=digitaldias.com', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      const zone = (JSON.parse(zones.text) as { result?: { id: string; account: { id: string } }[] }).result?.[0]
-      zoneId = zone?.id ?? ''
-      accountId = zone?.account.id ?? ''
-    }
-    const now = await $.clock.now()
-    const week = new Date(now - 7 * 86_400_000).toISOString().slice(0, 10)
-    const day = new Date(now - 86_400_000).toISOString().slice(0, 19) + 'Z'
-    const data = (await cloudflareQuery(
-      $,
-      token,
-      `{ viewer {
-        zones(filter: {zoneTag: "${zoneId}"}) {
-          pages: httpRequestsAdaptiveGroups(limit: 10000, filter: {date_geq: "${week}", requestSource: "eyeball", edgeResponseContentTypeName: "html", edgeResponseStatus: 200}) { count dimensions { date userAgent } }
-          agents: httpRequestsAdaptiveGroups(limit: 1000, filter: {datetime_geq: "${day}", requestSource: "eyeball"}, orderBy: [count_DESC]) { count dimensions { userAgent } }
-        }
-        accounts(filter: {accountTag: "${accountId}"}) {
-          readers: rumPageloadEventsAdaptiveGroups(limit: 10, filter: {date_geq: "${week}", requestHost_in: ["www.digitaldias.com", "digitaldias.com"]}, orderBy: [date_ASC]) { count sum { visits } dimensions { date } }
-        }
-      } }`,
-    )) as {
-      viewer: {
-        zones: {
-          pages: { count: number; dimensions: { date: string; userAgent: string } }[]
-          agents: { count: number; dimensions: { userAgent: string } }[]
-        }[]
-        accounts: { readers: { count: number; sum: { visits: number }; dimensions: { date: string } }[] }[]
-      }
-    }
-    const zone = data.viewer.zones[0]
-    const readers = data.viewer.accounts[0]?.readers ?? []
-    const bots = countBots((zone?.agents ?? []).map(row => ({ count: row.count, userAgent: row.dimensions.userAgent })))
-
-    return {
-      traffic: {
-        days: dailyTraffic(
-          (zone?.pages ?? []).map(row => ({ count: row.count, ...row.dimensions })),
-          readers.map(row => ({ count: row.count, date: row.dimensions.date })),
-        ),
-        visits: readers.reduce((sum, row) => sum + row.sum.visits, 0),
-        bots,
-        botTotal: bots.reduce((sum, bot) => sum + bot.count, 0),
-      },
-      note: '',
-    }
-  } catch (error) {
-    return { traffic: null, note: `Cloudflare svarte ikke: ${String(error)}` }
-  }
-}
-
-async function posts($: Host, previous: Snapshot | null, withNetwork: boolean) {
-  const names = (await $.fs.list(BLOG)).map(entry => entry.name)
-  const english = names
-    .filter(name => /^\d{4}-\d{2}-\d{2}-.+\.md$/.test(name) && !name.endsWith('.nb.md'))
-    .sort()
-    .reverse()
-  const depth = await $.fs.read('src/data/depth.yaml').catch(() => '')
-  const drafts: Draft[] = []
-  let latest: Latest | null = null
-  for (const file of english) {
-    const text = await $.fs.read(`${BLOG}/${file}`)
-    const fields = frontMatter(text)
-    const base = file.replace(/\.md$/, '')
-    const title = fields.title ?? base
-    if (fields.draft === 'true') {
-      const hasCover =
-        Boolean(fields.featuredImage) ||
-        (await $.fs.exists(`src/static/images/blog/${base}/featured.jpg`))
-      const checks = draftChecks(text, fields, {
-        hasNb: names.includes(`${base}.nb.md`),
-        hasCover,
-        isScored: depth.includes(`"${base}"`) || depth.includes(`\n${base}:`),
-      })
-      drafts.push({ file, title, checks })
-    } else if (!latest) {
-      const kept = previous?.latest?.file === file ? previous.latest.hn : null
-      const hn = withNetwork ? await hackerNews($, base) : kept
-      latest = { file, title, date: fields.date ?? '', hn }
-    }
-  }
-
-  return { drafts, latest }
 }
 
 async function collect($: Host, previous: Snapshot | null, withNetwork: boolean): Promise<Snapshot> {
@@ -326,9 +46,9 @@ async function collect($: Host, previous: Snapshot | null, withNetwork: boolean)
     $.fs.read('src/hugo.toml').catch(() => ''),
     $.fs.read('src/data/listening.yaml').catch(() => ''),
   ])
-  const { drafts, latest } = await posts($, previous, withNetwork)
+  const { drafts, published } = await posts($, previous, withNetwork)
   const cloudflare = withNetwork
-    ? await traffic($)
+    ? await cloudflareTraffic($, published.map(post => post.base))
     : { traffic: previous?.traffic ?? null, note: previous?.trafficNote ?? '' }
   const google = withNetwork
     ? await searchStats($)
@@ -345,7 +65,7 @@ async function collect($: Host, previous: Snapshot | null, withNetwork: boolean)
     changed: status.split('\n').filter(Boolean).length,
     deploy,
     drafts,
-    latest,
+    posts: postRows(published, cloudflare.traffic, google.search),
     now: nowBox(toml, listening),
   }
 }
@@ -403,20 +123,23 @@ function ask($: Host, text: string): () => void {
   }
 }
 
-export const PROMPTS = {
-  newPost:
-    'Jeg har en idé til en ny post. Start steg 1 (Interview) under «Writing a new blog post» i CLAUDE.md.',
-  now: 'Gå gjennom steg 6 (Positions held and Now) under «Writing a new blog post» i CLAUDE.md, ett spørsmål om gangen.',
-  unpushed:
-    'main ligger foran origin/main. Vis meg commitene som ikke er pushet, og spør meg før du pusher.',
-  resume: (file: string, missing: string[]) =>
-    `Fortsett utkastet ${BLOG}/${file} etter «Writing a new blog post» i CLAUDE.md. Panelet ser at dette mangler: ${missing.length ? missing.join(', ') : 'ingenting'}. Finn det første steget som ikke er ferdig, og gjør det.`,
-  factCheck: (file: string) =>
-    `Kjør steg 8 (Fact-check and SEO) under «Writing a new blog post» i CLAUDE.md på ${BLOG}/${file}.`,
-  promote: (file: string) => `Kjør promote-post-skillen for ${BLOG}/${file}.`,
-  stats: (file: string) => `Hent statistikken for ${BLOG}/${file} med promote-post-skillen.`,
-  fixCheck: (tail: string) =>
-    `just check feilet. De siste linjene:\n\n${tail}\n\nFinn årsaken og fiks den.`,
+function toggle($: Host, section: string): () => void {
+  return () => {
+    void update($, open, list => (list.includes(section) ? list.filter(one => one !== section) : [...list, section]))
+  }
+}
+
+function age(date: string, nowMs: number): string {
+  const days = Math.floor((nowMs - Date.parse(`${date}T00:00:00Z`)) / DAY_MS)
+
+  return Number.isNaN(days) ? '' : days <= 0 ? 'i dag' : `${days} d`
+}
+
+// Chart and bot bars share a row when the pane is wide; otherwise each takes the full width.
+function chartWidths(columns: number): { chart: number; bots: number } {
+  const room = Math.max(300, columns * CELL_PX - 24)
+
+  return room >= 960 ? { chart: 540, bots: 380 } : { chart: Math.min(room, 680), bots: Math.min(room, 480) }
 }
 
 export const register: Register = on => {
@@ -460,36 +183,63 @@ export const register: Register = on => {
     const snap = await read($, snapshot)
     const check = await read($, checkRun)
     const isBusy = await read($, busy)
+    const opened = await read($, open)
     if (!snap) {
       return <Text dimColor>Leser repoet …</Text>
     }
     const nowMs = await $.clock.now()
-    const { now, latest, deploy, traffic } = snap
-    const isDeployOk = deploy?.conclusion === 'success'
-    const weekViews = traffic?.days.reduce((sum, one) => sum + one.pageViews, 0) ?? 0
-    const weekReaders = traffic?.days.reduce((sum, one) => sum + one.readers, 0) ?? 0
+    const { now, deploy, traffic, search } = snap
+    const todo = agenda(snap, nowMs)
+    const widths = chartWidths(e.props.bodyColumns)
+    // The seven finished days, so the week-on-week change compares like with like.
+    const finished = traffic?.days.slice(0, -1) ?? []
     const today = traffic?.days.at(-1)
-    const openSteps = snap.drafts.reduce((sum, draft) => sum + draft.checks.filter(one => !one.isDone).length, 0)
+    const weekViews = finished.reduce((sum, one) => sum + one.pageViews, 0)
+    const weekReaders = finished.reduce((sum, one) => sum + one.readers, 0)
+    const bots = traffic?.bots.slice(0, 6) ?? []
 
     const kicker = (text: string) => (
       <Text size="caption" weight="semibold" color={SEA.teal}>
         {text.toUpperCase()}
       </Text>
     )
-    const tile = (key: string, label: string, value: string, note: string, color?: string) => (
+    const fold = (section: string, title: string) => (
+      <Button key={`fold-${section}`} plain onPress={toggle($, section)}>
+        <Text size="caption" weight="semibold" color={SEA.teal}>
+          {opened.includes(section) ? '▾' : '▸'} {title.toUpperCase()}
+        </Text>
+      </Button>
+    )
+    const tile = (key: string, label: string, value: string, change: string, note: string, color?: string) => (
       <Box key={key} flexDirection="column" flexGrow={1} minWidth={17} paddingX="sm" paddingY="xs" borderStyle="round" borderColor="subtle">
         <Text size="caption" dimColor>
           {label}
         </Text>
-        <Text size="heading" weight="semibold" tabular color={color}>
-          {value}
-        </Text>
+        <Box flexDirection="row" gap="sm" alignItems="flex-end">
+          <Text size="heading" weight="semibold" tabular color={color}>
+            {value}
+          </Text>
+          {change && (
+            <Text size="caption" mono dimColor>
+              {change}
+            </Text>
+          )}
+        </Box>
         <Text size="caption" dimColor wrap="truncate-end">
           {note}
         </Text>
       </Box>
     )
-    const bots = traffic?.bots.slice(0, 6) ?? []
+    const step = (key: string, value: number, label: string, color?: string) => (
+      <Box key={key} flexDirection="column" minWidth={12}>
+        <Text size="heading" weight="semibold" tabular color={color}>
+          {thousands(value)}
+        </Text>
+        <Text size="caption" dimColor>
+          {label}
+        </Text>
+      </Box>
+    )
 
     return (
       <Box flexDirection="column" gap="md" paddingX="xs">
@@ -510,29 +260,37 @@ export const register: Register = on => {
           </Box>
         </Box>
 
-        {snap.ahead > 0 && (
-          <Box flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center" gap="sm" paddingX="sm" paddingY="xs" borderStyle="round" borderColor="warning">
-            <Box flexDirection="column" flexShrink={1}>
-              <Text color="warning" weight="semibold">
-                main ligger {snap.ahead} commit foran origin/main
-              </Text>
-              <Text size="footnote" dimColor>
-                Briefingen publiserer ikke i natt før det er pushet.
-              </Text>
+        <Box flexDirection="column" gap="xs">
+          {kicker('Til redaktøren')}
+          {todo.length === 0 && (
+            <Text size="footnote" color={SEA.teal}>
+              Ingenting venter. God tid til å skrive.
+            </Text>
+          )}
+          {todo.map(item => (
+            <Box
+              key={`todo-${item.key}`}
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center"
+              gap="sm"
+              paddingX="sm"
+              paddingY="xs"
+              borderStyle="round"
+              borderColor={item.isUrgent ? 'warning' : 'subtle'}
+            >
+              <Box flexShrink={1}>
+                <Text size="footnote" color={item.isUrgent ? 'warning' : undefined}>
+                  {item.text}
+                </Text>
+              </Box>
+              {item.button && <Button key={`do-${item.key}`} label={item.button.label} onPress={ask($, item.button.prompt)} />}
             </Box>
-            <Button key="unpushed" label="Vis upushede" onPress={ask($, PROMPTS.unpushed)} />
-          </Box>
-        )}
+          ))}
+        </Box>
 
         {check && !check.isRunning && (
-          <Box
-            flexDirection="column"
-            gap="xs"
-            paddingX="sm"
-            paddingY="xs"
-            borderStyle="round"
-            borderColor={check.exitCode === 0 ? 'success' : 'error'}
-          >
+          <Box flexDirection="column" gap="xs" paddingX="sm" paddingY="xs" borderStyle="round" borderColor={check.exitCode === 0 ? 'success' : 'error'}>
             <Text weight="semibold" color={check.exitCode === 0 ? 'success' : 'error'}>
               {check.exitCode === 0 ? 'just check: bygget er rent' : `just check feilet (kode ${check.exitCode})`}
             </Text>
@@ -541,40 +299,50 @@ export const register: Register = on => {
                 {check.tail}
               </Text>
             )}
-            {check.exitCode !== 0 && (
-              <Button key="fix-check" label="Fiks feilen" onPress={ask($, PROMPTS.fixCheck(check.tail))} />
-            )}
+            {check.exitCode !== 0 && <Button key="fix-check" label="Fiks feilen" onPress={ask($, PROMPTS.fixCheck(check.tail))} />}
           </Box>
         )}
 
         <Box flexDirection="row" flexWrap="wrap" gap="sm">
-          {tile('readers', 'Lesere, 7 d', traffic ? thousands(weekReaders) : '–', traffic ? `${thousands(traffic.visits)} besøk · ${thousands(today?.readers ?? 0)} i dag` : snap.trafficNote || 'ingen tall', SEA.teal)}
-          {tile('views', 'Sider servert, 7 d', traffic ? thousands(weekViews) : '–', today ? `${thousands(today.pageViews)} i dag` : snap.trafficNote || 'ingen tall')}
-          {tile('bots', 'AI-boter, 24 t', traffic ? thousands(traffic.botTotal) : '–', traffic?.bots[0] ? `flest fra ${traffic.bots[0].name}` : 'ingen tall')}
+          {tile(
+            'readers',
+            'Lesere, 7 d',
+            traffic ? thousands(weekReaders) : '–',
+            traffic ? delta(weekReaders, traffic.previous.readers) : '',
+            traffic ? `${thousands(traffic.visits)} besøk · ${thousands(today?.readers ?? 0)} i dag` : snap.trafficNote || 'ingen tall',
+            SEA.teal,
+          )}
+          {tile(
+            'views',
+            'Sider servert, 7 d',
+            traffic ? thousands(weekViews) : '–',
+            traffic ? delta(weekViews, traffic.previous.pageViews) : '',
+            today ? `${thousands(today.pageViews)} i dag` : 'ingen tall',
+          )}
+          {tile(
+            'bots',
+            'AI-boter, 24 t',
+            traffic ? thousands(traffic.botTotal) : '–',
+            traffic ? delta(traffic.botTotal, traffic.previous.botTotal) : '',
+            traffic?.bots[0] ? `flest fra ${traffic.bots[0].name}` : 'ingen tall',
+          )}
           {tile(
             'google',
             'Google-klikk, 28 d',
-            snap.search ? thousands(snap.search.clicks) : '–',
-            snap.search ? `${thousands(snap.search.impressions)} visn. · plass ${snap.search.position.toFixed(1)}` : snap.searchNote || 'ingen tall',
-          )}
-          {tile('drafts', 'Utkast', String(snap.drafts.length), snap.drafts.length ? `${openSteps} steg igjen` : 'ingenting på blokka')}
-          {tile(
-            'deploy',
-            'Deploy',
-            deploy ? (isDeployOk ? 'OK' : deploy.conclusion || deploy.status) : '–',
-            deploy ? relativeTime(Date.parse(deploy.createdAt), nowMs) : 'gh svarte ikke',
-            deploy ? (isDeployOk ? 'success' : 'error') : undefined,
+            search ? thousands(search.clicks) : '–',
+            search ? delta(search.clicks, search.previous.clicks) : '',
+            search ? `${thousands(search.impressions)} visn. · plass ${search.position.toFixed(1)}` : snap.searchNote || 'ingen tall',
           )}
         </Box>
 
         {traffic && (
           <Box flexDirection="row" flexWrap="wrap" gap="lg">
-            <Box flexDirection="column" gap="xs" flexGrow={1} minWidth={58}>
+            <Box flexDirection="column" gap="xs" flexGrow={1}>
               {kicker('Trafikk siste uke')}
               {Svg ? (
                 <Svg
-                  source={barChartSvg(traffic.days)}
-                  width={CHART_WIDTH}
+                  source={barChartSvg(traffic.days, widths.chart)}
+                  width={widths.chart}
                   isInteractive
                   alt={`Sider per dag (lesere, AI-boter, andre): ${traffic.days.map(day => `${day.date} ${trafficParts(day).join('/')}`).join(', ')}`}
                 />
@@ -589,14 +357,14 @@ export const register: Register = on => {
                 </Box>
               )}
               <Text size="caption" dimColor>
-                Lesere kjørte Web Analytics i nettleseren. AI-boter kjennes på user agent. Grått er andre boter og nettlesere uten JavaScript. Stiplet er i dag; hold over en søyle for tallene.
+                Lesere kjørte Web Analytics i nettleseren. AI-boter kjennes på user agent. Grått er andre boter og nettlesere uten JavaScript. Hold over en søyle for tallene.
               </Text>
             </Box>
             {bots.length > 0 && (
-              <Box flexDirection="column" gap="xs" flexGrow={1} minWidth={44}>
+              <Box flexDirection="column" gap="xs" flexGrow={1}>
                 {kicker('AI-boter siste døgn')}
                 {Svg ? (
-                  <Svg source={botBarsSvg(bots)} width={BOTS_WIDTH} alt={bots.map(bot => `${bot.name} ${bot.count}`).join(', ')} />
+                  <Svg source={botBarsSvg(bots, widths.bots)} width={widths.bots} alt={bots.map(bot => `${bot.name} ${bot.count}`).join(', ')} />
                 ) : (
                   <Text dimColor>{bots.map(bot => `${bot.name} ${bot.count}`).join(', ')}</Text>
                 )}
@@ -605,27 +373,49 @@ export const register: Register = on => {
           </Box>
         )}
 
-        <Box flexDirection="row" flexWrap="wrap" gap="lg">
-          <Box flexDirection="column" gap="sm" flexGrow={1} minWidth={36}>
-            {latest && (
-              <Box flexDirection="column" gap="xs">
-                {kicker('Sist publisert')}
-                <Text weight="semibold">{latest.title}</Text>
-                <Text size="caption" mono dimColor>
-                  {latest.date} · {latest.hn ? `HN ${latest.hn.points} poeng, ${latest.hn.comments} kommentarer` : 'ikke på Hacker News'}
-                </Text>
-                <Box flexDirection="row" gap="sm">
-                  <Button key="promote" label="Promoter" onPress={ask($, PROMPTS.promote(latest.file))} />
-                  <Button key="stats" label="Statistikk" onPress={ask($, PROMPTS.stats(latest.file))} />
+        {traffic && (
+          <Box flexDirection="column" gap="xs">
+            {kicker('AI-sitering, 7 d')}
+            <Box flexDirection="row" flexWrap="wrap" alignItems="center" gap="md">
+              {step('crawled', traffic.funnel.crawled, 'crawlet av AI-boter')}
+              <Text dimColor>→</Text>
+              {step('live', traffic.funnel.live, 'hentet live til et svar', SEA.teal)}
+              <Text dimColor>→</Text>
+              {step('referred', traffic.funnel.referred, 'klikk fra AI-svar', SEA.teal)}
+            </Box>
+            <Text size="caption" dimColor>
+              {traffic.funnel.liveBy.length ? `Live: ${traffic.funnel.liveBy.map(bot => `${bot.name} ${bot.count}`).join(', ')}.` : 'Ingen live-hentinger siste uke.'}{' '}
+              {traffic.funnel.referrers.length ? `Klikk fra ${traffic.funnel.referrers.map(one => `${one.name} ${one.count}`).join(', ')}.` : 'Klikk fra AI-svar telles av Web Analytics.'}
+            </Text>
+          </Box>
+        )}
+
+        {snap.posts.length > 0 && (
+          <Box flexDirection="column" gap="xs">
+            {kicker('Innleggene')}
+            {snap.posts.map(post => (
+              <Box key={`post-${post.base}`} flexDirection="row" justifyContent="space-between" alignItems="center" gap="sm">
+                <Box flexDirection="column" flexShrink={1}>
+                  <Text size="footnote" weight="semibold" wrap="truncate-end">
+                    {post.title}
+                  </Text>
+                  <Text size="caption" mono dimColor wrap="truncate-end">
+                    {age(post.date, nowMs)} · <Text size="caption" mono color={SEA.teal}>{sparkline(post.readerDays)} {post.readers} lesere</Text> · {post.ai} AI ·{' '}
+                    {thousands(post.impressions)} visn. · {post.hn ? `HN ${post.hn.points}` : 'ikke HN'} · {post.devto ? `Dev.to ${post.devto.reactions}` : 'ikke Dev.to'}
+                  </Text>
+                </Box>
+                <Box flexDirection="row" gap="xs" flexShrink={0}>
+                  {(!post.hn || !post.devto) && <Button key={`promote-${post.base}`} label="Promoter" onPress={ask($, PROMPTS.promote(post.file))} />}
+                  <Button key={`stats-${post.base}`} label="Statistikk" onPress={ask($, PROMPTS.stats(post.file))} />
                 </Box>
               </Box>
-            )}
+            ))}
+          </Box>
+        )}
+
+        {snap.drafts.length > 0 && (
+          <Box flexDirection="column" gap="xs">
             {kicker('Utkast')}
-            {snap.drafts.length === 0 && (
-              <Text size="footnote" dimColor>
-                Ingen utkast nå. Neste idé starter med «Ny post».
-              </Text>
-            )}
             {snap.drafts.map(draft => {
               const missing = draft.checks.filter(one => !one.isDone).map(one => one.label)
               const done = draft.checks.length - missing.length
@@ -652,52 +442,58 @@ export const register: Register = on => {
               )
             })}
           </Box>
+        )}
 
-          {snap.search && snap.search.queries.length > 0 && (
+        <Box flexDirection="row" flexWrap="wrap" gap="lg">
+          {search && search.queries.length > 0 && (
             <Box flexDirection="column" gap="xs" flexGrow={1} minWidth={36}>
-              {kicker('Søkeord på Google')}
-              {snap.search.queries.map(row => (
-                <Box key={`q-${row.query}`} flexDirection="row" justifyContent="space-between" gap="sm">
-                  <Box flexShrink={1}>
-                    <Text size="footnote" wrap="truncate-end">
-                      {row.query}
+              {fold('search', 'Søkeord på Google')}
+              {opened.includes('search') &&
+                search.queries.map(row => (
+                  <Box key={`q-${row.query}`} flexDirection="row" justifyContent="space-between" gap="sm">
+                    <Box flexShrink={1}>
+                      <Text size="footnote" wrap="truncate-end">
+                        {row.query}
+                      </Text>
+                    </Box>
+                    <Text size="caption" mono dimColor>
+                      {row.clicks} klikk · {thousands(row.impressions)} visn.
                     </Text>
                   </Box>
-                  <Text size="caption" mono dimColor>
-                    {row.clicks} klikk · {thousands(row.impressions)} visn.
-                  </Text>
-                </Box>
-              ))}
-              <Text size="caption" dimColor>
-                {snap.search.start} til {snap.search.end}. Google ligger to–tre dager etter.
-              </Text>
+                ))}
+              {opened.includes('search') && (
+                <Text size="caption" dimColor>
+                  {search.start} til {search.end}. Google ligger to–tre dager etter.
+                </Text>
+              )}
             </Box>
           )}
-
           <Box flexDirection="column" gap="xs" flexGrow={1} minWidth={36}>
-            {kicker('Now')}
-            {[
-              ['Building', now.building],
-              ['Tinkering', now.tinkering],
-              ['Annoyed by', now.annoyedBy],
-              ['Listening', `${now.listening} (${now.listeningDate})`],
-            ].map(([label, value]) => (
-              <Box key={`now-${label}`} flexDirection="row" gap="sm">
-                <Box width={11} flexShrink={0}>
-                  <Text size="footnote" dimColor>
-                    {label}
-                  </Text>
+            {fold('now', 'Now')}
+            {opened.includes('now') &&
+              [
+                ['Building', now.building],
+                ['Tinkering', now.tinkering],
+                ['Annoyed by', now.annoyedBy],
+                ['Listening', `${now.listening} (${now.listeningDate})`],
+              ].map(([label, value]) => (
+                <Box key={`now-${label}`} flexDirection="row" gap="sm">
+                  <Box width={11} flexShrink={0}>
+                    <Text size="footnote" dimColor>
+                      {label}
+                    </Text>
+                  </Box>
+                  <Box flexShrink={1}>
+                    <Text size="footnote">{value}</Text>
+                  </Box>
                 </Box>
-                <Box flexShrink={1}>
-                  <Text size="footnote">{value}</Text>
-                </Box>
-              </Box>
-            ))}
+              ))}
           </Box>
         </Box>
 
         <Text size="caption" mono dimColor>
-          {snap.branch || 'ukjent gren'} · {snap.changed} endrede filer
+          {deploy ? `Deploy ${deploy.conclusion === 'success' ? 'OK' : deploy.conclusion || deploy.status}, ${relativeTime(Date.parse(deploy.createdAt), nowMs)}` : 'Deploy ukjent'} · {snap.branch || 'ukjent gren'} ·{' '}
+          {snap.changed} endrede filer
         </Text>
       </Box>
     )
