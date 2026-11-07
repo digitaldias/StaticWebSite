@@ -15,7 +15,7 @@ import type {
 } from '../types'
 
 import { searchStats } from './google'
-import { barChartSvg, botBarsSvg, clockTime, progressSvg, relativeTime, SEA, sparkline, thousands, trafficParts } from './pane'
+import { barChartSvg, BOTS_WIDTH, botBarsSvg, CHART_WIDTH, clockTime, progressSvg, relativeTime, SEA, sparkline, thousands, trafficParts } from './pane'
 
 const PANE = 'dd-desk'
 const TITLE = 'digitaldias.com'
@@ -477,22 +477,23 @@ export const register: Register = on => {
       </Text>
     )
     const tile = (key: string, label: string, value: string, note: string, color?: string) => (
-      <Box key={key} flexDirection="column" flexGrow={1} minWidth={130} padding="sm" borderStyle="round" borderColor="subtle">
+      <Box key={key} flexDirection="column" flexGrow={1} minWidth={17} paddingX="sm" paddingY="xs" borderStyle="round" borderColor="subtle">
         <Text size="caption" dimColor>
           {label}
         </Text>
-        <Text size="title" weight="semibold" tabular color={color}>
+        <Text size="heading" weight="semibold" tabular color={color}>
           {value}
         </Text>
-        <Text size="footnote" dimColor>
+        <Text size="caption" dimColor wrap="truncate-end">
           {note}
         </Text>
       </Box>
     )
+    const bots = traffic?.bots.slice(0, 6) ?? []
 
     return (
       <Box flexDirection="column" gap="md" paddingX="xs">
-        <Box flexDirection="row" justifyContent="space-between" alignItems="flex-end">
+        <Box flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center" gap="sm">
           <Box flexDirection="column">
             <Text size="title" weight="bold">
               digitaldias<Text size="title" weight="bold" color={SEA.teal}>.com</Text>
@@ -501,23 +502,24 @@ export const register: Register = on => {
               {isBusy ? 'Redaksjonen henter tall …' : `Redaksjonen, lest ${clockTime(snap.takenAt)}`}
             </Text>
           </Box>
-          <Button key="refresh" label={isBusy ? 'Henter …' : 'Les på nytt'} dimColor={isBusy} onPress={() => void readAgain($)} />
-        </Box>
-
-        <Box flexDirection="row" flexWrap="wrap" gap="sm">
-          <Button key="new-post" label="Ny post" variant="primary" onPress={ask($, PROMPTS.newPost)} />
-          <Button key="now" label="Oppdater Now" onPress={ask($, PROMPTS.now)} />
-          <Button key="check" label={check?.isRunning ? 'Bygger …' : 'just check'} onPress={() => runCheck($)} />
+          <Box flexDirection="row" flexWrap="wrap" gap="sm">
+            <Button key="new-post" label="Ny post" variant="primary" onPress={ask($, PROMPTS.newPost)} />
+            <Button key="now" label="Oppdater Now" onPress={ask($, PROMPTS.now)} />
+            <Button key="check" label={check?.isRunning ? 'Bygger …' : 'just check'} onPress={() => runCheck($)} />
+            <Button key="refresh" label={isBusy ? 'Henter …' : 'Les på nytt'} dimColor={isBusy} onPress={() => void readAgain($)} />
+          </Box>
         </Box>
 
         {snap.ahead > 0 && (
-          <Box flexDirection="column" gap="xs" padding="sm" borderStyle="round" borderColor="warning">
-            <Text color="warning" weight="semibold">
-              main ligger {snap.ahead} commit foran origin/main
-            </Text>
-            <Text size="footnote" dimColor>
-              Briefingen publiserer ikke i natt før det er pushet.
-            </Text>
+          <Box flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center" gap="sm" paddingX="sm" paddingY="xs" borderStyle="round" borderColor="warning">
+            <Box flexDirection="column" flexShrink={1}>
+              <Text color="warning" weight="semibold">
+                main ligger {snap.ahead} commit foran origin/main
+              </Text>
+              <Text size="footnote" dimColor>
+                Briefingen publiserer ikke i natt før det er pushet.
+              </Text>
+            </Box>
             <Button key="unpushed" label="Vis upushede" onPress={ask($, PROMPTS.unpushed)} />
           </Box>
         )}
@@ -526,7 +528,8 @@ export const register: Register = on => {
           <Box
             flexDirection="column"
             gap="xs"
-            padding="sm"
+            paddingX="sm"
+            paddingY="xs"
             borderStyle="round"
             borderColor={check.exitCode === 0 ? 'success' : 'error'}
           >
@@ -545,18 +548,16 @@ export const register: Register = on => {
         )}
 
         <Box flexDirection="row" flexWrap="wrap" gap="sm">
-          {tile('readers', 'Lesere, 7 d', traffic ? thousands(weekReaders) : '–', traffic ? `${thousands(traffic.visits)} besøk, ${thousands(today?.readers ?? 0)} sider i dag` : snap.trafficNote || 'ingen tall', SEA.teal)}
-          {tile('views', 'Sider servert, 7 d', traffic ? thousands(weekViews) : '–', today ? `${thousands(today.pageViews)} i dag hittil` : snap.trafficNote || 'ingen tall')}
+          {tile('readers', 'Lesere, 7 d', traffic ? thousands(weekReaders) : '–', traffic ? `${thousands(traffic.visits)} besøk · ${thousands(today?.readers ?? 0)} i dag` : snap.trafficNote || 'ingen tall', SEA.teal)}
+          {tile('views', 'Sider servert, 7 d', traffic ? thousands(weekViews) : '–', today ? `${thousands(today.pageViews)} i dag` : snap.trafficNote || 'ingen tall')}
           {tile('bots', 'AI-boter, 24 t', traffic ? thousands(traffic.botTotal) : '–', traffic?.bots[0] ? `flest fra ${traffic.bots[0].name}` : 'ingen tall')}
           {tile(
             'google',
             'Google-klikk, 28 d',
             snap.search ? thousands(snap.search.clicks) : '–',
-            snap.search
-              ? `${thousands(snap.search.impressions)} visninger, snittplass ${snap.search.position.toFixed(1)}`
-              : snap.searchNote || 'ingen tall',
+            snap.search ? `${thousands(snap.search.impressions)} visn. · plass ${snap.search.position.toFixed(1)}` : snap.searchNote || 'ingen tall',
           )}
-          {tile('drafts', 'Utkast', String(snap.drafts.length), snap.drafts.length ? `${openSteps} steg gjenstår` : 'ingenting på blokka')}
+          {tile('drafts', 'Utkast', String(snap.drafts.length), snap.drafts.length ? `${openSteps} steg igjen` : 'ingenting på blokka')}
           {tile(
             'deploy',
             'Deploy',
@@ -567,123 +568,132 @@ export const register: Register = on => {
         </Box>
 
         {traffic && (
-          <Box flexDirection="column" gap="xs">
-            {kicker('Trafikk siste uke')}
-            {Svg ? (
-              <Svg
-                source={barChartSvg(traffic.days)}
-                alt={`Sider per dag (lesere, AI-boter, andre): ${traffic.days.map(day => `${day.date} ${trafficParts(day).join('/')}`).join(', ')}`}
-              />
-            ) : (
-              <Box flexDirection="column">
-                <Text mono color={SEA.teal}>
-                  {sparkline(traffic.days.map(day => day.readers))} lesere
-                </Text>
-                <Text mono dimColor>
-                  {sparkline(traffic.days.map(day => day.pageViews))} alle sider
-                </Text>
-              </Box>
-            )}
-            <Text size="footnote" dimColor>
-              Lesere er nettlesere som kjørte Cloudflare Web Analytics. AI-boter kjennes igjen på user agent. Resten er andre boter og nettlesere uten JavaScript. Stiplet søyle er i dag.
-            </Text>
-          </Box>
-        )}
-
-        {traffic && traffic.bots.length > 0 && (
-          <Box flexDirection="column" gap="xs">
-            {kicker('AI-boter siste døgn')}
-            {Svg ? (
-              <Svg
-                source={botBarsSvg(traffic.bots.slice(0, 6))}
-                alt={traffic.bots.slice(0, 6).map(bot => `${bot.name} ${bot.count}`).join(', ')}
-              />
-            ) : (
-              <Text dimColor>{traffic.bots.slice(0, 6).map(bot => `${bot.name} ${bot.count}`).join(', ')}</Text>
-            )}
-          </Box>
-        )}
-
-        {snap.search && snap.search.queries.length > 0 && (
-          <Box flexDirection="column" gap="xs">
-            {kicker('Søkeord på Google')}
-            {snap.search.queries.map(row => (
-              <Box key={`q-${row.query}`} flexDirection="row" justifyContent="space-between" gap="sm">
-                <Box flexShrink={1}>
-                  <Text size="footnote">{row.query}</Text>
-                </Box>
-                <Text size="footnote" mono dimColor>
-                  {row.clicks} klikk · {thousands(row.impressions)} visn.
-                </Text>
-              </Box>
-            ))}
-            <Text size="caption" dimColor>
-              {snap.search.start} til {snap.search.end}. Google ligger to–tre dager etter.
-            </Text>
-          </Box>
-        )}
-
-        <Box flexDirection="column" gap="sm">
-          {kicker('Utkast')}
-          {snap.drafts.length === 0 && <Text dimColor>Ingen utkast nå. Neste idé starter med «Ny post».</Text>}
-          {snap.drafts.map(draft => {
-            const missing = draft.checks.filter(one => !one.isDone).map(one => one.label)
-            const done = draft.checks.length - missing.length
-
-            return (
-              <Box key={`draft-${draft.file}`} flexDirection="column" gap="xs" padding="sm" borderStyle="round" borderColor="subtle">
-                <Box flexDirection="row" justifyContent="space-between">
-                  <Text weight="semibold">{draft.title}</Text>
-                  <Text mono size="footnote" color={SEA.teal}>
-                    {done}/{draft.checks.length}
+          <Box flexDirection="row" flexWrap="wrap" gap="lg">
+            <Box flexDirection="column" gap="xs" flexGrow={1} minWidth={58}>
+              {kicker('Trafikk siste uke')}
+              {Svg ? (
+                <Svg
+                  source={barChartSvg(traffic.days)}
+                  width={CHART_WIDTH}
+                  isInteractive
+                  alt={`Sider per dag (lesere, AI-boter, andre): ${traffic.days.map(day => `${day.date} ${trafficParts(day).join('/')}`).join(', ')}`}
+                />
+              ) : (
+                <Box flexDirection="column">
+                  <Text mono color={SEA.teal}>
+                    {sparkline(traffic.days.map(day => day.readers))} lesere
+                  </Text>
+                  <Text mono dimColor>
+                    {sparkline(traffic.days.map(day => day.pageViews))} alle sider
                   </Text>
                 </Box>
-                {Svg && <Svg source={progressSvg(draft.checks)} alt={`${done} av ${draft.checks.length} steg ferdig`} />}
-                <Text size="footnote" dimColor>
-                  {missing.length ? `Mangler: ${missing.join(', ')}` : 'Alle sjekker er grønne'}
-                </Text>
-                <Box flexDirection="row" gap="sm">
-                  <Button key={`resume-${draft.file}`} label="Fortsett" variant="primary" onPress={ask($, PROMPTS.resume(draft.file, missing))} />
-                  <Button key={`fact-${draft.file}`} label="Faktasjekk og SEO" onPress={ask($, PROMPTS.factCheck(draft.file))} />
-                </Box>
-              </Box>
-            )
-          })}
-        </Box>
-
-        {latest && (
-          <Box flexDirection="column" gap="xs">
-            {kicker('Sist publisert')}
-            <Text weight="semibold">{latest.title}</Text>
-            <Text size="footnote" mono dimColor>
-              {latest.date} · {latest.hn ? `HN ${latest.hn.points} poeng, ${latest.hn.comments} kommentarer` : 'ikke på Hacker News'}
-            </Text>
-            <Box flexDirection="row" gap="sm">
-              <Button key="promote" label="Promoter" onPress={ask($, PROMPTS.promote(latest.file))} />
-              <Button key="stats" label="Statistikk" onPress={ask($, PROMPTS.stats(latest.file))} />
+              )}
+              <Text size="caption" dimColor>
+                Lesere kjørte Web Analytics i nettleseren. AI-boter kjennes på user agent. Grått er andre boter og nettlesere uten JavaScript. Stiplet er i dag; hold over en søyle for tallene.
+              </Text>
             </Box>
+            {bots.length > 0 && (
+              <Box flexDirection="column" gap="xs" flexGrow={1} minWidth={44}>
+                {kicker('AI-boter siste døgn')}
+                {Svg ? (
+                  <Svg source={botBarsSvg(bots)} width={BOTS_WIDTH} alt={bots.map(bot => `${bot.name} ${bot.count}`).join(', ')} />
+                ) : (
+                  <Text dimColor>{bots.map(bot => `${bot.name} ${bot.count}`).join(', ')}</Text>
+                )}
+              </Box>
+            )}
           </Box>
         )}
 
-        <Box flexDirection="column" gap="xs">
-          {kicker('Now')}
-          {[
-            ['Building', now.building],
-            ['Tinkering', now.tinkering],
-            ['Annoyed by', now.annoyedBy],
-            ['Listening', `${now.listening} (${now.listeningDate})`],
-          ].map(([label, value]) => (
-            <Box key={`now-${label}`} flexDirection="row" gap="sm">
-              <Box width={88}>
-                <Text size="footnote" dimColor>
-                  {label}
+        <Box flexDirection="row" flexWrap="wrap" gap="lg">
+          <Box flexDirection="column" gap="sm" flexGrow={1} minWidth={36}>
+            {latest && (
+              <Box flexDirection="column" gap="xs">
+                {kicker('Sist publisert')}
+                <Text weight="semibold">{latest.title}</Text>
+                <Text size="caption" mono dimColor>
+                  {latest.date} · {latest.hn ? `HN ${latest.hn.points} poeng, ${latest.hn.comments} kommentarer` : 'ikke på Hacker News'}
                 </Text>
+                <Box flexDirection="row" gap="sm">
+                  <Button key="promote" label="Promoter" onPress={ask($, PROMPTS.promote(latest.file))} />
+                  <Button key="stats" label="Statistikk" onPress={ask($, PROMPTS.stats(latest.file))} />
+                </Box>
               </Box>
-              <Box flexShrink={1}>
-                <Text size="footnote">{value}</Text>
-              </Box>
+            )}
+            {kicker('Utkast')}
+            {snap.drafts.length === 0 && (
+              <Text size="footnote" dimColor>
+                Ingen utkast nå. Neste idé starter med «Ny post».
+              </Text>
+            )}
+            {snap.drafts.map(draft => {
+              const missing = draft.checks.filter(one => !one.isDone).map(one => one.label)
+              const done = draft.checks.length - missing.length
+
+              return (
+                <Box key={`draft-${draft.file}`} flexDirection="column" gap="xs" paddingX="sm" paddingY="xs" borderStyle="round" borderColor="subtle">
+                  <Box flexDirection="row" justifyContent="space-between" gap="sm">
+                    <Box flexShrink={1}>
+                      <Text weight="semibold">{draft.title}</Text>
+                    </Box>
+                    <Text mono size="footnote" color={SEA.teal}>
+                      {done}/{draft.checks.length}
+                    </Text>
+                  </Box>
+                  {Svg && <Svg source={progressSvg(draft.checks)} width={280} alt={`${done} av ${draft.checks.length} steg ferdig`} />}
+                  <Text size="footnote" dimColor>
+                    {missing.length ? `Mangler: ${missing.join(', ')}` : 'Alle sjekker er grønne'}
+                  </Text>
+                  <Box flexDirection="row" flexWrap="wrap" gap="sm">
+                    <Button key={`resume-${draft.file}`} label="Fortsett" variant="primary" onPress={ask($, PROMPTS.resume(draft.file, missing))} />
+                    <Button key={`fact-${draft.file}`} label="Faktasjekk og SEO" onPress={ask($, PROMPTS.factCheck(draft.file))} />
+                  </Box>
+                </Box>
+              )
+            })}
+          </Box>
+
+          {snap.search && snap.search.queries.length > 0 && (
+            <Box flexDirection="column" gap="xs" flexGrow={1} minWidth={36}>
+              {kicker('Søkeord på Google')}
+              {snap.search.queries.map(row => (
+                <Box key={`q-${row.query}`} flexDirection="row" justifyContent="space-between" gap="sm">
+                  <Box flexShrink={1}>
+                    <Text size="footnote" wrap="truncate-end">
+                      {row.query}
+                    </Text>
+                  </Box>
+                  <Text size="caption" mono dimColor>
+                    {row.clicks} klikk · {thousands(row.impressions)} visn.
+                  </Text>
+                </Box>
+              ))}
+              <Text size="caption" dimColor>
+                {snap.search.start} til {snap.search.end}. Google ligger to–tre dager etter.
+              </Text>
             </Box>
-          ))}
+          )}
+
+          <Box flexDirection="column" gap="xs" flexGrow={1} minWidth={36}>
+            {kicker('Now')}
+            {[
+              ['Building', now.building],
+              ['Tinkering', now.tinkering],
+              ['Annoyed by', now.annoyedBy],
+              ['Listening', `${now.listening} (${now.listeningDate})`],
+            ].map(([label, value]) => (
+              <Box key={`now-${label}`} flexDirection="row" gap="sm">
+                <Box width={11} flexShrink={0}>
+                  <Text size="footnote" dimColor>
+                    {label}
+                  </Text>
+                </Box>
+                <Box flexShrink={1}>
+                  <Text size="footnote">{value}</Text>
+                </Box>
+              </Box>
+            ))}
+          </Box>
         </Box>
 
         <Text size="caption" mono dimColor>

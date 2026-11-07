@@ -62,20 +62,22 @@ function escape(text: string): string {
 }
 
 // Pages per day as stacked columns: readers, AI bots, the rest. Today is still running, so it is drawn faded and outlined.
-export function barChartSvg(days: Day[]): string {
-  const width = 320
-  const height = 140
-  const base = 116
-  const room = 70
+export const CHART_WIDTH = 520
+export const BOTS_WIDTH = 400
+
+export function barChartSvg(days: Day[], width = CHART_WIDTH): string {
+  const height = 168
+  const base = 140
+  const room = 100
   const step = width / Math.max(1, days.length)
-  const bar = Math.min(28, step * 0.56)
+  const bar = Math.min(36, step * 0.56)
   const top = Math.max(1, ...days.map(day => day.pageViews))
   let legendX = 0
   const legend = TRAFFIC_GROUPS.map(group => {
     const x = legendX
-    legendX += 22 + group.name.length * 6.2
+    legendX += 28 + group.name.length * 6.8
 
-    return `<rect x="${x}" y="2" width="9" height="9" rx="2" fill="${group.color}"/><text x="${x + 13}" y="10" font-size="10" fill="${SEA.muted}" ${FONT}>${escape(group.name)}</text>`
+    return `<rect x="${x}" y="2" width="10" height="10" rx="2" fill="${group.color}"/><text x="${x + 15}" y="11" font-size="11" fill="${SEA.muted}" ${FONT}>${escape(group.name)}</text>`
   }).join('')
   const columns = days
     .map((day, index) => {
@@ -97,11 +99,16 @@ export function barChartSvg(days: Day[]): string {
         ? `<rect x="${x}" y="${base - total}" width="${bar}" height="${total}" fill="none" stroke="${SEA.teal}" stroke-width="1.5" stroke-dasharray="3 2"/>`
         : ''
 
+      const [readers, ai, rest] = trafficParts(day)
+      const tip = `<title>${weekday(day.date)} ${day.date}: ${day.pageViews} sider, ${readers} lesere, ${ai} AI-boter, ${rest} andre</title>`
+
       return [
+        `<g>${tip}<rect x="${x - 4}" y="${base - room - 20}" width="${bar + 8}" height="${room + 36}" fill="transparent"/>`,
         segments,
         outline,
-        `<text x="${x + bar / 2}" y="${base - total - 6}" text-anchor="middle" font-size="10" fill="${SEA.muted}" ${FONT}>${day.pageViews}</text>`,
-        `<text x="${x + bar / 2}" y="${base + 16}" text-anchor="middle" font-size="10" fill="${SEA.muted}" ${FONT}>${weekday(day.date)}</text>`,
+        `<text x="${x + bar / 2}" y="${base - total - 6}" text-anchor="middle" font-size="11" fill="${SEA.muted}" ${FONT}>${day.pageViews}</text>`,
+        `<text x="${x + bar / 2}" y="${base + 17}" text-anchor="middle" font-size="11" fill="${SEA.muted}" ${FONT}>${weekday(day.date)}</text>`,
+        '</g>',
       ].join('')
     })
     .join('')
@@ -110,10 +117,9 @@ export function barChartSvg(days: Day[]): string {
 }
 
 // The busiest AI bots as horizontal bars against the busiest one.
-export function botBarsSvg(bots: BotCount[]): string {
-  const width = 320
-  const row = 22
-  const label = 118
+export function botBarsSvg(bots: BotCount[], width = BOTS_WIDTH): string {
+  const row = 24
+  const label = 140
   const room = width - label - 44
   const top = Math.max(1, ...bots.map(bot => bot.count))
   const rows = bots
@@ -135,8 +141,7 @@ export function botBarsSvg(bots: BotCount[]): string {
 }
 
 // One segment per workflow check, filled when it is done.
-export function progressSvg(checks: Check[]): string {
-  const width = 320
+export function progressSvg(checks: Check[], width = 280): string {
   const gap = 4
   const segment = (width - gap * (checks.length - 1)) / Math.max(1, checks.length)
   const parts = checks
