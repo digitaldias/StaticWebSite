@@ -98,7 +98,7 @@ Hugo template conventions: in the blog section `.PrevInSection` is the older pos
 
 ## CSP
 
-The Content Security Policy is hardcoded in `layouts/partials/head.html`. Any new external resource (font, script, image host) requires updating the CSP there explicitly.
+The Content Security Policy is hardcoded in `layouts/partials/head.html`, and Cloudflare also sends it as a response header from two Response Header Transform Rules (Rules → Overview): "Add security headers" for every path and "Briefing CSP: allow https images" for `/briefing/`. The browser enforces the meta tag and the header together, so any new external resource (font, script, image host, beacon endpoint) goes into all three; Claude's token cannot edit rules, so Pedro edits the two in Cloudflare. `src/static/staticwebapp.config.json` holds a copy of the header text. The header blocks inline scripts, so a script goes in a file under `assets/js/`, never inline.
 
 ## Deployment
 

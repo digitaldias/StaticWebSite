@@ -48,5 +48,5 @@ Every step asks Pedro in chat before anything public happens. Earlier approvals 
 
 - Hacker News: points and comments through the public API, `https://hn.algolia.com/api/v1/search?query=<title>&tags=story`.
 - Dev.to: views, reactions and comments from the dashboard in Pedro's Chrome.
-- AI referrals: visits to the post referred from `chatgpt.com`, `claude.ai`, `perplexity.ai`, `copilot.microsoft.com` and `gemini.google.com`, and fetches of the post by agent user agents (`ChatGPT-User`, `Claude-User`, `Perplexity-User`). Pedro reads both from Cloudflare (Analytics and AI Crawl Control); Claude has no Cloudflare token, so ask him for the numbers rather than guessing them.
+- AI referrals: visits to the post referred from `chatgpt.com`, `claude.ai`, `perplexity.ai`, `copilot.microsoft.com` and `gemini.google.com`, and fetches of the post by agent user agents (`ChatGPT-User`, `Claude-User`, `Perplexity-User`). Claude counts agent fetches per path itself with the read-only `CLOUDFLARE_API_TOKEN` in `.env` (GraphQL `httpRequestsAdaptiveGroups` filtered on `clientRequestPath_in`, grouped by `userAgent`, last 24 hours). Referrer hosts are not available on the Free plan, so ask Pedro for the referral visits from the Cloudflare dashboard rather than guessing them.
 - Take these as snapshots. Compare them on the same weekday each week. Report only aggregate numbers.

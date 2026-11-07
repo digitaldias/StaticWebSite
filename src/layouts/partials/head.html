@@ -3,12 +3,8 @@
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-49LY6Q6XNV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-49LY6Q6XNV');
-</script>
+{{- $gtag := resources.Get "js/gtag.js" | resources.Minify | resources.Fingerprint }}
+<script src="{{ $gtag.RelPermalink }}"></script>
 
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
