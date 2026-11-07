@@ -20,7 +20,8 @@ Every step asks Pedro in chat before anything public happens. Earlier approvals 
 - Never copy the post's content to Dev.to: no sections, code, images or paragraphs lifted from the post. Every cross-post is a fresh summary in this format:
   - Title: the post's English title. Tags: up to four, lowercase, from the post's subject.
   - Three or four short paragraphs, about 120 to 180 words, in first person and the voice rules of CLAUDE.md. Open on what Pedro did or noticed, then the idea, then any honest caveat (what is an estimate, unproven or only tested on his own setup).
-  - One paragraph that says what the full post covers and what the reader can take from it (a recipe, a prompt, a rubric).
+  - What the full post covers as a short Markdown bullet list after a lead-in line ("The full post has:"), so the reader can scan what they get (a recipe, a prompt, a rubric).
+  - Bold one or two key phrases in the paragraphs. Plain paragraphs alone read like a block of code to anyone who has set Dev.to's monospace article font, as Pedro has.
   - A last line in bold with the link: `**Read the full post, with <what it gives the reader>:** <post URL>`.
   - Word the summary a little differently from the post's opening and TL;DR, so it reads as an introduction, not an excerpt.
   - Reference: https://dev.to/digitaldias/dont-write-like-a-robot-llmstxt-for-ai-agents-1hd5 (2026-11-06).
