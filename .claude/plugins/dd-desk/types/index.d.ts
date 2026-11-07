@@ -26,12 +26,15 @@ export type NowBox = {
   listeningDate: string
 }
 
-export type Day = { date: string; pageViews: number; uniques: number }
+// pageViews: HTML pages served (status 200) to anyone; readers: Web Analytics page loads,
+// browsers that ran its script; aiBots: pages served to a known AI user agent.
+export type Day = { date: string; pageViews: number; readers: number; aiBots: number }
 
 export type BotCount = { name: string; count: number }
 
 export type Traffic = {
   days: Day[]
+  visits: number
   bots: BotCount[]
   botTotal: number
 }
@@ -73,6 +76,7 @@ declare module 'claude-code' {
     'dd-desk': {
       snapshot: Shaped<Snapshot | null>
       check: Shaped<CheckRun | null>
+      busy: Shaped<boolean>
     }
   }
 }

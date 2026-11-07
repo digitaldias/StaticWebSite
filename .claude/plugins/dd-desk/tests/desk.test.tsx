@@ -1,7 +1,7 @@
 import { expect, test } from 'claude-code/testing'
 
 import { barChartSvg, sparkline, thousands } from '../hooks/pane'
-import { countBots, draftChecks, envValue, frontMatter, nowBox } from '../hooks/register'
+import { countBots, dailyTraffic, draftChecks, envValue, frontMatter, nowBox } from '../hooks/register'
 import type { Snapshot } from '../types'
 
 const PANE = {
@@ -54,9 +54,10 @@ const SNAPSHOT: Snapshot = {
   now: { building: 'Mods', tinkering: 'A holder', annoyedBy: 'Routers', listening: 'Dire Straits: Sultans Of Swing', listeningDate: '2026-11-06' },
   traffic: {
     days: [
-      { date: '2026-11-05', pageViews: 519, uniques: 691 },
-      { date: '2026-11-06', pageViews: 1285, uniques: 295 },
+      { date: '2026-11-05', pageViews: 519, readers: 120, aiBots: 40 },
+      { date: '2026-11-06', pageViews: 1285, readers: 300, aiBots: 90 },
     ],
+    visits: 310,
     bots: [{ name: 'GPTBot', count: 55 }],
     botTotal: 55,
   },
@@ -89,13 +90,32 @@ test('the token is read from .env and numbers get spaces', async () => {
   expect(sparkline([0, 50, 100])).toBe('▁▄█')
 })
 
-test('the traffic chart draws one column per day and hollows out today', async () => {
+test('pages per day are split into readers, AI bots and the rest', async () => {
+  const days = dailyTraffic(
+    [
+      { count: 50, date: '2026-11-06', userAgent: 'Mozilla/5.0 (Windows NT 10.0) Chrome/130' },
+      { count: 7, date: '2026-11-06', userAgent: 'Mozilla/5.0 (compatible; ClaudeBot/1.0)' },
+      { count: 30, date: '2026-11-05', userAgent: 'Mozilla/5.0 (compatible; GPTBot/1.3)' },
+    ],
+    [{ count: 20, date: '2026-11-06' }],
+  )
+  expect(JSON.stringify(days)).toBe(
+    JSON.stringify([
+      { date: '2026-11-05', pageViews: 30, readers: 0, aiBots: 30 },
+      { date: '2026-11-06', pageViews: 57, readers: 20, aiBots: 7 },
+    ]),
+  )
+})
+
+test('the traffic chart stacks three colours per day and outlines today', async () => {
   const svg = barChartSvg([
-    { date: '2026-11-05', pageViews: 519, uniques: 691 },
-    { date: '2026-11-06', pageViews: 285, uniques: 295 },
+    { date: '2026-11-05', pageViews: 519, readers: 120, aiBots: 40 },
+    { date: '2026-11-06', pageViews: 285, readers: 0, aiBots: 85 },
   ])
-  expect((svg.match(/<rect /g) ?? []).length).toBe(2)
-  expect(svg).toContain('fill="none"')
+  expect(svg).toContain('>Lesere<')
+  expect(svg).toContain('>AI-boter<')
+  expect((svg.match(/fill-opacity="0.5"/g) ?? []).length).toBe(2)
+  expect(svg).toContain('stroke-dasharray="3 2"')
   expect(svg).toContain('>to<')
   expect(svg).toContain('>fr<')
 })
@@ -133,8 +153,10 @@ test('the pane draws drafts, the push warning and the buttons', async ($, on) =>
   on('state.get', (_, e) => ({
     value:
       e.key === 'snapshot'
-        ? { value: { shape: 'snapshot-3', value: SNAPSHOT }, version: 1 }
-        : { value: undefined, version: 0 },
+        ? { value: { shape: 'snapshot-4', value: SNAPSHOT }, version: 1 }
+        : e.key === 'busy'
+          ? { value: { shape: 'busy-1', value: true }, version: 1 }
+          : { value: undefined, version: 0 },
   }))
   on('clock.now', () => ({ value: Date.parse('2026-11-06T12:00:00Z') }))
   const prompts: string[] = []
@@ -150,6 +172,8 @@ test('the pane draws drafts, the push warning and the buttons', async ($, on) =>
     expect((await ui.find({ type: 'Text', text: /A draft/ }))?.text).toBe('A draft')
     expect((await ui.find({ type: 'Text', text: /Sultans Of Swing/ }))?.text).toContain('2026-11-06')
     expect((await ui.find({ type: 'Text', text: /flest fra/ }))?.text).toBe('flest fra GPTBot')
+    expect((await ui.find({ type: 'Text', text: /besøk/ }))?.text).toBe('310 besøk, 300 sider i dag')
+    expect((await ui.find({ type: 'Text', text: /henter tall/ }))?.text).toBe('Redaksjonen henter tall …')
     expect((await ui.find({ type: 'Text', text: /Mangler/ }))?.text).toBe('Mangler: Norsk')
     expect((await ui.find({ type: 'Text', text: /snittplass/ }))?.text).toBe('3 100 visninger, snittplass 18.4')
     expect((await ui.find({ type: 'Text', text: /llms.txt hugo/ }))?.text).toBe('llms.txt hugo')

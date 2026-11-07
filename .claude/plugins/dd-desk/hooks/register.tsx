@@ -4,6 +4,7 @@ import type { EngineInterface, Register } from 'claude-code'
 import type {
   Check,
   CheckRun,
+  Day,
   Deploy,
   Draft,
   HackerNews,
@@ -14,7 +15,7 @@ import type {
 } from '../types'
 
 import { searchStats } from './google'
-import { barChartSvg, botBarsSvg, clockTime, progressSvg, relativeTime, SEA, sparkline, thousands } from './pane'
+import { barChartSvg, botBarsSvg, clockTime, progressSvg, relativeTime, SEA, sparkline, thousands, trafficParts } from './pane'
 
 const PANE = 'dd-desk'
 const TITLE = 'digitaldias.com'
@@ -23,10 +24,13 @@ const NETWORK_EVERY_MS = 10 * 60_000
 
 // Change a tag when its type changes: it declines what an earlier version stored.
 const snapshot = atom({ plugin: 'dd-desk', key: 'snapshot' } as const, null, {
-  shape: 'snapshot-3',
+  shape: 'snapshot-4',
 })
 const checkRun = atom({ plugin: 'dd-desk', key: 'check' } as const, null, {
   shape: 'check-1',
+})
+const busy = atom({ plugin: 'dd-desk', key: 'busy' } as const, false, {
+  shape: 'busy-1',
 })
 
 export function unquote(value: string): string {
@@ -157,10 +161,14 @@ const AI_BOTS = [
   'cohere-ai',
 ]
 
+function aiBotName(userAgent: string): string | undefined {
+  return AI_BOTS.find(bot => userAgent.toLowerCase().includes(bot.toLowerCase()))
+}
+
 export function countBots(rows: { count: number; userAgent: string }[]): Traffic['bots'] {
   const totals = new Map<string, number>()
   for (const { count, userAgent } of rows) {
-    const name = AI_BOTS.find(bot => userAgent.toLowerCase().includes(bot.toLowerCase()))
+    const name = aiBotName(userAgent)
     if (name) {
       totals.set(name, (totals.get(name) ?? 0) + count)
     }
@@ -169,11 +177,38 @@ export function countBots(rows: { count: number; userAgent: string }[]): Traffic
   return [...totals].map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count)
 }
 
+// Pages served per day, split into Web Analytics readers and known AI bots; the rest is other bots and unknowns.
+export function dailyTraffic(
+  pages: { count: number; date: string; userAgent: string }[],
+  readers: { count: number; date: string }[],
+): Day[] {
+  const days = new Map<string, Day>()
+  const day = (date: string) => {
+    const known = days.get(date) ?? { date, pageViews: 0, readers: 0, aiBots: 0 }
+    days.set(date, known)
+
+    return known
+  }
+  for (const { count, date, userAgent } of pages) {
+    const one = day(date)
+    one.pageViews += count
+    if (aiBotName(userAgent)) {
+      one.aiBots += count
+    }
+  }
+  for (const { count, date } of readers) {
+    day(date).readers += count
+  }
+
+  return [...days.values()].sort((a, b) => a.date.localeCompare(b.date))
+}
+
 export function envValue(text: string, name: string): string {
   return unquote(new RegExp(`^\\s*${name}\\s*=(.*)$`, 'm').exec(text)?.[1] ?? '')
 }
 
 let zoneId = ''
+let accountId = ''
 
 async function cloudflareQuery($: Host, token: string, query: string): Promise<unknown> {
   const response = await $.http.fetch('https://api.cloudflare.com/client/v4/graphql', {
@@ -199,7 +234,9 @@ async function traffic($: Host): Promise<{ traffic: Traffic | null; note: string
       const zones = await $.http.fetch('https://api.cloudflare.com/client/v4/zones?name=digitaldias.com', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      zoneId = (JSON.parse(zones.text) as { result?: { id: string }[] }).result?.[0]?.id ?? ''
+      const zone = (JSON.parse(zones.text) as { result?: { id: string; account: { id: string } }[] }).result?.[0]
+      zoneId = zone?.id ?? ''
+      accountId = zone?.account.id ?? ''
     }
     const now = await $.clock.now()
     const week = new Date(now - 7 * 86_400_000).toISOString().slice(0, 10)
@@ -207,28 +244,35 @@ async function traffic($: Host): Promise<{ traffic: Traffic | null; note: string
     const data = (await cloudflareQuery(
       $,
       token,
-      `{ viewer { zones(filter: {zoneTag: "${zoneId}"}) {
-        days: httpRequests1dGroups(limit: 8, filter: {date_geq: "${week}"}, orderBy: [date_ASC]) { dimensions { date } sum { pageViews } uniq { uniques } }
-        agents: httpRequestsAdaptiveGroups(limit: 1000, filter: {datetime_geq: "${day}", requestSource: "eyeball"}, orderBy: [count_DESC]) { count dimensions { userAgent } }
-      } } }`,
+      `{ viewer {
+        zones(filter: {zoneTag: "${zoneId}"}) {
+          pages: httpRequestsAdaptiveGroups(limit: 10000, filter: {date_geq: "${week}", requestSource: "eyeball", edgeResponseContentTypeName: "html", edgeResponseStatus: 200}) { count dimensions { date userAgent } }
+          agents: httpRequestsAdaptiveGroups(limit: 1000, filter: {datetime_geq: "${day}", requestSource: "eyeball"}, orderBy: [count_DESC]) { count dimensions { userAgent } }
+        }
+        accounts(filter: {accountTag: "${accountId}"}) {
+          readers: rumPageloadEventsAdaptiveGroups(limit: 10, filter: {date_geq: "${week}", requestHost_in: ["www.digitaldias.com", "digitaldias.com"]}, orderBy: [date_ASC]) { count sum { visits } dimensions { date } }
+        }
+      } }`,
     )) as {
       viewer: {
         zones: {
-          days: { dimensions: { date: string }; sum: { pageViews: number }; uniq: { uniques: number } }[]
+          pages: { count: number; dimensions: { date: string; userAgent: string } }[]
           agents: { count: number; dimensions: { userAgent: string } }[]
         }[]
+        accounts: { readers: { count: number; sum: { visits: number }; dimensions: { date: string } }[] }[]
       }
     }
     const zone = data.viewer.zones[0]
+    const readers = data.viewer.accounts[0]?.readers ?? []
     const bots = countBots((zone?.agents ?? []).map(row => ({ count: row.count, userAgent: row.dimensions.userAgent })))
 
     return {
       traffic: {
-        days: (zone?.days ?? []).map(row => ({
-          date: row.dimensions.date,
-          pageViews: row.sum.pageViews,
-          uniques: row.uniq.uniques,
-        })),
+        days: dailyTraffic(
+          (zone?.pages ?? []).map(row => ({ count: row.count, ...row.dimensions })),
+          readers.map(row => ({ count: row.count, date: row.dimensions.date })),
+        ),
+        visits: readers.reduce((sum, row) => sum + row.sum.visits, 0),
         bots,
         botTotal: bots.reduce((sum, bot) => sum + bot.count, 0),
       },
@@ -306,20 +350,39 @@ async function collect($: Host, previous: Snapshot | null, withNetwork: boolean)
   }
 }
 
-let pending: Promise<void> | null = null
+let pending: { promise: Promise<void>; withNetwork: boolean } | null = null
 
+// One reading at a time; a network reading asked for during a local one runs after it.
 function refresh($: Host, withNetwork: boolean): Promise<void> {
-  pending ??= (async () => {
+  if (pending && (pending.withNetwork || !withNetwork)) {
+    return pending.promise
+  }
+  if (pending) {
+    return pending.promise.then(() => refresh($, withNetwork))
+  }
+  const promise = (async () => {
+    if (withNetwork) {
+      await update($, busy, () => true)
+    }
     try {
       const previous = await read($, snapshot)
       const next = await collect($, previous, withNetwork)
       await update($, snapshot, () => next)
     } finally {
       pending = null
+      await update($, busy, () => false)
     }
   })()
+  pending = { promise, withNetwork }
 
-  return pending
+  return promise
+}
+
+// The refresh button: a network reading, then a toast so the press is confirmed.
+async function readAgain($: Host): Promise<void> {
+  await refresh($, true)
+  const taken = (await read($, snapshot))?.takenAt
+  await $.ui.toast(taken ? `Panelet er oppdatert ${clockTime(taken)}` : 'Panelet er oppdatert')
 }
 
 async function runCheck($: Host): Promise<void> {
@@ -396,6 +459,7 @@ export const register: Register = on => {
     const Svg = 'Svg' in ui ? ui.Svg : null
     const snap = await read($, snapshot)
     const check = await read($, checkRun)
+    const isBusy = await read($, busy)
     if (!snap) {
       return <Text dimColor>Leser repoet …</Text>
     }
@@ -403,6 +467,7 @@ export const register: Register = on => {
     const { now, latest, deploy, traffic } = snap
     const isDeployOk = deploy?.conclusion === 'success'
     const weekViews = traffic?.days.reduce((sum, one) => sum + one.pageViews, 0) ?? 0
+    const weekReaders = traffic?.days.reduce((sum, one) => sum + one.readers, 0) ?? 0
     const today = traffic?.days.at(-1)
     const openSteps = snap.drafts.reduce((sum, draft) => sum + draft.checks.filter(one => !one.isDone).length, 0)
 
@@ -433,10 +498,10 @@ export const register: Register = on => {
               digitaldias<Text size="title" weight="bold" color={SEA.teal}>.com</Text>
             </Text>
             <Text size="caption" mono dimColor>
-              Redaksjonen, lest {clockTime(snap.takenAt)}
+              {isBusy ? 'Redaksjonen henter tall …' : `Redaksjonen, lest ${clockTime(snap.takenAt)}`}
             </Text>
           </Box>
-          <Button key="refresh" label="Les på nytt" onPress={() => refresh($, true)} />
+          <Button key="refresh" label={isBusy ? 'Henter …' : 'Les på nytt'} dimColor={isBusy} onPress={() => void readAgain($)} />
         </Box>
 
         <Box flexDirection="row" flexWrap="wrap" gap="sm">
@@ -480,7 +545,8 @@ export const register: Register = on => {
         )}
 
         <Box flexDirection="row" flexWrap="wrap" gap="sm">
-          {tile('views', 'Sidevisninger, 7 d', traffic ? thousands(weekViews) : '–', today ? `${thousands(today.pageViews)} i dag hittil` : snap.trafficNote || 'ingen tall')}
+          {tile('readers', 'Lesere, 7 d', traffic ? thousands(weekReaders) : '–', traffic ? `${thousands(traffic.visits)} besøk, ${thousands(today?.readers ?? 0)} sider i dag` : snap.trafficNote || 'ingen tall', SEA.teal)}
+          {tile('views', 'Sider servert, 7 d', traffic ? thousands(weekViews) : '–', today ? `${thousands(today.pageViews)} i dag hittil` : snap.trafficNote || 'ingen tall')}
           {tile('bots', 'AI-boter, 24 t', traffic ? thousands(traffic.botTotal) : '–', traffic?.bots[0] ? `flest fra ${traffic.bots[0].name}` : 'ingen tall')}
           {tile(
             'google',
@@ -506,15 +572,20 @@ export const register: Register = on => {
             {Svg ? (
               <Svg
                 source={barChartSvg(traffic.days)}
-                alt={`Sidevisninger per dag: ${traffic.days.map(day => `${day.date} ${day.pageViews}`).join(', ')}`}
+                alt={`Sider per dag (lesere, AI-boter, andre): ${traffic.days.map(day => `${day.date} ${trafficParts(day).join('/')}`).join(', ')}`}
               />
             ) : (
-              <Text mono color={SEA.teal}>
-                {sparkline(traffic.days.map(day => day.pageViews))}
-              </Text>
+              <Box flexDirection="column">
+                <Text mono color={SEA.teal}>
+                  {sparkline(traffic.days.map(day => day.readers))} lesere
+                </Text>
+                <Text mono dimColor>
+                  {sparkline(traffic.days.map(day => day.pageViews))} alle sider
+                </Text>
+              </Box>
             )}
             <Text size="footnote" dimColor>
-              Stiplet søyle er dagen i dag, som ikke er ferdig. Cloudflare teller alle HTML-svar, også boter.
+              Lesere er nettlesere som kjørte Cloudflare Web Analytics. AI-boter kjennes igjen på user agent. Resten er andre boter og nettlesere uten JavaScript. Stiplet søyle er i dag.
             </Text>
           </Box>
         )}
