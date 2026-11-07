@@ -1,0 +1,7 @@
+# Where each post was promoted. The promote-post skill adds a line after every step and the dd-desk pane reads it.
+# Key: the post's file name without .md. Channels: hn, devto, linkedin, gsc.
+# Value: the date it happened (YYYY-MM-DD), 'skipped' when Pedro passed on it, or 'drafted' for text he still has to post himself.
+2026-11-07-nerd-vs-geek:
+  devto: 2026-11-07
+  gsc: 2026-11-07
+  linkedin: drafted

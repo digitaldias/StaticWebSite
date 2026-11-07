@@ -1,10 +1,11 @@
 import type { EngineInterface } from 'claude-code'
 
-import type { Check, Deploy, DevTo, Draft, HackerNews, NowBox, Published, Snapshot } from '../types'
+import type { Check, Deploy, DevTo, Draft, NowBox, Promotion, Published, Snapshot } from '../types'
 
 type Host = EngineInterface
 
 export const BLOG = 'src/content/blog'
+export const PROMOTION_LOG = 'src/data/promotion.yaml'
 const POSTS_SHOWN = 6
 
 export function unquote(value: string): string {
@@ -43,6 +44,87 @@ export function draftChecks(
     { label: 'Cover', isDone: facts.hasCover },
     { label: 'Depth', isDone: facts.isScored },
   ]
+}
+
+// The promotion log: a post's file name without .md, then one indented `channel: date|skipped|drafted` line per channel.
+export function parsePromotion(text: string): Record<string, Promotion> {
+  const byPost: Record<string, Promotion> = {}
+  let current: Promotion | null = null
+  for (const line of text.split(/\r?\n/)) {
+    if (!line.trim() || /^\s*#/.test(line)) {
+      continue
+    }
+    const post = /^([\w-]+):\s*$/.exec(line)?.[1]
+    if (post) {
+      current = {}
+      byPost[post] = current
+      continue
+    }
+    const [, channel, value] = /^\s+(\w+):\s*(.+?)\s*$/.exec(line) ?? []
+    if (current && channel && value) {
+      current[channel] = value
+    }
+  }
+
+  return byPost
+}
+
+// Promoted once it is on Dev.to or LinkedIn. Search Console is indexing, not promotion, and a skipped
+// or merely drafted channel does not count: skipping one is Pedro's call, not a missing step.
+export function isPromoted(post: Published): boolean {
+  const done = (channel: string): boolean => Boolean(post.promoted[channel]) && !['skipped', 'drafted'].includes(post.promoted[channel] ?? '')
+
+  return Boolean(post.devto) || done('devto') || done('linkedin')
+}
+
+function channel(name: string, live: string | null, recorded: string | undefined, sent: string): string {
+  if (live) {
+    return live
+  }
+  if (recorded === 'skipped') {
+    return `${name} hoppet over`
+  }
+  if (recorded === 'drafted') {
+    return `${name} utkast`
+  }
+
+  return recorded ? sent : `ikke ${name}`
+}
+
+// One line for the pane: where the post went. Live numbers from Dev.to win over the log.
+export function channelLine(post: Published): string {
+  const { promoted } = post
+
+  return [
+    channel('Dev.to', post.devto ? `Dev.to ${post.devto.reactions}` : null, promoted.devto, 'Dev.to publisert'),
+    channel('LinkedIn', null, promoted.linkedin, 'LinkedIn lagt ut'),
+    channel('Google', null, promoted.gsc, 'Google bedt indeksere'),
+  ].join(' · ')
+}
+
+// Sets one channel of one post in the promotion log's text and leaves the rest of the file as it was.
+export function recordChannel(text: string, base: string, channelName: string, value: string): string {
+  const lines = text.split(/\r?\n/)
+  const start = lines.findIndex(line => line === `${base}:`)
+  const entry = `  ${channelName}: ${value}`
+  if (start === -1) {
+    const body = text === '' || text.endsWith('\n') ? text : `${text}\n`
+
+    return `${body}${base}:\n${entry}\n`
+  }
+  let end = start + 1
+  while (end < lines.length && /^\s+\S/.test(lines[end] ?? '')) {
+    end += 1
+  }
+  const own = lines.slice(start + 1, end)
+  const at = own.findIndex(line => new RegExp(`^\s+${channelName}:`).test(line))
+  if (at === -1) {
+    own.push(entry)
+  } else {
+    own[at] = entry
+  }
+
+  return [...lines.slice(0, start + 1), ...own, ...lines.slice(end)].join('\n')
 }
 
 function tomlField(block: string, name: string): string {
@@ -93,26 +175,6 @@ export async function lastDeploy($: Host): Promise<Deploy | null> {
     : null
 }
 
-async function hackerNews($: Host, base: string): Promise<HackerNews | null> {
-  const url = `https://hn.algolia.com/api/v1/search?tags=story&restrictSearchableAttributes=url&query=${encodeURIComponent(base)}`
-  const response = await $.http.fetch(url).catch(() => null)
-  if (!response?.ok) {
-    return null
-  }
-  const { hits } = JSON.parse(response.text) as {
-    hits: { url?: string; points?: number; num_comments?: number; objectID: string }[]
-  }
-  const hit = hits.find(one => one.url?.includes('digitaldias.com') && one.url.includes(base))
-
-  return hit
-    ? {
-        points: hit.points ?? 0,
-        comments: hit.num_comments ?? 0,
-        url: `https://news.ycombinator.com/item?id=${hit.objectID}`,
-      }
-    : null
-}
-
 // Dev.to's public API: the account's articles with their canonical URL, reactions and comments.
 async function devToArticles($: Host): Promise<Map<string, DevTo> | null> {
   const response = await $.http.fetch('https://dev.to/api/articles?username=digitaldias&per_page=30').catch(() => null)
@@ -143,6 +205,7 @@ export async function posts($: Host, previous: Snapshot | null, withNetwork: boo
     .sort()
     .reverse()
   const depth = await $.fs.read('src/data/depth.yaml').catch(() => '')
+  const promotion = parsePromotion(await $.fs.read(PROMOTION_LOG).catch(() => ''))
   const devto = withNetwork ? await devToArticles($) : null
   const drafts: Draft[] = []
   const published: Published[] = []
@@ -167,8 +230,8 @@ export async function posts($: Host, previous: Snapshot | null, withNetwork: boo
         base,
         title,
         date: fields.date ?? '',
-        hn: withNetwork ? await hackerNews($, base) : (kept?.hn ?? null),
         devto: devto ? (devto.get(base) ?? null) : (kept?.devto ?? null),
+        promoted: promotion[base] ?? {},
       })
     }
   }

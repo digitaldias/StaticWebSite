@@ -7,7 +7,13 @@ description: Promotes a newly published digitaldias.com blog post on Hacker News
 
 Every step asks Pedro in chat before anything public happens. Earlier approvals never carry over to a later post.
 
+## Record where it went
+
+After every step, add the channel to `src/data/promotion.yaml` under the post's file name without `.md`: `devto`, `linkedin` or `gsc`, with the date it happened (YYYY-MM-DD), `skipped` when Pedro passes on it, or `drafted` for LinkedIn text he still has to post himself (the pane's "LinkedIn lagt ut" button changes it to the date, or do it once he says it is up). The dd-desk pane reads this file to show where each post went and to stop nagging about promotion. Commit the file with the post's next change; never leave a step unrecorded.
+
 ## Hacker News
+
+- On hold since 2026-11-07: Pedro emailed Hacker News and waits for their answer. Do not offer a submission, and leave `hn` out of the promotion log, until he says it is open again.
 
 - Offer to submit the post's English URL as a link post, with its title. Submit only after Pedro approves that title and URL in chat.
 - Pedro's Hacker News password is never stored in this repo or any file. Claude never reads, copies, types or prints it.
@@ -37,7 +43,8 @@ Every step asks Pedro in chat before anything public happens. Earlier approvals 
 - Vary the style from post to post: realistic photograph, cartoon, 3D scene, flat illustration, and so on. Don't repeat the previous post's style.
 - Run `makeImage` in PowerShell in the background. Show Pedro the image before he uploads it, and regenerate with a new seed if it's weak.
 - Check any text in the image for spelling. Keep it to one to three words per string.
-- Write in Norwegian humility, in English: modest and honest, never a pitch. Use "I think", "as a starting point", "I've only tested it on my own sessions". No superlatives, no exclamation marks, no claims Pedro hasn't measured. Say where the result may differ.
+- Write direct and honest, never a pitch: short active sentences and claims stated plainly ("That's my definition."). No softeners such as "I think" or "as a starting point". Keep the humour and the real caveats about numbers Pedro measured, in one plain clause. Open on the concrete moment (what Pedro did today and what it made him ask), not on a general claim. No superlatives, no exclamation marks. The same tone applies to the Dev.to summary.
+- Paste format: LinkedIn's editor collapses blank lines on paste, so give the post and the comment each in its own ```text block, with a line holding one blank Braille character (U+2800) between paragraphs. Never make Pedro open a file to find text. When he asks for an image path, give the full absolute path in one piece.
 - When the work is for colleagues, say what it helps them with (for example, learning which model fits which task) and why it matters, without overstating the result.
 
 ## Google Search Console

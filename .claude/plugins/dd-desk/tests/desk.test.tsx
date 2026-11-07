@@ -2,7 +2,7 @@ import { expect, test } from 'claude-code/testing'
 
 import { agenda, delta } from '../hooks/agenda'
 import { brokenLinks, countBots, dailyTraffic, envValue, funnel, perPost } from '../hooks/cloudflare'
-import { draftChecks, frontMatter, nowBox } from '../hooks/content'
+import { channelLine, draftChecks, frontMatter, isPromoted, nowBox, parsePromotion, recordChannel } from '../hooks/content'
 import { barChartSvg, sparkline, thousands } from '../hooks/pane'
 import { postRows } from '../hooks/register'
 import type { Snapshot } from '../types'
@@ -61,8 +61,8 @@ const SNAPSHOT: Snapshot = {
       base: '2026-11-06-y',
       title: 'Latest post',
       date: '2026-11-06',
-      hn: null,
       devto: null,
+      promoted: {},
       readers: 12,
       readerDays: [0, 0, 0, 0, 0, 4, 8],
       ai: 7,
@@ -188,7 +188,7 @@ test('each post gets its readers per day, AI fetches and Google impressions', as
     throw new Error('fixture')
   }
   const [row] = postRows(
-    [{ file: '2026-11-06-y.md', base: '2026-11-06-y', title: 'Y', date: '2026-11-06', hn: null, devto: null }],
+    [{ file: '2026-11-06-y.md', base: '2026-11-06-y', title: 'Y', date: '2026-11-06', devto: null, promoted: {} }],
     { ...traffic0, perPost: traffic },
     { ...search0, pages: [{ url: 'https://digitaldias.com/blog/2026-11-06-y/', clicks: 0, impressions: 36 }] },
   )
@@ -199,7 +199,7 @@ test('the agenda puts the push first and covers drafts, promotion, links and Now
   const items = agenda(SNAPSHOT, NOW_MS)
   expect(items.map(item => item.key).join(',')).toBe('unpushed,draft-2026-11-07-x.md,promote,broken,now')
   expect(items[0]?.isUrgent).toBe(true)
-  expect(items.find(item => item.key === 'promote')?.text).toBe('«Latest post» er ikke promotert ennå, verken på Hacker News eller Dev.to.')
+  expect(items.find(item => item.key === 'promote')?.text).toBe('«Latest post» er ikke promotert ennå, verken på Dev.to eller LinkedIn.')
   const traffic0 = SNAPSHOT.traffic
   if (!traffic0) {
     throw new Error('fixture')
@@ -219,7 +219,7 @@ test('the agenda puts the push first and covers drafts, promotion, links and Now
 
 test('a handled item stays away until a new 404 changes its fingerprint', async () => {
   const fingerprint = agenda(SNAPSHOT, NOW_MS).find(item => item.key === 'broken')?.fingerprint ?? ''
-  expect(fingerprint).toBe('/blog/old-post/=4')
+  expect(fingerprint).toBe('/blog/old-post/')
   const handledNow = agenda(SNAPSHOT, NOW_MS, { broken: fingerprint })
   expect(handledNow.some(item => item.key === 'broken')).toBe(false)
   expect(handledNow.some(item => item.key === 'unpushed')).toBe(true)
@@ -227,8 +227,39 @@ test('a handled item stays away until a new 404 changes its fingerprint', async 
   if (!traffic0) {
     throw new Error('fixture')
   }
-  const newHit = agenda({ ...SNAPSHOT, traffic: { ...traffic0, broken: [{ path: '/blog/old-post/', count: 5 }] } }, NOW_MS, { broken: fingerprint })
-  expect(newHit.some(item => item.key === 'broken')).toBe(true)
+  const busier = agenda({ ...SNAPSHOT, traffic: { ...traffic0, broken: [{ path: '/blog/old-post/', count: 147 }] } }, NOW_MS, { broken: fingerprint })
+  expect(busier.some(item => item.key === 'broken')).toBe(false)
+  const newPath = agenda(
+    { ...SNAPSHOT, traffic: { ...traffic0, broken: [{ path: '/blog/old-post/', count: 4 }, { path: '/blog/new-gone/', count: 1 }] } },
+    NOW_MS,
+    { broken: fingerprint },
+  )
+  expect(newPath.some(item => item.key === 'broken')).toBe(true)
+})
+
+test('the promotion log says where a post went and what counts as promoted', async () => {
+  const log = parsePromotion(['# header', '2026-11-06-y:', '  devto: 2026-11-07', '  linkedin: drafted', '  gsc: 2026-11-07', '', '2026-11-05-z:', '  linkedin: 2026-11-06', ''].join('\n'))
+  expect(Object.keys(log).join(',')).toBe('2026-11-06-y,2026-11-05-z')
+  const latest0 = SNAPSHOT.posts[0]
+  if (!latest0) {
+    throw new Error('fixture')
+  }
+  const post = { ...latest0, promoted: log['2026-11-06-y'] ?? {} }
+  expect(channelLine(post)).toBe('Dev.to publisert · LinkedIn utkast · Google bedt indeksere')
+  expect(isPromoted(post)).toBe(true)
+  expect(isPromoted({ ...latest0, promoted: { devto: 'skipped', linkedin: 'drafted', gsc: '2026-11-07' } })).toBe(false)
+  expect(isPromoted({ ...latest0, promoted: log['2026-11-05-z'] ?? {} })).toBe(true)
+  expect(channelLine(latest0)).toBe('ikke Dev.to · ikke LinkedIn · ikke Google')
+})
+
+test('recording a channel edits one post block and keeps the rest of the log', async () => {
+  const log = ['# header', '2026-11-06-y:', '  devto: 2026-11-07', '  linkedin: drafted', '', '2026-11-05-z:', '  gsc: 2026-11-06', ''].join('\n')
+  const posted = parsePromotion(recordChannel(log, '2026-11-06-y', 'linkedin', '2026-11-08'))
+  expect(posted['2026-11-06-y']?.linkedin).toBe('2026-11-08')
+  expect(posted['2026-11-06-y']?.devto).toBe('2026-11-07')
+  expect(posted['2026-11-05-z']?.gsc).toBe('2026-11-06')
+  expect(parsePromotion(recordChannel(log, '2026-11-05-z', 'linkedin', '2026-11-08'))['2026-11-05-z']?.linkedin).toBe('2026-11-08')
+  expect(parsePromotion(recordChannel(log, '2026-11-09-new', 'devto', '2026-11-09'))['2026-11-09-new']?.devto).toBe('2026-11-09')
 })
 
 test('the traffic chart stacks three colours per day and outlines today', async () => {
@@ -304,15 +335,17 @@ test('the pane draws the agenda, the funnel, the posts and the buttons', async (
     expect((await ui.find({ type: 'Text', text: /hentet live/ }))?.text).toBe('hentet live til et svar')
     expect((await ui.find({ type: 'Text', text: /Live: / }))?.text).toContain('ChatGPT-User 6')
     expect((await ui.find({ type: 'Text', text: /^Latest post$/ }))?.text).toBe('Latest post')
-    expect((await ui.find({ type: 'Text', text: /12 lesere/ }))?.text).toBe('1 d · ▁▁▁▁▁▄█ 12 lesere · 7 AI · 36 visn. · ikke HN · ikke Dev.to')
+    expect((await ui.find({ type: 'Text', text: /12 lesere/ }))?.text).toBe('1 d · ▁▁▁▁▁▄█ 12 lesere · 7 AI · 36 visn.')
+    expect((await ui.find({ type: 'Text', text: /ikke LinkedIn/ }))?.text).toBe('ikke Dev.to · ikke LinkedIn · ikke Google')
     expect((await ui.find({ type: 'Text', text: /Mangler/ }))?.text).toBe('Mangler: Norsk')
     expect(await ui.find({ type: 'Text', text: /Sultans Of Swing/ })).toBe(undefined)
     expect(await ui.find({ type: 'Button', key: 'done-unpushed' })).toBe(undefined)
+    expect(await ui.find({ type: 'Button', key: 'posted-2026-11-06-y' })).not.toBe(undefined)
     await ui.press({ key: 'do-draft-2026-11-07-x.md' })
     await ui.press({ key: 'done-broken' })
     await ui.unmount()
   }
-  expect(JSON.stringify(stored.at(-1))).toBe(JSON.stringify({ broken: '/blog/old-post/=4' }))
+  expect(JSON.stringify(stored.at(-1))).toBe(JSON.stringify({ broken: '/blog/old-post/' }))
   expect(prompts.length).toBe(2)
   expect(prompts[0]).toContain('src/content/blog/2026-11-07-x.md')
   expect(prompts[0]).toContain('mangler: Norsk')

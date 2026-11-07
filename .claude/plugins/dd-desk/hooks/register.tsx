@@ -5,7 +5,7 @@ import type { PostRow, Published, Search, Snapshot, Traffic } from '../types'
 
 import { agenda, delta } from './agenda'
 import { traffic as cloudflareTraffic } from './cloudflare'
-import { git, lastDeploy, nowBox, posts } from './content'
+import { channelLine, git, isPromoted, lastDeploy, nowBox, posts, PROMOTION_LOG, recordChannel } from './content'
 import { searchStats } from './google'
 import { barChartSvg, botBarsSvg, clockTime, progressSvg, relativeTime, SEA, sparkline, thousands, trafficParts } from './pane'
 import { PROMPTS } from './prompts'
@@ -123,6 +123,20 @@ async function runCheck($: Host): Promise<void> {
 function ask($: Host, text: string): () => void {
   return () => {
     void $.prompt.submit({ text })
+  }
+}
+
+const POSTED = /^\d{4}-\d{2}-\d{2}$/
+
+// Pedro pastes the LinkedIn text himself, so the pane asks him to say when it is up: the log gets today's date.
+function markPosted($: Host, base: string): () => void {
+  return () => {
+    void (async () => {
+      const log = await $.fs.read(PROMOTION_LOG).catch(() => '')
+      const today = new Date(await $.clock.now()).toISOString().slice(0, 10)
+      await $.fs.write(PROMOTION_LOG, recordChannel(log, base, 'linkedin', today))
+      await refresh($, false)
+    })()
   }
 }
 
@@ -424,11 +438,15 @@ export const register: Register = on => {
                   </Text>
                   <Text size="caption" mono dimColor wrap="truncate-end">
                     {age(post.date, nowMs)} · <Text size="caption" mono color={SEA.teal}>{sparkline(post.readerDays)} {post.readers} lesere</Text> · {post.ai} AI ·{' '}
-                    {thousands(post.impressions)} visn. · {post.hn ? `HN ${post.hn.points}` : 'ikke HN'} · {post.devto ? `Dev.to ${post.devto.reactions}` : 'ikke Dev.to'}
+                    {thousands(post.impressions)} visn.
+                  </Text>
+                  <Text size="caption" mono dimColor wrap="truncate-end">
+                    {channelLine(post)}
                   </Text>
                 </Box>
                 <Box flexDirection="row" gap="xs" flexShrink={0}>
-                  {!post.hn && !post.devto && <Button key={`promote-${post.base}`} label="Promoter" onPress={ask($, PROMPTS.promote(post.file))} />}
+                  {!POSTED.test(post.promoted.linkedin ?? '') && <Button key={`posted-${post.base}`} label="LinkedIn lagt ut" onPress={markPosted($, post.base)} />}
+                  {!isPromoted(post) && <Button key={`promote-${post.base}`} label="Promoter" onPress={ask($, PROMPTS.promote(post.file))} />}
                   <Button key={`stats-${post.base}`} label="Statistikk" onPress={ask($, PROMPTS.stats(post.file))} />
                 </Box>
               </Box>

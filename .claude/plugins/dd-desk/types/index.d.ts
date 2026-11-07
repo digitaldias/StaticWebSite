@@ -9,18 +9,20 @@ export type Deploy = {
   createdAt: string
 }
 
-export type HackerNews = { points: number; comments: number; url: string }
-
 export type DevTo = { reactions: number; comments: number; url: string }
 
-// A published post as the repo, Hacker News and Dev.to know it.
+// Where a post was promoted, from src/data/promotion.yaml: channel (devto, linkedin, gsc) to the date it
+// happened, or 'skipped' or 'drafted'.
+export type Promotion = Record<string, string>
+
+// A published post as the repo, Dev.to and the promotion log know it.
 export type Published = {
   file: string
   base: string
   title: string
   date: string
-  hn: HackerNews | null
   devto: DevTo | null
+  promoted: Promotion
 }
 
 // A published post with its numbers: readers and AI fetches over 7 days, Google impressions over 28.

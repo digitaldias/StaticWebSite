@@ -1,5 +1,6 @@
 import type { AgendaItem, Snapshot } from '../types'
 
+import { isPromoted } from './content'
 import { PROMPTS } from './prompts'
 
 const DAY_MS = 86_400_000
@@ -49,11 +50,11 @@ function allItems(snap: Snapshot, nowMs: number): AgendaItem[] {
     }
   }
   const latest = snap.posts[0]
-  // Promoted once it is on Hacker News or Dev.to: skipping one of them is Pedro's call, not a missing step.
-  if (latest && daysSince(latest.date, nowMs) <= PROMOTE_WITHIN_DAYS && !latest.hn && !latest.devto) {
+  // Promoted once it is on Dev.to or LinkedIn: skipping one of them is Pedro's call, not a missing step.
+  if (latest && daysSince(latest.date, nowMs) <= PROMOTE_WITHIN_DAYS && !isPromoted(latest)) {
     items.push({
       key: 'promote',
-      text: `«${latest.title}» er ikke promotert ennå, verken på Hacker News eller Dev.to.`,
+      text: `«${latest.title}» er ikke promotert ennå, verken på Dev.to eller LinkedIn.`,
       isUrgent: false,
       button: { label: 'Promoter', prompt: PROMPTS.promote(latest.file) },
       fingerprint: latest.base,
@@ -66,8 +67,8 @@ function allItems(snap: Snapshot, nowMs: number): AgendaItem[] {
       text: `${count} forespørsler fikk 404 på ${snap.traffic.broken.length} innholdsstier siste uke, først ${snap.traffic.broken[0]?.path}.`,
       isUrgent: false,
       button: { label: 'Se på lenkene', prompt: PROMPTS.broken(snap.traffic.broken) },
-      // A new 404 on any of the paths raises a count, which brings the item back.
-      fingerprint: snap.traffic.broken.map(one => `${one.path}=${one.count}`).sort().join(' '),
+      // Only a new path brings the item back. A count that keeps rising on a known path must not undo Løst.
+      fingerprint: snap.traffic.broken.map(one => one.path).sort().join(' '),
     })
   }
   const listeningAge = daysSince(snap.now.listeningDate, nowMs)
