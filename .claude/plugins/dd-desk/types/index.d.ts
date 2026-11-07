@@ -104,11 +104,13 @@ export type CheckRun = {
   tail: string
 }
 
+// fingerprint: set on items Pedro may mark as handled; the item returns when the fingerprint changes.
 export type AgendaItem = {
   key: string
   text: string
   isUrgent: boolean
   button?: { label: string; prompt: string }
+  fingerprint?: string
 }
 
 declare module 'claude-code' {
@@ -118,6 +120,7 @@ declare module 'claude-code' {
       check: Shaped<CheckRun | null>
       busy: Shaped<boolean>
       open: Shaped<string[]>
+      handled: Shaped<Record<string, string>>
     }
   }
 }

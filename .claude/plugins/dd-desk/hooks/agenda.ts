@@ -14,7 +14,12 @@ function daysSince(date: string, nowMs: number): number {
 }
 
 // What the blog needs from Pedro now, most urgent first; empty when nothing waits.
-export function agenda(snap: Snapshot, nowMs: number): AgendaItem[] {
+// An item he marked as handled stays away until its fingerprint changes.
+export function agenda(snap: Snapshot, nowMs: number, handled: Record<string, string> = {}): AgendaItem[] {
+  return allItems(snap, nowMs).filter(item => !item.fingerprint || handled[item.key] !== item.fingerprint)
+}
+
+function allItems(snap: Snapshot, nowMs: number): AgendaItem[] {
   const items: AgendaItem[] = []
   if (snap.ahead > 0) {
     items.push({
@@ -51,6 +56,7 @@ export function agenda(snap: Snapshot, nowMs: number): AgendaItem[] {
       text: `«${latest.title}» er ikke promotert ennå, verken på Hacker News eller Dev.to.`,
       isUrgent: false,
       button: { label: 'Promoter', prompt: PROMPTS.promote(latest.file) },
+      fingerprint: latest.base,
     })
   }
   if (snap.traffic?.broken.length) {
@@ -60,6 +66,8 @@ export function agenda(snap: Snapshot, nowMs: number): AgendaItem[] {
       text: `${count} forespørsler fikk 404 på ${snap.traffic.broken.length} innholdsstier siste uke, først ${snap.traffic.broken[0]?.path}.`,
       isUrgent: false,
       button: { label: 'Se på lenkene', prompt: PROMPTS.broken(snap.traffic.broken) },
+      // A new 404 on any of the paths raises a count, which brings the item back.
+      fingerprint: snap.traffic.broken.map(one => `${one.path}=${one.count}`).sort().join(' '),
     })
   }
   const listeningAge = daysSince(snap.now.listeningDate, nowMs)
@@ -78,6 +86,7 @@ export function agenda(snap: Snapshot, nowMs: number): AgendaItem[] {
       text: `Det er ${quiet} dager siden forrige innlegg, og ingen utkast ligger klare.`,
       isUrgent: false,
       button: { label: 'Ny post', prompt: PROMPTS.newPost },
+      fingerprint: latest?.base ?? '',
     })
   }
   for (const [key, note] of [['traffic-note', snap.trafficNote], ['search-note', snap.searchNote]] as const) {

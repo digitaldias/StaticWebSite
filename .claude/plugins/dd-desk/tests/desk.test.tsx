@@ -217,6 +217,20 @@ test('the agenda puts the push first and covers drafts, promotion, links and Now
   expect(onDevTo.some(item => item.key === 'promote')).toBe(false)
 })
 
+test('a handled item stays away until a new 404 changes its fingerprint', async () => {
+  const fingerprint = agenda(SNAPSHOT, NOW_MS).find(item => item.key === 'broken')?.fingerprint ?? ''
+  expect(fingerprint).toBe('/blog/old-post/=4')
+  const handledNow = agenda(SNAPSHOT, NOW_MS, { broken: fingerprint })
+  expect(handledNow.some(item => item.key === 'broken')).toBe(false)
+  expect(handledNow.some(item => item.key === 'unpushed')).toBe(true)
+  const traffic0 = SNAPSHOT.traffic
+  if (!traffic0) {
+    throw new Error('fixture')
+  }
+  const newHit = agenda({ ...SNAPSHOT, traffic: { ...traffic0, broken: [{ path: '/blog/old-post/', count: 5 }] } }, NOW_MS, { broken: fingerprint })
+  expect(newHit.some(item => item.key === 'broken')).toBe(true)
+})
+
 test('the traffic chart stacks three colours per day and outlines today', async () => {
   const svg = barChartSvg([
     { date: '2026-11-05', pageViews: 519, readers: 120, aiBots: 40 },
@@ -268,6 +282,13 @@ test('the pane draws the agenda, the funnel, the posts and the buttons', async (
           : { value: undefined, version: 0 },
   }))
   on('clock.now', () => ({ value: NOW_MS }))
+  on('state.set', () => ({ value: { isSet: true, version: 2 } }))
+  const stored: unknown[] = []
+  on('store.set', (_, e) => {
+    stored.push(e.value)
+
+    return { value: undefined }
+  })
   const prompts: string[] = []
   on('prompt.submit', (_, e) => {
     prompts.push(e.text)
@@ -286,9 +307,12 @@ test('the pane draws the agenda, the funnel, the posts and the buttons', async (
     expect((await ui.find({ type: 'Text', text: /12 lesere/ }))?.text).toBe('1 d · ▁▁▁▁▁▄█ 12 lesere · 7 AI · 36 visn. · ikke HN · ikke Dev.to')
     expect((await ui.find({ type: 'Text', text: /Mangler/ }))?.text).toBe('Mangler: Norsk')
     expect(await ui.find({ type: 'Text', text: /Sultans Of Swing/ })).toBe(undefined)
+    expect(await ui.find({ type: 'Button', key: 'done-unpushed' })).toBe(undefined)
     await ui.press({ key: 'do-draft-2026-11-07-x.md' })
+    await ui.press({ key: 'done-broken' })
     await ui.unmount()
   }
+  expect(JSON.stringify(stored.at(-1))).toBe(JSON.stringify({ broken: '/blog/old-post/=4' }))
   expect(prompts.length).toBe(2)
   expect(prompts[0]).toContain('src/content/blog/2026-11-07-x.md')
   expect(prompts[0]).toContain('mangler: Norsk')

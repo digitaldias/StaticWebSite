@@ -24,6 +24,9 @@ const snapshot = atom({ plugin: 'dd-desk', key: 'snapshot' } as const, null, { s
 const checkRun = atom({ plugin: 'dd-desk', key: 'check' } as const, null, { shape: 'check-1' })
 const busy = atom({ plugin: 'dd-desk', key: 'busy' } as const, false, { shape: 'busy-1' })
 const open = atom({ plugin: 'dd-desk', key: 'open' } as const, [], { shape: 'open-1' })
+// Agenda items Pedro marked as handled, by key and fingerprint; kept in $.store across sessions, mirrored here so a press redraws.
+const handled = atom({ plugin: 'dd-desk', key: 'handled' } as const, {}, { shape: 'handled-1' })
+const HANDLED_STORE = 'handled'
 
 // A published post with its numbers from Cloudflare (7 days) and Search Console (28 days).
 export function postRows(published: Published[], traffic: Traffic | null, search: Search | null): PostRow[] {
@@ -123,6 +126,16 @@ function ask($: Host, text: string): () => void {
   }
 }
 
+function markHandled($: Host, key: string, fingerprint: string): () => void {
+  return () => {
+    void (async () => {
+      const next = { ...(await read($, handled)), [key]: fingerprint }
+      await update($, handled, () => next)
+      await $.store.set(HANDLED_STORE, next)
+    })()
+  }
+}
+
 function toggle($: Host, section: string): () => void {
   return () => {
     void update($, open, list => (list.includes(section) ? list.filter(one => one !== section) : [...list, section]))
@@ -153,6 +166,10 @@ export const register: Register = on => {
       return started
     }
     await $.command.register({ name: 'desk', description: 'Open the digitaldias.com pane' })
+    const remembered = (await $.store.get(HANDLED_STORE)) as Record<string, string> | undefined
+    if (remembered) {
+      await update($, handled, () => remembered)
+    }
     void $.ui.open({ id: PANE, title: TITLE })
     $.clock.every(NETWORK_EVERY_MS, () => void refresh($, true))
     void refresh($, true)
@@ -184,12 +201,13 @@ export const register: Register = on => {
     const check = await read($, checkRun)
     const isBusy = await read($, busy)
     const opened = await read($, open)
+    const done = await read($, handled)
     if (!snap) {
       return <Text dimColor>Leser repoet …</Text>
     }
     const nowMs = await $.clock.now()
     const { now, deploy, traffic, search } = snap
-    const todo = agenda(snap, nowMs)
+    const todo = agenda(snap, nowMs, done)
     const widths = chartWidths(e.props.bodyColumns)
     // The seven finished days, so the week-on-week change compares like with like.
     const finished = traffic?.days.slice(0, -1) ?? []
@@ -284,7 +302,12 @@ export const register: Register = on => {
                   {item.text}
                 </Text>
               </Box>
-              {item.button && <Button key={`do-${item.key}`} label={item.button.label} onPress={ask($, item.button.prompt)} />}
+              <Box flexDirection="row" gap="xs" flexShrink={0}>
+                {item.button && <Button key={`do-${item.key}`} label={item.button.label} onPress={ask($, item.button.prompt)} />}
+                {item.fingerprint !== undefined && (
+                  <Button key={`done-${item.key}`} label="Løst" onPress={markHandled($, item.key, item.fingerprint)} />
+                )}
+              </Box>
             </Box>
           ))}
         </Box>
