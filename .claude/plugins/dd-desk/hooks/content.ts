@@ -117,7 +117,7 @@ export function recordChannel(text: string, base: string, channelName: string, v
     end += 1
   }
   const own = lines.slice(start + 1, end)
-  const at = own.findIndex(line => new RegExp(`^\s+${channelName}:`).test(line))
+  const at = own.findIndex(line => new RegExp(`^\\s+${channelName}:`).test(line))
   if (at === -1) {
     own.push(entry)
   } else {

@@ -254,6 +254,7 @@ test('the promotion log says where a post went and what counts as promoted', asy
 
 test('recording a channel edits one post block and keeps the rest of the log', async () => {
   const log = ['# header', '2026-11-06-y:', '  devto: 2026-11-07', '  linkedin: drafted', '', '2026-11-05-z:', '  gsc: 2026-11-06', ''].join('\n')
+  expect(recordChannel(log, '2026-11-06-y', 'linkedin', '2026-11-08').match(/linkedin:/g)?.length).toBe(1)
   const posted = parsePromotion(recordChannel(log, '2026-11-06-y', 'linkedin', '2026-11-08'))
   expect(posted['2026-11-06-y']?.linkedin).toBe('2026-11-08')
   expect(posted['2026-11-06-y']?.devto).toBe('2026-11-07')
