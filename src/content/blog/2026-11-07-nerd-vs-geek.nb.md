@@ -58,7 +58,7 @@ Mitt forslag til mandag er å lime de seks spørsmålene inn i teamkanalen og be
 
 ## makeImage: fem timer for å få ansiktet mitt riktig
 
-En lørdag morgen, mens alle andre sov, plundret jeg med å forbedre bildeverktøyet mitt, `makeImage`. Det kan nå tre nye ting: å holde på identiteten til en person, å ta imot negative prompter og å redigere bilder. Alt kjører på min egen maskin, med Krea 2 Turbo og ComfyUI. Å kjøre ting lokalt er en vane hos meg, se [AI ved arbeidsbenken](/nb/blog/2026-05-23-ai-at-the-workbench/) og [Slutt å betale en frontier-modell for å lese nyhetene dine](/nb/blog/2026-11-01-local-models-news-filter/). En geek hadde stoppet ved det første bildet som så bra ut, og hatt tre nye ideer før lunsj. Jeg begynte klokken 05.00 og ble ferdig klokken 10.00, fordi figuren ikke lignet på meg.
+I dag, en ekstra tidlig lørdag morgen, mens alle andre sov, plundret jeg med å forbedre bildeverktøyet mitt, `makeImage`. Det kan nå tre nye ting: å holde på identiteten til en person, å ta imot negative prompter og å redigere bilder. Alt kjører på min egen maskin, med Krea 2 Turbo og ComfyUI. Å kjøre ting lokalt er en vane hos meg, se [AI ved arbeidsbenken](/nb/blog/2026-05-23-ai-at-the-workbench/) og [Slutt å betale en frontier-modell for å lese nyhetene dine](/nb/blog/2026-11-01-local-models-news-filter/). En geek hadde stoppet ved det første bildet som så bra ut, og hatt tre nye ideer før lunsj. Jeg begynte klokken 05.00 og ble ferdig klokken 10.00, fordi figuren ikke lignet på meg. Det var da jeg begynte å filosofere over om jeg er nerd eller geek.
 
 Begge bildene under er laget ut fra det samme bildet som på [Om meg-siden](/nb/about/). Det er ett bilde, altså én test og ikke en studie:
 

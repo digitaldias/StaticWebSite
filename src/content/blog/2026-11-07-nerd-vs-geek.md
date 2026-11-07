@@ -58,7 +58,7 @@ My suggestion for Monday: paste the six questions into your team channel and ask
 
 ## makeImage: five hours to get my face right
 
-One Saturday morning, while everybody else was asleep, I tinkered with improving my image tool, `makeImage`. It can now do three new things: keeping a person's identity, taking negative prompts and editing pictures. It all runs on my own machine, with Krea 2 Turbo and ComfyUI. Running things locally is a habit of mine: see [AI at the workbench](/blog/2026-05-23-ai-at-the-workbench/) and [Stop paying a frontier model to read your news](/blog/2026-11-01-local-models-news-filter/). A geek would have stopped at the first image that looked good, and had three new ideas by lunch. I started at 05:00 and finished at 10:00, because the figure didn't look like me.
+Today, on an extra early Saturday morning, while everybody else was asleep, I tinkered with improving my image tool, `makeImage`. It can now do three new things: keeping a person's identity, taking negative prompts and editing pictures. It all runs on my own machine, with Krea 2 Turbo and ComfyUI. Running things locally is a habit of mine: see [AI at the workbench](/blog/2026-05-23-ai-at-the-workbench/) and [Stop paying a frontier model to read your news](/blog/2026-11-01-local-models-news-filter/). A geek would have stopped at the first image that looked good, and had three new ideas by lunch. I started at 05:00 and finished at 10:00, because the figure didn't look like me. That is what made me wonder whether I'm a nerd or a geek.
 
 Both pictures below start from the same photo as on my [About page](/about/). It's one photo, so the results come from a single test and not a study:
 
