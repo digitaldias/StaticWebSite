@@ -1,5 +1,9 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
+- date: 2026-11-07
+  tag: Site
+  text: "Google Analytics is gone. The site sets no tracking cookies now; Cloudflare Web Analytics counts page views without cookies, so there is no consent banner to click away."
+  text_nb: "Google Analytics er fjernet. Nettstedet setter ingen sporingscookies lenger; Cloudflare Web Analytics teller sidevisninger uten cookies, så det er ikke noe samtykkebanner å klikke bort."
 - date: 2026-11-06
   tag: Site
   text: "AI agents can now read the site more easily. Every post has a plain Markdown version at `/blog/<post>/index.md`, an [llms.txt](/llms.txt) lists them all with their TL;DR, and robots.txt welcomes AI crawlers by name. Nothing changes for human readers."

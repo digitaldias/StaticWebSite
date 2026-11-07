@@ -765,23 +765,6 @@ function initGiscus() {
 }
 
 /* ─────────────────────────────────────────────
-   Ko-fi click tracking (Google Analytics)
-───────────────────────────────────────────── */
-function initKofiTracking() {
-  document.querySelectorAll('a[data-cta="kofi"]').forEach(link => {
-    link.addEventListener('click', () => {
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'support_click', {
-          event_category: 'Support',
-          event_label: 'kofi',
-          value: 1,
-        });
-      }
-    });
-  });
-}
-
-/* ─────────────────────────────────────────────
    Supporters: thank public Ko-fi supporters in the footer.
    /supporters.json is written by the Ko-fi webhook (functions/KofiSupporters),
    newest first; a missing or empty file shows nothing.
@@ -964,7 +947,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initCodeBlocks();
   initImageLightbox();
   initGiscus();
-  initKofiTracking();
   initSupporters();
   initSupporterPage();
 });

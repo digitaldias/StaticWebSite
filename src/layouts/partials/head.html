@@ -1,11 +1,6 @@
 <!-- Cloudflare Web Analytics -->
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "455597547d194b83b5f086552c7cc115"}'></script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-49LY6Q6XNV"></script>
-{{- $gtag := resources.Get "js/gtag.js" | resources.Minify | resources.Fingerprint }}
-<script src="{{ $gtag.RelPermalink }}"></script>
-
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +22,7 @@
 <meta name="theme-color" content="#f4f6f4">
 <meta name="geo.region" content="NO-32">
 <meta name="geo.placename" content="{{ .Site.Params.location }}">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://giscus.app; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com https://giscus.app; script-src-elem 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com https://giscus.app; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://api.github.com https://giscus.app https://cloudflareinsights.com ws://localhost:* ws://127.0.0.1:*; frame-src 'self' https://giscus.app;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://live.staticflickr.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://giscus.app; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://giscus.app; script-src-elem 'self' https://static.cloudflareinsights.com https://giscus.app; connect-src 'self' https://api.github.com https://giscus.app https://cloudflareinsights.com ws://localhost:* ws://127.0.0.1:*; frame-src 'self' https://giscus.app;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-XSS-Protection" content="1; mode=block">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
