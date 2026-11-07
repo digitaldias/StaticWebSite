@@ -1,7 +1,7 @@
 # Build a model-router mod for Claude Code
 
 Instructions for Claude, from the post "Your model choice is a bet. Build a router that keeps score":
-https://digitaldias.com/blog/2026-11-05-model-choice-is-a-bet/
+https://www.digitaldias.com/blog/2026-11-05-model-choice-is-a-bet/
 
 The person who gave you this file wants a Claude Code mod that judges which model and effort level a session should run on, and scores the model they started on. Follow the steps in order. Tell the person what you are about to do before each step, and stop to ask them whenever a step needs their approval.
 
@@ -17,7 +17,7 @@ The person who gave you this file wants a Claude Code mod that judges which mode
 
 Download the rubric unchanged into the working folder. Use a plain HTTP download such as `curl -fsSL`, not a tool that summarises the page, so the text arrives word for word.
 
-https://digitaldias.com/recipes/model-router/rubric.txt
+https://www.digitaldias.com/recipes/model-router/rubric.txt
 
 Print the file in your reply, so the person sees it, and tell them they can edit the rows to fit their own work. Mention that the rubric should be updated now and then from Anthropic's guidance on choosing a model and on effort:
 https://platform.claude.com/docs/en/about-claude/models/choosing-a-model

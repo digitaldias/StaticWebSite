@@ -102,7 +102,7 @@ The Content Security Policy is hardcoded in `layouts/partials/head.html`, and Cl
 
 ## Deployment
 
-Push to `main` triggers `.github/workflows/deploy-to-azure.yml`, which builds with `hugo --minify` and uploads `src/public/` to Azure Blob Storage (`$web` container) via `az storage blob upload-batch`. Requires `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` secrets in the repo. Cloudflare sits in front of the storage origin as CDN/DNS for the custom domain.
+Push to `main` triggers `.github/workflows/deploy-to-azure.yml`, which builds with `hugo --minify` and uploads `src/public/` to Azure Blob Storage (`$web` container) via `az storage blob upload-batch`. Requires `AZURE_STORAGE_ACCOUNT` and `AZURE_STORAGE_KEY` secrets in the repo. Cloudflare sits in front of the storage origin as CDN/DNS for the custom domain. The canonical host is `https://www.digitaldias.com/` (`baseURL`), because the Redirect Rule "Redirect to www" sends the apex there with a 301; canonical, sitemap and `llms.txt` URLs follow `baseURL`, so never hardcode the domain in a template (use `site.BaseURL` or `absURL`).
 
 The nightly briefing publisher (newsstream, early morning) commits `briefing/` in this checkout, then runs `git pull` and `git push origin main`; it refuses to publish while `main` is ahead of `origin/main`. Never leave unpushed commits on `main` overnight: finish work on a branch, or push it.
 

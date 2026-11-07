@@ -9,7 +9,7 @@ Allow: /categories/
 Allow: /tags/
 
 # Sitemap location
-Sitemap: https://digitaldias.com/sitemap.xml
+Sitemap: https://www.digitaldias.com/sitemap.xml
 
 # Disallow admin and build artifacts
 Disallow: /admin/

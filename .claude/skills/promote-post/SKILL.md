@@ -26,7 +26,7 @@ Every step asks Pedro in chat before anything public happens. Earlier approvals 
   - Word the summary a little differently from the post's opening and TL;DR, so it reads as an introduction, not an excerpt.
   - Reference: https://dev.to/digitaldias/dont-write-like-a-robot-llmstxt-for-ai-agents-1hd5 (2026-11-06).
 - Every cross-post gets a cover image, because Dev.to ranks posts with a cover higher in its home feed. Make a fresh one with `makeImage` (see `C:\Users\pedro\.claude\docs\makeimage.md`), never the post's own images: generate `landscape`, centre-crop to 1000×420 (Dev.to's cover ratio), and save it as a JPEG outside the repo. Keep the subject centred with empty space above and below so the crop keeps it, use the Sea Glass colours, and vary the style from the post's featured image. Show Pedro the image before uploading it with "Upload Cover Image", and regenerate with a new seed if it's weak.
-- Set the canonical URL (Advanced Options) to the post's URL on `https://digitaldias.com/` and the AI Disclosure to "Some AI (AI-assisted)". Check the Preview before Publish, and confirm "Originally published at digitaldias.com" on the published page.
+- Set the canonical URL (Advanced Options) to the post's URL on `https://www.digitaldias.com/` and the AI Disclosure to "Some AI (AI-assisted)". Check the Preview before Publish, and confirm "Originally published at digitaldias.com" on the published page.
 
 ## LinkedIn (only when the post touches Pedro's CAIO work)
 

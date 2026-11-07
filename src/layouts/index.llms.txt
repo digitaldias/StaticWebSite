@@ -22,7 +22,7 @@ Pedro Dias
 {{ end }}
 ## Norwegian (Norsk)
 
-- [Norsk forside](https://digitaldias.com/nb/): The Norwegian bokmål edition of the site. Every post above has a Norwegian translation.
+- [Norsk forside]({{ site.BaseURL }}nb/): The Norwegian bokmål edition of the site. Every post above has a Norwegian translation.
 {{ range site.Sites -}}{{- if eq .Language.Lang "nb" -}}
 {{ range (where .RegularPages "Section" "blog").ByDate.Reverse -}}
 {{ $md := "" }}{{ with .OutputFormats.Get "markdown" }}{{ $md = .Permalink }}{{ else }}{{ $md = .Permalink }}{{ end -}}
@@ -31,19 +31,19 @@ Pedro Dias
 {{- end }}{{ end }}
 ## Sections
 
-- [Writing](https://digitaldias.com/blog/): Every post, filterable by category (Architecture, Azure, AI, Development, DevOps, Family, Photography)
-- [Log](https://digitaldias.com/log/): Short dated notes on what Pedro is building, shipping and fixing, plus a row for every published post
-- [Photographs](https://digitaldias.com/photography/): A curated grid of photographs from Flickr
-- [About](https://digitaldias.com/about/): Portrait, biography, milestones and the positions Pedro holds
-- [Supporters](https://digitaldias.com/supporters/): Thanks to everyone who bought Pedro a coffee on Ko-fi
-- [Morning briefing](https://digitaldias.com/briefing/): A daily AI news briefing in Norwegian, with an English edition at /briefing/en/
-- [Recipes](https://digitaldias.com/recipes/model-router/instructions.md): Plain-text instructions written for an AI coding agent such as Claude Code, with the files they need. A post links its recipe; a reader points their own agent at it.
+- [Writing]({{ site.BaseURL }}blog/): Every post, filterable by category (Architecture, Azure, AI, Development, DevOps, Family, Photography)
+- [Log]({{ site.BaseURL }}log/): Short dated notes on what Pedro is building, shipping and fixing, plus a row for every published post
+- [Photographs]({{ site.BaseURL }}photography/): A curated grid of photographs from Flickr
+- [About]({{ site.BaseURL }}about/): Portrait, biography, milestones and the positions Pedro holds
+- [Supporters]({{ site.BaseURL }}supporters/): Thanks to everyone who bought Pedro a coffee on Ko-fi
+- [Morning briefing]({{ site.BaseURL }}briefing/): A daily AI news briefing in Norwegian, with an English edition at /briefing/en/
+- [Recipes]({{ site.BaseURL }}recipes/model-router/instructions.md): Plain-text instructions written for an AI coding agent such as Claude Code, with the files they need. A post links its recipe; a reader points their own agent at it.
 
 ## Feeds
 
-- [Global RSS](https://digitaldias.com/index.xml)
-- [Blog RSS](https://digitaldias.com/blog/index.xml)
-- [Sitemap](https://digitaldias.com/sitemap.xml)
+- [Global RSS]({{ site.BaseURL }}index.xml)
+- [Blog RSS]({{ site.BaseURL }}blog/index.xml)
+- [Sitemap]({{ site.BaseURL }}sitemap.xml)
 
 ## Technology
 
