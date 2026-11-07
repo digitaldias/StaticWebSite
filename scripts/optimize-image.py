@@ -63,8 +63,11 @@ def optimize(input_path: str, profile_name: str = "hero", output_path: str = Non
 
     out_file.parent.mkdir(parents=True, exist_ok=True)
 
-    # Open and process
-    img = Image.open(input_file)
+    # Open and process. Rotate per the EXIF orientation first, then keep the
+    # embedded EXIF, XMP (IPTC title, copyright, ...) and ICC profile so the
+    # optimised file carries the same metadata as the source.
+    img = ImageOps.exif_transpose(Image.open(input_file))
+    metadata = {k: img.info[k] for k in ("exif", "xmp", "icc_profile") if img.info.get(k)}
 
     # Flatten transparency against parchment before converting to RGB.
     # Default RGBA→RGB composites against black, which leaves a grey halo
@@ -95,7 +98,7 @@ def optimize(input_path: str, profile_name: str = "hero", output_path: str = Non
             img = padded
 
     # Save
-    img.save(out_file, "JPEG", quality=quality, optimize=True, progressive=True)
+    img.save(out_file, "JPEG", quality=quality, optimize=True, progressive=True, **metadata)
     out_kb = out_file.stat().st_size // 1024
 
     print(f"Output:  {out_file}")
@@ -108,7 +111,7 @@ def optimize(input_path: str, profile_name: str = "hero", output_path: str = Non
     else:
         # Try reducing quality slightly to hit target
         for q in range(quality - 5, 60, -5):
-            img.save(out_file, "JPEG", quality=q, optimize=True, progressive=True)
+            img.save(out_file, "JPEG", quality=q, optimize=True, progressive=True, **metadata)
             new_kb = out_file.stat().st_size // 1024
             if new_kb <= target_high:
                 print(f"\n  Reduced quality to q{q} -> {new_kb} KB to hit target")
