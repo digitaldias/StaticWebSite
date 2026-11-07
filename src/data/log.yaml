@@ -1,6 +1,14 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-07
+  tag: Shipped
+  text: "You can search the archive now. Press the magnifier in the header, `/` or `Ctrl+K`, and the results narrow as you type, with the section where your words appear. It runs entirely in your browser, with no search server and no tracking."
+  text_nb: "Nå kan du søke i arkivet. Trykk på forstørrelsesglasset i toppen, `/` eller `Ctrl+K`, så snevres treffene inn mens du skriver, med seksjonen der ordene dine står. Alt skjer i nettleseren din, uten søkeserver og uten sporing."
+- date: 2026-11-07
+  tag: Fixed
+  text: "Norwegian pages no longer scroll sideways on narrow phones. Long compound words in headlines hyphenate, and the header moves its links to a second row a little earlier."
+  text_nb: "Norske sider scroller ikke lenger sidelengs på smale mobiler. Lange sammensatte ord i overskrifter deles med bindestrek, og toppen flytter lenkene til en ny linje litt tidligere."
+- date: 2026-11-07
   tag: Site
   text: "Google Analytics is gone. The site sets no tracking cookies now; Cloudflare Web Analytics counts page views without cookies, so there is no consent banner to click away."
   text_nb: "Google Analytics er fjernet. Nettstedet setter ingen sporingscookies lenger; Cloudflare Web Analytics teller sidevisninger uten cookies, så det er ikke noe samtykkebanner å klikke bort."

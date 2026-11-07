@@ -8,6 +8,20 @@
       {{- end }}
     </nav>
     {{- partial "lang-switch.html" . }}
+    <button class="search-toggle" type="button" data-search-open aria-haspopup="dialog" aria-label="{{ i18n "searchOpen" }}" title="{{ i18n "searchOpen" }} ( / )"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><circle cx="6.75" cy="6.75" r="4.75"/><path d="M10.25 10.25 14.5 14.5"/></svg></button>
     <button class="theme-toggle" type="button" data-theme-toggle aria-label="{{ i18n "switchTheme" }}"></button>
   </div>
 </header>
+<dialog class="search" data-search data-index="{{ "search.json" | relLangURL }}" aria-labelledby="search-label">
+  <div class="search__panel">
+    <div class="search__head">
+      <label class="k" id="search-label" for="search-q">{{ i18n "searchLabel" }}</label>
+      <button class="search__close m" type="button" data-search-close aria-label="{{ i18n "searchClose" }}">Esc</button>
+    </div>
+    <input class="search__input" id="search-q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="{{ i18n "searchPlaceholder" }}" role="combobox" aria-expanded="true" aria-controls="search-results" aria-autocomplete="list">
+    <p class="search__status m" aria-live="polite"></p>
+    <ul class="search__results" id="search-results" role="listbox" aria-label="{{ i18n "searchResults" }}"></ul>
+    <div class="search__try"></div>
+    <p class="search__keys m" aria-hidden="true">{{ i18n "searchKeys" }}</p>
+  </div>
+</dialog>

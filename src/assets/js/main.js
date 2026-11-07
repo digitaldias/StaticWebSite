@@ -933,6 +933,235 @@ async function initSupporterPage() {
 }
 
 /* ─────────────────────────────────────────────
+   Site search
+   A dialog over /search.json (/nb/search.json),
+   built by layouts/home.search.json. Every word
+   must match somewhere; a title weighs most, then
+   a section heading, a tag, the category and the
+   excerpt. Opens with the header button, / or
+   Ctrl+K.
+───────────────────────────────────────────── */
+const SEARCH_WEIGHTS = { title: 10, sections: 6, tags: 5, category: 4, excerpt: 2, tldr: 1 };
+const SEARCH_LATEST = 5;
+const SEARCH_TRY = 6;
+const SEARCH_SECTIONS = 2;
+
+const fold = text => text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const escapeRegExp = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const escapeHtml = text => text.replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`);
+
+let searchIndex = null;
+
+function loadSearchIndex(url) {
+  if (!searchIndex) {
+    searchIndex = fetch(url)
+      .then(response => {
+        if (!response.ok) throw new Error(`search index ${response.status}`);
+        return response.json();
+      })
+      .then(posts => posts.map(post => ({ ...post, folded: foldPost(post) })));
+    searchIndex.catch(() => { searchIndex = null; });
+  }
+  return searchIndex;
+}
+
+function foldPost(post) {
+  return {
+    title: fold(post.title),
+    sections: post.sections.map(section => fold(section.title)),
+    tags: fold(post.tags.join(' ')),
+    category: fold(post.category),
+    excerpt: fold(post.excerpt),
+    tldr: fold(post.tldr),
+  };
+}
+
+function fieldScore(text, term, weight) {
+  if (!text.includes(term)) return 0;
+  const atWordStart = new RegExp(`(^|[^\\p{L}\\p{N}])${escapeRegExp(term)}`, 'u').test(text);
+  return weight * (atWordStart ? 1.5 : 1);
+}
+
+function termScore(folded, term) {
+  const sections = Math.max(0, ...folded.sections.map(title => fieldScore(title, term, SEARCH_WEIGHTS.sections)));
+  return ['title', 'tags', 'category', 'excerpt', 'tldr']
+    .reduce((sum, field) => sum + fieldScore(folded[field], term, SEARCH_WEIGHTS[field]), sections);
+}
+
+function scorePost(post, terms) {
+  let total = 0;
+  for (const term of terms) {
+    const score = termScore(post.folded, term);
+    if (!score) return 0;
+    total += score;
+  }
+  return total;
+}
+
+function matchingSections(post, terms) {
+  return post.sections
+    .map((section, i) => ({ section, hits: terms.filter(term => post.folded.sections[i].includes(term)).length }))
+    .filter(({ hits }) => hits)
+    .sort((a, b) => b.hits - a.hits)
+    .slice(0, SEARCH_SECTIONS)
+    .map(({ section }) => section);
+}
+
+function searchPosts(posts, terms) {
+  if (!terms.length) return posts.slice(0, SEARCH_LATEST);
+  return posts
+    .map(post => ({ post, score: scorePost(post, terms) }))
+    .filter(({ score }) => score)
+    .sort((a, b) => b.score - a.score || b.post.iso.localeCompare(a.post.iso))
+    .map(({ post }) => post);
+}
+
+function highlight(text, terms) {
+  if (!terms.length) return escapeHtml(text);
+  const pattern = new RegExp(`(${terms.map(escapeRegExp).join('|')})`, 'giu');
+  return text.split(pattern).map((part, i) => (i % 2 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part))).join('');
+}
+
+function searchOption(href, html, className) {
+  const option = el('li', className);
+  option.setAttribute('role', 'option');
+  const link = el('a');
+  link.href = href;
+  link.tabIndex = -1;
+  link.innerHTML = html;
+  option.append(link);
+  return option;
+}
+
+function postOption(post, terms) {
+  const summary = terms.some(term => post.folded.tldr.includes(term) && !post.folded.excerpt.includes(term)) ? post.tldr : post.excerpt;
+  const meta = [`<time datetime="${post.iso}">${escapeHtml(post.date)}</time>`];
+  if (post.category) meta.push(`<span>${escapeHtml(post.category)}</span>`);
+  if (post.level) meta.push(`<span class="level-mark">${post.level}</span>`);
+  return searchOption(post.url, `<span class="search__meta m">${meta.join('')}</span>`
+    + `<span class="search__title">${highlight(post.title, terms)}</span>`
+    + `<span class="search__excerpt">${highlight(summary, terms)}</span>`, 'search__hit');
+}
+
+function sectionOption(post, section, terms) {
+  return searchOption(`${post.url}#${section.id}`, `<span class="search__sect">§ ${highlight(section.title, terms)}</span>`, 'search__hit search__hit--section');
+}
+
+function popularTags(posts) {
+  const counts = new Map();
+  posts.forEach(post => post.tags.forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1)));
+  return [...counts].sort((a, b) => b[1] - a[1]).slice(0, SEARCH_TRY).map(([tag]) => tag);
+}
+
+function setSearchActive(ui, index, scroll = true) {
+  const options = [...ui.results.children];
+  ui.active = options.length ? (index + options.length) % options.length : -1;
+  options.forEach((option, i) => option.setAttribute('aria-selected', String(i === ui.active)));
+  const current = options[ui.active];
+  if (!current) {
+    ui.input.removeAttribute('aria-activedescendant');
+    return;
+  }
+  ui.input.setAttribute('aria-activedescendant', current.id);
+  if (scroll) current.scrollIntoView({ block: 'nearest' });
+}
+
+function renderSearchTry(ui, posts, show) {
+  ui.tryBox.replaceChildren();
+  if (!show) return;
+  ui.tryBox.append(el('span', 'k', t('searchTry')));
+  popularTags(posts).forEach(tag => {
+    const button = el('button', 'search__tag m', tag);
+    button.type = 'button';
+    button.addEventListener('click', () => {
+      ui.input.value = tag;
+      renderSearch(ui);
+      ui.input.focus();
+    });
+    ui.tryBox.append(button);
+  });
+}
+
+async function renderSearch(ui) {
+  const query = ui.input.value.trim();
+  const terms = fold(query).split(/\s+/).filter(Boolean);
+  let posts;
+  try {
+    posts = await loadSearchIndex(ui.dialog.dataset.index);
+  } catch {
+    ui.status.textContent = t('searchFailed');
+    return;
+  }
+  if (query !== ui.input.value.trim()) return;
+  const hits = searchPosts(posts, terms);
+  const options = hits.flatMap(post => [postOption(post, terms), ...matchingSections(post, terms).map(section => sectionOption(post, section, terms))]);
+  options.forEach((option, i) => { option.id = `search-opt-${i}`; });
+  ui.results.replaceChildren(...options);
+  ui.status.textContent = terms.length ? (hits.length ? t('searchFound')(hits.length) : t('searchNone')(query)) : t('searchLatest');
+  renderSearchTry(ui, posts, !hits.length || !terms.length);
+  setSearchActive(ui, terms.length && hits.length ? 0 : -1);
+}
+
+function openSearch(ui) {
+  if (ui.dialog.open) return;
+  ui.dialog.showModal();
+  ui.input.select();
+  renderSearch(ui);
+}
+
+function onSearchKey(ui, e) {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    setSearchActive(ui, ui.active + (e.key === 'ArrowDown' ? 1 : -1));
+  } else if (e.key === 'Enter') {
+    const link = ui.results.children[Math.max(ui.active, 0)]?.querySelector('a');
+    if (!link) return;
+    e.preventDefault();
+    window.location.href = link.href;
+  }
+}
+
+function isTyping(target) {
+  return target instanceof Element && Boolean(target.closest('input, textarea, select, [contenteditable=""], [contenteditable="true"]'));
+}
+
+function isSearchShortcut(e) {
+  const modified = e.ctrlKey || e.metaKey;
+  if (modified) return e.key.toLowerCase() === 'k';
+  return e.key === '/' && !e.altKey && !isTyping(e.target);
+}
+
+function initSearch() {
+  const dialog = document.querySelector('[data-search]');
+  if (!dialog) return;
+  const ui = {
+    dialog,
+    input: dialog.querySelector('.search__input'),
+    status: dialog.querySelector('.search__status'),
+    results: dialog.querySelector('.search__results'),
+    tryBox: dialog.querySelector('.search__try'),
+    active: -1,
+  };
+  const toggle = document.querySelector('[data-search-open]');
+  toggle?.addEventListener('click', () => openSearch(ui));
+  toggle?.addEventListener('pointerenter', () => loadSearchIndex(dialog.dataset.index).catch(() => {}), { once: true });
+  dialog.querySelector('[data-search-close]').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+  ui.input.addEventListener('input', () => renderSearch(ui));
+  ui.input.addEventListener('keydown', e => onSearchKey(ui, e));
+  ui.results.addEventListener('pointermove', e => {
+    const option = e.target.closest('[role="option"]');
+    if (option) setSearchActive(ui, [...ui.results.children].indexOf(option), false);
+  });
+  document.addEventListener('keydown', e => {
+    if (!isSearchShortcut(e)) return;
+    e.preventDefault();
+    openSearch(ui);
+  });
+  window.addEventListener('pageshow', e => { if (e.persisted && dialog.open) dialog.close(); });
+}
+
+/* ─────────────────────────────────────────────
    Boot
 ───────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -949,4 +1178,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initGiscus();
   initSupporters();
   initSupporterPage();
+  initSearch();
 });

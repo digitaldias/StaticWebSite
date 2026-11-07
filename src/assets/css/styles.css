@@ -56,25 +56,65 @@ h1, h2, h3, h4 { margin: 0; }
 .lang-switch a:hover { color: var(--teal); }
 .lang-switch [aria-current] { color: var(--ink); font-weight: 500; }
 .lang-switch__off { opacity: .45; cursor: default; }
-.theme-toggle { flex: none; display: grid; place-items: center; width: 32px; height: 32px; margin-left: -6px; padding: 0; background: none; border: 1px solid var(--rule); border-radius: 50%; color: var(--ink); cursor: pointer; transition: border-color var(--transition); }
+.theme-toggle, .search-toggle { flex: none; display: grid; place-items: center; width: 32px; height: 32px; margin-left: -6px; padding: 0; background: none; border: 1px solid var(--rule); border-radius: 50%; color: var(--ink); cursor: pointer; transition: border-color var(--transition); }
 .theme-toggle::before { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); transition: transform 300ms var(--ease-out); }
 .theme-toggle[data-current="dark"]::before { transform: rotate(180deg); }
-.theme-toggle:hover { border-color: var(--teal); }
+.theme-toggle:hover, .search-toggle:hover { border-color: var(--teal); }
+.search-toggle svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
 
-@media (max-width: 520px) {
+/* At full size the masthead row needs about 596px on Norwegian pages (measured 2026-11-07) */
+@media (max-width: 700px) {
   .mast .wrap { gap: 10px; }
   .wordmark { font-size: 1.2rem; }
   .nav { gap: 10px; font-size: .76rem; }
-  .theme-toggle { width: 28px; height: 28px; margin-left: -2px; }
+  .theme-toggle, .search-toggle { width: 28px; height: 28px; margin-left: -2px; }
 }
-/* Under 400px the wordmark, four links, EN | NO and the switch need about 385px in one row
-   (measured at 375px, 2026-11-05), so the links drop to a second row */
-@media (max-width: 400px) {
+/* The wordmark, four links, EN | NO, search and the theme switch need about 446px in one row
+   on Norwegian pages (measured 2026-11-07), so up to 520px the links drop to a second row */
+@media (max-width: 520px) {
   html { scroll-padding-top: 96px; }
   .mast .wrap { flex-wrap: wrap; height: auto; padding-block: 10px; row-gap: 6px; }
   .nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; }
   .lang-switch { margin-left: auto; }
   .theme-toggle { margin-left: 0; }
+}
+
+/* Search: a slip that drops from the masthead over the page (initSearch in main.js).
+   Full screen on a phone, a ruled panel under a double rule from 700px. */
+html:has(.search[open]) { overflow: hidden; }
+.search { position: fixed; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: var(--ground); color: var(--ink); overflow: hidden; }
+.search::backdrop { background: color-mix(in oklab, #0f1a1b 55%, transparent); backdrop-filter: blur(2px); }
+.search__panel { display: flex; flex-direction: column; height: 100%; padding: 18px clamp(16px, 4vw, 44px) 14px; }
+.search__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.search__close { padding: 4px 9px; background: none; border: 1px solid var(--rule); border-radius: 4px; color: var(--muted); cursor: pointer; transition: border-color var(--transition), color var(--transition); }
+.search__close:hover { border-color: var(--teal); color: var(--teal); }
+.search__input { width: 100%; margin-top: 10px; padding: 8px 0 12px; font: 600 clamp(1.35rem, 5vw, 2rem)/1.2 var(--display); letter-spacing: -.02em; color: var(--ink); background: none; border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; outline: none; appearance: none; transition: border-color var(--transition); }
+.search__input::placeholder { color: var(--muted); opacity: .7; }
+.search__input:focus-visible { border-bottom-color: var(--teal); }
+.search__input::-webkit-search-cancel-button { appearance: none; }
+.search__status { margin: 12px 0 6px; font-size: .72rem; }
+.search__status:empty { display: none; }
+.search__results { flex: 0 1 auto; min-height: 0; margin: 0; padding: 0; list-style: none; overflow-y: auto; overscroll-behavior: contain; }
+.search__hit a { position: relative; display: grid; gap: 4px; padding: 12px 12px 12px 14px; color: inherit; text-decoration: none; border-top: 1px solid var(--rule); }
+.search__hit[aria-selected="true"] a { background: var(--ground-2); }
+.search__hit[aria-selected="true"] a::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--teal); }
+.search__hit--section a { padding-block: 4px 8px; padding-left: 30px; border-top: 0; }
+.search__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; font-size: .7rem; }
+.search__title { font: 700 1.08rem/1.25 var(--display); letter-spacing: -.01em; }
+.search__excerpt { font: 400 .95rem/1.45 var(--text); color: var(--muted); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.search__sect { font: 500 .88rem/1.35 var(--display); color: var(--teal); }
+.search mark { padding: 0 1px; background: var(--deep-1); color: var(--ink); border-radius: 2px; }
+.search__try { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 14px; }
+.search__try:empty { display: none; }
+.search__try .k { margin-right: 4px; }
+.search__tag { padding: 5px 10px; background: none; border: 1px solid var(--rule); border-radius: 999px; color: var(--ink); cursor: pointer; transition: border-color var(--transition), color var(--transition); }
+.search__tag:hover { border-color: var(--teal); color: var(--teal); }
+.search__keys { margin: auto 0 0; padding-top: 10px; font-size: .68rem; border-top: 1px solid var(--rule); }
+@media (hover: none) { .search__keys { display: none; } }
+@media (min-width: 700px) {
+  .search { inset: 0 0 auto; width: min(760px, calc(100% - 32px)); height: auto; max-height: min(680px, calc(100dvh - 120px)); margin: 72px auto 0; border-top: 3px double var(--ink); border-bottom: 1px solid var(--rule); }
+  .search__panel { height: auto; max-height: inherit; padding: 20px 28px 14px; }
+  .search__keys { margin-top: 14px; }
 }
 
 /* Footer: the back page. A double rule like the masthead, four columns, then the
@@ -128,7 +168,7 @@ h1, h2, h3, h4 { margin: 0; }
 
 /* Phone: a compact byline, three posts, positions and Now, then the rest. From 960px the byline
    and the positions share the left column; only the positions stay pinned while the stream scrolls. */
-.split { display: grid; gap: 28px; padding: 24px 0 20px; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 24px 0 20px; }
 .side--id { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 0 16px; align-items: center; }
 .side--id .motto, .side--id .side__bio { grid-column: 1 / -1; }
 .side--id .motto { margin: 14px 0 6px; }
@@ -238,7 +278,7 @@ h1, h2, h3, h4 { margin: 0; }
    6. THE STREAM — post rows shared by the homepage, Writing and taxonomies
    ============================================================================= */
 
-.stream article { display: grid; gap: 14px; padding: 30px 0; border-bottom: 1px solid var(--rule); }
+.stream article { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 30px 0; border-bottom: 1px solid var(--rule); }
 @media (min-width: 700px) {
   .stream article { grid-template-columns: minmax(0, 1fr) 260px; gap: 30px; align-items: center; }
   .stream article.lead { grid-template-columns: minmax(0, 1fr); }
@@ -246,7 +286,9 @@ h1, h2, h3, h4 { margin: 0; }
 .stream article.lead { padding-top: 0; }
 .stream article.lead .ph { view-transition-name: lead-image; }
 .stream article.lead h2 { view-transition-name: lead-title; font-size: clamp(2.4rem, 5vw, 4rem); }
-.stream h2 { font-size: 1.95rem; margin: 8px 0 10px; }
+.stream h2 { font-size: 1.95rem; margin: 8px 0 10px; overflow-wrap: break-word; }
+/* Norwegian compounds such as "Navigasjonssnarveien" are wider than a 320px phone at this size */
+@media (max-width: 520px) { .stream h2:lang(nb) { hyphens: auto; } }
 .stream h2 a { text-decoration: none; background: linear-gradient(var(--deep-2), var(--deep-2)) 0 92% / 0 .26em no-repeat; transition: background-size 350ms var(--ease-out); }
 .stream article:hover h2 a, .stream h2 a:focus-visible { background-size: 100% .26em; }
 .stream .ph { display: block; overflow: hidden; background: var(--ground-2); }
@@ -769,6 +811,10 @@ h1, h2, h3, h4 { margin: 0; }
   @keyframes cup-in { from { opacity: 0; transform: translateY(10px) scale(.6); } }
 
   .lightbox[open] { animation: zoom-in 300ms var(--ease-out); }
+.search[open] { animation: search-drop 280ms var(--ease-out); }
+.search[open]::backdrop { animation: search-fade 280ms ease; }
+@keyframes search-drop { from { opacity: 0; transform: translateY(-14px); } }
+@keyframes search-fade { from { opacity: 0; } }
   @keyframes zoom-in { from { opacity: 0; transform: scale(.96); } }
 }
 

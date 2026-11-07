@@ -169,9 +169,15 @@ defaultContentLanguage = 'en'
     baseName = 'llms'
     isPlainText = true
     notAlternative = true
+  # The site search reads /search.json (and /nb/search.json); layouts/home.search.json
+  [outputFormats.search]
+    mediaType = 'application/json'
+    baseName = 'search'
+    isPlainText = true
+    notAlternative = true
 
 [outputs]
-  home = ['HTML', 'RSS', 'JSON', 'llms']
+  home = ['HTML', 'RSS', 'JSON', 'llms', 'search']
   section = ['HTML', 'RSS']
 
 # Languages: English is the default, Norwegian lives under /nb/. A post is translated by a
@@ -186,7 +192,7 @@ defaultContentLanguage = 'en'
     languageName = 'NO'
     weight = 2
     [languages.nb.outputs]
-      home = ['HTML', 'RSS', 'JSON']
+      home = ['HTML', 'RSS', 'JSON', 'search']
     [languages.nb.params]
       description = 'Programvarearkitekt, innholdsprodusent og familiemann på Frogner i Lillestrøm'
       bio = "Konstituert Chief AI Officer i Tradesolution. Har skrevet kode siden 1982. Altfor mange sterke meninger om programvare, AI og høyttalerplassering."

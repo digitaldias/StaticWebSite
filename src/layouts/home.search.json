@@ -1,0 +1,27 @@
+{{- /* The site search index for this language: every published post with the fields initSearch in main.js matches on. */ -}}
+{{- $items := slice -}}
+{{- range (where site.RegularPages "Section" "blog").ByDate.Reverse -}}
+  {{- $sections := slice -}}
+  {{- with .Fragments.Headings -}}
+    {{- range (index . 0).Headings -}}
+      {{- $sections = $sections | append (dict "id" .ID "title" (.Title | plainify | htmlUnescape)) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $level := "" -}}
+  {{- with partial "depth.html" . -}}
+    {{- $level = printf "%s<span class=\"visually-hidden\">%s </span>%s" (partial "level-steps.html" .) (i18n "readingLevel") (partial "level-range.html" .) -}}
+  {{- end -}}
+  {{- $items = $items | append (dict
+    "url" .RelPermalink
+    "title" .Title
+    "date" (time.Format "2 Jan 2006" .Date)
+    "iso" (.Date.Format "2006-01-02")
+    "category" (index (.Params.categories | default (slice "")) 0)
+    "tags" (.Params.tags | default slice)
+    "excerpt" (.Params.excerpt | default .Description)
+    "tldr" (.Params.tldr | default "")
+    "level" $level
+    "sections" $sections
+  ) -}}
+{{- end -}}
+{{- $items | jsonify -}}

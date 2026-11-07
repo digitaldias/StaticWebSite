@@ -46,6 +46,11 @@ const STRINGS = {
     stampNo: 'No.',
     and: 'and',
     others: n => (n === 1 ? '1 other' : `${n} others`),
+    searchLatest: 'Latest entries',
+    searchFound: n => (n === 1 ? '1 entry' : `${n} entries`),
+    searchNone: q => `Nothing in the archive for “${q}”.`,
+    searchTry: 'Try',
+    searchFailed: 'The search index did not load. Try again in a moment.',
   },
   nb: {
     arrived: 'Fremme',
@@ -87,6 +92,11 @@ const STRINGS = {
     stampNo: 'Nr.',
     and: 'og',
     others: n => (n === 1 ? '1 annen' : `${n} andre`),
+    searchLatest: 'Siste innlegg',
+    searchFound: n => (n === 1 ? '1 innlegg' : `${n} innlegg`),
+    searchNone: q => `Fant ingenting i arkivet for «${q}».`,
+    searchTry: 'Prøv',
+    searchFailed: 'Søkeindeksen ble ikke lastet. Prøv igjen om litt.',
   },
 };
 
