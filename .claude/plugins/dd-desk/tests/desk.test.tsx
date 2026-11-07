@@ -161,6 +161,8 @@ test('broken links keep the site’s own paths and drop scanners', async () => {
     { count: 2, path: '/blog/2026-11-06-x/%7B%7B%20.Permalink%20%7D%7D' },
     { count: 9, path: '/briefing/en/' },
     { count: 3, path: '/blog/old-post/' },
+    { count: 1, path: '/blog/rss.xml' },
+    { count: 1, path: '/blog/feed' },
   ])
   expect(broken.map(one => one.path).join(',')).toBe('/briefing/en/,/blog/old-post/')
 })

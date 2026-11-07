@@ -102,11 +102,13 @@ export function funnel(served: { count: number; userAgent: string }[], referrers
 
 const CONTENT_PATH = /^\/(blog|nb|tags|categories|about|recipes|briefing|listening|supporters|log|photos)(\/|$)|\.md$|^\/llms\.txt$/
 const PROBE_PATH = /\.\.|%7B|\{|\.php|wp-|\.env/i
+// Feed readers guess these when they look for a feed; the site's feeds are /index.xml and /blog/index.xml.
+const FEED_GUESS = /\/(rss\.xml|atom\.xml|feed\.xml|feed\/?|rss\/?)$/i
 
-// 404s on paths that look like the site's own pages; scanners probing for secrets and WordPress are left out.
+// 404s on paths that look like the site's own pages; scanners probing for secrets and WordPress, and feed guesses, are left out.
 export function brokenLinks(missing: { count: number; path: string }[]): PathCount[] {
   return missing
-    .filter(row => CONTENT_PATH.test(row.path) && !PROBE_PATH.test(row.path))
+    .filter(row => CONTENT_PATH.test(row.path) && !PROBE_PATH.test(row.path) && !FEED_GUESS.test(row.path))
     .sort((a, b) => b.count - a.count)
     .slice(0, 5)
 }
