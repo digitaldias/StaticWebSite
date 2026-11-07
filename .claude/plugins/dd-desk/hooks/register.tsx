@@ -405,7 +405,7 @@ export const register: Register = on => {
                   </Text>
                 </Box>
                 <Box flexDirection="row" gap="xs" flexShrink={0}>
-                  {(!post.hn || !post.devto) && <Button key={`promote-${post.base}`} label="Promoter" onPress={ask($, PROMPTS.promote(post.file))} />}
+                  {!post.hn && !post.devto && <Button key={`promote-${post.base}`} label="Promoter" onPress={ask($, PROMPTS.promote(post.file))} />}
                   <Button key={`stats-${post.base}`} label="Statistikk" onPress={ask($, PROMPTS.stats(post.file))} />
                 </Box>
               </Box>

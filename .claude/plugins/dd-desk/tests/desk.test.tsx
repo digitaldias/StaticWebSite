@@ -62,7 +62,7 @@ const SNAPSHOT: Snapshot = {
       title: 'Latest post',
       date: '2026-11-06',
       hn: null,
-      devto: { reactions: 1, comments: 1, url: 'https://dev.to/x' },
+      devto: null,
       readers: 12,
       readerDays: [0, 0, 0, 0, 0, 4, 8],
       ai: 7,
@@ -197,7 +197,7 @@ test('the agenda puts the push first and covers drafts, promotion, links and Now
   const items = agenda(SNAPSHOT, NOW_MS)
   expect(items.map(item => item.key).join(',')).toBe('unpushed,draft-2026-11-07-x.md,promote,broken,now')
   expect(items[0]?.isUrgent).toBe(true)
-  expect(items.find(item => item.key === 'promote')?.text).toBe('«Latest post» er ikke på Hacker News ennå.')
+  expect(items.find(item => item.key === 'promote')?.text).toBe('«Latest post» er ikke promotert ennå, verken på Hacker News eller Dev.to.')
   const traffic0 = SNAPSHOT.traffic
   if (!traffic0) {
     throw new Error('fixture')
@@ -207,6 +207,12 @@ test('the agenda puts the push first and covers drafts, promotion, links and Now
     NOW_MS,
   )
   expect(calm.length).toBe(0)
+  const latest0 = SNAPSHOT.posts[0]
+  if (!latest0) {
+    throw new Error('fixture')
+  }
+  const onDevTo = agenda({ ...SNAPSHOT, posts: [{ ...latest0, devto: { reactions: 0, comments: 0, url: 'https://dev.to/x' } }] }, NOW_MS)
+  expect(onDevTo.some(item => item.key === 'promote')).toBe(false)
 })
 
 test('the traffic chart stacks three colours per day and outlines today', async () => {
@@ -275,7 +281,7 @@ test('the pane draws the agenda, the funnel, the posts and the buttons', async (
     expect((await ui.find({ type: 'Text', text: /hentet live/ }))?.text).toBe('hentet live til et svar')
     expect((await ui.find({ type: 'Text', text: /Live: / }))?.text).toContain('ChatGPT-User 6')
     expect((await ui.find({ type: 'Text', text: /^Latest post$/ }))?.text).toBe('Latest post')
-    expect((await ui.find({ type: 'Text', text: /12 lesere/ }))?.text).toBe('1 d · ▁▁▁▁▁▄█ 12 lesere · 7 AI · 36 visn. · ikke HN · Dev.to 1')
+    expect((await ui.find({ type: 'Text', text: /12 lesere/ }))?.text).toBe('1 d · ▁▁▁▁▁▄█ 12 lesere · 7 AI · 36 visn. · ikke HN · ikke Dev.to')
     expect((await ui.find({ type: 'Text', text: /Mangler/ }))?.text).toBe('Mangler: Norsk')
     expect(await ui.find({ type: 'Text', text: /Sultans Of Swing/ })).toBe(undefined)
     await ui.press({ key: 'do-draft-2026-11-07-x.md' })

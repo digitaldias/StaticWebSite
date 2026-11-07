@@ -44,11 +44,11 @@ export function agenda(snap: Snapshot, nowMs: number): AgendaItem[] {
     }
   }
   const latest = snap.posts[0]
-  if (latest && daysSince(latest.date, nowMs) <= PROMOTE_WITHIN_DAYS && (!latest.hn || !latest.devto)) {
-    const where = [!latest.hn && 'Hacker News', !latest.devto && 'Dev.to'].filter(Boolean).join(' eller ')
+  // Promoted once it is on Hacker News or Dev.to: skipping one of them is Pedro's call, not a missing step.
+  if (latest && daysSince(latest.date, nowMs) <= PROMOTE_WITHIN_DAYS && !latest.hn && !latest.devto) {
     items.push({
       key: 'promote',
-      text: `«${latest.title}» er ikke på ${where} ennå.`,
+      text: `«${latest.title}» er ikke promotert ennå, verken på Hacker News eller Dev.to.`,
       isUrgent: false,
       button: { label: 'Promoter', prompt: PROMPTS.promote(latest.file) },
     })
