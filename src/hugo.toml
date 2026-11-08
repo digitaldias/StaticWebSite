@@ -61,7 +61,7 @@ defaultContentLanguage = 'en'
   
   [params.currently]
     building   = "Improving makeImage: identity, negative prompts and editing"
-    tinkering  = "3D printing a shower head holder for a colleague"
+    tinkering  = "Printing replacement parts from photos with Claude and Fusion 360"
     annoyed_by = "Claude Desktop still has no proper model router built in"
 
   [params.photo]
@@ -86,9 +86,9 @@ defaultContentLanguage = 'en'
     since = "2026-11"
     post  = "/blog/2026-11-01-local-models-news-filter/"
   [[params.positions]]
-    text  = "On a flight, write the spec offline. Let a frontier model code it when you land."
+    text  = "Photograph the part, measure three things, and let Claude model it."
     since = "2026-11"
-    post  = "/blog/2026-11-02-local-llm-on-a-plane/"
+    post  = "/blog/2026-11-08-3d-print-replacement-part-from-photos/"
 
   # Giscus comments configuration
   [params.giscus]
@@ -216,7 +216,7 @@ defaultContentLanguage = 'en'
           reader = "Du bygger med det: hvordan det virker innvendig, hvorfor det er laget slik og hva det betyr i praksis."
       [languages.nb.params.currently]
         building   = "Forbedrer makeImage: identitet, negative prompter og redigering"
-        tinkering  = "3D-printer en dusjhodeholder til en kollega"
+        tinkering  = "Printer reservedeler fra bilder med Claude og Fusion 360"
         annoyed_by = "Claude Desktop mangler fortsatt en skikkelig innebygd modellruter"
       [[languages.nb.params.positions]]
         text  = "Et godt team trenger en geek som starter og en nerd som fullfører."
@@ -234,9 +234,9 @@ defaultContentLanguage = 'en'
         since = "2026-11"
         post  = "/blog/2026-11-01-local-models-news-filter/"
       [[languages.nb.params.positions]]
-        text  = "Skriv spesifikasjonen offline på flyet. La en frontier-modell kode den når du lander."
+        text  = "Fotografer delen, mål tre ting og la Claude modellere den."
         since = "2026-11"
-        post  = "/blog/2026-11-02-local-llm-on-a-plane/"
+        post  = "/blog/2026-11-08-3d-print-replacement-part-from-photos/"
 
 # The nightly briefing lives at repo root (briefing/), outside src/. Mounting it into
 # assets lets the homepage read today's edition at build time; the publisher's push redeploys.

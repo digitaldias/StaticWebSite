@@ -1,6 +1,14 @@
 # History of the homepage "Listening" pick, newest first. The first entry shows in the Now box.
 # artist and song are required; guest, genres, spotify (artist URL), song_url and note_en / note_nb are optional.
 # Facts come from the Spotify API. It returns no genres, so none are listed.
+- date: 2026-11-08
+  artist: Count Basic
+  spotify: https://open.spotify.com/artist/6j8m6cVc4301niMvVMP0kz
+  song: Full Studio Live Session (Little Big Beat Studios)
+  song_url: https://www.youtube.com/watch?v=0wlgXbiNhf4
+  guest: Kelli Sae
+  note_en: 'Austrian group around the guitarist Peter Legat, here with the singer Kelli Sae. Little Big Beat Studios filmed the session and put it on YouTube on 12 August 2022. It runs 13 songs, from "In Love With Life" to "Moving In The Right Direction". Last.fm tags the band as R&B, trip-hop and acid jazz.'
+  note_nb: 'Østerriksk gruppe rundt gitaristen Peter Legat, her med vokalisten Kelli Sae. Little Big Beat Studios filmet sesjonen og la den ut på YouTube 12. august 2022. Den har 13 låter, fra «In Love With Life» til «Moving In The Right Direction». Last.fm merker bandet med R&B, trip-hop og acid jazz.'
 - date: 2026-11-06
   artist: Dire Straits
   spotify: https://open.spotify.com/artist/0WwSkZ7LtFUFjGjMZBMt6T

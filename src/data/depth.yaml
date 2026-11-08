@@ -526,5 +526,37 @@
         "score": 216
       }
     ]
+  },
+  "2026-11-08-3d-print-replacement-part-from-photos": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 174
+      },
+      {
+        "heading": "Replacement part from photos: what Claude did, start to finish",
+        "score": 168
+      },
+      {
+        "heading": "Photographing a part for Claude: the rules it gave me",
+        "score": 184
+      },
+      {
+        "heading": "Fusion 360 from photos: trace the image, don't build from numbers",
+        "score": 261
+      },
+      {
+        "heading": "3MF and Bambu Studio from the command line",
+        "score": 288
+      },
+      {
+        "heading": "First print, second print, and the fit",
+        "score": 256
+      },
+      {
+        "heading": "The takeaway",
+        "score": 183
+      }
+    ]
   }
 }
