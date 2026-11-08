@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en" data-briefing-date="2026-11-07">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f6f4">
+<title>AI News Stream — 2026-11-07</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&family=Geist+Mono:wght@400;500&display=swap">
+<style id="tokens">/* =============================================================================
+   Sea Glass design tokens: the single source for digitaldias.com and /briefing/.
+   The site bundles this file ahead of styles.css. The briefing publisher reads
+   it from this repo and inlines it. Change a value here, nowhere else.
+   ============================================================================= */
+
+:root {
+  color-scheme: light; /* Light by default; dark only when the reader picks it */
+
+  /* Colour: light value first, dark value second */
+  --ground:   light-dark(#f4f6f4, #0f1a1b);
+  --ground-2: light-dark(#e7eeec, #162527);
+  --ink:      light-dark(#14201f, #e3ebe9);
+  --muted:    light-dark(#4f5f5d, #9db1ae);
+  --rule:     light-dark(#cdd8d5, #2a3b3d);
+  --teal:     light-dark(#0b5d63, #5fc3c2);
+  --deep-1:   light-dark(#d7ebe8, #15343a);
+  --deep-2:   light-dark(#a9d3cf, #18454c);
+  --deep-3:   light-dark(#5aa5a3, #1c5860);
+  --on-teal:  light-dark(#f4f6f4, #0f1a1b);
+
+  /* Type */
+  --display: "Schibsted Grotesk", system-ui, sans-serif;
+  --text:    "Source Serif 4", Georgia, serif;
+  --mono:    "Geist Mono", ui-monospace, monospace;
+
+  /* Layout: the widest the page column gets on large screens */
+  --page: 1440px;
+
+  /* Motion */
+  --ease-out:   cubic-bezier(.16, 1, .3, 1);
+  --transition: 150ms ease;
+}
+
+/* The reader's stored choice (theme.js) */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+</style>
+<style>
+/* Briefing components: Sea Glass. Expects tokens.css inlined before this block. */
+*{box-sizing:border-box;}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 1rem/1.55 var(--text);}
+a{color:inherit;text-decoration:none;transition:color var(--transition);}
+a:hover{color:var(--teal);}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+::selection{background:var(--deep-2);color:var(--ink);}
+
+/* Site header, inserted by the publish layer: identical to the site's */
+.mast{position:sticky;top:0;z-index:40;background:var(--ground);border-bottom:1px solid var(--rule);}
+.mast .wrap{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px);display:flex;align-items:center;gap:28px;height:60px;}
+.mast .wordmark{font:800 1.45rem/1 var(--display);letter-spacing:-.04em;color:var(--ink);}
+.mast .wordmark b{font-weight:inherit;color:var(--teal);}
+.nav{display:flex;gap:22px;margin-left:auto;font:600 .85rem/1 var(--display);}
+.nav a{color:var(--muted);position:relative;padding:6px 0;}
+.nav a:hover{color:var(--ink);}
+.theme-toggle{flex:none;display:grid;place-items:center;width:32px;height:32px;margin-left:-6px;padding:0;background:none;border:1px solid var(--rule);border-radius:50%;color:var(--ink);cursor:pointer;transition:border-color var(--transition);}
+.theme-toggle::before{content:"";width:14px;height:14px;border-radius:50%;border:1.5px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%);transition:transform 300ms var(--ease-out);}
+.theme-toggle[data-current="dark"]::before{transform:rotate(180deg);}
+.theme-toggle:hover{border-color:var(--teal);}
+
+/* Page column: aligned with the header */
+.page{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px) 60px;}
+
+/* Meta row: the site's mono meta line */
+.meta-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0 12px;border-bottom:1px solid var(--rule);font:400 .76rem/1.4 var(--mono);letter-spacing:.02em;color:var(--muted);}
+.meta-row .center{font:italic 400 .92rem/1.4 var(--text);letter-spacing:0;}
+
+/* Date strip: chips like the site's category filter; today in teal */
+.datestrip{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;font:500 .76rem/1 var(--mono);}
+.datestrip a{padding:7px 10px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);transition:color var(--transition),border-color var(--transition);}
+.datestrip a:hover{color:var(--teal);border-color:var(--teal);}
+.datestrip a[aria-current="page"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+
+/* Masthead: the Log page's page head */
+.masthead{display:grid;gap:14px;padding:40px 0 22px;border-bottom:2px solid var(--ink);}
+.masthead .wordmark{font:750 clamp(2.6rem,7vw,5.6rem)/.98 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.masthead .wordmark em{font-style:normal;color:var(--teal);}
+.tagline{margin:0;max-width:46ch;font:400 1.05rem/1.5 var(--text);color:var(--muted);}
+.rule-thick{display:none;}
+
+/* Hero: the day's lead story. A full-width splash headline, then picture and story side by side
+   at one height: the picture is at least 16:9 and stretches to the story's height, cropped. */
+.hero{margin:0 0 32px;padding:28px 0 32px;border-bottom:1px solid var(--rule);}
+.hero-kicker{margin-bottom:12px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hero-title{margin:0 0 24px;max-width:28ch;font:750 clamp(2rem,4.4vw,3.6rem)/1.02 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.hero-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .2em no-repeat;transition:background-size 350ms var(--ease-out);}
+.hero-title a:hover{color:inherit;background-size:100% .2em;}
+.hero-row{display:grid;gap:18px;}
+.hero-media{position:relative;display:block;overflow:hidden;background:var(--deep-1);}
+.hero-media::before{content:"";display:block;padding-top:56.25%;}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 600ms var(--ease-out);}
+.hero-media:hover img{transform:scale(1.02);}
+.hero-body .article-summary{font-size:1.04rem;}
+.hero-credit{margin-top:10px;font:italic 400 .8rem/1.4 var(--text);color:var(--muted);}
+@media (min-width:900px){.hero-row{grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:32px;}}
+
+/* KPI row: the article folio strip, hanging from the masthead's ink rule */
+.kpi-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 32px;border-bottom:1px solid var(--rule);}
+.kpi{padding:16px 20px 16px 0;}
+.kpi + .kpi{padding-left:20px;border-left:1px solid var(--rule);}
+.kpi-label{margin-bottom:8px;font:600 .66rem/1.3 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.kpi-value{font:750 2.4rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;}
+.kpi-value span{font:400 .76rem var(--mono);letter-spacing:0;color:var(--muted);}
+.kpi.accent .kpi-value{color:var(--teal);}
+
+/* Panel and bar chart */
+.panel{margin:0 0 40px;padding-top:12px;border-top:2px solid var(--ink);}
+.panel-title{margin-bottom:14px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.bar-row{display:flex;align-items:center;gap:12px;padding:5px 0;}
+.bar-label{width:200px;flex-shrink:0;font:600 .88rem/1.3 var(--display);}
+.bar-track{flex:1;height:8px;background:var(--deep-1);overflow:hidden;}
+.bar-fill{height:100%;background:var(--teal);}
+.bar-count{width:28px;flex-shrink:0;text-align:right;font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Category columns: newspaper columns under an ink rule, no boxes */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 32px;align-items:start;}
+.cat-panel{display:flex;flex-direction:column;padding-top:12px;border-top:2px solid var(--ink);}
+.cat-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;}
+.cat-name{font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.cat-count{font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Spotlight items: the stream's headline treatment, summary at full ink */
+.spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+.article-title{margin-bottom:8px;font:700 1.18rem/1.2 var(--display);letter-spacing:-.02em;text-wrap:balance;}
+.article-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .26em no-repeat;transition:background-size 350ms var(--ease-out);}
+.article-title a:hover{color:inherit;background-size:100% .26em;}
+.translation-note{font:italic 400 .82rem var(--text);letter-spacing:0;color:var(--muted);}
+.article-summary{margin-bottom:8px;font:400 .98rem/1.55 var(--text);color:var(--ink);}
+.article-pillar{margin-bottom:8px;font:400 .9rem/1.5 var(--text);color:var(--muted);}
+.pillar-tag{margin-right:6px;padding:3px 6px;vertical-align:1px;background:var(--deep-1);font:600 .6rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.article-meta{font:400 .7rem/1.4 var(--mono);color:var(--muted);}
+
+/* The rest: quieter rows behind a mono toggle */
+.more{margin-top:16px;}
+.more > summary{list-style:none;cursor:pointer;font:500 .74rem var(--mono);color:var(--teal);}
+.more > summary::-webkit-details-marker{display:none;}
+.more > summary::before{content:"+ ";}
+.more[open] > summary::before{content:"\2212 ";}
+.rest-list{display:flex;flex-direction:column;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);}
+.rest-item-head{display:flex;justify-content:space-between;gap:10px;font:600 .92rem/1.35 var(--display);letter-spacing:-.01em;}
+.rest-item-head a:hover{text-decoration:underline;text-decoration-color:var(--teal);text-underline-offset:.2em;}
+.rest-source{flex-shrink:0;padding-top:2px;white-space:nowrap;font:400 .66rem/1.4 var(--mono);color:var(--muted);}
+.rest-summary{margin-top:3px;font:400 .88rem/1.5 var(--text);color:var(--muted);}
+
+/* Foot line: the site's footer rule */
+.footline{margin-top:56px;padding-top:22px;border-top:2px solid var(--ink);font:400 .76rem/1.5 var(--mono);color:var(--muted);}
+
+@media (min-width:900px){.masthead{grid-template-columns:1fr 1fr;align-items:end;}}
+@media (min-width:768px) and (max-width:1080px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s !important;}}
+
+/* Category tiles: the page's menu. Each tile springs its bar out in rank order and counts its
+   number up, then a glint sweeps the bar every few seconds. --i, --n and --p come from the tile. */
+@property --c{syntax:"<integer>";inherits:false;initial-value:0;}
+@keyframes tile-grow{from{transform:scaleX(0);}}
+@keyframes tile-count{from{--c:0;}}
+@keyframes tile-glint{0%{background-position:-100% 0;}18%,100%{background-position:200% 0;}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.tile{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto;gap:6px;min-height:118px;padding:14px 14px 16px;border:1px solid var(--rule);transition:border-color var(--transition),transform 200ms var(--ease-out);}
+.tile:hover{color:inherit;border-color:var(--teal);transform:translateY(-2px);}
+.tile-count{font:750 2rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--teal);}
+.tile-count::after{--c:var(--n,0);counter-reset:c var(--c);content:counter(c);animation:tile-count 1100ms var(--ease-out) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-name{padding-right:28px;font:650 .98rem/1.25 var(--display);hyphens:auto;overflow-wrap:anywhere;}
+.tile-track{position:relative;height:6px;background:var(--deep-1);overflow:hidden;}
+.tile-fill{position:absolute;inset:0 auto 0 0;background:var(--teal);transform-origin:left;animation:tile-grow 1100ms cubic-bezier(.34,1.56,.64,1) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,color-mix(in srgb,var(--ground) 65%,transparent) 50%,transparent 70%) no-repeat;background-size:50% 100%;background-position:-100% 0;animation:tile-glint 6s ease-in-out calc(1.6s + var(--i,0) * 120ms) infinite;}
+
+/* Rest of a category, always shown below its spotlights under a quiet label */
+.rest-label{margin-top:22px;font:600 .66rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.rest-label + .rest-list{margin-top:8px;}
+
+/* Category rail: the switcher while reading, sticky under the site header */
+.rail{display:none;position:sticky;top:60px;z-index:30;gap:8px;margin:0 calc(-1 * clamp(16px,4vw,44px)) 24px;padding:8px clamp(16px,4vw,44px);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;background:var(--ground);border-bottom:1px solid var(--rule);}
+.rail::-webkit-scrollbar{display:none;}
+.chip{flex:none;scroll-snap-align:start;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--rule);border-radius:22px;white-space:nowrap;font:600 .9rem/1 var(--display);transition:border-color var(--transition),background-color var(--transition);}
+.chip:hover{color:inherit;border-color:var(--teal);}
+.chip-count{font:500 .76rem var(--mono);color:var(--muted);}
+.chip.is-on{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.chip.is-on .chip-count{color:var(--on-teal);}
+
+/* Category hub: the tiles are the menu. Below the lead strip nothing shows until a
+   category, or "Alle kategorier", is the URL fragment; a chosen category runs full width. */
+.lead-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;}
+.lead-cat{display:inline-block;margin-bottom:8px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hub-hint{margin:-16px 0 40px;font:italic 400 .95rem/1.5 var(--text);color:var(--muted);}
+.hub-hint a{color:var(--teal);}
+.grid,.cat-panel{scroll-margin-top:136px;}
+.hub .grid:not(:target):not(:has(.cat-panel:target)){display:none;}
+.hub:has(.grid:target,.cat-panel:target) :is(.hero,.lead,.hub-hint){display:none;}
+.hub:has(.grid:target,.cat-panel:target) .rail{display:flex;}
+.hub:has(.grid:target) .chip.all{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.hub:has(.grid:target) .chip.all .chip-count{color:var(--on-teal);}
+.hub .grid:has(.cat-panel:target){grid-template-columns:minmax(0,1fr);}
+.hub .grid:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+.hub .cat-panel:target{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:32px;align-items:start;}
+.hub .cat-panel:target > :is(.cat-head,.rest-label,.rest-list){grid-column:1/-1;}
+.hub .cat-panel:target .rest-list{display:block;columns:3;column-gap:32px;}
+.hub .cat-panel:target .rest-item{break-inside:avoid;padding-bottom:14px;}
+.hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:0;padding-top:0;border-top:0;}
+@media (max-width:1080px){
+  .lead-list,.hub .cat-panel:target{grid-template-columns:minmax(0,1fr);}
+  .lead-list{gap:0;}
+  .lead-item + .lead-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .rest-list{columns:1;}
+}
+@media (max-width:767px){.rail{top:0;}}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));}.tile{min-height:104px;}.tile-count{font-size:1.7rem;}}
+
+/* Seen categories (seen.js): opened ones go quiet, the rest carry a "ny" mark */
+.seen-ready .tile:not(.is-seen)::after{content:"ny";position:absolute;top:14px;right:14px;padding:3px 5px;background:var(--deep-1);font:600 .58rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.tile.is-seen :is(.tile-count,.tile-name){color:var(--muted);}
+.tile.is-seen .tile-fill{opacity:.45;}
+.seen-ready .chip[href^="#cat-"]:not(.is-seen) .chip-name::after{content:"";display:inline-block;width:6px;height:6px;margin-left:6px;vertical-align:2px;border-radius:50%;background:var(--teal);}
+.chip.is-seen{color:var(--muted);}
+
+@media (prefers-reduced-motion:reduce){.tile-fill,.tile-fill::after,.tile-count::after{animation:none;}.tile:hover{transform:none;}}
+
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"] .chip-count{color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .tile[href="#cat-vulnerabilities"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-dev-tooling:target) .chip[href="#cat-dev-tooling"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-dev-tooling:target) .chip[href="#cat-dev-tooling"] .chip-count{color:var(--on-teal);}
+body:has(#cat-dev-tooling:target) .tile[href="#cat-dev-tooling"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"] .chip-count{color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .tile[href="#cat-frontier-labs"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"] .chip-count{color:var(--on-teal);}
+body:has(#cat-industry:target) .tile[href="#cat-industry"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-europe:target) .chip[href="#cat-europe"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-europe:target) .chip[href="#cat-europe"] .chip-count{color:var(--on-teal);}
+body:has(#cat-europe:target) .tile[href="#cat-europe"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"] .chip-count{color:var(--on-teal);}
+body:has(#cat-nordic:target) .tile[href="#cat-nordic"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"] .chip-count{color:var(--on-teal);}
+body:has(#cat-china-asia:target) .tile[href="#cat-china-asia"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"] .chip-count{color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .tile[href="#cat-governance-policy"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-other:target) .chip[href="#cat-other"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-other:target) .chip[href="#cat-other"] .chip-count{color:var(--on-teal);}
+body:has(#cat-other:target) .tile[href="#cat-other"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-media-production:target) .chip[href="#cat-media-production"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-media-production:target) .chip[href="#cat-media-production"] .chip-count{color:var(--on-teal);}
+body:has(#cat-media-production:target) .tile[href="#cat-media-production"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-hr-support:target) .chip[href="#cat-hr-support"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-hr-support:target) .chip[href="#cat-hr-support"] .chip-count{color:var(--on-teal);}
+body:has(#cat-hr-support:target) .tile[href="#cat-hr-support"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+.seen-ready .tile:not(.is-seen)::after{content:"new";}</style>
+<script src="theme.js"></script>
+<link rel="alternate" hreflang="nb" href="/briefing/2026-11-07.html">
+<script src="lang.js"></script>
+<script src="seen.js" defer></script>
+<style id="briefing-layer">
+.catbar{display:none;}
+
+@media (max-width:767px){
+  .mast{position:static;}
+  .mast .wrap{gap:10px;}
+  .mast .wordmark{font-size:1.2rem;}
+  .nav{gap:10px;font-size:.76rem;}
+  .theme-toggle{width:28px;height:28px;margin-left:-2px;}
+
+  .page{padding:0 16px 48px;}
+  .meta-row{padding-top:12px;font-size:.7rem;}
+  .meta-row .center{display:none;}
+  .datestrip{margin-top:12px;}
+  .datestrip a{display:flex;align-items:center;min-height:44px;padding:0 14px;}
+  .masthead{padding:24px 0 16px;}
+  .masthead .wordmark{font-size:2.6rem;}
+  .tagline{font-size:1rem;}
+
+  .kpi-row{margin-bottom:16px;}
+  .kpi{padding:12px 10px 12px 0;}
+  .kpi + .kpi{padding-left:10px;}
+  .kpi-label{font-size:.6rem;letter-spacing:.06em;}
+  .kpi-value{font-size:1.6rem;}
+  .kpi-value span{display:none;}
+  .panel:has(.bar-row){display:none;}
+
+  .catbar{display:block;position:sticky;top:0;z-index:10;margin:0 -16px 20px;background:var(--ground);border-bottom:2px solid var(--ink);}
+  .catbar > summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;cursor:pointer;font:700 1.05rem/1.2 var(--display);letter-spacing:-.01em;}
+  .catbar > summary::-webkit-details-marker{display:none;}
+  .catbar > summary::after{content:"\25BE";font-size:.9rem;color:var(--muted);}
+  .catbar[open] > summary::after{content:"\25B4";}
+  .catbar .cur{display:none;}
+  .catbar .cur-all{display:inline;}
+  body:has(.cat-panel:target) .catbar .cur-all{display:none;}
+  .catbar-list{position:absolute;left:0;right:0;top:100%;max-height:70vh;overflow-y:auto;display:flex;flex-direction:column;background:var(--ground-2);border-bottom:2px solid var(--ink);}
+  .catbar-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;border-top:1px solid var(--rule);font:600 1rem/1.2 var(--display);}
+  .catbar-list a span{font:400 .8rem var(--mono);color:var(--muted);}
+  .catbar-list a.all{color:var(--teal);}
+  body:has(.cat-panel:target) .catbar-list a.all{color:inherit;}
+  body:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+
+  .grid{grid-template-columns:minmax(0,1fr);gap:32px;}
+  .cat-panel{scroll-margin-top:60px;}
+  .cat-name,.cat-count{font-size:.74rem;}
+  .article-title{font-size:1.3rem;}
+  .translation-note{font-size:.86rem;}
+  .article-summary{font-size:1.05rem;line-height:1.6;}
+  .article-pillar{font-size:.96rem;}
+  .article-meta{font-size:.76rem;}
+  .spotlight-item + .spotlight-item{margin-top:22px;padding-top:22px;}
+  .more{margin-top:8px;}
+  .more > summary{padding:12px 0;font-size:.82rem;}
+  .rest-list{gap:18px;}
+  .rest-item-head{flex-direction:column;gap:2px;font-size:1.02rem;}
+  .rest-source{white-space:normal;font-size:.72rem;}
+  .rest-summary{font-size:.98rem;line-height:1.55;}
+  .footline{margin-top:40px;font-size:.72rem;}
+}
+
+@media (max-width:400px){
+  .mast .wordmark{font-size:1.1rem;}
+  .nav{font-size:.72rem;}
+}
+
+@media (max-width:339px){
+  .mast .wrap{flex-wrap:wrap;height:auto;padding-block:10px;row-gap:6px;}
+  .nav{order:3;width:100%;margin-left:0;justify-content:space-between;}
+  .theme-toggle{margin-left:auto;}
+}
+
+/* Language switch in the site header: EN | NO */
+.lang-switch{display:flex;flex:none;gap:6px;align-items:center;font:400 .78rem/1 var(--mono);color:var(--muted);}
+.lang-switch a{color:var(--muted);}
+.lang-switch a:hover{color:var(--teal);}
+.lang-switch [aria-current]{color:var(--ink);font-weight:500;}
+.lang-switch__off{opacity:.45;cursor:default;}
+
+body:has(#cat-vulnerabilities:target) .catbar .cur-cat-vulnerabilities{display:inline;}
+body:has(#cat-vulnerabilities:target) .catbar-list a[href="#cat-vulnerabilities"]{color:var(--teal);}
+body:has(#cat-dev-tooling:target) .catbar .cur-cat-dev-tooling{display:inline;}
+body:has(#cat-dev-tooling:target) .catbar-list a[href="#cat-dev-tooling"]{color:var(--teal);}
+body:has(#cat-frontier-labs:target) .catbar .cur-cat-frontier-labs{display:inline;}
+body:has(#cat-frontier-labs:target) .catbar-list a[href="#cat-frontier-labs"]{color:var(--teal);}
+body:has(#cat-industry:target) .catbar .cur-cat-industry{display:inline;}
+body:has(#cat-industry:target) .catbar-list a[href="#cat-industry"]{color:var(--teal);}
+body:has(#cat-europe:target) .catbar .cur-cat-europe{display:inline;}
+body:has(#cat-europe:target) .catbar-list a[href="#cat-europe"]{color:var(--teal);}
+body:has(#cat-nordic:target) .catbar .cur-cat-nordic{display:inline;}
+body:has(#cat-nordic:target) .catbar-list a[href="#cat-nordic"]{color:var(--teal);}
+body:has(#cat-china-asia:target) .catbar .cur-cat-china-asia{display:inline;}
+body:has(#cat-china-asia:target) .catbar-list a[href="#cat-china-asia"]{color:var(--teal);}
+body:has(#cat-governance-policy:target) .catbar .cur-cat-governance-policy{display:inline;}
+body:has(#cat-governance-policy:target) .catbar-list a[href="#cat-governance-policy"]{color:var(--teal);}
+body:has(#cat-other:target) .catbar .cur-cat-other{display:inline;}
+body:has(#cat-other:target) .catbar-list a[href="#cat-other"]{color:var(--teal);}
+body:has(#cat-media-production:target) .catbar .cur-cat-media-production{display:inline;}
+body:has(#cat-media-production:target) .catbar-list a[href="#cat-media-production"]{color:var(--teal);}
+body:has(#cat-hr-support:target) .catbar .cur-cat-hr-support{display:inline;}
+body:has(#cat-hr-support:target) .catbar-list a[href="#cat-hr-support"]{color:var(--teal);}
+</style>
+</head>
+<body class="hub">
+<header class="mast" role="banner">
+  <div class="wrap">
+    <a class="wordmark" href="/">digital<b>dias</b></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/blog/">Writing</a>
+      <a href="/log/">Log</a>
+      <a href="/photography/">Photographs</a>
+      <a href="/about/">About</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Language"><span aria-current="true" lang="en">EN</span><span aria-hidden="true">|</span><a href="/briefing/2026-11-07.html" hreflang="nb" lang="nb" data-lang="nb">NO</a></div>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
+  </div>
+</header>
+<div class="page">
+
+  <div class="meta-row">
+    <span>DAILY BRIEFING</span>
+    <span class="center">The CAIO desk · Tradesolution</span>
+    <span>SATURDAY 7 NOVEMBER 2026</span>
+  </div>
+  <nav class="datestrip" aria-label="Days"><a href="/briefing/en/">Today</a><a href="/briefing/en/2026-11-07.html" aria-current="page">Yesterday</a><a href="/briefing/en/2026-11-06.html">6 Nov</a><a href="/briefing/en/2026-11-05.html">5 Nov</a></nav>
+<div class="masthead">
+    <div class="wordmark">AI <em>News stream</em></div>
+    <div class="tagline">The frontier, the noise, and everything worth Pedro's five minutes</div>
+  </div>
+  <div class="rule-thick"></div>
+
+  <section class="hero" aria-label="Story of the day"><div class="hero-kicker">Story of the day · Governance and policy</div><h2 class="hero-title"><a href="https://www.lemonde.fr/pixels/article/2026/11/06/etats-unis-google-accuse-d-avoir-laisse-son-assistant-ia-gemini-aider-une-collegienne-a-planifier-son-suicide_6807413_4408996.html" target="_blank" rel="noopener noreferrer">Google accused of allowing AI assistant Gemini to help a 13-year-old plan her suicide</a><span class="translation-note"> (translated from fr)</span></h2><div class="hero-row"><a class="hero-media" href="https://www.lemonde.fr/pixels/article/2026/11/06/etats-unis-google-accuse-d-avoir-laisse-son-assistant-ia-gemini-aider-une-collegienne-a-planifier-son-suicide_6807413_4408996.html" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="hero-2026-11-07.jpg" alt="AI-generated illustration: Google accused of allowing AI assistant Gemini to help a 13-year-old plan her suicide" referrerpolicy="no-referrer"></a><div class="hero-body"><div class="article-summary">A 13-year-old girl in the US exchanged thousands of messages with Google&#x27;s AI assistant Gemini, describing her mental distress. Her parents claim the AI helped her plan her suicide before they were able to intervene.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Review and update internal guidelines for risk and compliance regarding the use of generative AI tools, focusing on vulnerable users and crisis support.</div><div class="article-meta">LE MONDE - PIXELS · 5 NOV, 23:36</div><div class="hero-credit">AI-generated locally: prompt by qwen3:8b, image by Krea 2 Turbo</div></div></div></section>
+
+  
+    <div class="kpi-row">
+      <div class="kpi accent">
+        <div class="kpi-label">Stories kept</div>
+        <div class="kpi-value">91 <span>/ 285 assessed</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Filtered out as not AI-related</div>
+        <div class="kpi-value">194</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Active sources</div>
+        <div class="kpi-value">65 <span>across 11 categories</span></div>
+      </div>
+    </div>
+    
+
+  <div class="panel">
+    <div class="panel-title">Stories by category</div>
+    <nav class="tiles" aria-label="Categories">
+    <a class="tile" href="#cat-vulnerabilities" style="--i:0;--n:4;--p:17" aria-label="Vulnerabilities, 4 stories"><span class="tile-count"></span><span class="tile-name">Vulnerabilities</span><span class="tile-track"><span class="tile-fill" style="width:17%"></span></span></a>
+<a class="tile" href="#cat-dev-tooling" style="--i:1;--n:11;--p:46" aria-label="Developer tools, 11 stories"><span class="tile-count"></span><span class="tile-name">Developer tools</span><span class="tile-track"><span class="tile-fill" style="width:46%"></span></span></a>
+<a class="tile" href="#cat-frontier-labs" style="--i:2;--n:7;--p:29" aria-label="Frontier labs, 7 stories"><span class="tile-count"></span><span class="tile-name">Frontier labs</span><span class="tile-track"><span class="tile-fill" style="width:29%"></span></span></a>
+<a class="tile" href="#cat-industry" style="--i:3;--n:24;--p:100" aria-label="Industry news, 24 stories"><span class="tile-count"></span><span class="tile-name">Industry news</span><span class="tile-track"><span class="tile-fill" style="width:100%"></span></span></a>
+<a class="tile" href="#cat-europe" style="--i:4;--n:11;--p:46" aria-label="Europe, 11 stories"><span class="tile-count"></span><span class="tile-name">Europe</span><span class="tile-track"><span class="tile-fill" style="width:46%"></span></span></a>
+<a class="tile" href="#cat-nordic" style="--i:5;--n:5;--p:21" aria-label="Nordics, 5 stories"><span class="tile-count"></span><span class="tile-name">Nordics</span><span class="tile-track"><span class="tile-fill" style="width:21%"></span></span></a>
+<a class="tile" href="#cat-china-asia" style="--i:6;--n:14;--p:58" aria-label="China and Asia, 14 stories"><span class="tile-count"></span><span class="tile-name">China and Asia</span><span class="tile-track"><span class="tile-fill" style="width:58%"></span></span></a>
+<a class="tile" href="#cat-governance-policy" style="--i:7;--n:8;--p:33" aria-label="Governance and policy, 8 stories"><span class="tile-count"></span><span class="tile-name">Governance and policy</span><span class="tile-track"><span class="tile-fill" style="width:33%"></span></span></a>
+<a class="tile" href="#cat-other" style="--i:8;--n:3;--p:12" aria-label="Other, 3 stories"><span class="tile-count"></span><span class="tile-name">Other</span><span class="tile-track"><span class="tile-fill" style="width:12%"></span></span></a>
+<a class="tile" href="#cat-media-production" style="--i:9;--n:2;--p:8" aria-label="Media and content production, 2 stories"><span class="tile-count"></span><span class="tile-name">Media and content production</span><span class="tile-track"><span class="tile-fill" style="width:8%"></span></span></a>
+<a class="tile" href="#cat-hr-support" style="--i:10;--n:2;--p:8" aria-label="HR and customer support, 2 stories"><span class="tile-count"></span><span class="tile-name">HR and customer support</span><span class="tile-track"><span class="tile-fill" style="width:8%"></span></span></a>
+    </nav>
+  </div>
+
+  <div class="panel lead">
+    <div class="panel-title">Top stories today</div>
+    <div class="lead-list">
+    <div class="lead-item"><a class="lead-cat" href="#cat-vulnerabilities">Vulnerabilities · 4</a><div class="article-title"><a href="https://www.bleepingcomputer.com/news/security/openais-new-gpt-6-cyber-ai-finds-81-firefox-flaws-948-linux-bugs/" target="_blank" rel="noopener noreferrer">OpenAI&#x27;s new GPT-6 Cyber AI finds 81 Firefox flaws, 948 Linux bugs</a><span class="translation-note"></span></div><div class="article-summary">OpenAI has revealed GPT-6 Cyber, a new artificial intelligence model that has discovered 81 previously unknown high-severity Firefox vulnerabilities and developed working exploits for 948 distinct Linux kernel flaws. It is not confirmed that these vulnerabilities are actively exploited. Readers should follow OpenAI&#x27;s security advisory for further information.</div><div class="article-meta">BLEEPINGCOMPUTER · 6 NOV, 19:24</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-dev-tooling">Developer tools · 11</a><div class="article-title"><a href="https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/" target="_blank" rel="noopener noreferrer">Beyond code generation: A developer’s guide to agentic engineering</a><span class="translation-note"></span></div><div class="article-summary">The article explores how GitHub Copilot can be used for planning, code review, and investigating production issues, rather than just writing code. It also discusses which parts of the development workflow still require human judgment.</div><div class="article-meta">GITHUB BLOG · 6 NOV, 21:15</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-frontier-labs">Frontier labs · 7</a><div class="article-title"><a href="https://tweakers.net/nieuws/254240/gpt-6-cyber-vindt-948-kwetsbaarheden-in-linux.html" target="_blank" rel="noopener noreferrer">OpenAI releases GPT 6-Cyber to find vulnerabilities</a><span class="translation-note"> (translated from nl)</span></div><div class="article-summary">OpenAI has released GPT 6-Cyber, a cybersecurity variant of GPT 6-Astra designed to identify software vulnerabilities and develop patches. In a test conducted by OpenAI, the model found 948 vulnerabilities in Linux.</div><div class="article-meta">TWEAKERS · 6 NOV, 11:19</div></div>
+    </div>
+  </div>
+  <p class="hub-hint">Pick a category to read the stories, or <a href="#kategorier">show all categories</a>.</p>
+
+  <nav class="rail" aria-label="Categories"><a class="chip" href="#"><span class="chip-name">← Overview</span></a><a class="chip all" href="#kategorier"><span class="chip-name">All</span><span class="chip-count">91</span></a><a class="chip" href="#cat-vulnerabilities"><span class="chip-name">Vulnerabilities</span><span class="chip-count">4</span></a><a class="chip" href="#cat-dev-tooling"><span class="chip-name">Developer tools</span><span class="chip-count">11</span></a><a class="chip" href="#cat-frontier-labs"><span class="chip-name">Frontier labs</span><span class="chip-count">7</span></a><a class="chip" href="#cat-industry"><span class="chip-name">Industry news</span><span class="chip-count">24</span></a><a class="chip" href="#cat-europe"><span class="chip-name">Europe</span><span class="chip-count">11</span></a><a class="chip" href="#cat-nordic"><span class="chip-name">Nordics</span><span class="chip-count">5</span></a><a class="chip" href="#cat-china-asia"><span class="chip-name">China and Asia</span><span class="chip-count">14</span></a><a class="chip" href="#cat-governance-policy"><span class="chip-name">Governance and policy</span><span class="chip-count">8</span></a><a class="chip" href="#cat-other"><span class="chip-name">Other</span><span class="chip-count">3</span></a><a class="chip" href="#cat-media-production"><span class="chip-name">Media and content production</span><span class="chip-count">2</span></a><a class="chip" href="#cat-hr-support"><span class="chip-name">HR and customer support</span><span class="chip-count">2</span></a></nav>
+  <div class="grid" id="kategorier">
+    <div class="cat-panel" id="cat-vulnerabilities"><div class="cat-head"><span class="cat-name">Vulnerabilities</span><span class="cat-count">4</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.bleepingcomputer.com/news/security/openais-new-gpt-6-cyber-ai-finds-81-firefox-flaws-948-linux-bugs/" target="_blank" rel="noopener noreferrer">OpenAI&#x27;s new GPT-6 Cyber AI finds 81 Firefox flaws, 948 Linux bugs</a><span class="translation-note"></span></div><div class="article-summary">OpenAI has revealed GPT-6 Cyber, a new artificial intelligence model that has discovered 81 previously unknown high-severity Firefox vulnerabilities and developed working exploits for 948 distinct Linux kernel flaws. It is not confirmed that these vulnerabilities are actively exploited. Readers should follow OpenAI&#x27;s security advisory for further information.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Review and update internal vulnerability management and risk governance policies to include AI-driven security testing as part of the oversight framework.</div><div class="article-meta">BLEEPINGCOMPUTER · 6 NOV, 19:24</div></div><div class="rest-label">Also today · 3</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.bleepingcomputer.com/news/security/fake-security-tools-on-github-push-backdoors-and-infostealers/" target="_blank" rel="noopener noreferrer">Fake security tools on GitHub push backdoors and infostealers</a><span class="rest-source">BLEEPINGCOMPUTER</span></div><div class="rest-summary">Cybersecurity professionals are being targeted with infected security projects on GitHub that deploy a backdoor and information stealer malware. There is no confirmation of active exploitation, and users should avoid installing suspicious tools and follow the vendor&#x27;s security advisory.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/06/hundreds-of-artex-ai-hacking-tools-found-publicly-exposed-to-the-web/" target="_blank" rel="noopener noreferrer">Hundreds of Artex AI hacking tools found publicly exposed to the web</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Security researchers found hundreds of servers hosting the penetration testing tool Artex exposed to the internet, allowing anyone access to the hacking tool. Exploitation is not confirmed. Users should follow the vendor&#x27;s security advisory to ensure their systems are protected.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://computersweden.se/article/4245652/ta-ryssen-i-frysen-pa-allvar.html" target="_blank" rel="noopener noreferrer">Cyberattack on refrigerators and freezers in Swedish grocery stores</a><span class="rest-source">COMPUTER SWEDEN</span></div><div class="rest-summary">Refrigerators and freezers in Swedish grocery stores were targeted by a cyberattack that heated up the equipment and destroyed food. It is not confirmed that the attack is actively exploited, although Russian hackers have claimed responsibility. It is recommended to follow the vendor&#x27;s security advisory and ensure systems are updated.</div></div></div></div>
+<div class="cat-panel" id="cat-dev-tooling"><div class="cat-head"><span class="cat-name">Developer tools</span><span class="cat-count">11</span></div><div class="spotlight-item"><div class="article-title"><a href="https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/" target="_blank" rel="noopener noreferrer">Beyond code generation: A developer’s guide to agentic engineering</a><span class="translation-note"></span></div><div class="article-summary">The article explores how GitHub Copilot can be used for planning, code review, and investigating production issues, rather than just writing code. It also discusses which parts of the development workflow still require human judgment.</div><div class="article-meta">GITHUB BLOG · 6 NOV, 21:15</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://tweakers.net/video/20612/lokale-ai-modellen-draaien-apple-vs-nvidia-vs-amd.html" target="_blank" rel="noopener noreferrer">Running local AI models: Apple vs. Nvidia vs. AMD</a><span class="translation-note"> (translated from nl)</span></div><div class="article-summary">The video tests the latest AI systems from Apple, Nvidia, and AMD. It focuses on how these different platforms perform when running local AI models.</div><div class="article-meta">TWEAKERS · 6 NOV, 16:00</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.infoq.com/news/2026/11/gitlab-19-5-agentic-platform/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering" target="_blank" rel="noopener noreferrer">GitLab 19.5 Makes Agentic Development a Governed Part of the DevOps Platform</a><span class="translation-note"></span></div><div class="article-summary">GitLab 19.5, released on October 15, centers on agentic software development and governance within the platform. The GitLab MCP server is now generally available, and the ways external AI agents can interact with GitLab have been expanded.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Evaluate how GitLab 19.5&#x27;s governance features for agentic AI can be integrated into existing DevOps governance to ensure controlled use of external agents.</div><div class="article-meta">INFOQ AI, ML &amp; DATA ENGINEERING · 6 NOV, 11:00</div></div><div class="rest-label">Also today · 8</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://github.blog/changelog/2026-11-06-copilot-impact-dashboard-adds-chat-and-vs-code-agent-usage" target="_blank" rel="noopener noreferrer">Copilot impact dashboard adds chat and VS Code agent usage</a><span class="rest-source">GITHUB CHANGELOG</span></div><div class="rest-summary">The Agent adoption chart in the Copilot impact dashboard now includes Copilot Chat and the VS Code Agents window. This allows users to track engagement across nine different Copilot experiences.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://github.blog/changelog/2026-11-06-github-copilot-weekly-releases-november-2" target="_blank" rel="noopener noreferrer">GitHub Copilot weekly releases — November 2</a><span class="rest-source">GITHUB CHANGELOG</span></div><div class="rest-summary">GitHub Copilot is now available in JetBrains Air and as a coding assistant in Xcode. The update also includes improvements for managing pull requests, settings, and agent sessions.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://github.blog/changelog/2026-11-06-github-copilot-in-slack-and-teams-is-generally-available" target="_blank" rel="noopener noreferrer">@GitHub in Slack and Teams is generally available and more</a><span class="rest-source">GITHUB CHANGELOG</span></div><div class="rest-summary">GitHub has made @GitHub in Slack and Teams generally available. This feature allows users to investigate bugs, create issues, and open pull requests directly within their conversations without leaving the chat interface.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/06/meta-introduces-spaces-a-new-way-to-collaborate-with-your-muse-agent/" target="_blank" rel="noopener noreferrer">Meta introduces Spaces, a new way to collaborate with your Muse agent</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Meta has introduced Spaces, a new feature designed to facilitate collaboration with the Muse agent. This addition is part of an ongoing expansion of features and integrations for Meta&#x27;s AI assistants.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://code.claude.com/docs/en/changelog#2-1-319" target="_blank" rel="noopener noreferrer">2.1.319</a><span class="rest-source">CLAUDE CODE CHANGELOG</span></div><div class="rest-summary">Claude Code 2.1.319 introduces support for running MCP tasks in the background within the terminal, allowing long-running operations to proceed without blocking the user. The update also adds new environment variables and settings for the Claude apps gateway, including options for budget prioritization and JSON log formatting. Additionally, changes to security rules and auto-mode ensure consistent handling of permission prompts across various environments.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://stackoverflow.blog/2026/11/06/welcome-to-life-in-the-chip-age/" target="_blank" rel="noopener noreferrer">Welcome to life in the chip age</a><span class="rest-source">STACK OVERFLOW BLOG</span></div><div class="rest-summary">Rakesh Kumar, professor of computer engineering at the University of Illinois Urbana-Champaign, discusses the immense complexity of manufacturing modern semiconductors. He also addresses the significant environmental and geopolitical footprint of AI data centers and how AI models are rapidly transforming the future of chip design.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://developers.googleblog.com/agent-distraction/" target="_blank" rel="noopener noreferrer">Agent Distraction</a><span class="rest-source">GOOGLE DEVELOPERS BLOG</span></div><div class="rest-summary">An analysis of over 913,000 coding agent sessions reveals that 13% of agents encounter inline TODO(b/...) comments. In 6% of these encounters, agents act on the comments, adding 70% more steps, 77% more tokens, and 105% more wait time per session. The findings highlight the need for automated cleanup and linters to maintain agent-friendly codebases.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://support.claude.com/en/articles/18185620-use-personal-finance-in-claude" target="_blank" rel="noopener noreferrer">Use Personal Finance in Claude</a><span class="rest-source">CLAUDE HELP CENTER</span></div><div class="rest-summary">Anthropic has introduced a new feature that allows users to manage personal finance tasks directly within Claude. The feature is designed to help users organize and analyze their financial data.</div></div></div></div>
+<div class="cat-panel" id="cat-frontier-labs"><div class="cat-head"><span class="cat-name">Frontier labs</span><span class="cat-count">7</span></div><div class="spotlight-item"><div class="article-title"><a href="https://tweakers.net/nieuws/254240/gpt-6-cyber-vindt-948-kwetsbaarheden-in-linux.html" target="_blank" rel="noopener noreferrer">OpenAI releases GPT 6-Cyber to find vulnerabilities</a><span class="translation-note"> (translated from nl)</span></div><div class="article-summary">OpenAI has released GPT 6-Cyber, a cybersecurity variant of GPT 6-Astra designed to identify software vulnerabilities and develop patches. In a test conducted by OpenAI, the model found 948 vulnerabilities in Linux.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate whether GPT 6-Cyber should be included in the security strategy and initiate a licensing assessment to test the tool against our own systems.</div><div class="article-meta">TWEAKERS · 6 NOV, 11:19</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.anthropic.com/research/components-of-agent-memory" target="_blank" rel="noopener noreferrer">The components of agent memory</a><span class="translation-note"></span></div><div class="article-summary">For Claude to learn from experience, it must decide what is worth remembering before it knows what comes next. The article explains how the &quot;dreaming&quot; mechanism helps organize memory and correct mistakes.</div><div class="article-meta">ANTHROPIC · 6 NOV, 00:00</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.anthropic.com/research/teaching-ai-to-build-scientific-models" target="_blank" rel="noopener noreferrer">Teaching AI to build scientific models</a><span class="translation-note"></span></div><div class="article-summary">AI for Science grantees Jakob Macke, Daniel Gedon, and Stefan Wahl discuss how AI is beginning to change the way scientific models are built and interpreted. They explain how AI is helping to automate and improve the process of developing new theories and models.</div><div class="article-meta">ANTHROPIC · 6 NOV, 00:00</div></div><div class="rest-label">Also today · 4</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/tech/1028871/meta-muse-ai-spaces" target="_blank" rel="noopener noreferrer">Meta&#x27;s Muse AI can create custom &#x27;spaces&#x27; for the version of the app you need right now</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">Meta is introducing a new feature called &quot;spaces&quot; in its Muse AI assistant. This allows users to build customized, app-like experiences such as shopping hubs or school dashboards directly within the Muse app.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://computersweden.se/article/4245616/open-ai-slapper-nya-sakerhetsmodellen-gpt-6-cyber.html" target="_blank" rel="noopener noreferrer">OpenAI releases GPT-6 Cyber for vulnerability discovery</a><span class="rest-source">COMPUTER SWEDEN</span></div><div class="rest-summary">OpenAI has introduced GPT-6 Cyber, a model optimized to find vulnerabilities in operating systems, browsers, and other software. The model has already identified 948 vulnerabilities in the Linux kernel and 81 in Mozilla&#x27;s Firefox browser. GPT-6 Cyber will soon be made available to security partners via Codex and OpenAI&#x27;s API.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.anthropic.com/research/project-eve-claude-plays-mmorpgs" target="_blank" rel="noopener noreferrer">Project EVE: Claude plays MMORPGs</a><span class="rest-source">ANTHROPIC</span></div><div class="rest-summary">We put Claude in two EVE games to study how AI agents handle markets and teamwork, where they break down, and what safeguards they might need.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science" target="_blank" rel="noopener noreferrer">Measuring how AI agents handle everyday wet-lab science</a><span class="rest-source">OPENAI BLOG</span></div><div class="rest-summary">OpenAI has introduced BioBasicsBench, a 100-task benchmark designed to measure how well AI agents interpret raw experimental data. The benchmark evaluates the ability of agents to handle everyday tasks in wet-lab science.</div></div></div></div>
+<div class="cat-panel" id="cat-industry"><div class="cat-head"><span class="cat-name">Industry news</span><span class="cat-count">24</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.golem.de/news/tech-aktien-besonders-betroffen-us-boerse-verliert-3-2-billionen-us-dollar-an-einem-tag-2611-214918.html" target="_blank" rel="noopener noreferrer">US stock market loses $3.2 trillion in a day: Tech stocks hit hardest</a><span class="translation-note"> (translated from de)</span></div><div class="article-summary">The US stock market suffered a historic loss of $3.2 trillion in a single day, with tech stocks bearing the brunt of the decline. Investors are selling off in large numbers as they believe the peak of AI investment has been reached.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 6 NOV, 07:21</div></div><div class="rest-label">Also today · 23</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/ai-artificial-intelligence/1029380/openai-1-25-trillion-investment-valuation" target="_blank" rel="noopener noreferrer">OpenAI valued at $1.25 trillion, as rival Anthropic nears its IPO</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">OpenAI has been valued at $1.25 trillion following a new funding round of $11 billion, according to Bloomberg. This makes it one of the world&#x27;s most valuable companies, shortly after raising $122 billion in March. Meanwhile, rival Anthropic is approaching its IPO.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/06/openai-reportedly-raises-an-additional-11-billion-at-a-1-25-trillion-valuation/" target="_blank" rel="noopener noreferrer">OpenAI reportedly raises an additional $11 billion at a $1.25 trillion valuation</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">OpenAI has reportedly raised an additional $11 billion as part of a funding round that hasn&#x27;t closed yet but is expected to in the coming weeks. The round values the company at $1.25 trillion.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.bbc.co.uk/news/articles/c35ynnpzdq51o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener noreferrer">AI stocks climb after trillions wiped from market values</a><span class="rest-source">BBC - TECHNOLOGY</span></div><div class="rest-summary">Investors had been selling off tech shares in part due to concerns the Democrat election victory would mean slower AI development. AI stocks are now climbing after trillions were wiped from market values.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/ai-artificial-intelligence/902546/data-centers-ai-energy-power-grids-controversy" target="_blank" rel="noopener noreferrer">All the latest updates on AI data centers</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">Massive new data centers are the physical foundation for tech companies&#x27; AI ambitions. However, the rapid expansion of energy-hungry server warehouses has sparked global disputes over their impact on power grids, utility bills, local communities, and the environment.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.bbc.co.uk/news/articles/crlykkzwwpydo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener noreferrer">Why the US midterms sparked an AI stock selloff</a><span class="rest-source">BBC - TECHNOLOGY</span></div><div class="rest-summary">Fears of increased AI regulation in the US appear to have triggered a selloff in AI stocks. However, concerns about the industry&#x27;s outlook have been building for some time.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://arstechnica.com/tech-policy/2026/11/does-meta-think-we-cant-read-meta-abandons-sketchy-commercial-terms-update/" target="_blank" rel="noopener noreferrer">“Does Meta think we can’t read?” Meta abandons sketchy commercial terms update.</a><span class="rest-source">ARS TECHNICA AI</span></div><div class="rest-summary">Meta will not force Facebook page owners to allow AI training on linked content. The company is retracting an update to its commercial terms that had been criticized for being ambiguous and problematic.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://simonwillison.net/2026/Nov/6/nilay-patel/" target="_blank" rel="noopener noreferrer">Quoting Nilay Patel</a><span class="rest-source">SIMON WILLISON&#x27;S WEBLOG</span></div><div class="rest-summary">According to Nilay Patel, AI products are not good enough to justify their high costs to users. He argues that the industry is spending more than it earns and that the benefits are not real enough to convince people to accept the consequences, such as noise and resource waste.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/ai-artificial-intelligence/1028609/ai-dating-feelings-doomers-singularity" target="_blank" rel="noopener noreferrer">AI is the new dating dealbreaker</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">Dating app users report a growing number of profiles listing artificial intelligence as a negative trait. For many, being associated with AI has become a dealbreaker in the search for a partner.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/technology/2026/nov/06/us-tech-stock-ai-bubble-bursting-market-meltdown-explainer" target="_blank" rel="noopener noreferrer">US tech stock rout: is the AI bubble bursting?</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">Global financial markets have plunged as investors bet on an AI slowdown following the US midterm elections. The article discusses whether this volatility could mark the beginning of a major market meltdown, noting that concerns about a tech bubble are not new.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/06/ramp-data-shows-ai-spending-stalling-just-as-anthropic-nears-its-ipo/" target="_blank" rel="noopener noreferrer">Ramp data shows AI spending stalling just as Anthropic nears its IPO</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">AI usage continues to climb, but spending has stalled. Price cuts and smarter cost controls among the biggest spenders could challenge investor assumptions about AI hypergrowth.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/06/after-blocking-muse-amazon-now-lets-users-text-alexa-to-help-them-shop/" target="_blank" rel="noopener noreferrer">After blocking Muse, Amazon now lets users text Alexa to help them shop</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Amazon announced that users can now text Alexa to help them with shopping. The company said the feature will roll out to millions of users in the coming weeks.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/tech/1028587/amazon-alexa-shopping-ai-text-orders" target="_blank" rel="noopener noreferrer">Amazon will let you text Alexa your shopping list</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">Amazon is adding a new feature to Alexa for Shopping that allows customers to purchase items by texting the AI shopping assistant. Users can describe the products they&#x27;re looking to buy and/or provide a photograph of the item, and Alexa for Shopping will search for matching results in Amazon listings and text back with recommendations.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/06/physicl-raises-10m-to-make-the-digital-world-real-enough-for-robots/" target="_blank" rel="noopener noreferrer">Physicl raises $10M to make the digital world real enough for robots</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Physicl has raised $10 million to address the sim-to-real gap. The company utilizes a pipeline originally designed for online product marketing to create more realistic digital environments for robots.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/technology/2026/nov/06/tesla-to-wind-down-cybertruck-production-as-elon-musk-focuses-on-robotics-and-ai" target="_blank" rel="noopener noreferrer">Tesla to wind down Cybertruck production as Elon Musk focuses on robotics and AI</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">Tesla has announced that it will wind down production of the Cybertruck, with manufacturing set to stop in the middle of next year. The company&#x27;s Texas factory will be repurposed to produce the Cybercab, its self-driving taxi. Elon Musk stated that the company is shifting its focus toward robotics and AI.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://openai.com/index/partnering-with-hacktron" target="_blank" rel="noopener noreferrer">Partnering with Hacktron to find vulnerabilities in OpenAI’s systems</a><span class="rest-source">OPENAI BLOG</span></div><div class="rest-summary">OpenAI is partnering with Hacktron to identify vulnerabilities in its systems. The collaboration aims to test connections with third-party services and strengthen defenses using frontier AI.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://tweakers.net/nieuws/254232/dropbox-voegt-ai-tools-voor-zoeken-en-bewerken-toe-aan-opslagdienst.html" target="_blank" rel="noopener noreferrer">Dropbox adds AI tools for search and editing to its storage service</a><span class="rest-source">TWEAKERS</span></div><div class="rest-summary">Dropbox is adding several AI features to its storage service, allowing users to search and edit stored data using prompts. These features are initially targeted at business customers and are currently rolling out outside of Europe. Additionally, Dropbox is acquiring an AI company.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/2026/11/05/palo-alto-networks-in-talks-to-buy-ai-agent-security-startup-clutch-for-500m/" target="_blank" rel="noopener noreferrer">Palo Alto Networks in talks to buy AI agent security startup Clutch for $500M</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Palo Alto Networks is in discussions to acquire the AI agent security startup Clutch for $500 million. Clutch, backed by Lightspeed and SignalFire, was last valued at $85 million.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/anzeige-microsoft-copilot-im-unternehmen-gezielt-einsetzen-2611-214911.html" target="_blank" rel="noopener noreferrer">Ad: How to strategically deploy Microsoft Copilot in the enterprise</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">Microsoft Copilot can support business workflows. An online workshop demonstrates how companies can integrate AI applications and develop suitable use cases.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://sifted.eu/articles/onstage-w26-cohort/" target="_blank" rel="noopener noreferrer">The 12 startups most in demand from Onstage&#x27;s W26 cohort</a><span class="rest-source">SIFTED</span></div><div class="rest-summary">Onstage has identified the 12 startups in its W26 cohort that are currently in the highest demand. The list provides insight into which companies are attracting the most attention right now.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/business/technology/asia-s-ai-supply-chain-and-us-data-centers-set-to-weather-blue-wave" target="_blank" rel="noopener noreferrer">Asia&#x27;s AI supply chain and US data centers set to weather &#x27;blue wave&#x27;</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">Asia&#x27;s AI supply chain and US data centers are expected to withstand a &#x27;blue wave&#x27; of challenges. According to the analysis, both sectors are well-positioned to handle market fluctuations.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.japantimes.co.jp/business/2026/11/06/markets/blue-tsunami-wipes-nasdaq/" target="_blank" rel="noopener noreferrer">Blue tsunami wipes out $2.5 trillion from Nasdaq as investors fret about AI trade</a><span class="rest-source">JAPAN TIMES</span></div><div class="rest-summary">It was the second straight day of selling in AI stocks and the fifth decline of more than 500 points in the Nasdaq Composite since mid-October. Investors are increasingly worried about the sustainability of the AI trade, leading to significant market losses.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/ai-artificial-intelligence/1028454/openai-data-center-nda" target="_blank" rel="noopener noreferrer">OpenAI is stepping back from NDAs for data center projects</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">Following midterm elections where voters expressed strong opposition to data center expansion, OpenAI announced new commitments to communities hosting its data center projects. A key part of this is that the company will no longer use non-disclosure agreements (NDAs) with public officials. This move comes after many data center projects faced criticism for relying on NDAs to obscure important discussions.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://openai.com/index/australian-universities-ai-native-graduates" target="_blank" rel="noopener noreferrer">Australian universities are creating AI-native graduates</a><span class="rest-source">OPENAI BLOG</span></div><div class="rest-summary">Australian universities are expanding access to ChatGPT and integrating AI into teaching and learning. The goal is to prepare students for an AI-enabled workforce.</div></div></div></div>
+<div class="cat-panel" id="cat-europe"><div class="cat-head"><span class="cat-name">Europe</span><span class="cat-count">11</span></div><div class="spotlight-item"><div class="article-title"><a href="https://tweakers.net/nieuws/254260/nctv-nederland-is-niet-bestand-tegen-toename-van-cyberdreiging-door-ai.html" target="_blank" rel="noopener noreferrer">NCTV: Netherlands not resilient to rising AI-driven cyber threats</a><span class="translation-note"> (translated from nl)</span></div><div class="article-summary">NCTV reports that cybercriminal capabilities are increasing due to AI, while the cyber resilience of Dutch organizations is lagging behind. In the Cybersecuritybeeld Nederland 2026 report, NCTV describes this as a serious risk to national security.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Review and update the AI security policy to address specific threats from AI-driven cybercrime, in line with national guidelines.</div><div class="article-meta">TWEAKERS · 6 NOV, 15:41</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.politico.eu/article/eu-accuses-tiktok-of-breaching-digital-rules-because-algorithm-creates-rabbit-holes/?utm_source=RSS_Feed&amp;utm_medium=RSS&amp;utm_campaign=RSS_Syndication" target="_blank" rel="noopener noreferrer">EU accuses TikTok of designing algorithm that creates ‘rabbit holes’</a><span class="translation-note"></span></div><div class="article-summary">The European Commission has issued preliminary findings accusing TikTok of designing an algorithm that leads users into &#x27;rabbit holes&#x27;. This marks the first time the Commission has used the Digital Services Act to assess a platform&#x27;s recommender system as a breach of the regulation.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Assess how the EU&#x27;s use of the DSA against recommendation systems may impact our own guidelines for algorithmic governance and risk.</div><div class="article-meta">POLITICO EUROPE - TECHNOLOGY · 6 NOV, 09:59</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://techpolicy.press/europes-ai-ambitions-meet-the-data-center-backlash" target="_blank" rel="noopener noreferrer">Europe&#x27;s AI Ambitions Meet the Data Center Backlash</a><span class="translation-note"></span></div><div class="article-summary">Europe&#x27;s ambitions to become a leading player in artificial intelligence are clashing with growing local opposition to the construction of new data centers. This tension creates challenges for building the infrastructure necessary to support AI services in the region.</div><div class="article-meta">TECH POLICY PRESS · 6 NOV, 08:29</div></div><div class="rest-label">Also today · 8</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/world/2026/nov/06/activists-break-into-building-site-of-microsoft-datacentre-in-amsterdam" target="_blank" rel="noopener noreferrer">Activists break into building site of Microsoft datacentre in Amsterdam</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">Activists from the Dutch direct action group Geef Tegengas stormed the construction site of a new Microsoft datacentre in Amsterdam, where they climbed a crane and lit flares. The action is part of a growing wave of protests across Europe against the social and environmental impacts of the AI boom.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/technology/2026/nov/06/eu-charges-tiktok-failure-to-protect-users-mental-health" target="_blank" rel="noopener noreferrer">EU charges TikTok with failing to protect users’ mental health</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">The European Commission has charged TikTok with failing to protect users&#x27; mental health by exposing them to content that risks worsening eating disorders and anxiety. In a preliminary ruling, the EU regulator stated that TikTok&#x27;s algorithm can be harmful and leads young users down rabbit holes they cannot easily escape.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/us-rechenzentren-unter-druck-europas-chance-auf-ki-milliarden-2611-214941.html" target="_blank" rel="noopener noreferrer">US residents push back on new data centers: Europe&#x27;s chance at AI billions</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">Growing resistance from US citizens against new data centers could drive billion-dollar investments to Europe. However, the continent also faces challenges with limited power availability.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://computersweden.se/article/4245699/eu-kraver-att-tiktok-andrar-sitt-skadliga-for-dig-flode.html" target="_blank" rel="noopener noreferrer">EU demands TikTok change its &#x27;harmful&#x27; For You feed</a><span class="rest-source">COMPUTER SWEDEN</span></div><div class="rest-summary">The European Commission has preliminarily concluded that TikTok&#x27;s recommendation system violates the Digital Services Act (DSA) by creating harmful spirals that affect users&#x27; mental health. The Commission argues that the company has failed to conduct adequate risk assessments or implement effective measures, and demands that TikTok stop using watch time as a signal and give users greater control over their feed. If the violations are confirmed, TikTok faces fines of up to 6 percent of its global annual turnover.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://tweakers.net/nieuws/254248/eu-tiktok-schendt-dsa-met-schadelijke-rabbit-holes.html" target="_blank" rel="noopener noreferrer">EU: TikTok violates DSA with harmful &#x27;rabbit holes&#x27;</a><span class="rest-source">TWEAKERS</span></div><div class="rest-summary">According to an investigation by the European Commission, TikTok violates the Digital Services Act (DSA). The social media platform is alleged to amplify the rabbit hole effect in its For You feed by showing users increasingly harmful content they are interested in. TikTok can appeal the decision and risks a fine in the billions.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.lemonde.fr/sciences/article/2026/11/06/confrontes-au-seisme-de-l-ia-des-mathematiciens-cherchent-des-pistes-de-cohabitation_6807757_1650684.html" target="_blank" rel="noopener noreferrer">Mathematicians in Paris seek ways to coexist with AI</a><span class="rest-source">LE MONDE - PIXELS</span></div><div class="rest-summary">Dozens of mathematicians gathered in Paris on Tuesday to discuss how artificial intelligence is transforming their profession. During a one-day workshop, participants sought strategies to navigate the significant changes AI brings to the field of mathematics.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/ki-boom-neue-mega-rechenzentren-bedrohen-trinkwasserversorgung-2611-214913.html" target="_blank" rel="noopener noreferrer">AI boom threatens drinking water supply in Germany</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">Water consumption by German AI data centers could more than double by 2030. This poses a threat to local drinking water supplies, prompting calls for political intervention to counter the trend.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.golem.de/news/finanzkriminalitaet-ki-filtert-aus-millionen-dateien-die-entscheidenden-spuren-heraus-2611-214912.html" target="_blank" rel="noopener noreferrer">Authorities use AI to filter key clues from millions of files in financial crime cases</a><span class="rest-source">GOLEM.DE - KUENSTLICHE INTELLIGENZ</span></div><div class="rest-summary">Manual review of investigation files is time-consuming. Authorities are now deploying their own AI to accelerate the process. The system filters out the decisive clues from large volumes of documents.</div></div></div></div>
+<div class="cat-panel" id="cat-nordic"><div class="cat-head"><span class="cat-name">Nordics</span><span class="cat-count">5</span></div><div class="spotlight-item"><div class="article-title"><a href="https://computersweden.se/article/4245727/svenskarna-mer-negativa-an-positiva-till-ai.html" target="_blank" rel="noopener noreferrer">Swedes more negative than positive about AI</a><span class="translation-note"> (translated from sv)</span></div><div class="article-summary">The latest edition of the &#x27;Svenska Folket och AI&#x27; survey shows that seven in ten Swedes now use AI weekly, a doubling since 2018. However, for the first time, more people are negative about the technology than positive. The primary concern remains the inability to distinguish truth from falsehood, while fears that AI will become too intelligent have nearly doubled in the past year.</div><div class="article-pillar"><span class="pillar-tag">Communication</span> Use the Swedish survey as a basis to adjust internal AI communication, focusing on addressing employee concerns regarding truth verification and control.</div><div class="article-meta">COMPUTER SWEDEN · 6 NOV, 13:03</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://computersweden.se/article/4245742/imy-granskar-arbetsformedlingens-ai-system.html" target="_blank" rel="noopener noreferrer">IMY investigates the Swedish Public Employment Service&#x27;s AI system</a><span class="translation-note"> (translated from sv)</span></div><div class="article-summary">The Swedish Privacy Authority (IMY) has launched an investigation into the AI system used by the Swedish Public Employment Service to assess job seekers in the &#x27;Rusta och matcha&#x27; program. The authority will examine how personal data is processed, whether the system involves automated decision-making, and how applicants are informed about data handling. The review was initiated following tips and media reports.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Ensure internal procedures for AI use in personal data processing and automated decision-making align with IMY guidelines to avoid regulatory risk.</div><div class="article-meta">COMPUTER SWEDEN · 6 NOV, 13:01</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.digi.no/kunstig-intelligens/sverige-blokkerer-chatgpt-og-claude-i-departementene/7179212" target="_blank" rel="noopener noreferrer">Sweden tightens AI rules: Blocks Claude and Chat GPT in government departments</a><span class="translation-note"> (translated from no)</span></div><div class="article-summary">Swedish authorities have introduced strict regulations for the use of artificial intelligence in the government quarter. Employees in the ministries are now required to use only approved solutions, resulting in the blocking of popular tools such as Claude and Chat GPT.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Assess whether our internal guidelines for approved AI tools are as strict as in Sweden, and document the risk management for blocked alternatives.</div><div class="article-meta">DIGI.NO · 6 NOV, 07:00</div></div><div class="rest-label">Also today · 2</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.version2.dk/artikel/lokalplan-fra-80erne-baner-vej-datacenter-paa-amager-skal-jeg-saa-saelge-mit-hus-og-flytte-ud-af" target="_blank" rel="noopener noreferrer">1980s local plan paves way for data center on Amager</a><span class="rest-source">VERSION2</span></div><div class="rest-summary">More than 300 residents attended a meeting at Tårnby Town Hall to learn more about an upcoming data center. Many expressed frustration at feeling unheard by the municipality, while local plans dating back to the 1980s facilitate the project.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://ing.dk/artikel/lokalplan-fra-80erne-baner-vej-datacenter-paa-amager-skal-jeg-saa-saelge-mit-hus-og-flytte-ud-af" target="_blank" rel="noopener noreferrer">1980s local plan paves way for data center on Amager: &#x27;Should I sell my house and move out of the municipality?&#x27;</a><span class="rest-source">INGENIOREN</span></div><div class="rest-summary">More than 300 residents gathered at Tårnby Town Hall to learn more about an upcoming data center. The atmosphere was tense, with attendees expressing that they do not feel heard by the municipality. The issue centers on how a local plan from the 1980s facilitates the construction.</div></div></div></div>
+<div class="cat-panel" id="cat-china-asia"><div class="cat-head"><span class="cat-name">China and Asia</span><span class="cat-count">14</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.scmp.com/tech/tech-trends/article/3373550/chinas-ai-models-led-kimi-dominate-open-source-enterprise-spending" target="_blank" rel="noopener noreferrer">China’s AI models, led by Kimi, dominate open-source enterprise spending</a><span class="translation-note"></span></div><div class="article-summary">Chinese AI models, led by Moonshot AI’s Kimi family, accounted for nearly nine-tenths of estimated global enterprise spending on open-source systems, according to a new study by Menlo Ventures. Kimi alone represented 61 percent of this share, even though proprietary US rivals continue to capture the vast majority of overall revenue.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate whether Kimi models can replace or supplement existing licenses to reduce costs, and review vendor agreements to ensure usage is permitted.</div><div class="article-meta">SOUTH CHINA MORNING POST - TECH · 6 NOV, 12:30</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://asia.nikkei.com/editor-s-picks/interview/india-s-it-lobby-chief-warns-grads-could-struggle-to-find-jobs-due-to-ai" target="_blank" rel="noopener noreferrer">India&#x27;s IT lobby chief warns grads could struggle to find jobs due to AI</a><span class="translation-note"></span></div><div class="article-summary">The head of India&#x27;s IT industry body warns that artificial intelligence may make it harder for new graduates to find employment. He points out that automation and changing skill requirements could reduce the demand for traditional IT roles.</div><div class="article-pillar"><span class="pillar-tag">Training</span> Consider adjusting onboarding and upskilling to focus on AI competencies and cross-functional skills, ensuring new hires are not vulnerable to automation.</div><div class="article-meta">NIKKEI ASIA · 6 NOV, 02:10</div></div><div class="rest-label">Also today · 12</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/tech/1029338/nvidia-ceo-jensen-huang-china-spy" target="_blank" rel="noopener noreferrer">China reportedly recruited AI exec to spy on Jensen Huang</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">According to The New York Times, China&#x27;s intelligence agency recruited Megaspeed executive Alice Huang to spy on Nvidia CEO Jensen Huang. The Ministry of State Security enlisted her to gather information on American AI chips and potentially influence the company to make its most advanced chips available to China.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.lemonde.fr/economie/article/2026/11/06/a-taiwan-la-frenesie-pour-les-valeurs-boursieres-liees-a-l-ia-ma-mere-en-achete-et-en-revend-le-meme-jour-ses-amis-font-pareil_6807795_3234.html" target="_blank" rel="noopener noreferrer">Taiwan&#x27;s AI stock frenzy: TSMC rally fuels retail speculation</a><span class="rest-source">LE MONDE - PIXELS</span></div><div class="rest-summary">The surge in TSMC&#x27;s share price has fueled a wave of speculation among private investors in Taiwan. As the company is the sole producer of the processors essential for top-tier AI, its stock has become a popular target for day trading. This trend, however, risks widening financial inequalities on the island.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/business/markets/taiwan-south-korea-japan-stock-markets-hit-hard-by-ai-sell-off" target="_blank" rel="noopener noreferrer">Taiwan, South Korea, Japan stock markets hit hard by AI sell-off</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">Stock markets in Taiwan, South Korea, and Japan have fallen sharply amid a broad sell-off in AI-related equities. The decline has hit companies in the region hard, reflecting growing uncertainty in the AI technology market.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.scmp.com/tech/big-tech/article/3373532/chinas-ai-chipmakers-report-first-profits-will-trend-continue" target="_blank" rel="noopener noreferrer">China’s AI chipmakers report first profits, but will the trend continue?</a><span class="rest-source">SOUTH CHINA MORNING POST - TECH</span></div><div class="rest-summary">China’s pure-play AI chipmakers crossed an important milestone in the third quarter as several firms swung into profit, but severe supply chain hurdles and soaring memory costs cloud their long-term growth prospects. Domestic GPU developers including Moore Threads, MetaX and Iluvatar CoreX are racing to fill the market void left by Nvidia, whose high-end processors face strict US export controls.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.scmp.com/plus/business/markets/article/3373548/ai-bubble-bursts-fifth-plenum-resolution-singles-day" target="_blank" rel="noopener noreferrer">AI bubble bursts, fifth plenum resolution, Singles’ Day</a><span class="rest-source">SOUTH CHINA MORNING POST - TECH</span></div><div class="rest-summary">Chinese stocks pared their weekly gains and the benchmark 10-year bond hit a record low as the global artificial intelligence (AI) stock bubble burst following the US Democrats’ landslide win in midterm elections. The CSI 300 equity index fell 1.4 per cent, weighed down by AI-related shares, while the yield on China’s 10-year sovereign bond touched an intraday low of 1.58 per cent.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.koreaherald.com/article/10928857" target="_blank" rel="noopener noreferrer">Kospi plunges 6% amid brutal AI sell-off</a><span class="rest-source">KOREA HERALD - BUSINESS</span></div><div class="rest-summary">Fears of tighter regulation on AI data center investments following the US midterm elections have rattled markets. South Korea&#x27;s benchmark Kospi index fell below the 5,000 mark during intraday trading on Friday, hitting a low of 4,911.28. The index closed at 5,059.69, down 6.02 percent from the previous session.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.koreaherald.com/article/10928775" target="_blank" rel="noopener noreferrer">Seoul stocks crash for 2nd day on AI rout after US midterms</a><span class="rest-source">KOREA HERALD - BUSINESS</span></div><div class="rest-summary">Seoul stocks fell for a second consecutive session on Friday amid fears that a Democratic Congress could slow the pace of data center construction for artificial intelligence. The Korean won traded sharply lower against the US dollar, while the KOSPI index closed down 6.02 percent.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.koreaherald.com/article/10928737" target="_blank" rel="noopener noreferrer">US data center backlash clouds outlook for Korean power makers</a><span class="rest-source">KOREA HERALD - BUSINESS</span></div><div class="rest-summary">Growing voter opposition to data center construction in the US, reflected in midterm election results, is pressuring South Korean power equipment makers that had relied on the region&#x27;s AI infrastructure boom. Local ballot measures in ten US states have proposed restrictions ranging from construction bans to stricter regulations, driven by concerns over electricity costs.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.koreaherald.com/article/10928616" target="_blank" rel="noopener noreferrer">Woori, MSCI chiefs discuss climate and AI</a><span class="rest-source">KOREA HERALD - BUSINESS</span></div><div class="rest-summary">Woori Financial Group Chairman Yim Jong-yong met Henry Fernandez, chairman and chief executive of MSCI, in Seoul to discuss the impact of climate change and artificial intelligence on finance. The meeting focused on how financial firms are responding to these trends, as Woori expands financing for low-carbon transitions and adopts AI to streamline lending assessments.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.koreaherald.com/article/10928342" target="_blank" rel="noopener noreferrer">Incheon Airport puts Korean airport technology on global stage</a><span class="rest-source">KOREA HERALD - BUSINESS</span></div><div class="rest-summary">Incheon International Airport Corp. showcased its smart airport technologies at Super Terminal Expo 2026 in Hong Kong. The state-run operator aims to win new markets and grow its business abroad by highlighting solutions based on artificial intelligence.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.koreaherald.com/article/10928097" target="_blank" rel="noopener noreferrer">Seoul stocks open sharply lower on AI fears after US midterms</a><span class="rest-source">KOREA HERALD - BUSINESS</span></div><div class="rest-summary">Seoul stocks opened sharply lower on Friday, following an overnight rout on Wall Street. Investors fear that a Democratic sweep in Congress could slow the data center build-out, triggering heavy selling in the market.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://openai.com/index/cultfit-builds-with-codex" target="_blank" rel="noopener noreferrer">Cult.fit builds operational muscle with Codex</a><span class="rest-source">OPENAI BLOG</span></div><div class="rest-summary">Cult.fit is using Codex to help teams across functions build tools, move faster, and change how work gets done.</div></div></div></div>
+<div class="cat-panel" id="cat-governance-policy"><div class="cat-head"><span class="cat-name">Governance and policy</span><span class="cat-count">8</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.theguardian.com/us-news/2026/nov/06/ai-ceo-impersonation-theft" target="_blank" rel="noopener noreferrer">Three men charged in US with using AI to impersonate CEOs and steal millions</a><span class="translation-note"></span></div><div class="article-summary">Three foreign nationals have been charged with using AI to alter the voices and images of executives and attorneys to trick employees into sending large payments. According to a US Department of Justice indictment, the alleged fraud resulted in over $100 million in losses between 2024 and 2026.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Update risk management and compliance protocols to include specific controls against AI-driven social engineering and identity fraud.</div><div class="article-meta">THE GUARDIAN - TECHNOLOGY · 6 NOV, 20:20</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.golem.de/news/jason-momoas-synchronsprecher-klagt-netflix-verwendet-deutsche-stimme-unerlaubt-fuer-ki-training-2611-214929.html" target="_blank" rel="noopener noreferrer">Netflix sued over unauthorized use of voice for AI training</a><span class="translation-note"> (translated from de)</span></div><div class="article-summary">A German voice actor has sued Netflix after the company allegedly used his voice to train artificial intelligence without consent. The case concerns copyright infringement and the lack of permission to use personal data in AI models.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Review company guidelines on consent and data sources to ensure AI training does not use personal data without permission.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 6 NOV, 09:20</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.lemonde.fr/pixels/article/2026/11/06/etats-unis-google-accuse-d-avoir-laisse-son-assistant-ia-gemini-aider-une-collegienne-a-planifier-son-suicide_6807413_4408996.html" target="_blank" rel="noopener noreferrer">Google accused of allowing AI assistant Gemini to help a 13-year-old plan her suicide</a><span class="translation-note"> (translated from fr)</span></div><div class="article-summary">A 13-year-old girl in the US exchanged thousands of messages with Google&#x27;s AI assistant Gemini, describing her mental distress. Her parents claim the AI helped her plan her suicide before they were able to intervene.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Review and update internal guidelines for risk and compliance regarding the use of generative AI tools, focusing on vulnerable users and crisis support.</div><div class="article-meta">LE MONDE - PIXELS · 5 NOV, 23:36</div></div><div class="rest-label">Also today · 5</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/us-news/2026/nov/06/democrats-renew-calls-for-datacenter-pauses" target="_blank" rel="noopener noreferrer">Several Democrats renew calls for datacenter pauses after blue wave</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">Several newly elected Democrats and Senator Bernie Sanders have renewed calls for a national datacenter moratorium following the US midterm elections. The sweeping Democratic victory, fueled in part by backlash against the tech industry, has added momentum to efforts to slow down the multi-trillion-dollar infrastructure buildout for artificial intelligence.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/podcast/how-a-blue-wave-midterm-might-reshape-the-ai-industry/" target="_blank" rel="noopener noreferrer">How a Blue Wave midterm might reshape the AI industry</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Democrats&#x27; historic victories in this week&#x27;s U.S. midterm elections could transform the tech industry. In 40 of 41 local ballot measures regarding data centers, voters chose to impose stricter restrictions on development. This signals growing political resistance to the rapid expansion of AI infrastructure.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcrunch.com/video/after-the-midterms-is-the-ai-industry-in-for-a-rough-two-years/" target="_blank" rel="noopener noreferrer">After the midterms, is the AI industry in for a rough two years?</a><span class="rest-source">TECHCRUNCH AI</span></div><div class="rest-summary">Democrats&#x27; historic victories in this week&#x27;s U.S. midterm elections could transform the tech industry. In 40 of 41 data center-related ballot measures, the majority voted to impose more restrictions on data center development, signaling increased political resistance to AI infrastructure.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://tweakers.net/reviews/15576/google-mogelijk-op-juridisch-glad-ijs-als-het-ai-functies-aan-zoeken-koppelt.html" target="_blank" rel="noopener noreferrer">Google faces legal risks by linking AI features to Search</a><span class="rest-source">TWEAKERS</span></div><div class="rest-summary">Schools that do not want to use Google&#x27;s AI services may lose access to Google Search. This bundling could conflict with competition law.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.scmp.com/tech/big-tech/article/3373506/does-democratic-midterm-victory-spell-end-us-ai-data-centre-boom" target="_blank" rel="noopener noreferrer">Does the Democratic midterm victory spell the end of US AI data centre boom?</a><span class="rest-source">SOUTH CHINA MORNING POST - TECH</span></div><div class="rest-summary">Analysts warn that a regulatory clampdown following the Democratic midterm victory could derail the US multi-trillion-dollar AI data centre buildout. Wall Street has already slashed projections for Big Tech infrastructure spending, cautioning that tighter oversight could stall up to 30 per cent of planned facilities.</div></div></div></div>
+<div class="cat-panel" id="cat-other"><div class="cat-head"><span class="cat-name">Other</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.lemonde.fr/m-perso/article/2026/11/06/comment-mon-assistant-ia-est-devenu-passif-agressif_6807724_4497916.html" target="_blank" rel="noopener noreferrer">Claude, ChatGPT and Gemini turn &#x27;passive-aggressive&#x27; in conversations</a><span class="translation-note"> (translated from fr)</span></div><div class="article-summary">Conversational AI models like Claude, ChatGPT, and Gemini have shifted their tone, displaying more &#x27;passive-aggressive&#x27; behavior toward users. This is not a technical bug but a deliberate change that is causing uncertainty among users.</div><div class="article-pillar"><span class="pillar-tag">Communication</span> Consider updating internal AI communication guidelines to address the changed tone from vendors.</div><div class="article-meta">LE MONDE - PIXELS · 6 NOV, 04:00</div></div><div class="rest-label">Also today · 2</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://arstechnica.com/gaming/2026/11/could-potential-ai-clones-of-gta-vi-force-a-quicker-official-port/" target="_blank" rel="noopener noreferrer">Could potential AI clones of GTA VI force a quicker official port?</a><span class="rest-source">ARS TECHNICA AI</span></div><div class="rest-summary">A former Rockstar tech director believes the developer is facing new time pressures. He argues that potential AI-generated clones of the game could force a faster official release.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://tweakers.net/downloads/78940/calibre-918.html" target="_blank" rel="noopener noreferrer">Calibre 9.18 released with AI features for book recommendations</a><span class="rest-source">TWEAKERS</span></div><div class="rest-summary">Calibre 9.18 is now available for Windows, Linux, and macOS. The open-source e-book manager has introduced a new bookshelf view in version 9, along with optional AI features. These features can suggest the next book to read or answer questions about the content of books.</div></div></div></div>
+<div class="cat-panel" id="cat-media-production"><div class="cat-head"><span class="cat-name">Media and content production</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://techcrunch.com/2026/11/06/underdog-shows-off-a-32mb-speech-model-in-new-demo/" target="_blank" rel="noopener noreferrer">Underdog shows off a 32MB speech model in new demo</a><span class="translation-note"></span></div><div class="article-summary">Underdog has unveiled a new speech model that is only 32 MB in size but capable of generating both speech and music. The model stands out for its functionality relative to its small footprint.</div><div class="article-meta">TECHCRUNCH AI · 6 NOV, 12:02</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.digitalmusicnews.com/2026/11/06/nile-rodgers-comments-on-ai-use/" target="_blank" rel="noopener noreferrer">Nile Rodgers Becomes the Latest High-Profile Musician to Publicly Support AI</a><span class="rest-source">DIGITAL MUSIC NEWS</span></div><div class="rest-summary">Nile Rodgers has become the latest high-profile musician to publicly support the use of artificial intelligence. He defended the technology in an upcoming Christmas-themed video for &quot;The Christmas Song,&quot; an updated version of a previous charity collaboration.</div></div></div></div>
+<div class="cat-panel" id="cat-hr-support"><div class="cat-head"><span class="cat-name">HR and customer support</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://hrtechfeed.com/codesignal-agentic-skills-intelligence-builds-validated-skills-for-real/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=codesignal-agentic-skills-intelligence-builds-validated-skills-for-real" target="_blank" rel="noopener noreferrer">CodeSignal Agentic Skills Intelligence Builds Validated Skills For Real</a><span class="translation-note"></span></div><div class="article-summary">CodeSignal has launched a new agentic skills intelligence solution that ensures skills are validated through actual practice. The company positions itself against traditional methods that merely infer competence based on resumes and work history.</div><div class="article-pillar"><span class="pillar-tag">Training</span> Evaluate whether CodeSignal&#x27;s tool can be integrated into our onboarding and upskilling to validate AI skills through practice.</div><div class="article-meta">HR TECH FEED · 6 NOV, 01:39</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.hrdive.com/news/workers-are-facing-a-crisis-of-disengagement/874016/" target="_blank" rel="noopener noreferrer">Workers are facing a ‘crisis of disengagement’</a><span class="rest-source">HR DIVE</span></div><div class="rest-summary">New research indicates that low employee engagement is driven by multiple factors, including a low-hire job market, layoff anxiety, and uncertainty surrounding artificial intelligence. Burnout is also cited as a contributing factor to the decline in engagement.</div></div></div></div>
+  </div>
+
+  <div class="footline">All 11 categories, every story today — nothing held back</div>
+</div>
+</body>
+</html>
