@@ -17,10 +17,13 @@ jobs:
         with:
           fetch-depth: 0  # Full history so enableGitInfo gives each post its real lastmod
 
-      # Setup Hugo
+      # Setup Hugo. Extended, a superset of the standard build: since 2026-11-09 05:12 UTC GitHub
+      # answers 504 for the standard hugo_0.169.0_linux-amd64.tar.gz asset every time, while the
+      # extended asset of the same release downloads fine.
       - uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
+          extended: true
 
       # Build the site (set 'src' as your hugo site root)
       - name: Build Hugo site
