@@ -96,15 +96,16 @@ jobs:
             --content-cache-control "no-cache, no-store, must-revalidate" \
             --overwrite
 
-      # Retention: briefing/ only ever holds index.html (today) plus the last 4
-      # dated pages (YYYY-MM-DD.html) - delete anything older that lingers.
+      # Retention: the repo's briefing/ holds only today plus the last 4 dated pages,
+      # but upload-batch never deletes, so older editions stay live in $web.
+      # Delete dated pages (YYYY-MM-DD.html) once they are older than 4 months.
       - name: Prune old briefing pages
         if: hashFiles('briefing/**') != ''
         env:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
           AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
         run: |
-          cutoff=$(date -u -d "-4 days" +%Y-%m-%d)
+          cutoff=$(date -u -d "-4 months" +%Y-%m-%d)
           az storage blob list \
             --account-name "${AZURE_STORAGE_ACCOUNT}" \
             --account-key "${AZURE_STORAGE_KEY}" \
