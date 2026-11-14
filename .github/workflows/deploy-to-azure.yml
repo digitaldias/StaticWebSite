@@ -32,14 +32,9 @@ jobs:
           hugo --minify
           ls -la public/ | head -10  # Verify build output
 
-      # Install Azure CLI & AzCopy
-      - name: Install Azure CLI and AzCopy
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-          AZCOPY_VERSION=$(curl -s https://api.github.com/repos/Azure/azure-storage-azcopy/releases/latest | grep tag_name | cut -d '"' -f 4)
-          wget https://github.com/Azure/azure-storage-azcopy/releases/download/${AZCOPY_VERSION}/azcopy_linux_amd64_${AZCOPY_VERSION/v/}.tar.gz
-          tar -xzf azcopy_linux_amd64_${AZCOPY_VERSION/v/}.tar.gz
-          sudo cp azcopy_linux_amd64_${AZCOPY_VERSION/v/}/azcopy /usr/bin/
+      # Install Azure CLI
+      - name: Install Azure CLI
+        run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
       # Upload files to Azure Blob Storage
       - name: Deploy to Azure Blob Storage ($web)
