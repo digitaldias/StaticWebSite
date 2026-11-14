@@ -558,5 +558,37 @@
         "score": 183
       }
     ]
+  },
+  "2026-11-14-local-image-model-scout": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 167
+      },
+      {
+        "heading": "Local model scout: a nightly job that recommends better models",
+        "score": 161
+      },
+      {
+        "heading": "Decider: the local judge that can see",
+        "score": 188
+      },
+      {
+        "heading": "Test new local models at work: the same loop for your tools",
+        "score": 216
+      },
+      {
+        "heading": "Test set: six prompts, five of them hard",
+        "score": 203
+      },
+      {
+        "heading": "Scout prompt: paste this into your own Claude",
+        "score": 191
+      },
+      {
+        "heading": "Two-order judging: a fair verdict from a biased judge",
+        "score": 270
+      }
+    ]
   }
 }

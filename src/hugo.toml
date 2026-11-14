@@ -79,8 +79,9 @@ defaultContentLanguage = 'en'
     since = "2026-11"
     post  = "/blog/2026-11-06-robots-txt-llms-txt-ai-agents/"
   [[params.positions]]
-    text  = "Buy a 3D printer for your household."
-    post  = "/blog/2026-05-23-ai-at-the-workbench/"
+    text  = "Let a scout find updated models for you."
+    since = "2026-11"
+    post  = "/blog/2026-11-14-local-image-model-scout/"
   [[params.positions]]
     text  = "Let a local model do the first pass of your news. Keep the last pass yourself."
     since = "2026-11"
@@ -227,8 +228,9 @@ defaultContentLanguage = 'en'
         since = "2026-11"
         post  = "/blog/2026-11-06-robots-txt-llms-txt-ai-agents/"
       [[languages.nb.params.positions]]
-        text  = "Kjøp en 3D-printer til hjemmet."
-        post  = "/blog/2026-05-23-ai-at-the-workbench/"
+        text  = "La en speider finne oppdaterte modeller for deg."
+        since = "2026-11"
+        post  = "/blog/2026-11-14-local-image-model-scout/"
       [[languages.nb.params.positions]]
         text  = "La en lokal modell sortere nyhetene dine først. Den siste gjennomgangen tar du selv."
         since = "2026-11"

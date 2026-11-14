@@ -1,6 +1,19 @@
 # History of the homepage "Listening" pick, newest first. The first entry shows in the Now box.
 # artist and song are required; guest, genres, spotify (artist URL), song_url and note_en / note_nb are optional.
 # Facts come from the Spotify API. It returns no genres, so none are listed.
+- date: 2026-11-14
+  artist: Maceo Parker
+  spotify: https://open.spotify.com/artist/4RAQZfFgR7NPAWjKwUpEeC
+  song: Shake Everything You've Got
+  song_url: https://www.youtube.com/watch?v=xTfRjihu2rY
+  guest: Fred Wesley and Pee Wee Ellis
+  note_en: 'Funk and soul jazz saxophonist from Kinston, North Carolina, born in 1943. He joined James Brown''s band in the mid-1960s, and his sharp, staccato solos helped define Brown''s funk. He later played with Parliament-Funkadelic and Prince, and has led his own band since the early 1990s. A live version of this song is on his album Life on Planet Groove, released on 1 September 1992. The video is from his concert "My First Name Is Maceo", restored from DVD to Full HD and put on YouTube by JAZE.club on 21 November 2020. It runs 7 minutes 19. The trombonist Fred Wesley and the saxophonist Pee Wee Ellis, who co-wrote "Cold Sweat", are old James Brown hands too.'
+  note_nb: 'Funk- og soul jazz-saksofonist fra Kinston i North Carolina, født i 1943. Han begynte i James Browns band midt på 1960-tallet, og de skarpe, staccato soloene hans var med på å prege Browns funk. Senere spilte han med Parliament-Funkadelic og Prince, og han har ledet sitt eget band siden tidlig på 1990-tallet. En live-versjon av denne låten står på albumet Life on Planet Groove, utgitt 1. september 1992. Videoen er fra konserten «My First Name Is Maceo», restaurert fra DVD til Full HD og lagt ut på YouTube av JAZE.club 21. november 2020. Den varer 7 minutter og 19 sekunder. Trombonisten Fred Wesley og saksofonisten Pee Wee Ellis, som var med på å skrive «Cold Sweat», er også gamle James Brown-folk.'
+  image: /images/listening/maceo-parker.jpg
+  image_alt_en: "Maceo Parker in a black leather jacket and a patterned bow tie, looking to the left."
+  image_alt_nb: "Maceo Parker i svart skinnjakke og mønstret sløyfe, med blikket vendt mot venstre."
+  image_caption_en: "Maceo Parker in Washington, D.C., 14 September 1997. Photo: John Mathew Smith, CC BY-SA 2.0."
+  image_caption_nb: "Maceo Parker i Washington, D.C., 14. september 1997. Foto: John Mathew Smith, CC BY-SA 2.0."
 - date: 2026-11-08
   artist: Count Basic
   spotify: https://open.spotify.com/artist/6j8m6cVc4301niMvVMP0kz
