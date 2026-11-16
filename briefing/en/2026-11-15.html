@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en" data-briefing-date="2026-11-15">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f6f4">
+<title>AI News Stream — 2026-11-15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&family=Geist+Mono:wght@400;500&display=swap">
+<style id="tokens">/* =============================================================================
+   Sea Glass design tokens: the single source for digitaldias.com and /briefing/.
+   The site bundles this file ahead of styles.css. The briefing publisher reads
+   it from this repo and inlines it. Change a value here, nowhere else.
+   ============================================================================= */
+
+:root {
+  color-scheme: light; /* Light by default; dark only when the reader picks it */
+
+  /* Colour: light value first, dark value second */
+  --ground:   light-dark(#f4f6f4, #0f1a1b);
+  --ground-2: light-dark(#e7eeec, #162527);
+  --ink:      light-dark(#14201f, #e3ebe9);
+  --muted:    light-dark(#4f5f5d, #9db1ae);
+  --rule:     light-dark(#cdd8d5, #2a3b3d);
+  --teal:     light-dark(#0b5d63, #5fc3c2);
+  --deep-1:   light-dark(#d7ebe8, #15343a);
+  --deep-2:   light-dark(#a9d3cf, #18454c);
+  --deep-3:   light-dark(#5aa5a3, #1c5860);
+  --on-teal:  light-dark(#f4f6f4, #0f1a1b);
+
+  /* Type */
+  --display: "Schibsted Grotesk", system-ui, sans-serif;
+  --text:    "Source Serif 4", Georgia, serif;
+  --mono:    "Geist Mono", ui-monospace, monospace;
+
+  /* Layout: the widest the page column gets on large screens */
+  --page: 1440px;
+
+  /* Motion */
+  --ease-out:   cubic-bezier(.16, 1, .3, 1);
+  --transition: 150ms ease;
+}
+
+/* The reader's stored choice (theme.js) */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+</style>
+<style>
+/* Briefing components: Sea Glass. Expects tokens.css inlined before this block. */
+*{box-sizing:border-box;}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 1rem/1.55 var(--text);}
+a{color:inherit;text-decoration:none;transition:color var(--transition);}
+a:hover{color:var(--teal);}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+::selection{background:var(--deep-2);color:var(--ink);}
+
+/* Site header, inserted by the publish layer: identical to the site's */
+.mast{position:sticky;top:0;z-index:40;background:var(--ground);border-bottom:1px solid var(--rule);}
+.mast .wrap{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px);display:flex;align-items:center;gap:28px;height:60px;}
+.mast .wordmark{font:800 1.45rem/1 var(--display);letter-spacing:-.04em;color:var(--ink);}
+.mast .wordmark b{font-weight:inherit;color:var(--teal);}
+.nav{display:flex;gap:22px;margin-left:auto;font:600 .85rem/1 var(--display);}
+.nav a{color:var(--muted);position:relative;padding:6px 0;}
+.nav a:hover{color:var(--ink);}
+.theme-toggle{flex:none;display:grid;place-items:center;width:32px;height:32px;margin-left:-6px;padding:0;background:none;border:1px solid var(--rule);border-radius:50%;color:var(--ink);cursor:pointer;transition:border-color var(--transition);}
+.theme-toggle::before{content:"";width:14px;height:14px;border-radius:50%;border:1.5px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%);transition:transform 300ms var(--ease-out);}
+.theme-toggle[data-current="dark"]::before{transform:rotate(180deg);}
+.theme-toggle:hover{border-color:var(--teal);}
+
+/* Page column: aligned with the header */
+.page{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px) 60px;}
+
+/* Meta row: the site's mono meta line */
+.meta-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0 12px;border-bottom:1px solid var(--rule);font:400 .76rem/1.4 var(--mono);letter-spacing:.02em;color:var(--muted);}
+.meta-row .center{font:italic 400 .92rem/1.4 var(--text);letter-spacing:0;}
+
+/* Date strip: chips like the site's category filter; today in teal */
+.datestrip{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;font:500 .76rem/1 var(--mono);}
+.datestrip a{padding:7px 10px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);transition:color var(--transition),border-color var(--transition);}
+.datestrip a:hover{color:var(--teal);border-color:var(--teal);}
+.datestrip a[aria-current="page"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+
+/* Masthead: the Log page's page head */
+.masthead{display:grid;gap:14px;padding:40px 0 22px;border-bottom:2px solid var(--ink);}
+.masthead .wordmark{font:750 clamp(2.6rem,7vw,5.6rem)/.98 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.masthead .wordmark em{font-style:normal;color:var(--teal);}
+.tagline{margin:0;max-width:46ch;font:400 1.05rem/1.5 var(--text);color:var(--muted);}
+.rule-thick{display:none;}
+
+/* Hero: the day's lead story. A full-width splash headline, then picture and story side by side
+   at one height: the picture is at least 16:9 and stretches to the story's height, cropped. */
+.hero{margin:0 0 32px;padding:28px 0 32px;border-bottom:1px solid var(--rule);}
+.hero-kicker{margin-bottom:12px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hero-title{margin:0 0 24px;max-width:28ch;font:750 clamp(2rem,4.4vw,3.6rem)/1.02 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.hero-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .2em no-repeat;transition:background-size 350ms var(--ease-out);}
+.hero-title a:hover{color:inherit;background-size:100% .2em;}
+.hero-row{display:grid;gap:18px;}
+.hero-media{position:relative;display:block;overflow:hidden;background:var(--deep-1);}
+.hero-media::before{content:"";display:block;padding-top:56.25%;}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 600ms var(--ease-out);}
+.hero-media:hover img{transform:scale(1.02);}
+.hero-body .article-summary{font-size:1.04rem;}
+.hero-credit{margin-top:10px;font:italic 400 .8rem/1.4 var(--text);color:var(--muted);}
+@media (min-width:900px){.hero-row{grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:32px;}}
+
+/* KPI row: the article folio strip, hanging from the masthead's ink rule */
+.kpi-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 32px;border-bottom:1px solid var(--rule);}
+.kpi{padding:16px 20px 16px 0;}
+.kpi + .kpi{padding-left:20px;border-left:1px solid var(--rule);}
+.kpi-label{margin-bottom:8px;font:600 .66rem/1.3 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.kpi-value{font:750 2.4rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;}
+.kpi-value span{font:400 .76rem var(--mono);letter-spacing:0;color:var(--muted);}
+.kpi.accent .kpi-value{color:var(--teal);}
+
+/* Panel and bar chart */
+.panel{margin:0 0 40px;padding-top:12px;border-top:2px solid var(--ink);}
+.panel-title{margin-bottom:14px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.bar-row{display:flex;align-items:center;gap:12px;padding:5px 0;}
+.bar-label{width:200px;flex-shrink:0;font:600 .88rem/1.3 var(--display);}
+.bar-track{flex:1;height:8px;background:var(--deep-1);overflow:hidden;}
+.bar-fill{height:100%;background:var(--teal);}
+.bar-count{width:28px;flex-shrink:0;text-align:right;font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Category columns: newspaper columns under an ink rule, no boxes */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 32px;align-items:start;}
+.cat-panel{display:flex;flex-direction:column;padding-top:12px;border-top:2px solid var(--ink);}
+.cat-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;}
+.cat-name{font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.cat-count{font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Spotlight items: the stream's headline treatment, summary at full ink */
+.spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+.article-title{margin-bottom:8px;font:700 1.18rem/1.2 var(--display);letter-spacing:-.02em;text-wrap:balance;}
+.article-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .26em no-repeat;transition:background-size 350ms var(--ease-out);}
+.article-title a:hover{color:inherit;background-size:100% .26em;}
+.translation-note{font:italic 400 .82rem var(--text);letter-spacing:0;color:var(--muted);}
+.article-summary{margin-bottom:8px;font:400 .98rem/1.55 var(--text);color:var(--ink);}
+.article-pillar{margin-bottom:8px;font:400 .9rem/1.5 var(--text);color:var(--muted);}
+.pillar-tag{margin-right:6px;padding:3px 6px;vertical-align:1px;background:var(--deep-1);font:600 .6rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.article-meta{font:400 .7rem/1.4 var(--mono);color:var(--muted);}
+.also-covered{margin-top:4px;font:400 .7rem/1.4 var(--mono);color:var(--muted);}.also-covered a{color:inherit;}
+
+/* The rest: quieter rows behind a mono toggle */
+.more{margin-top:16px;}
+.more > summary{list-style:none;cursor:pointer;font:500 .74rem var(--mono);color:var(--teal);}
+.more > summary::-webkit-details-marker{display:none;}
+.more > summary::before{content:"+ ";}
+.more[open] > summary::before{content:"\2212 ";}
+.rest-list{display:flex;flex-direction:column;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);}
+.rest-item-head{display:flex;justify-content:space-between;gap:10px;font:600 .92rem/1.35 var(--display);letter-spacing:-.01em;}
+.rest-item-head a:hover{text-decoration:underline;text-decoration-color:var(--teal);text-underline-offset:.2em;}
+.rest-source{flex-shrink:0;padding-top:2px;white-space:nowrap;font:400 .66rem/1.4 var(--mono);color:var(--muted);}
+.rest-summary{margin-top:3px;font:400 .88rem/1.5 var(--text);color:var(--muted);}
+
+/* Foot line: the site's footer rule */
+.footline{margin-top:56px;padding-top:22px;border-top:2px solid var(--ink);font:400 .76rem/1.5 var(--mono);color:var(--muted);}
+
+@media (min-width:900px){.masthead{grid-template-columns:1fr 1fr;align-items:end;}}
+@media (min-width:768px) and (max-width:1080px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s !important;}}
+
+/* Category tiles: the page's menu. Each tile springs its bar out in rank order and counts its
+   number up, then a glint sweeps the bar every few seconds. --i, --n and --p come from the tile. */
+@property --c{syntax:"<integer>";inherits:false;initial-value:0;}
+@keyframes tile-grow{from{transform:scaleX(0);}}
+@keyframes tile-count{from{--c:0;}}
+@keyframes tile-glint{0%{background-position:-100% 0;}18%,100%{background-position:200% 0;}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.tile{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto;gap:6px;min-height:118px;padding:14px 14px 16px;border:1px solid var(--rule);transition:border-color var(--transition),transform 200ms var(--ease-out);}
+.tile:hover{color:inherit;border-color:var(--teal);transform:translateY(-2px);}
+.tile-count{font:750 2rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--teal);}
+.tile-count::after{--c:var(--n,0);counter-reset:c var(--c);content:counter(c);animation:tile-count 1100ms var(--ease-out) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-name{padding-right:28px;font:650 .98rem/1.25 var(--display);hyphens:auto;overflow-wrap:anywhere;}
+.tile-track{position:relative;height:6px;background:var(--deep-1);overflow:hidden;}
+.tile-fill{position:absolute;inset:0 auto 0 0;background:var(--teal);transform-origin:left;animation:tile-grow 1100ms cubic-bezier(.34,1.56,.64,1) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,color-mix(in srgb,var(--ground) 65%,transparent) 50%,transparent 70%) no-repeat;background-size:50% 100%;background-position:-100% 0;animation:tile-glint 6s ease-in-out calc(1.6s + var(--i,0) * 120ms) infinite;}
+
+/* Rest of a category, always shown below its spotlights under a quiet label */
+.rest-label{margin-top:22px;font:600 .66rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.rest-label + .rest-list{margin-top:8px;}
+
+/* Category rail: the switcher while reading, sticky under the site header */
+.rail{display:none;position:sticky;top:60px;z-index:30;gap:8px;margin:0 calc(-1 * clamp(16px,4vw,44px)) 24px;padding:8px clamp(16px,4vw,44px);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;background:var(--ground);border-bottom:1px solid var(--rule);}
+.rail::-webkit-scrollbar{display:none;}
+.chip{flex:none;scroll-snap-align:start;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--rule);border-radius:22px;white-space:nowrap;font:600 .9rem/1 var(--display);transition:border-color var(--transition),background-color var(--transition);}
+.chip:hover{color:inherit;border-color:var(--teal);}
+.chip-count{font:500 .76rem var(--mono);color:var(--muted);}
+.chip.is-on{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.chip.is-on .chip-count{color:var(--on-teal);}
+
+/* Category hub: the tiles are the menu. Below the lead strip nothing shows until a
+   category, or "Alle kategorier", is the URL fragment; a chosen category runs full width. */
+.lead-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;}
+.lead-cat{display:inline-block;margin-bottom:8px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hub-hint{margin:-16px 0 40px;font:italic 400 .95rem/1.5 var(--text);color:var(--muted);}
+.hub-hint a{color:var(--teal);}
+.grid,.cat-panel{scroll-margin-top:136px;}
+.hub .grid:not(:target):not(:has(.cat-panel:target)){display:none;}
+.hub:has(.grid:target,.cat-panel:target) :is(.hero,.lead,.hub-hint){display:none;}
+.hub:has(.grid:target,.cat-panel:target) .rail{display:flex;}
+.hub:has(.grid:target) .chip.all{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.hub:has(.grid:target) .chip.all .chip-count{color:var(--on-teal);}
+.hub .grid:has(.cat-panel:target){grid-template-columns:minmax(0,1fr);}
+.hub .grid:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+.hub .cat-panel:target{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:32px;align-items:start;}
+.hub .cat-panel:target > :is(.cat-head,.rest-label,.rest-list){grid-column:1/-1;}
+.hub .cat-panel:target .rest-list{display:block;columns:3;column-gap:32px;}
+.hub .cat-panel:target .rest-item{break-inside:avoid;padding-bottom:14px;}
+.hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:0;padding-top:0;border-top:0;}
+@media (max-width:1080px){
+  .lead-list,.hub .cat-panel:target{grid-template-columns:minmax(0,1fr);}
+  .lead-list{gap:0;}
+  .lead-item + .lead-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .rest-list{columns:1;}
+}
+@media (max-width:767px){.rail{top:0;}}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));}.tile{min-height:104px;}.tile-count{font-size:1.7rem;}}
+
+/* Seen categories (seen.js): opened ones go quiet, the rest carry a "ny" mark */
+.seen-ready .tile:not(.is-seen)::after{content:"ny";position:absolute;top:14px;right:14px;padding:3px 5px;background:var(--deep-1);font:600 .58rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.tile.is-seen :is(.tile-count,.tile-name){color:var(--muted);}
+.tile.is-seen .tile-fill{opacity:.45;}
+.seen-ready .chip[href^="#cat-"]:not(.is-seen) .chip-name::after{content:"";display:inline-block;width:6px;height:6px;margin-left:6px;vertical-align:2px;border-radius:50%;background:var(--teal);}
+.chip.is-seen{color:var(--muted);}
+
+@media (prefers-reduced-motion:reduce){.tile-fill,.tile-fill::after,.tile-count::after{animation:none;}.tile:hover{transform:none;}}
+
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"] .chip-count{color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .tile[href="#cat-vulnerabilities"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-dev-tooling:target) .chip[href="#cat-dev-tooling"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-dev-tooling:target) .chip[href="#cat-dev-tooling"] .chip-count{color:var(--on-teal);}
+body:has(#cat-dev-tooling:target) .tile[href="#cat-dev-tooling"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-local-models:target) .chip[href="#cat-local-models"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-local-models:target) .chip[href="#cat-local-models"] .chip-count{color:var(--on-teal);}
+body:has(#cat-local-models:target) .tile[href="#cat-local-models"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"] .chip-count{color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .tile[href="#cat-frontier-labs"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"] .chip-count{color:var(--on-teal);}
+body:has(#cat-industry:target) .tile[href="#cat-industry"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"] .chip-count{color:var(--on-teal);}
+body:has(#cat-nordic:target) .tile[href="#cat-nordic"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"] .chip-count{color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .tile[href="#cat-governance-policy"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"] .chip-count{color:var(--on-teal);}
+body:has(#cat-china-asia:target) .tile[href="#cat-china-asia"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-media-production:target) .chip[href="#cat-media-production"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-media-production:target) .chip[href="#cat-media-production"] .chip-count{color:var(--on-teal);}
+body:has(#cat-media-production:target) .tile[href="#cat-media-production"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+.seen-ready .tile:not(.is-seen)::after{content:"new";}</style>
+<script src="theme.js"></script>
+<link rel="alternate" hreflang="nb" href="/briefing/2026-11-15.html">
+<script src="lang.js"></script>
+<script src="seen.js" defer></script>
+<style id="briefing-layer">
+.catbar{display:none;}
+
+@media (max-width:767px){
+  .mast{position:static;}
+  .mast .wrap{gap:10px;}
+  .mast .wordmark{font-size:1.2rem;}
+  .nav{gap:10px;font-size:.76rem;}
+  .theme-toggle{width:28px;height:28px;margin-left:-2px;}
+
+  .page{padding:0 16px 48px;}
+  .meta-row{padding-top:12px;font-size:.7rem;}
+  .meta-row .center{display:none;}
+  .datestrip{margin-top:12px;}
+  .datestrip a{display:flex;align-items:center;min-height:44px;padding:0 14px;}
+  .masthead{padding:24px 0 16px;}
+  .masthead .wordmark{font-size:2.6rem;}
+  .tagline{font-size:1rem;}
+
+  .kpi-row{margin-bottom:16px;}
+  .kpi{padding:12px 10px 12px 0;}
+  .kpi + .kpi{padding-left:10px;}
+  .kpi-label{font-size:.6rem;letter-spacing:.06em;}
+  .kpi-value{font-size:1.6rem;}
+  .kpi-value span{display:none;}
+  .panel:has(.bar-row){display:none;}
+
+  .catbar{display:block;position:sticky;top:0;z-index:10;margin:0 -16px 20px;background:var(--ground);border-bottom:2px solid var(--ink);}
+  .catbar > summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;cursor:pointer;font:700 1.05rem/1.2 var(--display);letter-spacing:-.01em;}
+  .catbar > summary::-webkit-details-marker{display:none;}
+  .catbar > summary::after{content:"\25BE";font-size:.9rem;color:var(--muted);}
+  .catbar[open] > summary::after{content:"\25B4";}
+  .catbar .cur{display:none;}
+  .catbar .cur-all{display:inline;}
+  body:has(.cat-panel:target) .catbar .cur-all{display:none;}
+  .catbar-list{position:absolute;left:0;right:0;top:100%;max-height:70vh;overflow-y:auto;display:flex;flex-direction:column;background:var(--ground-2);border-bottom:2px solid var(--ink);}
+  .catbar-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;border-top:1px solid var(--rule);font:600 1rem/1.2 var(--display);}
+  .catbar-list a span{font:400 .8rem var(--mono);color:var(--muted);}
+  .catbar-list a.all{color:var(--teal);}
+  body:has(.cat-panel:target) .catbar-list a.all{color:inherit;}
+  body:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+
+  .grid{grid-template-columns:minmax(0,1fr);gap:32px;}
+  .cat-panel{scroll-margin-top:60px;}
+  .cat-name,.cat-count{font-size:.74rem;}
+  .article-title{font-size:1.3rem;}
+  .translation-note{font-size:.86rem;}
+  .article-summary{font-size:1.05rem;line-height:1.6;}
+  .article-pillar{font-size:.96rem;}
+  .article-meta{font-size:.76rem;}
+  .spotlight-item + .spotlight-item{margin-top:22px;padding-top:22px;}
+  .more{margin-top:8px;}
+  .more > summary{padding:12px 0;font-size:.82rem;}
+  .rest-list{gap:18px;}
+  .rest-item-head{flex-direction:column;gap:2px;font-size:1.02rem;}
+  .rest-source{white-space:normal;font-size:.72rem;}
+  .rest-summary{font-size:.98rem;line-height:1.55;}
+  .footline{margin-top:40px;font-size:.72rem;}
+}
+
+@media (max-width:400px){
+  .mast .wordmark{font-size:1.1rem;}
+  .nav{font-size:.72rem;}
+}
+
+@media (max-width:339px){
+  .mast .wrap{flex-wrap:wrap;height:auto;padding-block:10px;row-gap:6px;}
+  .nav{order:3;width:100%;margin-left:0;justify-content:space-between;}
+  .theme-toggle{margin-left:auto;}
+}
+
+/* Language switch in the site header: EN | NO */
+.lang-switch{display:flex;flex:none;gap:6px;align-items:center;font:400 .78rem/1 var(--mono);color:var(--muted);}
+.lang-switch a{color:var(--muted);}
+.lang-switch a:hover{color:var(--teal);}
+.lang-switch [aria-current]{color:var(--ink);font-weight:500;}
+.lang-switch__off{opacity:.45;cursor:default;}
+
+body:has(#cat-vulnerabilities:target) .catbar .cur-cat-vulnerabilities{display:inline;}
+body:has(#cat-vulnerabilities:target) .catbar-list a[href="#cat-vulnerabilities"]{color:var(--teal);}
+body:has(#cat-dev-tooling:target) .catbar .cur-cat-dev-tooling{display:inline;}
+body:has(#cat-dev-tooling:target) .catbar-list a[href="#cat-dev-tooling"]{color:var(--teal);}
+body:has(#cat-local-models:target) .catbar .cur-cat-local-models{display:inline;}
+body:has(#cat-local-models:target) .catbar-list a[href="#cat-local-models"]{color:var(--teal);}
+body:has(#cat-frontier-labs:target) .catbar .cur-cat-frontier-labs{display:inline;}
+body:has(#cat-frontier-labs:target) .catbar-list a[href="#cat-frontier-labs"]{color:var(--teal);}
+body:has(#cat-industry:target) .catbar .cur-cat-industry{display:inline;}
+body:has(#cat-industry:target) .catbar-list a[href="#cat-industry"]{color:var(--teal);}
+body:has(#cat-nordic:target) .catbar .cur-cat-nordic{display:inline;}
+body:has(#cat-nordic:target) .catbar-list a[href="#cat-nordic"]{color:var(--teal);}
+body:has(#cat-governance-policy:target) .catbar .cur-cat-governance-policy{display:inline;}
+body:has(#cat-governance-policy:target) .catbar-list a[href="#cat-governance-policy"]{color:var(--teal);}
+body:has(#cat-china-asia:target) .catbar .cur-cat-china-asia{display:inline;}
+body:has(#cat-china-asia:target) .catbar-list a[href="#cat-china-asia"]{color:var(--teal);}
+body:has(#cat-media-production:target) .catbar .cur-cat-media-production{display:inline;}
+body:has(#cat-media-production:target) .catbar-list a[href="#cat-media-production"]{color:var(--teal);}
+</style>
+</head>
+<body class="hub">
+<header class="mast" role="banner">
+  <div class="wrap">
+    <a class="wordmark" href="/">digital<b>dias</b></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/blog/">Writing</a>
+      <a href="/log/">Log</a>
+      <a href="/photography/">Photographs</a>
+      <a href="/about/">About</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Language"><span aria-current="true" lang="en">EN</span><span aria-hidden="true">|</span><a href="/briefing/2026-11-15.html" hreflang="nb" lang="nb" data-lang="nb">NO</a></div>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
+  </div>
+</header>
+<div class="page">
+
+  <div class="meta-row">
+    <span>DAILY BRIEFING</span>
+    <span class="center">The CAIO desk · Tradesolution</span>
+    <span>SUNDAY 15 NOVEMBER 2026</span>
+  </div>
+  <nav class="datestrip" aria-label="Days"><a href="/briefing/en/">Today</a><a href="/briefing/en/2026-11-15.html" aria-current="page">Yesterday</a><a href="/briefing/en/2026-11-14.html">14 Nov</a><a href="/briefing/en/2026-11-13.html">13 Nov</a><a href="/briefing/en/2026-11-12.html">12 Nov</a></nav>
+<div class="masthead">
+    <div class="wordmark">AI <em>News stream</em></div>
+    <div class="tagline">The frontier, the noise, and everything worth Pedro's five minutes</div>
+  </div>
+  <div class="rule-thick"></div>
+
+  <section class="hero" aria-label="Story of the day"><div class="hero-kicker">Story of the day · Frontier labs</div><h2 class="hero-title"><a href="https://the-decoder.com/anthropic-says-outdated-prompting-habits-are-slowing-down-claude-opus-5-5/" target="_blank" rel="noopener noreferrer">Anthropic says outdated prompting habits are slowing down Claude Opus 5.5</a><span class="translation-note"></span></h2><div class="hero-row"><a class="hero-media" href="https://the-decoder.com/anthropic-says-outdated-prompting-habits-are-slowing-down-claude-opus-5-5/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="https://the-decoder.com/wp-content/uploads/2026/11/anthropic_claude_logo.png" alt="Anthropic says outdated prompting habits are slowing down Claude Opus 5.5" referrerpolicy="no-referrer"></a><div class="hero-body"><div class="article-summary">Anthropic has made Claude Opus 5.5 the default model on all paid plans and published a guide to replace outdated prompting habits. The key recommendation is to avoid phrases like &quot;think hard&quot; and start with Medium effort to optimize performance.</div><div class="article-pillar"><span class="pillar-tag">Training</span> Share Anthropic&#x27;s guide on updated prompt practices with the team to ensure optimal performance of Claude Opus 5.5.</div><div class="article-meta">THE DECODER · 14 NOV, 16:42</div><div class="hero-credit">Image: The Decoder</div></div></div></section>
+
+  
+    <div class="kpi-row">
+      <div class="kpi accent">
+        <div class="kpi-label">Stories kept</div>
+        <div class="kpi-value">38 <span>/ 494 assessed</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Filtered out as not AI-related</div>
+        <div class="kpi-value">456</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Active sources</div>
+        <div class="kpi-value">99 <span>across 12 categories</span></div>
+      </div>
+    </div>
+    
+
+  <div class="panel">
+    <div class="panel-title">Stories by category</div>
+    <nav class="tiles" aria-label="Categories">
+    <a class="tile" href="#cat-vulnerabilities" style="--i:0;--n:1;--p:10" aria-label="Vulnerabilities, 1 stories"><span class="tile-count"></span><span class="tile-name">Vulnerabilities</span><span class="tile-track"><span class="tile-fill" style="width:10%"></span></span></a>
+<a class="tile" href="#cat-dev-tooling" style="--i:1;--n:2;--p:20" aria-label="Developer tools, 2 stories"><span class="tile-count"></span><span class="tile-name">Developer tools</span><span class="tile-track"><span class="tile-fill" style="width:20%"></span></span></a>
+<a class="tile" href="#cat-local-models" style="--i:2;--n:10;--p:100" aria-label="Local models, 10 stories"><span class="tile-count"></span><span class="tile-name">Local models</span><span class="tile-track"><span class="tile-fill" style="width:100%"></span></span></a>
+<a class="tile" href="#cat-frontier-labs" style="--i:3;--n:4;--p:40" aria-label="Frontier labs, 4 stories"><span class="tile-count"></span><span class="tile-name">Frontier labs</span><span class="tile-track"><span class="tile-fill" style="width:40%"></span></span></a>
+<a class="tile" href="#cat-industry" style="--i:4;--n:9;--p:90" aria-label="Industry news, 9 stories"><span class="tile-count"></span><span class="tile-name">Industry news</span><span class="tile-track"><span class="tile-fill" style="width:90%"></span></span></a>
+<a class="tile" href="#cat-nordic" style="--i:5;--n:4;--p:40" aria-label="Nordics, 4 stories"><span class="tile-count"></span><span class="tile-name">Nordics</span><span class="tile-track"><span class="tile-fill" style="width:40%"></span></span></a>
+<a class="tile" href="#cat-governance-policy" style="--i:6;--n:4;--p:40" aria-label="Governance and policy, 4 stories"><span class="tile-count"></span><span class="tile-name">Governance and policy</span><span class="tile-track"><span class="tile-fill" style="width:40%"></span></span></a>
+<a class="tile" href="#cat-china-asia" style="--i:7;--n:3;--p:30" aria-label="China and Asia, 3 stories"><span class="tile-count"></span><span class="tile-name">China and Asia</span><span class="tile-track"><span class="tile-fill" style="width:30%"></span></span></a>
+<a class="tile" href="#cat-media-production" style="--i:8;--n:1;--p:10" aria-label="Media and content production, 1 stories"><span class="tile-count"></span><span class="tile-name">Media and content production</span><span class="tile-track"><span class="tile-fill" style="width:10%"></span></span></a>
+    </nav>
+  </div>
+
+  <div class="panel lead">
+    <div class="panel-title">Top stories today</div>
+    <div class="lead-list">
+    <div class="lead-item"><a class="lead-cat" href="#cat-vulnerabilities">Vulnerabilities · 1</a><div class="article-title"><a href="https://www.bleepingcomputer.com/news/security/cursor-confirms-security-breach-led-to-malicious-claude-code-extension/" target="_blank" rel="noopener noreferrer">Cursor confirms security breach led to malicious Claude Code extension</a><span class="translation-note"></span></div><div class="article-summary">Cursor confirmed it suffered a security breach that let hackers distribute a malicious Claude Code extension through its marketplace. The source confirms that the vulnerability was exploited. No specific patched version is named, so users should follow Cursor&#x27;s security advisory.</div><div class="article-meta">BLEEPINGCOMPUTER · 14 NOV, 17:27</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-dev-tooling">Developer tools · 2</a><div class="article-title"><a href="https://www.golem.de/news/ki-code-in-open-source-wie-maintainer-ihre-projekte-vor-ueberlastung-schuetzen-2611-215205.html" target="_blank" rel="noopener noreferrer">How maintainers protect open source projects from AI code overload</a><span class="translation-note"> (translated from de)</span></div><div class="article-summary">Open source projects are facing a flood of AI-generated code. Maintainers are using GitHub features, contribution rules, and review processes to maintain control and prevent their projects from becoming overwhelmed.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 14 NOV, 09:00</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-local-models">Local models · 10</a><div class="article-title"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xw7zrg/tinyvoca_a_fully_open_45mparameter_tts_code/" target="_blank" rel="noopener noreferrer">tiny-voca: a fully open 4.5M-parameter TTS (code, weights, dataset). Runs 70x real time on a CPU</a><span class="translation-note"></span></div><div class="article-summary">tiny-voca is a small English text-to-speech model with 4.5 million parameters that runs in the browser without sending data to a server. The model is fully open, including code, weights, and dataset, and uses a source-filter synthesizer instead of a neural vocoder to achieve high speed.</div><div class="article-meta">R/LOCALLLAMA · 14 NOV, 17:26</div></div>
+    </div>
+  </div>
+  <p class="hub-hint">Pick a category to read the stories, or <a href="#kategorier">show all categories</a>.</p>
+
+  <nav class="rail" aria-label="Categories"><a class="chip" href="#"><span class="chip-name">← Overview</span></a><a class="chip all" href="#kategorier"><span class="chip-name">All</span><span class="chip-count">38</span></a><a class="chip" href="#cat-vulnerabilities"><span class="chip-name">Vulnerabilities</span><span class="chip-count">1</span></a><a class="chip" href="#cat-dev-tooling"><span class="chip-name">Developer tools</span><span class="chip-count">2</span></a><a class="chip" href="#cat-local-models"><span class="chip-name">Local models</span><span class="chip-count">10</span></a><a class="chip" href="#cat-frontier-labs"><span class="chip-name">Frontier labs</span><span class="chip-count">4</span></a><a class="chip" href="#cat-industry"><span class="chip-name">Industry news</span><span class="chip-count">9</span></a><a class="chip" href="#cat-nordic"><span class="chip-name">Nordics</span><span class="chip-count">4</span></a><a class="chip" href="#cat-governance-policy"><span class="chip-name">Governance and policy</span><span class="chip-count">4</span></a><a class="chip" href="#cat-china-asia"><span class="chip-name">China and Asia</span><span class="chip-count">3</span></a><a class="chip" href="#cat-media-production"><span class="chip-name">Media and content production</span><span class="chip-count">1</span></a></nav>
+  <div class="grid" id="kategorier">
+    <div class="cat-panel" id="cat-vulnerabilities"><div class="cat-head"><span class="cat-name">Vulnerabilities</span><span class="cat-count">1</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.bleepingcomputer.com/news/security/cursor-confirms-security-breach-led-to-malicious-claude-code-extension/" target="_blank" rel="noopener noreferrer">Cursor confirms security breach led to malicious Claude Code extension</a><span class="translation-note"></span></div><div class="article-summary">Cursor confirmed it suffered a security breach that let hackers distribute a malicious Claude Code extension through its marketplace. The source confirms that the vulnerability was exploited. No specific patched version is named, so users should follow Cursor&#x27;s security advisory.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Require immediate updates to all Cursor instances and review security protocols for third-party extensions to ensure compliance and risk management.</div><div class="article-meta">BLEEPINGCOMPUTER · 14 NOV, 17:27</div></div></div>
+<div class="cat-panel" id="cat-dev-tooling"><div class="cat-head"><span class="cat-name">Developer tools</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.golem.de/news/ki-code-in-open-source-wie-maintainer-ihre-projekte-vor-ueberlastung-schuetzen-2611-215205.html" target="_blank" rel="noopener noreferrer">How maintainers protect open source projects from AI code overload</a><span class="translation-note"> (translated from de)</span></div><div class="article-summary">Open source projects are facing a flood of AI-generated code. Maintainers are using GitHub features, contribution rules, and review processes to maintain control and prevent their projects from becoming overwhelmed.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Review internal guidelines for AI-generated code to ensure vendor agreements and contribution rules mitigate the risk of low-quality input.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 14 NOV, 09:00</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://support.claude.com/en/articles/18426225-move-from-claude-enterprise-to-claude-desktop-on-a-cloud-provider" target="_blank" rel="noopener noreferrer">Move from Claude Enterprise to Claude Desktop on a cloud provider</a><span class="rest-source">CLAUDE HELP CENTER</span></div><div class="rest-summary">The article outlines the process for migrating from Claude Enterprise to Claude Desktop on an external cloud platform. This allows organizations to run the tool in a controlled cloud environment rather than locally.</div></div></div></div>
+<div class="cat-panel" id="cat-local-models"><div class="cat-head"><span class="cat-name">Local models</span><span class="cat-count">10</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xw7zrg/tinyvoca_a_fully_open_45mparameter_tts_code/" target="_blank" rel="noopener noreferrer">tiny-voca: a fully open 4.5M-parameter TTS (code, weights, dataset). Runs 70x real time on a CPU</a><span class="translation-note"></span></div><div class="article-summary">tiny-voca is a small English text-to-speech model with 4.5 million parameters that runs in the browser without sending data to a server. The model is fully open, including code, weights, and dataset, and uses a source-filter synthesizer instead of a neural vocoder to achieve high speed.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate tiny-voca as a cost-effective, private alternative to commercial TTS solutions for internal tools, as it runs locally and is open source.</div><div class="article-meta">R/LOCALLLAMA · 14 NOV, 17:26</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xvw34k/kittenmlkittentts2mini_hugging_face_texttospeech/" target="_blank" rel="noopener noreferrer">KittenML releases Kitten TTS 2 Mini, Nano and Pico for local text-to-speech</a><span class="translation-note"></span></div><div class="article-summary">KittenML has released three new text-to-speech models, Kitten TTS 2 Mini, Nano, and Pico, designed to run efficiently on CPUs. The models are available with ONNX int8 weights requiring as little as 8 MB to 83 MB, making them suitable for local deployment without the need for PyTorch or a GPU.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate if these lightweight, local TTS models can replace expensive API solutions to reduce licensing costs and enhance data privacy.</div><div class="article-meta">R/LOCALLLAMA · 14 NOV, 07:11</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xvuit5/paper_read_less_solve_more_tokenefficient_sparse/" target="_blank" rel="noopener noreferrer">SparseRead cuts token usage by up to 92.9% for AI agents</a><span class="translation-note"></span></div><div class="article-summary">Researchers present SparseRead, a reading control layer that reduces token and latency costs for AI agents without modifying the underlying model. The system uses a Read Intent Protocol and Adaptive Reader Backends to retrieve only the relevant parts of external sources. In tests across six models, including Claude Opus 5, total token usage was reduced by up to 92.9% while task quality was preserved or improved in 97% of settings.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Evaluate SparseRead to reduce operational costs and improve ROI on existing AI agents.</div><div class="article-meta">R/LOCALLLAMA · 14 NOV, 05:41</div></div><div class="rest-label">Also today · 7</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xwgiow/lfm2524ba2b_hermes_is_awesome/" target="_blank" rel="noopener noreferrer">LFM2.5-24B-A2B + Hermes is awesome!</a><span class="rest-source">R/LOCALLLAMA</span></div><div class="rest-summary">Users praise LiquidAI&#x27;s LFM2.5-24B-A2B for striking a great balance between speed and capability on commodity hardware. The model is highlighted as an effective task executor, particularly when paired with Hermes, delivering high speeds even on integrated graphics.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xwan2j/update_tandemcpp_deepseekv41_on_a_64_gb_pc_with_a/" target="_blank" rel="noopener noreferrer">Update: tandem.cpp — DeepSeek-V4.1 on a 64 GB PC with a 16 GB card, and AMD (ROCm) support</a><span class="rest-source">R/LOCALLLAMA</span></div><div class="rest-summary">tandem.cpp is a patch set for llama.cpp that speeds up inference for MoE models too large for VRAM by keeping hot experts on the GPU and offloading the rest to the CPU. The update adds AMD (ROCm) support and benchmarks show it can double decoding speeds compared to standard llama.cpp on machines with limited memory.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xw9mpa/nexaginexn26_hugging_face/" target="_blank" rel="noopener noreferrer">Nex-AGI releases Nex-N2.6, a 321B parameter multimodal agentic model</a><span class="rest-source">R/LOCALLLAMA</span></div><div class="rest-summary">Nex-AGI has released Nex-N2.6, a multimodal agentic model built on GLM-5.3-Flash designed for computer use, coding, and long-horizon tasks involving tools. The model features approximately 321 billion parameters and is provided with FP8-quantized weights. This release focuses on reducing repetitive reasoning and improving adherence to available tools.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xvyol3/qwen_38_flash_next_for_gamedev_its_very_capable/" target="_blank" rel="noopener noreferrer">Qwen 3.8 Flash Next for gamedev - it&#x27;s very capable!</a><span class="rest-source">R/LOCALLLAMA</span></div><div class="rest-summary">A developer completed a game project using Qwen 3.8 Flash Next, running locally on a Strix Halo machine. The developer reports that the model effectively handled coding and debugging, resulting in a finished product without assistance from other models.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xvxyhj/can_openweight_llms_can_predict_the_effects_of/" target="_blank" rel="noopener noreferrer">Can open-weight LLMs predict the effects of weight edits without running the model (9B–30B)</a><span class="rest-source">R/LOCALLLAMA</span></div><div class="rest-summary">A new study investigates whether language models can inspect raw weights to predict behavioral changes without executing the target model. The results show that Qwen 27B achieves higher accuracy by reading weights compared to using text descriptions, though the method is not always reliable. The researchers have released an evaluation harness and an open-source toolkit for weight-space programming.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xvwi81/spark_26_4b_and_17b_fixed_a_reasoning_loop_by/" target="_blank" rel="noopener noreferrer">SPARK 2.6 4b and 1.7b Fixed a reasoning loop by editing one row of weights.</a><span class="rest-source">R/LOCALLLAMA</span></div><div class="rest-summary">A developer resolved a reasoning loop issue in the SPARK 2.6 models by surgically editing a single row in the output head, avoiding fine-tuning or sampling hacks. This adjustment reduced the loop rate by 92.9% for the 1.7B model and 58.4% for the 4B model, while preserving general capabilities.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xvst4u/salesforcesovereignintelligencesovtranscribe1/" target="_blank" rel="noopener noreferrer">salesforce-sovereign-intelligence/SOV-Transcribe-1 · Hugging Face</a><span class="rest-source">R/LOCALLLAMA</span></div><div class="rest-summary">SOV-Transcribe-1 is Salesforce&#x27;s open-weight speech-augmented language model built for non-streaming automatic speech recognition (ASR). It combines leading English transcription accuracy with multilingual support and natural-language control over how speech is transcribed. Developers and enterprises can deploy and adapt SOV-Transcribe-1 on their own infrastructure, retaining control over their audio data and transcription behavior.</div></div></div></div>
+<div class="cat-panel" id="cat-frontier-labs"><div class="cat-head"><span class="cat-name">Frontier labs</span><span class="cat-count">4</span></div><div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/gemini-4-carbon-takes-the-matharena-crown-but-costs-15-times-more-than-gpt-6-1-sol/" target="_blank" rel="noopener noreferrer">Gemini 4 Carbon takes the MathArena crown but costs 15 times more than GPT-6.1 Sol</a><span class="translation-note"></span></div><div class="article-summary">Google&#x27;s Gemini 4 Carbon and Anthropic&#x27;s Fable 5.2 have dethroned OpenAI&#x27;s GPT-6.1 Sol on the MathArena benchmark for the first time in a while. However, both models come with significantly higher costs, with Gemini 4 Carbon priced at 15 times that of GPT-6.1 Sol. During testing, Gemini ignored time limits and almost never gave up on tasks.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Evaluate whether the cost advantage of GPT-6.1 Sol outweighs the performance difference on MathArena, and adjust the ROI analysis for AI model selection.</div><div class="article-meta">THE DECODER · 14 NOV, 16:48</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/anthropic-says-outdated-prompting-habits-are-slowing-down-claude-opus-5-5/" target="_blank" rel="noopener noreferrer">Anthropic says outdated prompting habits are slowing down Claude Opus 5.5</a><span class="translation-note"></span></div><div class="article-summary">Anthropic has made Claude Opus 5.5 the default model on all paid plans and published a guide to replace outdated prompting habits. The key recommendation is to avoid phrases like &quot;think hard&quot; and start with Medium effort to optimize performance.</div><div class="article-pillar"><span class="pillar-tag">Training</span> Share Anthropic&#x27;s guide on updated prompt practices with the team to ensure optimal performance of Claude Opus 5.5.</div><div class="article-meta">THE DECODER · 14 NOV, 16:42</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.digi.no/kunstig-intelligens/open-ai-lanserer-kritisk-ki-modell-dette-har-den-prestert-hittil/7183357" target="_blank" rel="noopener noreferrer">Launches AI model designed for cybersecurity</a><span class="translation-note"> (translated from no)</span></div><div class="article-summary">A new AI model, GPT-6 Cyber, has been launched with a focus on cybersecurity. The model identified 1,700 vulnerabilities in Linux and generated exploit code for nearly 1,000 of them.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Assess the risk profile of using advanced offensive AI tools and update the company&#x27;s guidelines for AI use in security contexts.</div><div class="article-meta">DIGI.NO · 14 NOV, 12:27</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://the-decoder.com/openai-reassigns-robotics-researchers-to-other-teams-as-general-purpose-models-might-make-specialized-robotics-ai-unnecessary/" target="_blank" rel="noopener noreferrer">OpenAI reassigns robotics researchers to other teams as general-purpose models might make specialized robotics AI unnecessary</a><span class="rest-source">THE DECODER</span></div><div class="rest-summary">OpenAI is dissolving its standalone robotics team for the second time, not due to a lack of data, but because general-purpose models like GPT-6 Astra can apparently control robots directly. The researchers are being redistributed across other teams in what the company frames as a way to accelerate its robotics efforts.</div><div class="also-covered">Also covered by: <a href="https://www.golem.de/news/neue-gewichtung-openai-loest-robotik-team-auf-2611-215222.html" target="_blank" rel="noopener noreferrer">Golem.de - Kuenstliche Intelligenz</a></div></div></div></div>
+<div class="cat-panel" id="cat-industry"><div class="cat-head"><span class="cat-name">Industry news</span><span class="cat-count">9</span></div><div class="spotlight-item"><div class="article-title"><a href="https://thenewstack.io/anthropic-enterprise-developer-competition/" target="_blank" rel="noopener noreferrer">Anthropic wants you to build on Claude. There’s a catch.</a><span class="translation-note"></span></div><div class="article-summary">Anthropic encourages developers to build businesses on Claude, but its expansion into enterprise software is raising concerns among founders. This creates uncertainty about the boundaries between an open platform and competing products.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Assess our dependency on Anthropic in vendor agreements and evaluate the risk associated with their expansion into the enterprise market.</div><div class="article-meta">THE NEW STACK AI · 14 NOV, 15:15</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/anthropic-can-already-retrain-mythos-with-a-fraction-of-the-compute-originally-needed-says-former-researcher-coxon/" target="_blank" rel="noopener noreferrer">Anthropic can already retrain Mythos with &quot;a fraction of the compute originally needed,&quot; says former researcher Coxon</a><span class="translation-note"></span></div><div class="article-summary">Jacob Coxon, a former researcher at OpenAI and Anthropic, cites a slide from Anthropic&#x27;s IPO roadshow as evidence that the company&#x27;s algorithms are improving at an accelerating rate. He argues this highlights the need for a pause in frontier model development to allow competitors to catch up and for human-level AI to become a commodity.</div><div class="article-meta">THE DECODER · 14 NOV, 11:21</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217412" target="_blank" rel="noopener noreferrer">Amazon builds global product graph to strengthen AI shopping</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">Amazon is considering a project called World Product Graph that aggregates product information from around the world, including items not sold on its platform. The goal is to reduce the need for consumers to search externally for product comparisons and to ensure that external AI agents continue to use Amazon as a source for purchases.</div><div class="article-meta">AI타임스 · 14 NOV, 10:19</div></div><div class="rest-label">Also today · 6</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://the-decoder.com/anthropic-ceo-amodei-admits-theres-a-huge-uncertainty-in-whats-going-to-happen-next-year-days-before-a-record-ipo/" target="_blank" rel="noopener noreferrer">Anthropic CEO Amodei admits &quot;there&#x27;s a huge uncertainty in what&#x27;s going to happen next year&quot; days before a record IPO</a><span class="rest-source">THE DECODER</span></div><div class="rest-summary">Days before what could be the largest IPO in history, Anthropic CEO Dario Amodei called buying compute &#x27;the deepest business dilemma&#x27; his company faces. Anthropic&#x27;s commitments now total nearly $901 billion, and it&#x27;s still far from clear whether future revenue will justify those costs. The planned IPO is largely meant to serve as a financial buffer against that uncertainty.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217406" target="_blank" rel="noopener noreferrer">Nvidia CFO who braked AI investments becomes interim CEO</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">Colette Kress, the CFO who previously reined in Nvidia&#x27;s aggressive AI investments, has been appointed interim CEO. According to WSJ and Reuters, Kress and former CEO Jensen Huang clashed multiple times over the company&#x27;s customer financing and large-scale AI projects. The appointment may signal a shift in Nvidia&#x27;s investment strategy.</div><div class="also-covered">Also covered by: <a href="https://www.aitimes.com/news/articleView.html?idxno=217413" target="_blank" rel="noopener noreferrer">AI타임스</a>, <a href="https://www.aitimes.com/news/articleView.html?idxno=217410" target="_blank" rel="noopener noreferrer">AI타임스</a></div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217402" target="_blank" rel="noopener noreferrer">Anthropic IPO restricts share allocation for Chinese and Hong Kong investors</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">Chinese and Hong Kong institutional investors are reportedly facing limited access to shares in Anthropic&#x27;s upcoming IPO. Investment banks have cited US export control regulations, including ITAR, as the basis for rejecting orders or limiting allocations. The development highlights how geopolitical tensions between the US and China are impacting investment markets for advanced AI companies.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217400" target="_blank" rel="noopener noreferrer">OpenAI launches ChatGPT Wallet for AI agents</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">OpenAI has launched ChatGPT Wallet, a service that allows AI agents to purchase goods and process payments on behalf of users. The solution uses biometric verification and partners with American Express, Mastercard, and Visa to handle transactions without exposing actual card numbers to the AI.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217399" target="_blank" rel="noopener noreferrer">SpaceX lays off most of Grok Imagine team to focus on AI coding</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">SpaceX has reportedly laid off approximately 60 employees from the team behind the image and video generation tool Grok Imagine. The company is now concentrating its resources on AI coding and agents, reflecting a broader shift in priorities among major US AI firms.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217401" target="_blank" rel="noopener noreferrer">Anthropic CEO: Predicting compute demand is biggest management challenge</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">Dario Amodei, CEO of Anthropic, stated that determining the right scale of investment in compute resources is the company&#x27;s most difficult management task. He emphasized that both overinvestment and underinvestment pose significant risks. Amodei noted that securing funding for this massive infrastructure is a key reason behind the company&#x27;s push for an IPO.</div></div></div></div>
+<div class="cat-panel" id="cat-nordic"><div class="cat-head"><span class="cat-name">Nordics</span><span class="cat-count">4</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.dagbladet.no/nyheter/ki-forsker-advarer-det-skjer-mye-rart/85421625" target="_blank" rel="noopener noreferrer">AI researcher warns after collapse</a><span class="translation-note"> (translated from no)</span></div><div class="article-summary">A Norwegian researcher warns about the risks of using AI in critical systems after a new AI system was deployed days before the chaos in US air traffic. The researcher points out that errors in such systems can have serious consequences.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Evaluate risk management for critical AI systems and ensure robust fallback procedures are in place before deployment.</div><div class="article-meta">DAGBLADET · 14 NOV, 13:30</div></div><div class="rest-label">Also today · 3</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.hs.fi/paakirjoitukset/art-2000012403391.html" target="_blank" rel="noopener noreferrer">Residents begin to rebel against AI companies and data centers</a><span class="rest-source">HELSINGIN SANOMAT</span></div><div class="rest-summary">AI companies and data center firms are facing growing opposition from the public. It appears that people are beginning to organize against the expansion of artificial intelligence infrastructure.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://e24.no/i/j3Pobw?utm_medium=rss" target="_blank" rel="noopener noreferrer">AI images in real estate listings: What is prohibited</a><span class="rest-source">AFTENPOSTEN</span></div><div class="rest-summary">It is prohibited to use AI-generated images in real estate listings, although no one has been penalized for violating the rules so far. The regulations are intended to ensure that potential buyers receive an accurate representation of the property.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.svd.se/a/wA9Gmd/senaste-nytt?pinnedEntry=79896&amp;utm_medium=rss" target="_blank" rel="noopener noreferrer">Microsoft has solved its problems</a><span class="rest-source">SVENSKA DAGBLADET</span></div><div class="rest-summary">Microsoft has resolved the technical issues that previously plagued the company. The company confirms that its systems are now functioning as intended.</div></div></div></div>
+<div class="cat-panel" id="cat-governance-policy"><div class="cat-head"><span class="cat-name">Governance and policy</span><span class="cat-count">4</span></div><div class="spotlight-item"><div class="article-title"><a href="https://cset.georgetown.edu/article/convergent-interests-how-america-could-undermine-its-own-ai-advantage/" target="_blank" rel="noopener noreferrer">Convergent Interests: How America Could Undermine Its Own AI Advantage</a><span class="translation-note"></span></div><div class="article-summary">A convergence of political, commercial, and ideological pressures can impede America’s AI leadership, with public controversies acting as a catalyst for this trend. The piece urges policymakers to govern AI responsibly without disabling the innovation that underpins American leadership, even in the wake of scandals.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Assess how US regulations may impact our vendor agreements and risk profile, and adjust our internal AI policy to remain robust against changes in international guidelines.</div><div class="article-meta">CSET GEORGETOWN · 14 NOV, 16:36</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.dagbladet.no/nyheter/vil-drepe-mennesker-innen-tre-ar/85420266" target="_blank" rel="noopener noreferrer">“Will kill humans within three years”</a><span class="translation-note"> (translated from no)</span></div><div class="article-summary">The “godfather of AI” warns European leaders about a new and far more dangerous form of artificial intelligence called “superintelligence.” He argues that this technology poses an existential threat to humanity within three years.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Consider updating the risk management framework to include existential threats and long-term sustainability in the AI strategy.</div><div class="article-meta">DAGBLADET - KUNSTIG INTELLIGENS · 13 NOV, 20:23</div></div><div class="rest-label">Also today · 2</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/podcast/1032907/helen-toner-openai-cset-ai-safety-policy-interview" target="_blank" rel="noopener noreferrer">The OpenAI board member who fired Sam Altman says we still can&#x27;t trust AI CEOs</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">Helen Toner, the former OpenAI board member who played a key role in Sam Altman&#x27;s firing, says she still does not trust AI company leadership. Toner, now executive director of the Center for Security and Emerging Technology at Georgetown University, discusses AI safety and governance in a new podcast episode.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techpolicy.press/does-the-trump-administrations-campaign-to-rebrand-ai-as-super-intelligence-matter" target="_blank" rel="noopener noreferrer">Does the Trump Administration’s Campaign to Rebrand AI as ‘Super Intelligence’ Matter?</a><span class="rest-source">TECH POLICY PRESS</span></div><div class="rest-summary">The Trump administration is attempting to rebrand artificial intelligence as &#x27;super intelligence.&#x27; The article discusses whether this linguistic shift has any real impact on policy and regulation.</div></div></div></div>
+<div class="cat-panel" id="cat-china-asia"><div class="cat-head"><span class="cat-name">China and Asia</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217397" target="_blank" rel="noopener noreferrer">Chinese AI firms suspected of using NVIDIA Blackwell GPUs</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">Researchers from Unemployment Labs have found technical traces in the model weights of four Chinese AI companies that suggest the use of NVIDIA Blackwell GPUs. This type of processor is subject to US export controls. The discovery provides concrete evidence supporting suspicions that companies like DeepSeek and Moonshot AI have accessed advanced hardware.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Review vendor agreements and risk assessments to ensure AI models are not trained on hardware subject to export controls, thereby avoiding compliance violations.</div><div class="article-meta">AI타임스 · 14 NOV, 02:18</div></div><div class="rest-label">Also today · 2</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217405" target="_blank" rel="noopener noreferrer">Malaysia investigates suspected re-export of Nvidia AI chips</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">Malaysian authorities have launched an investigation into whether AI chips imported by Speedmatrix, a subsidiary of MegaSpeed, were re-exported to other countries. The case involves allegations that Nvidia chips were used to circumvent US export controls, drawing attention due to previous legal issues associated with MegaSpeed.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.leiphone.com/category/industrynews/cqPXhF38rM4VcVa7.html" target="_blank" rel="noopener noreferrer">Baidu launches token exchange with over 100 suppliers and 1,000 customers on day one</a><span class="rest-source">雷峰网 LEIPHONE</span></div><div class="rest-summary">Baidu has launched its token exchange, a marketplace where businesses can purchase and use model tokens from various providers. The platform focuses on verification and credit rating to ensure models are authentic and reliable. On its first day, the exchange registered over 100 new suppliers and more than 1,000 new customers.</div></div></div></div>
+<div class="cat-panel" id="cat-media-production"><div class="cat-head"><span class="cat-name">Media and content production</span><span class="cat-count">1</span></div><div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/runways-open-source-praxis-1-turns-video-ai-into-a-robot-controller/" target="_blank" rel="noopener noreferrer">Runway&#x27;s open-source Praxis-1 turns video AI into a robot controller</a><span class="translation-note"></span></div><div class="article-summary">Runway has released its robotics model Praxis-1 with open weights and source code under the Apache 2.0 license. The model leverages knowledge from video training for robot control and leads the World Action Model category on Nvidia&#x27;s RoboLab-120 benchmark. However, it cannot yet independently plan complex action sequences.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate whether Praxis-1 can be integrated into existing robotics or simulation services to reduce licensing costs and increase data control.</div><div class="article-meta">THE DECODER · 14 NOV, 09:45</div></div></div>
+  </div>
+
+  <div class="footline">All 9 categories, every story today — nothing held back</div>
+</div>
+</body>
+</html>
