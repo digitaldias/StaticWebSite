@@ -60,8 +60,8 @@ defaultContentLanguage = 'en'
     kofi = 'https://ko-fi.com/digitaldias'
   
   [params.currently]
-    building   = "Improving makeImage: identity, negative prompts and editing"
-    tinkering  = "Printing replacement parts from photos with Claude and Fusion 360"
+    building   = "A desk that turns site stats into post ideas"
+    tinkering  = "Printing useful things for the bathroom, hooks and shelves"
     annoyed_by = "Claude Desktop still has no proper model router built in"
 
   [params.photo]
@@ -216,8 +216,8 @@ defaultContentLanguage = 'en'
           name = "Full nerd"
           reader = "Du bygger med det: hvordan det virker innvendig, hvorfor det er laget slik og hva det betyr i praksis."
       [languages.nb.params.currently]
-        building   = "Forbedrer makeImage: identitet, negative prompter og redigering"
-        tinkering  = "Printer reservedeler fra bilder med Claude og Fusion 360"
+        building   = "Et skrivebord som gjør trafikktall om til innleggsideer"
+        tinkering  = "Printer nyttige ting til badet, kroker og hyller"
         annoyed_by = "Claude Desktop mangler fortsatt en skikkelig innebygd modellruter"
       [[languages.nb.params.positions]]
         text  = "Et godt team trenger en geek som starter og en nerd som fullfører."

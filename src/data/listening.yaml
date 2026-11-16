@@ -1,6 +1,19 @@
 # History of the homepage "Listening" pick, newest first. The first entry shows in the Now box.
 # artist and song are required; guest, genres, spotify (artist URL), song_url and note_en / note_nb are optional.
 # Facts come from the Spotify API. It returns no genres, so none are listed.
+- date: 2026-11-16
+  artist: Dusty Strings
+  spotify: https://open.spotify.com/artist/4NX07TyRa1HVUtQ8VjxbOJ
+  song: High Noon Protocol
+  song_url: https://www.youtube.com/watch?v=ThLX0aqcsiw
+  guest: DJ N3M3ZIZ
+  note_en: 'An AI-generated blues artist, labelled AI Persona on Spotify. My sister told me about it, and I like the power in every song. This one is more dynamic and pumped than most. Spotify lists 6 albums and 318 singles since February 2025, many credited together with DJ N3M3ZIZ and N3Bass Records. "High Noon Protocol" came out as a single on 18 October 2026, and the official music video went up on YouTube three days before. The video makes it plain that it is AI.'
+  note_nb: 'En AI-generert bluesartist, merket AI Persona på Spotify. Søstra mi tipset meg om den, og jeg liker kraften i hver eneste låt. Denne er mer dynamisk og pumpende enn de fleste. Spotify viser seks album og 318 singler siden februar 2025, mange oppført sammen med DJ N3M3ZIZ og N3Bass Records. «High Noon Protocol» kom som singel 18. oktober 2026, og den offisielle musikkvideoen kom på YouTube tre dager før. Videoen viser klart og tydelig at dette er AI.'
+  image: /images/listening/dusty-strings-high-noon-protocol.jpg
+  image_alt_en: "Thumbnail of the High Noon Protocol video: a blonde guitarist in sunglasses and a studded leather vest with a glowing red guitar, a grey-haired man in a leather coat behind her, drones with red lights over a western town and a clock tower, under the words High Noon Protocol and Dusty Strings x DJ N3M3ZIZ."
+  image_alt_nb: "Miniatyrbildet til videoen High Noon Protocol: en blond gitarist med solbriller og naglet skinnvest med en rødglødende gitar, en gråhåret mann i skinnfrakk bak henne, droner med røde lys over en westernby og et klokketårn, under ordene High Noon Protocol og Dusty Strings x DJ N3M3ZIZ."
+  image_caption_en: "From the High Noon Protocol music video, via YouTube."
+  image_caption_nb: "Fra musikkvideoen til High Noon Protocol, fra YouTube."
 - date: 2026-11-14
   artist: Maceo Parker
   spotify: https://open.spotify.com/artist/4RAQZfFgR7NPAWjKwUpEeC
@@ -67,8 +80,8 @@
   spotify: https://open.spotify.com/artist/3pRAhuz8fKrLHLBOwRUf80
   song: Midnight
   song_url: https://open.spotify.com/track/1SyCeoNSWvamxyCf43mZmr
-  note_en: 'A blues band with a bit of the same sound as Dusty Strings, but calmer and less intense. "Midnight" is from their album "Nightfall".'
-  note_nb: 'Et bluesband med noe av det samme lydbildet som Dusty Strings, men roligere og ikke fullt så intenst. «Midnight» står på albumet «Nightfall».'
+  note_en: 'YouTube suggested this blues band to me, and I liked it because it sounds a lot like Dusty Strings, but less pumped. Correction 16 November: SOHO Blues Band is AI-generated, like Dusty Strings, and not a real band. "Midnight" is from the album "Nightfall".'
+  note_nb: 'YouTube foreslo dette bluesbandet for meg, og jeg likte det fordi det høres mye ut som Dusty Strings, bare mindre pumpende. Rettelse 16. november: SOHO Blues Band er laget med AI, som Dusty Strings, og er ikke et ekte band. «Midnight» står på albumet «Nightfall».'
 - date: 2026-09-19
   artist: Ghost-Note
   spotify: https://open.spotify.com/artist/55BOGnEb0pUuAgbxAwwbKV

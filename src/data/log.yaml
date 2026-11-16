@@ -1,5 +1,9 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
+- date: 2026-11-16
+  tag: Fixed
+  text: "The [Listening](/listening/) pick from 2 November, SOHO Blues Band, turned out to be AI-generated, not a real band. Its note says so now."
+  text_nb: "[Hører på](/nb/listening/)-valget fra 2. november, SOHO Blues Band, viste seg å være laget med AI, ikke et ekte band. Det står nå i notatet."
 - date: 2026-11-07
   tag: Shipped
   text: "You can search the archive now. Press the magnifier in the header, `/` or `Ctrl+K`, and the results narrow as you type, with the section where your words appear. It runs entirely in your browser, with no search server and no tracking."
