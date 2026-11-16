@@ -3,10 +3,16 @@ name: Build and Deploy Hugo Site to Azure Blob
 on:
   push:
     branches:
-      - main # or your default branch
-    paths-ignore:
-      - 'CLAUDE.md'
-      - '.claude/**'
+      - main
+    # Deploy only when something that ends up in $web changed: the Hugo site under src/,
+    # the briefing pages, or this workflow. promotion.yaml lives in src/data for the
+    # dd-desk pane and the promote-post skill, but no template reads it.
+    paths:
+      - 'src/**'
+      - '!src/data/promotion.yaml'
+      - 'briefing/**'
+      - '.github/workflows/deploy-to-azure.yml'
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
