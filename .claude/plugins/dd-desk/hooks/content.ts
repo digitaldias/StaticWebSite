@@ -69,12 +69,12 @@ export function parsePromotion(text: string): Record<string, Promotion> {
   return byPost
 }
 
-// Promoted once it is on Dev.to or LinkedIn. Search Console is indexing, not promotion, and a skipped
+// Promoted once it is on Dev.to, LinkedIn or Facebook. Search Console is indexing, not promotion, and a skipped
 // or merely drafted channel does not count: skipping one is Pedro's call, not a missing step.
 export function isPromoted(post: Published): boolean {
   const done = (channel: string): boolean => Boolean(post.promoted[channel]) && !['skipped', 'drafted'].includes(post.promoted[channel] ?? '')
 
-  return Boolean(post.devto) || done('devto') || done('linkedin')
+  return Boolean(post.devto) || done('devto') || done('linkedin') || done('facebook')
 }
 
 function channel(name: string, live: string | null, recorded: string | undefined, sent: string): string {

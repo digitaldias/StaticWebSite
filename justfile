@@ -37,6 +37,14 @@ depth +posts:
 listening:
     $env:PYTHONUTF8 = "1"; python scripts/spotify-top.py
 
+# Show the blog post ideas list (ideas/ideas.json) at http://localhost:8765/, where Pedro can reject or start an idea
+ideas:
+    $env:PYTHONUTF8 = "1"; Start-Process "http://localhost:8765/"; python scripts/ideas-server.py
+
+# Snapshot of what drives traffic (Cloudflare 7 days, Search Console 28 days), the basis for new ideas in ideas/ideas.json
+stats:
+    $env:PYTHONUTF8 = "1"; python scripts/site-stats.py
+
 # Proofread the homepage briefing claim: the next 14 days in both languages, or every combination with `just claims --all`
 claims *args:
     $env:PYTHONUTF8 = "1"; python scripts/briefing-claims.py {{args}}

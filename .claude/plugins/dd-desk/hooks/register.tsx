@@ -1,9 +1,10 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-import type { PostRow, Published, Search, Snapshot, Traffic } from '../types'
+import type { Idea, PostRow, Published, Search, Snapshot, Traffic } from '../types'
 
 import { agenda, delta } from './agenda'
+import { activeIdeas, IDEAS_FILE, shortPath, withStatus } from './ideas'
 import { traffic as cloudflareTraffic } from './cloudflare'
 import { channelLine, git, isPromoted, lastDeploy, nowBox, posts, PROMOTION_LOG, recordChannel } from './content'
 import { searchStats } from './google'
@@ -20,7 +21,7 @@ const CELL_PX = 9
 type Host = EngineInterface
 
 // Change a tag when its type changes: it declines what an earlier version stored.
-const snapshot = atom({ plugin: 'dd-desk', key: 'snapshot' } as const, null, { shape: 'snapshot-5' })
+const snapshot = atom({ plugin: 'dd-desk', key: 'snapshot' } as const, null, { shape: 'snapshot-6' })
 const checkRun = atom({ plugin: 'dd-desk', key: 'check' } as const, null, { shape: 'check-1' })
 const busy = atom({ plugin: 'dd-desk', key: 'busy' } as const, false, { shape: 'busy-1' })
 const open = atom({ plugin: 'dd-desk', key: 'open' } as const, [], { shape: 'open-1' })
@@ -41,13 +42,14 @@ export function postRows(published: Published[], traffic: Traffic | null, search
 }
 
 async function collect($: Host, previous: Snapshot | null, withNetwork: boolean): Promise<Snapshot> {
-  const [branch, ahead, status, deploy, toml, listening] = await Promise.all([
+  const [branch, ahead, status, deploy, toml, listening, ideas] = await Promise.all([
     git($, ['branch', '--show-current']),
     git($, ['rev-list', '--count', 'origin/main..main']),
     git($, ['status', '--porcelain']),
     lastDeploy($),
     $.fs.read('src/hugo.toml').catch(() => ''),
     $.fs.read('src/data/listening.yaml').catch(() => ''),
+    $.fs.read(IDEAS_FILE).catch(() => ''),
   ])
   const { drafts, published } = await posts($, previous, withNetwork)
   const cloudflare = withNetwork
@@ -70,6 +72,7 @@ async function collect($: Host, previous: Snapshot | null, withNetwork: boolean)
     drafts,
     posts: postRows(published, cloudflare.traffic, google.search),
     now: nowBox(toml, listening),
+    ideas: activeIdeas(ideas),
   }
 }
 
@@ -136,6 +139,20 @@ function markPosted($: Host, base: string): () => void {
       const today = new Date(await $.clock.now()).toISOString().slice(0, 10)
       await $.fs.write(PROMOTION_LOG, recordChannel(log, base, 'linkedin', today))
       await refresh($, false)
+    })()
+  }
+}
+
+// Avvis hides the idea; Skriv denne marks it as being written and starts the interview from it.
+function setIdea($: Host, idea: Idea, status: Idea['status']): () => void {
+  return () => {
+    void (async () => {
+      const text = await $.fs.read(IDEAS_FILE)
+      await $.fs.write(IDEAS_FILE, withStatus(text, idea.id, status))
+      await refresh($, false)
+      if (status === 'skriver') {
+        await $.prompt.submit({ text: PROMPTS.writeIdea(idea.title, idea.about) })
+      }
     })()
   }
 }
@@ -426,6 +443,63 @@ export const register: Register = on => {
             </Text>
           </Box>
         )}
+
+        {traffic && (traffic.sources.length > 0 || traffic.moves.length > 0) && (
+          <Box flexDirection="column" gap="xs">
+            {kicker('Lesernes vei, 7 d')}
+            <Text size="caption" dimColor>
+              Kom fra: {traffic.sources.map(one => `${one.name} ${one.count}`).join(' · ') || 'ingen kjente kilder'}
+            </Text>
+            {traffic.moves.map(move => (
+              <Box key={`move-${move.from}-${move.to}`} flexDirection="row" justifyContent="space-between" gap="sm">
+                <Box flexShrink={1}>
+                  <Text size="footnote" wrap="truncate-end">
+                    {shortPath(move.from)} <Text dimColor>→</Text> {shortPath(move.to)}
+                  </Text>
+                </Box>
+                <Text size="caption" mono dimColor>
+                  {move.count}
+                </Text>
+              </Box>
+            ))}
+            <Text size="caption" dimColor>
+              {traffic.devices.map(one => `${one.name} ${one.count}`).join(' · ')}. Cloudflare ser sideskift og hvor de kom fra, ikke klikk inne på en side.
+            </Text>
+          </Box>
+        )}
+
+        <Box flexDirection="column" gap="xs">
+          <Box flexDirection="row" justifyContent="space-between" alignItems="center" gap="sm">
+            {kicker(`Forslag til innlegg (${snap.ideas.length})`)}
+            <Button key="find-ideas" label="Finn nye forslag" onPress={ask($, PROMPTS.ideas)} />
+          </Box>
+          {snap.ideas.length === 0 && (
+            <Text size="footnote" dimColor>
+              Ingen forslag nå.
+            </Text>
+          )}
+          {snap.ideas.map(idea => (
+            <Box key={`idea-${idea.id}`} flexDirection="column" gap="xs" paddingX="sm" paddingY="xs" borderStyle="round" borderColor="subtle">
+              <Box flexDirection="row" justifyContent="space-between" gap="sm">
+                <Box flexShrink={1}>
+                  <Text weight="semibold">{idea.title}</Text>
+                </Box>
+                {idea.status === 'skriver' && (
+                  <Text size="caption" mono color={SEA.teal}>
+                    skriver
+                  </Text>
+                )}
+              </Box>
+              <Text size="footnote" dimColor>
+                {idea.why}
+              </Text>
+              <Box flexDirection="row" flexWrap="wrap" gap="sm">
+                {idea.status === 'ny' && <Button key={`write-${idea.id}`} label="Skriv denne" variant="primary" onPress={setIdea($, idea, 'skriver')} />}
+                <Button key={`reject-${idea.id}`} label="Avvis" onPress={setIdea($, idea, 'avvist')} />
+              </Box>
+            </Box>
+          ))}
+        </Box>
 
         {snap.posts.length > 0 && (
           <Box flexDirection="column" gap="xs">

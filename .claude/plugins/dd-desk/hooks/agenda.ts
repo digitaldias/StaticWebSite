@@ -50,11 +50,11 @@ function allItems(snap: Snapshot, nowMs: number): AgendaItem[] {
     }
   }
   const latest = snap.posts[0]
-  // Promoted once it is on Dev.to or LinkedIn: skipping one of them is Pedro's call, not a missing step.
+  // Promoted once it is on Dev.to, LinkedIn or Facebook: skipping one of them is Pedro's call, not a missing step.
   if (latest && daysSince(latest.date, nowMs) <= PROMOTE_WITHIN_DAYS && !isPromoted(latest)) {
     items.push({
       key: 'promote',
-      text: `«${latest.title}» er ikke promotert ennå, verken på Dev.to eller LinkedIn.`,
+      text: `«${latest.title}» er ikke promotert ennå, verken på Dev.to, LinkedIn eller Facebook.`,
       isUrgent: false,
       button: { label: 'Promoter', prompt: PROMPTS.promote(latest.file) },
       fingerprint: latest.base,

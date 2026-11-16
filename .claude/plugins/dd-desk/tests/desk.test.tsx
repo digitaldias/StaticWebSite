@@ -1,7 +1,8 @@
 import { expect, test } from 'claude-code/testing'
 
 import { agenda, delta } from '../hooks/agenda'
-import { brokenLinks, countBots, dailyTraffic, envValue, funnel, perPost } from '../hooks/cloudflare'
+import { brokenLinks, countBots, dailyTraffic, envValue, funnel, moves, perPost, sources } from '../hooks/cloudflare'
+import { activeIdeas, shortPath, withStatus } from '../hooks/ideas'
 import { channelLine, draftChecks, frontMatter, isPromoted, nowBox, parsePromotion, recordChannel } from '../hooks/content'
 import { barChartSvg, sparkline, thousands } from '../hooks/pane'
 import { postRows } from '../hooks/register'
@@ -83,6 +84,9 @@ const SNAPSHOT: Snapshot = {
     funnel: { crawled: 582, live: 15, referred: 0, liveBy: [{ name: 'ChatGPT-User', count: 6 }], referrers: [] },
     broken: [{ path: '/blog/old-post/', count: 4 }],
     perPost: {},
+    sources: [{ name: 'linkedin.com', count: 9 }],
+    moves: [{ from: '/nb/blog/2026-11-08-3d-print/', to: '/nb/about/', count: 2 }],
+    devices: [{ name: 'NO PC', count: 77 }],
   },
   trafficNote: '',
   search: {
@@ -96,7 +100,43 @@ const SNAPSHOT: Snapshot = {
     pages: [],
   },
   searchNote: '',
+  ideas: [
+    { id: 'geek', title: 'Hva betyr geek?', added: '2026-11-16', status: 'ny', basis: 'Search Console', why: 'Nordmenn søker etter ordet.', about: 'En norsk definisjon.' },
+  ],
 }
+
+test('sources drop the site and AI answers, moves drop language switches', async () => {
+  const from = sources([
+    { count: 88, host: 'www.digitaldias.com' },
+    { count: 105, host: '' },
+    { count: 9, host: 'www.linkedin.com' },
+    { count: 2, host: 'l.facebook.com' },
+    { count: 2, host: 'facebook.com' },
+    { count: 3, host: 'chatgpt.com' },
+  ])
+  expect(JSON.stringify(from)).toBe(JSON.stringify([{ name: 'direkte', count: 105 }, { name: 'linkedin.com', count: 9 }, { name: 'facebook.com', count: 4 }]))
+  const went = moves([
+    { count: 29, from: '/', to: '/nb/' },
+    { count: 2, from: '/nb/blog/2026-11-08-x/', to: '/nb/about/' },
+    { count: 1, from: '/about/', to: '/about/' },
+  ])
+  expect(JSON.stringify(went)).toBe(JSON.stringify([{ from: '/nb/blog/2026-11-08-x/', to: '/nb/about/', count: 2 }]))
+  expect(shortPath('/nb/blog/2026-11-08-3d-print/')).toBe('nb: 3d-print')
+  expect(shortPath('/')).toBe('forsiden')
+})
+
+test('rejected and written ideas leave the list, and a status change keeps the rest', async () => {
+  const text = JSON.stringify([
+    { id: 'a', added: '2026-11-01', status: 'ny' },
+    { id: 'b', added: '2026-11-16', status: 'skriver' },
+    { id: 'c', added: '2026-11-10', status: 'avvist' },
+    { id: 'd', added: '2026-11-12', status: 'skrevet' },
+  ])
+  expect(activeIdeas(text).map(idea => idea.id).join()).toBe('b,a')
+  expect(activeIdeas('not json').length).toBe(0)
+  const changed = JSON.parse(withStatus(text, 'a', 'avvist')) as { id: string; status: string }[]
+  expect(changed.map(idea => `${idea.id}:${idea.status}`).join()).toBe('a:avvist,b:skriver,c:avvist,d:skrevet')
+})
 
 test('AI bots are summed by name from their user agents', async () => {
   const bots = countBots([
@@ -199,7 +239,7 @@ test('the agenda puts the push first and covers drafts, promotion, links and Now
   const items = agenda(SNAPSHOT, NOW_MS)
   expect(items.map(item => item.key).join(',')).toBe('unpushed,draft-2026-11-07-x.md,promote,broken,now')
   expect(items[0]?.isUrgent).toBe(true)
-  expect(items.find(item => item.key === 'promote')?.text).toBe('«Latest post» er ikke promotert ennå, verken på Dev.to eller LinkedIn.')
+  expect(items.find(item => item.key === 'promote')?.text).toBe('«Latest post» er ikke promotert ennå, verken på Dev.to, LinkedIn eller Facebook.')
   const traffic0 = SNAPSHOT.traffic
   if (!traffic0) {
     throw new Error('fixture')
@@ -308,7 +348,7 @@ test('the pane draws the agenda, the funnel, the posts and the buttons', async (
   on('state.get', (_, e) => ({
     value:
       e.key === 'snapshot'
-        ? { value: { shape: 'snapshot-5', value: SNAPSHOT }, version: 1 }
+        ? { value: { shape: 'snapshot-6', value: SNAPSHOT }, version: 1 }
         : e.key === 'busy'
           ? { value: { shape: 'busy-1', value: true }, version: 1 }
           : { value: undefined, version: 0 },
@@ -342,6 +382,10 @@ test('the pane draws the agenda, the funnel, the posts and the buttons', async (
     expect(await ui.find({ type: 'Text', text: /Sultans Of Swing/ })).toBe(undefined)
     expect(await ui.find({ type: 'Button', key: 'done-unpushed' })).toBe(undefined)
     expect(await ui.find({ type: 'Button', key: 'posted-2026-11-06-y' })).not.toBe(undefined)
+    expect((await ui.find({ type: 'Text', text: /^Kom fra/ }))?.text).toBe('Kom fra: linkedin.com 9')
+    expect((await ui.find({ type: 'Text', text: /3d-print/ }))?.text).toContain('nb: 3d-print')
+    expect((await ui.find({ type: 'Text', text: /^Hva betyr geek/ }))?.text).toBe('Hva betyr geek?')
+    expect(await ui.find({ type: 'Button', key: 'reject-geek' })).not.toBe(undefined)
     await ui.press({ key: 'do-draft-2026-11-07-x.md' })
     await ui.press({ key: 'done-broken' })
     await ui.unmount()

@@ -61,6 +61,9 @@ export type Funnel = {
 
 export type PostTraffic = { readers: number; readerDays: number[]; ai: number }
 
+// A reader going from one page to another on the site, from Web Analytics' referrer path, over 7 days.
+export type Move = { from: string; to: string; count: number }
+
 export type Traffic = {
   days: Day[]
   visits: number
@@ -70,6 +73,21 @@ export type Traffic = {
   funnel: Funnel
   broken: PathCount[]
   perPost: Record<string, PostTraffic>
+  // Over 7 days: other sites readers came from, moves between pages, and country with device type.
+  sources: BotCount[]
+  moves: Move[]
+  devices: BotCount[]
+}
+
+// A post idea from ideas/ideas.json; the pane shows the ones not rejected.
+export type Idea = {
+  id: string
+  title: string
+  added: string
+  status: 'ny' | 'skriver' | 'skrevet' | 'avvist'
+  basis: string
+  why: string
+  about: string
 }
 
 export type SearchQuery = { query: string; clicks: number; impressions: number }
@@ -98,6 +116,7 @@ export type Snapshot = {
   trafficNote: string
   search: Search | null
   searchNote: string
+  ideas: Idea[]
 }
 
 export type CheckRun = {

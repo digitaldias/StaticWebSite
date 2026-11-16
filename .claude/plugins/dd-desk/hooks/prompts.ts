@@ -14,6 +14,10 @@ export const PROMPTS = {
     `Fortsett utkastet ${BLOG}/${file} etter «Writing a new blog post» i CLAUDE.md. Panelet ser at dette mangler: ${missing.length ? missing.join(', ') : 'ingenting'}. Finn det første steget som ikke er ferdig, og gjør det.`,
   factCheck: (file: string) =>
     `Kjør steg 8 (Fact-check and SEO) under «Writing a new blog post» i CLAUDE.md på ${BLOG}/${file}.`,
+  ideas:
+    'Kjør `just stats`, si kort hva som gikk bra og hva som ikke gikk bra, og legg inn ett til tre nye forslag i ideas/ideas.json etter «Post ideas» i CLAUDE.md.',
+  writeIdea: (title: string, about: string) =>
+    `Jeg vil skrive forslaget «${title}» fra ideas/ideas.json. Det skal handle om: ${about}\n\nStart steg 1 (Interview) under «Writing a new blog post» i CLAUDE.md med dette som utgangspunkt.`,
   promote: (file: string) => `Kjør promote-post-skillen for ${BLOG}/${file}.`,
   stats: (file: string) => `Hent statistikken for ${BLOG}/${file} med promote-post-skillen.`,
   fixCheck: (tail: string) =>

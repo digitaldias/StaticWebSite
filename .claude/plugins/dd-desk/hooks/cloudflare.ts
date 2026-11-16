@@ -1,6 +1,6 @@
 import type { EngineInterface } from 'claude-code'
 
-import type { BotCount, Day, Funnel, PathCount, PostTraffic, Traffic } from '../types'
+import type { BotCount, Day, Funnel, Move, PathCount, PostTraffic, Traffic } from '../types'
 
 import { unquote } from './content'
 
@@ -153,6 +153,32 @@ export function perPost(
   return result
 }
 
+const OWN_HOST = /^(www\.)?digitaldias\.com$/
+const DEVICE: Record<string, string> = { desktop: 'PC', mobile: 'mobil', tablet: 'nettbrett' }
+
+// Other sites readers came from; the site itself and AI answers (shown in the funnel) are left out, a blank host is typed in or a bookmark.
+export function sources(referrers: { count: number; host: string }[]): BotCount[] {
+  return tally(
+    referrers
+      .filter(row => !OWN_HOST.test(row.host) && !AI_REFERRERS.some(host => row.host === host || row.host.endsWith(`.${host}`)))
+      .map(row => [row.host ? row.host.replace(/^(www|l|m)\./, '') : 'direkte', row.count]),
+  ).slice(0, 6)
+}
+
+// lang.js sends a reader to their stored language before first paint, and a page reload is no move: both are left out.
+export function moves(rows: { count: number; from: string; to: string }[]): Move[] {
+  const english = (path: string) => path.replace(/^\/nb\//, '/')
+
+  return rows
+    .filter(row => english(row.from) !== english(row.to))
+    .map(row => ({ from: row.from, to: row.to, count: row.count }))
+    .slice(0, 8)
+}
+
+export function devices(rows: { count: number; country: string; device: string }[]): BotCount[] {
+  return rows.map(row => ({ name: `${row.country} ${DEVICE[row.device] ?? row.device}`, count: row.count }))
+}
+
 export function envValue(text: string, name: string): string {
   return unquote(new RegExp(`^\\s*${name}\\s*=(.*)$`, 'm').exec(text)?.[1] ?? '')
 }
@@ -203,6 +229,8 @@ type Answer = {
       readersBefore: { count: number; sum: { visits: number }; dimensions: { date: string } }[]
       readerPaths: { count: number; dimensions: { requestPath: string; date: string } }[]
       referrers: { count: number; dimensions: { refererHost: string } }[]
+      moves: { count: number; dimensions: { refererPath: string; requestPath: string } }[]
+      devices: { count: number; dimensions: { countryName: string; deviceType: string } }[]
     }[]
   }
 }
@@ -225,6 +253,8 @@ function graphql(fortnight: string, week: string, day: string, twoDays: string, 
       readersBefore: rumPageloadEventsAdaptiveGroups(limit: 10, filter: {date_geq: "${fortnight}", date_lt: "${week}", requestHost_in: ${HOSTS}}) { count sum { visits } dimensions { date } }
       readerPaths: rumPageloadEventsAdaptiveGroups(limit: 1000, filter: {date_geq: "${week}", requestHost_in: ${HOSTS}, requestPath_in: ${list}}) { count dimensions { requestPath date } }
       referrers: rumPageloadEventsAdaptiveGroups(limit: 50, filter: {date_geq: "${week}", requestHost_in: ${HOSTS}}) { count dimensions { refererHost } }
+      moves: rumPageloadEventsAdaptiveGroups(limit: 60, filter: {date_geq: "${week}", requestHost_in: ${HOSTS}, refererHost_in: ${HOSTS}}, orderBy: [count_DESC]) { count dimensions { refererPath requestPath } }
+      devices: rumPageloadEventsAdaptiveGroups(limit: 6, filter: {date_geq: "${week}", requestHost_in: ${HOSTS}}, orderBy: [count_DESC]) { count dimensions { countryName deviceType } }
     }
   } }`
 }
@@ -259,6 +289,7 @@ export async function traffic($: Host, bases: string[]): Promise<{ traffic: Traf
     const agents = (rows: Agent[] | undefined) => (rows ?? []).map(row => ({ count: row.count, userAgent: row.dimensions.userAgent }))
     const bots = countBots(agents(zone?.agents))
     const total = (list: BotCount[]) => list.reduce((sum, one) => sum + one.count, 0)
+    const referrers = (account?.referrers ?? []).map(row => ({ count: row.count, host: row.dimensions.refererHost }))
 
     return {
       traffic: {
@@ -271,9 +302,11 @@ export async function traffic($: Host, bases: string[]): Promise<{ traffic: Traf
         },
         bots,
         botTotal: total(bots),
-        funnel: funnel(
-          agents(zone?.served),
-          (account?.referrers ?? []).map(row => ({ count: row.count, host: row.dimensions.refererHost })),
+        funnel: funnel(agents(zone?.served), referrers),
+        sources: sources(referrers),
+        moves: moves((account?.moves ?? []).map(row => ({ count: row.count, from: row.dimensions.refererPath, to: row.dimensions.requestPath }))),
+        devices: devices(
+          (account?.devices ?? []).map(row => ({ count: row.count, country: row.dimensions.countryName, device: row.dimensions.deviceType })),
         ),
         broken: await stillMissing($, brokenLinks((zone?.missing ?? []).map(row => ({ count: row.count, path: row.dimensions.clientRequestPath })))),
         perPost: perPost(

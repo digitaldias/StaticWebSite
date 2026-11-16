@@ -1,0 +1,65 @@
+[
+  {
+    "id": "sparseread-webfetch",
+    "title": "Sparer «sparse reading» tokens når Claude leser nettsider?",
+    "added": "2026-11-16",
+    "status": "avvist",
+    "basis": "Eksperimentet «SparseRead token efficiency experiment» i claude-marketplace 16.11.: 11 forhåndsregistrerte URL-er, to armer (WebFetch mot SparseRead via hook og MCP), Sonnet 5.5, én kjøring per URL. Resultatet var ikke skrevet da forslaget ble lagt inn.",
+    "why": "Innlegg om Claude-verktøy får AI-agenthentinger og søk på verktøynavn hos deg (LSP-innlegget, «csharp-ls»). Et målt ja eller nei med en vinnerregel låst før første kjøring er sjelden kost; de fleste innlegg om tokensparing er påstander. Leseren kan kjøre samme oppsett selv.",
+    "about": "Påstanden fra artikkelen bak SparseRead mot det du målte: hvordan hooken styrer WebFetch over til sro_fetch, testsettet og hvorfor de fleste bloggartikler havnet under 12 KB-grensen, tokens og korrekthet per URL, og hvor sparse reading tapte. Avslutt med anbefalingen fra vinnerregelen og hva n = 11 med én kjøring hver ikke kan si. Venter på resultatdokumentet, og du avgjør om noe fra Tradesolution-repoet ikke kan deles."
+  },
+  {
+    "id": "falske-ai-agenter",
+    "title": "Roboter som later som de er AI-agenter",
+    "added": "2026-11-16",
+    "status": "avvist",
+    "basis": "Cloudflare, siste døgn 16.11.: forespørsler etter /key.json, /.env og /.git/ med ChatGPT-User og Claude-User som brukeragent.",
+    "why": "Mange åpner nå robots.txt for AI-agenter. Tallene viser at brukeragenten ikke beviser noe, og det er nyttig å vite før man stoler på den. Agenttrafikk er dessuten det som vokser raskest hos deg (13 henteforespørsler mot 5 uka før).",
+    "about": "Hva skannerne ba om på ett døgn på et statisk nettsted, hvorfor en falsk agent kommer forbi, og hvordan du skiller ekte agenthentinger fra falske med Cloudflares verifiserte roboter og IP-områder. Leseren får en Cloudflare-spørring å kjøre mot sin egen sone."
+  },
+  {
+    "id": "hva-betyr-geek",
+    "title": "Hva betyr «geek»? Et norsk svar",
+    "added": "2026-11-16",
+    "status": "avvist",
+    "basis": "Search Console 18.10.–14.11.: «geekene» 56 visninger, «hva betyr geek» 26 visninger, snittplassering 7–9, null klikk. Den norske nerd-vs-geek-siden har 107 visninger.",
+    "why": "Nordmenn søker etter ordet og finner deg allerede, men klikker ikke. Et innlegg som svarer rett på spørsmålet i tittelen, kan løfte deg fra plass 7–9 til topp tre. Dette er det største søket du har, og det er på norsk.",
+    "about": "En kort, norsk definisjon først: hva en geek er, hvor ordet kommer fra og hvordan det skiller seg fra nerd. Deretter din egen vinkel fra nerd-vs-geek-innlegget, med lenke dit. Må skrives så det svarer på søket i første avsnitt."
+  },
+  {
+    "id": "3d-print-oppfolging",
+    "title": "Oppfølging av reservedelen fra 3D-printeren",
+    "added": "2026-11-16",
+    "status": "avvist",
+    "basis": "Cloudflare 7 dager: mest leste innlegg (11 visninger på norsk, 5 på engelsk) og flest AI-agenthentinger (6).",
+    "why": "Det er innlegget både lesere og AI-agenter går til nå, og det er det eneste som leses mer på norsk enn på engelsk. En oppfølging fanger interessen mens den er der.",
+    "about": "Hvordan delen holdt seg etter noen uker i bruk, hva som måtte justeres, og en ny del laget med samme metode. Krever at du har noe nytt å vise; noter hva som har skjedd med delen siden."
+  },
+  {
+    "id": "csharp-ls-oppsett",
+    "title": "Sett opp csharp-ls for Claude Code på ti minutter",
+    "added": "2026-11-16",
+    "status": "ny",
+    "basis": "Search Console 18.10.–14.11.: «csharp-ls» og «csharp ls» 6 visninger, plass 9–10. Innlegget om Claude og LSP i mikrotjenester får AI-agenthentinger (2 på 7 dager).",
+    "why": "Folk søker etter verktøyet ved navn, og du rangerer bare på plass 9–10 med et innlegg som handler om noe større. En ren oppskrift treffer søket direkte og passer for AI-svar.",
+    "about": "Installasjon, konfigurasjon i Claude Code og en test som viser at det virker, med versjoner. Lenk til LSP-innlegget for hvorfor."
+  },
+  {
+    "id": "mac-atte-maneder-etter",
+    "title": "Åtte måneder etter byttet til Mac",
+    "added": "2026-11-16",
+    "status": "ny",
+    "basis": "Search Console 18.10.–14.11.: /blog/2026-03-27-switching-to-mac/ har 43 visninger, snittplassering 5,1 og null klikk. Innlegget er fra 27.03.2026.",
+    "why": "Siden ligger på første side i Google, men ingen klikker. Et oppfølgingsinnlegg med dato og fasit gir søkeren en grunn til å klikke og lenker begge veier. Det trekker også inn AI-verktøy, som er det agentene henter mest fra deg.",
+    "about": "Hva som holdt og hva som ikke holdt fra mars-innlegget: hvilke AI-verktøy som faktisk kom til Mac først, hva du fortsatt gjør på Windows, og hva du ville sagt til en som vurderer samme bytte nå. Trenger ditt svar: du jobber fortsatt på Windows i dette repoet, så bare du vet hvordan fordelingen ser ut i dag."
+  },
+  {
+    "id": "soho-blues-band-ai",
+    "title": "Bluesbandet jeg likte, fantes ikke",
+    "added": "2026-11-16",
+    "status": "skrevet",
+    "basis": "Search Console 18.10.–14.11.: «soho blues band» 27 visninger (plass 7,2), «soho blues band members» 12 (plass 2,1), «soho blues band midnight» 2; null klikk. Spotify-API-et 16.11.: to album på 17 spor hver, «Nightfall» (24.07.2026) og «Hold On» (30.09.2026), opphavsrett «2026 Bailar», ingen sjangre eller annen info. YouTube-beskrivelsen til «Want It All» (DistroKid, utgitt 24.07.2026, 1 692 visninger 16.11.): «Vocal: Songer AI», «Lyricist: GenerativeAI», «Composer: GenerativeAI», «Studio Producer: Andrew Curran», ℗ Bailar. Nettsøk 16.11.: ingen intervjuer, konserter, medlemsnavn eller presseomtale. TechCrunch 11.08.2026: Spotify merker AI-genererte artistidentiteter med «AI Persona» fra midten av september og tar dem ut av anbefalingene, men vurderer først profiler over en publikumsgrense. «On Fire» fra samme album har nøyaktig de samme kredittene (44 visninger). Ingen kilde knytter navnet Andrew Curran til musikk ut over disse kredittene; Juno-vinneren Andy Curran er en annen person. Dusty Strings (Spotify-API-et 16.11.): 6 album og 318 singler fra februar 2025 til november 2026, pluss 90 gjesteopptredener, mange sammen med DJ N3M3ZIZ og N3Bass Records, opphavsrett «2026 Paulo Fagundes, 2026 N3Bass Music». X-kontoen @DustyStringsAI kaller seg en kunstig intelligens laget av DJ N3M3ZIZ sammen med N3Bass Records (sitert via søkeresultat; kontoen svarer 402 uten innlogging). whosung.com fører Dusty Strings som «Yes, as an identity», uten lenket kilde. Spotify-nettspilleren 16.11.: SOHO Blues Band har 676 200 månedlige lyttere, «Are You Ready» over 1 million avspillinger, et nytt album «Game Plan» på nedtelling, Spotify-kreditter «GenerativeAI» og «Songer AI», men ikke AI Persona-merket. Dusty Strings har 70 700 månedlige lyttere og har AI Persona-merket.",
+    "why": "Folk søker etter medlemmene i et band som ikke har noen, og siden din ligger på plass 2 for det søket. Og her er en vri ingen andre har skrevet om: Spotify merker Dusty Strings som AI, men ikke SOHO, som har nesten ti ganger så mange lyttere og AI oppgitt i sine egne kreditter. Merket handler om falske personer, ikke om musikken; SOHO viser ingen falsk person, og det er trolig derfor det slipper unna (antakelse, ikke bekreftet av Spotify). Det passer også rett inn i AI-temaet agentene henter fra deg.",
+    "about": "Hvordan YouTube foreslo bandet, og hvorfor du likte det: det høres mye ut som Dusty Strings, en annen AI-artist fra DJ N3M3ZIZ og N3Bass Records, men er mindre pumpende. Beviset står i kredittene: DistroKid-beskrivelsen på YouTube oppgir AI som vokalist, tekstforfatter og komponist, og bare én menneskelig produsent. Vis leseren hvor de finner kredittene til et spor. Ta med de andre sporene leseren kan sjekke selv: identiske kreditter på hvert spor, to album med 17 spor hver på ti uker, Dusty Strings med 324 egne utgivelser på 21 måneder, et ukjent plateselskap og ingen spor av mennesker utenfor strømmetjenestene. Kjernen: Spotifys «AI Persona»-merke står på Dusty Strings (70 700 lyttere), men ikke på SOHO (676 200), selv om SOHOs egne Spotify-kreditter sier AI. Forklar hva merket gjør og ikke gjør, og at kredittene er der leseren finner svaret. Leseren får en sjekkliste for å avsløre et AI-band på fem minutter. Avslutt med rettelsen du la inn i Lytter nå-oppføringen fra 02.11. Din dom, med dine ord: du synes musikken er herlig, begge to. Dusty Strings har en sterk kraft i alle låtene, og noe av den kraften finnes i SOHO Blues Band også, selv om det er roligere. Innlegget tar ikke parti mot AI-musikk; det handler om å vite hva du hører på. Ta skjermbilder av begge artistsidene når du skriver, fordi tallene og merket kan endre seg."
+  }
+]
