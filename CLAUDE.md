@@ -10,7 +10,7 @@ Repeatable commands live in the root `justfile` (`just --list`): `new-post`, `co
 
 ```bash
 just new-post my-slug     # src/content/blog/<today>-my-slug.md from src/archetypes/blog.md
-just check                # build with drafts into %TEMP%, never src/public
+just check                # build with drafts into the OS temp folder, never src/public
 just listening            # Pedro's five most-played Spotify artists of the last 4 weeks (setup: scripts/spotify-top.py)
 just depth <post-file>     # score each section's reading level (100-400) with the local decision model into data/depth.yaml
 cd src && hugo server -D  # dev server at http://localhost:1313
@@ -184,7 +184,7 @@ Model new posts on the 2026 posts (from `2026-04-06-…` on); the 2025 posts car
 - Hero: `static/images/blog/<post-file-name>/featured.jpg`, 1920×1080, JPEG ~82%, ~200–300 KB. Inline: 1200×800, ~150–200 KB. `python scripts/optimize-image.py <in> hero|inline <out>` produces both.
 - MakeImage is Pedro's local image generator (`makeImage`, Krea 2 Turbo on ComfyUI, about a minute per image; run it in the background). `just cover <post-file-name> "<prompt>" [seed] [negative]` generates a landscape image and writes the optimised `featured.jpg`; it embeds the post's `title`, `featuredAlt` (or `description`) and `tags` as IPTC metadata, so write the front matter first. For other images: `makeImage --no-input -p landscape -s <seed> --title "<title>" --description "<alt text>" --keywords "<a, b>" -o <folder> "<prompt>"`, then `optimize-image.py`.
 - Every image on this site carries embedded metadata: © year digitaldias, creator, IPTC "Created using Generative AI" and the prompt. `optimize-image.py` keeps EXIF, XMP and ICC; any new image step must keep them too (in Pillow, pass `exif=`, `xmp=` and `icc_profile=` from `img.info` to `save`).
-- Prompts are long and specific (50 to 120 words), and the model renders text in images sharply: quote the exact words, say where they appear, and say what stays blank. Add "no text" only when a picture should have none. Full recipe in `~/.claude/docs/makeimage.md`. Show Pedro the result before using it; regenerate with a new seed rather than accept a weak image.
+- Prompts are long and specific (50 to 120 words), and the model renders text in images sharply: quote the exact words, say where they appear, and say what stays blank. Add "no text" only when a picture should have none. Full recipe in `~/dev/personal/makeImage/docs/makeimage.md`. Show Pedro the result before using it; regenerate with a new seed rather than accept a weak image.
 - Photos of Pedro's children stay on Flickr; they never go on this site. Pedro's Flickr (`digitaldias`) holds landscape, dog, studio and still-life imagery.
 
 ## Promotion

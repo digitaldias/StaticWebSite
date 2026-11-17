@@ -1,7 +1,5 @@
 set shell := ["pwsh", "-NoProfile", "-Command"]
 
-scratch := env_var_or_default("TEMP", ".") / "digitaldias-build"
-
 # Create a draft post from src/archetypes/blog.md, e.g. `just new-post my-slug`
 new-post slug:
     hugo new --source src "blog/$(Get-Date -Format yyyy-MM-dd)-{{slug}}.md"
@@ -11,7 +9,7 @@ new-post slug:
 # featuredAlt (or description) and tags go into the image as IPTC metadata, which
 # optimize-image.py keeps. `negative` lists what to keep out of the picture (doubles render time).
 cover post prompt seed="" negative="":
-    $out = Join-Path $env:TEMP "digitaldias-cover"; \
+    $out = Join-Path ([System.IO.Path]::GetTempPath()) "digitaldias-cover"; \
     $seedArg = if ("{{seed}}") { @("-s", "{{seed}}") } else { @() }; \
     $negArg = if ("{{negative}}") { @("--negative", "{{negative}}") } else { @() }; \
     $meta = @(); $postFile = "src/content/blog/{{post}}.md"; \
@@ -27,7 +25,7 @@ cover post prompt seed="" negative="":
 
 # Build with drafts into a scratch folder to catch template and front-matter errors; never into src/public
 check:
-    hugo --quiet --minify --buildDrafts --source src --destination "{{scratch}}"
+    hugo --quiet --minify --buildDrafts --source src --destination (Join-Path ([System.IO.Path]::GetTempPath()) "digitaldias-build")
 
 # Score each section's reader depth (100-400) with the local decision model into src/data/depth.yaml, e.g. `just depth 2026-11-01-my-slug` or `just depth --all`
 depth +posts:
