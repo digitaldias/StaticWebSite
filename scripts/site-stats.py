@@ -108,26 +108,34 @@ TOPICS = ["claude code", "local llm", "ollama", "azure", ".net", "ai agents"]
 DEVTO_TAGS = ["ai", "claude", "dotnet", "azure", "llm"]
 
 
-def hacker_news():
+def hacker_news_items():
     since = int((dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=7)).timestamp())
     seen = {}
     for topic in TOPICS:
         query = urllib.parse.urlencode({"query": topic, "tags": "story", "hitsPerPage": 8,
                                         "numericFilters": f"created_at_i>{since},points>40"})
         for hit in request(f"https://hn.algolia.com/api/v1/search?{query}")["hits"]:
-            seen[hit["objectID"]] = (hit["points"], hit["num_comments"], hit["title"])
-    top = sorted(seen.values(), reverse=True)[:12]
-    return [f"{points}p {comments}c {title}" for points, comments, title in top]
+            # An Ask HN or Show HN post has no url: the discussion is then the post.
+            url = hit.get("url") or f"https://news.ycombinator.com/item?id={hit['objectID']}"
+            seen[hit["objectID"]] = {"score": hit["points"], "comments": hit["num_comments"], "title": hit["title"], "url": url}
+    return sorted(seen.values(), key=lambda i: (i["score"], i["comments"], i["title"]), reverse=True)[:12]
 
 
-def devto():
+def hacker_news():
+    return [f"{i['score']}p {i['comments']}c {i['title']}" for i in hacker_news_items()]
+
+
+def devto_items():
     seen = {}
     for tag in DEVTO_TAGS:
         query = urllib.parse.urlencode({"tag": tag, "top": 7, "per_page": 6})
         for a in request(f"https://dev.to/api/articles?{query}", headers={"User-Agent": "site-stats"}):
-            seen[a["id"]] = (a["positive_reactions_count"], a["comments_count"], a["title"])
-    top = sorted(seen.values(), reverse=True)[:12]
-    return [f"{reactions}r {comments}c {title}" for reactions, comments, title in top]
+            seen[a["id"]] = {"score": a["positive_reactions_count"], "comments": a["comments_count"], "title": a["title"], "url": a["url"]}
+    return sorted(seen.values(), key=lambda i: (i["score"], i["comments"], i["title"]), reverse=True)[:12]
+
+
+def devto():
+    return [f"{i['score']}r {i['comments']}c {i['title']}" for i in devto_items()]
 
 
 def safely(fetch):

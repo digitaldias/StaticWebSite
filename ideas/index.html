@@ -49,6 +49,10 @@
   .trends ol { list-style: none; margin: 0; padding: 0; }
   .trends li { display: grid; grid-template-columns: 5.5em 1fr; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--rule); font-size: .95rem; }
   .trends li .m { white-space: nowrap; }
+  .trends li { grid-template-columns: 5.5em 1fr auto; }
+  .trends a.open { display: inline-flex; align-items: center; color: var(--muted); padding: 2px; border-radius: 4px; transition: color var(--transition); }
+  .trends a.open:hover, .trends a.open:focus-visible { color: var(--teal); }
+  .trends a.open svg { width: 1.05em; height: 1.05em; }
   dialog { width: min(600px, calc(100% - 32px)); box-sizing: border-box; border: 1px solid var(--rule); border-radius: 10px; background: var(--ground); color: var(--ink); padding: 20px; }
   dialog::backdrop { background: rgb(0 0 0 / .35); }
   dialog p { margin: 0 0 10px; }
@@ -206,6 +210,7 @@ async function render() {
 }
 
 const TRENDS = [['hacker_news', 'Hacker News', 'p'], ['devto', 'Dev.to', 'r']];
+const BROWSER_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.2" cy="6.5" r=".6" fill="currentColor"/><circle cx="8.6" cy="6.5" r=".6" fill="currentColor"/></svg>';
 
 async function renderTrends() {
   const section = document.getElementById('trends');
@@ -218,7 +223,7 @@ async function renderTrends() {
   if (!data) return section.insertAdjacentHTML('beforeend', '<p class="empty">Trendene kunne ikke hentes.</p>');
   const wrap = document.createElement('div');
   wrap.className = 'trends';
-  for (const [key, label] of TRENDS) {
+  for (const [key, label, unit] of TRENDS) {
     const col = document.createElement('div');
     const h = document.createElement('h3');
     h.textContent = label;
@@ -228,12 +233,16 @@ async function renderTrends() {
       col.lastChild.textContent = data[key];
     } else {
       const ol = document.createElement('ol');
-      for (const line of data[key]) {
-        const [score, comments, ...title] = line.split(' ');
+      for (const item of data[key]) {
         const li = document.createElement('li');
-        li.innerHTML = '<span class="m"></span><span></span>';
-        li.children[0].textContent = `${score} ${comments}`;
-        li.children[1].textContent = title.join(' ');
+        li.innerHTML = '<span class="m"></span><span></span><a class="open" target="_blank" rel="noopener noreferrer"></a>';
+        li.children[0].textContent = `${item.score}${unit} ${item.comments}c`;
+        li.children[1].textContent = item.title;
+        const link = li.children[2];
+        link.href = item.url;
+        link.title = `Åpne innlegget (${new URL(item.url).hostname})`;
+        link.setAttribute('aria-label', `Åpne «${item.title}»`);
+        link.innerHTML = BROWSER_ICON;
         ol.append(li);
       }
       col.append(ol);

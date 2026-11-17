@@ -66,7 +66,7 @@
     "id": "ai-modeller-uke-47",
     "title": "AI-modellene som kom denne uka, filtrert av en lokal modell",
     "added": "2026-11-17",
-    "status": "ny",
+    "status": "avvist",
     "basis": "Search Console 19.10.–15.11.: briefing-sidene er den største sidegruppen din (/briefing/ 70 visninger, /briefing/en/ 73, /briefing/en/2026-11-10.html 42, plass 7–8, 1 klikk). Ett søk lister «latest ai model releases … openai anthropic google … after:2026-11-11» (5 visninger, plass 6,4), som ligner et søk en AI-agent lager.",
     "why": "Google viser allerede briefingen din for søk etter ferske modellnyheter, men en daglig side gir ingen grunn til å klikke. En ukentlig oppsummering med dato i tittelen svarer rett på søket, lenker til dagsutgavene og passer for AI-svar som vil ha én side med datoer og versjoner.",
     "about": "De viktigste modellnyhetene fra uke 47, hentet fra briefingene, med dato, versjon og lenke til primærkilden for hver. Kort om hvordan newsstream plukker dem (lenk til innlegget om nyhetsfilteret). Krever din vurdering: hvilke nyheter du selv mener betyr noe, og om dette skal bli fast hver uke eller være en engangstest."
