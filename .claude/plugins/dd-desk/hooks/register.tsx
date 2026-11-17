@@ -210,6 +210,17 @@ export const register: Register = on => {
     return started
   })
 
+  // The desktop app attaches after session.start has run, so the open above found no surface (`no-surface`).
+  // Open again when a surface joins; an open of an open pane only retitles it.
+  on('session.attach', async ($, e, next) => {
+    const attached = await next(e)
+    if (isHome) {
+      void $.ui.open({ id: PANE, title: TITLE })
+    }
+
+    return attached
+  })
+
   on('command.run', { command: 'desk' }, async $ => {
     await $.ui.open({ id: PANE, title: TITLE })
     void refresh($, true)

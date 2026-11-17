@@ -37,6 +37,12 @@
   button.primary { background: var(--teal); border-color: var(--teal); color: var(--on-teal); }
   button.reject:hover { border-color: var(--muted); background: var(--ground-2); }
   .empty { color: var(--muted); padding: 24px 0; }
+  .shelf details { border-bottom: 1px solid var(--rule); }
+  .shelf summary { font-family: var(--display); font-weight: 500; font-size: 1rem; padding: 10px 0; cursor: pointer; list-style-position: outside; }
+  .shelf summary:hover { color: var(--teal); }
+  .shelf summary .m { margin-left: 8px; }
+  .shelf details > article { border-bottom: 0; padding-top: 4px; }
+  .shelf details > article > .top { display: none; }
   .trends { display: grid; gap: 0 32px; }
   @media (min-width: 760px) { .trends { grid-template-columns: 1fr 1fr; } }
   .trends h3 { font-family: var(--display); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); margin: 14px 0 6px; }
@@ -56,7 +62,7 @@
   <header>
     <p class="k">digitaldias.com · redaksjonen</p>
     <h1>Forslag til <em>innlegg</em></h1>
-    <p class="lede">Ideer Claude har ført opp fra tallene dine i Cloudflare og Search Console. Avviste forslag forsvinner herfra, men blir liggende i fila så de ikke foreslås igjen.</p>
+    <p class="lede">Ideer Claude har ført opp fra tallene dine i Cloudflare og Search Console. Avviste og skrevne forslag ligger som lister nederst, bare med tittel, og blir liggende i fila så de ikke foreslås igjen. Klikk en tittel for å åpne den og få den tilbake.</p>
     <p class="m" id="count"></p>
   </header>
   <main id="list"></main>
@@ -73,14 +79,31 @@
 const GROUPS = [
   ['skriver', 'Under arbeid'],
   ['ny', 'Nye forslag'],
+];
+// Lists at the bottom: titles only, each opens on a click and can be restored.
+const SHELVES = [
   ['skrevet', 'Skrevet'],
+  ['avvist', 'Avvist'],
 ];
 const ACTIONS = {
-  ny: [['skriver', 'Skriv denne', 'primary'], ['avvist', 'Avvis', 'reject']],
+  ny: [['skriver', 'Skriv denne', 'primary'], ['skrevet', 'Allerede skrevet'], ['avvist', 'Avvis', 'reject']],
   skriver: [['skrevet', 'Ferdig skrevet', 'primary'], ['ny', 'Legg tilbake'], ['avvist', 'Avvis', 'reject']],
-  skrevet: [['skriver', 'Tilbake til arbeid']],
+  skrevet: [['ny', 'Gjenopprett som nytt forslag', 'primary'], ['skriver', 'Tilbake til arbeid']],
+  avvist: [['ny', 'Gjenopprett som nytt forslag', 'primary']],
 };
 const date = iso => new Date(iso).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' });
+
+function shelf(idea) {
+  const d = document.createElement('details');
+  const summary = document.createElement('summary');
+  summary.textContent = idea.title;
+  const when = document.createElement('span');
+  when.className = 'm';
+  when.textContent = date(idea.added);
+  summary.append(when);
+  d.append(summary, card(idea));
+  return d;
+}
 
 function card(idea) {
   const a = document.createElement('article');
@@ -155,9 +178,9 @@ async function render() {
       '<p class="empty">Siden må åpnes gjennom den lokale serveren for å lese og lagre forslagene. Kjør <code>just ideas</code> i repoet, så åpnes <code>http://localhost:8765/</code>.</p>';
     return;
   }
-  const ideas = all.filter(i => i.status !== 'avvist');
-  ideas.sort((a, b) => b.added.localeCompare(a.added));
-  document.getElementById('count').textContent = `${ideas.length} aktive forslag`;
+  const ideas = [...all].sort((a, b) => b.added.localeCompare(a.added));
+  const active = ideas.filter(i => GROUPS.some(([status]) => status === i.status));
+  document.getElementById('count').textContent = `${active.length} aktive forslag`;
   const list = document.getElementById('list');
   list.replaceChildren();
   for (const [status, heading] of GROUPS) {
@@ -168,6 +191,16 @@ async function render() {
     h.textContent = `${heading} (${group.length})`;
     s.append(h, ...group.map(card));
     if (!group.length) s.insertAdjacentHTML('beforeend', '<p class="empty">Ingen nye forslag. Be Claude se over tallene.</p>');
+    list.append(s);
+  }
+  for (const [status, heading] of SHELVES) {
+    const group = ideas.filter(i => i.status === status);
+    if (!group.length) continue;
+    const s = document.createElement('section');
+    s.className = 'shelf';
+    const h = document.createElement('h2');
+    h.textContent = `${heading} (${group.length})`;
+    s.append(h, ...group.map(shelf));
     list.append(s);
   }
 }
