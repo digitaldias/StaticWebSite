@@ -52,3 +52,6 @@ src/static/supporters.json
 
 # Google Search Console service account key for the dd-desk pane
 gsc-key.json
+
+# Python bytecode from scripts/
+__pycache__/
