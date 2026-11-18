@@ -50,7 +50,7 @@
       {{- range .Translations }}
       <div class="folio__lang">
         <dt>{{ i18n "alsoIn" }}</dt>
-        <dd><a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}" lang="{{ .Language.LanguageCode }}" data-lang="{{ .Language.Lang }}">{{ .Language.LanguageName }} &rarr;</a></dd>
+        <dd><a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}" lang="{{ .Language.LanguageCode }}" data-lang="{{ .Language.Lang }}">{{ partial "flag.html" .Language.Lang }}{{ .Language.LanguageName }} &rarr;</a></dd>
       </div>
       {{- end }}
       {{- with $depth }}

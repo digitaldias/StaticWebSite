@@ -1,0 +1,6 @@
+{{- /* A small flag for a language: the US flag for English, the Norwegian flag for Norwegian. Decorative, the text beside it names the language. */ -}}
+{{- if eq . "nb" -}}
+<svg class="flag" viewBox="0 0 22 16" width="16" height="12" aria-hidden="true" focusable="false"><rect width="22" height="16" fill="#ba0c2f"/><path d="M6 0v16M0 8h22" stroke="#fff" stroke-width="4"/><path d="M8 0v16M0 8h22" stroke="#00205b" stroke-width="2"/></svg>
+{{- else -}}
+<svg class="flag" viewBox="0 0 22 16" width="16" height="12" aria-hidden="true" focusable="false"><rect width="22" height="16" fill="#fff"/><path d="M0 .62h22M0 3.08h22M0 5.54h22M0 8h22M0 10.46h22M0 12.92h22M0 15.38h22" stroke="#b22234" stroke-width="1.23"/><rect width="9.8" height="8.6" fill="#3c3b6e"/></svg>
+{{- end -}}
