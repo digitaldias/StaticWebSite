@@ -47,6 +47,12 @@
         <dt>{{ i18n "by" }}</dt>
         <dd>Pedro Dias</dd>
       </div>
+      {{- range .Translations }}
+      <div class="folio__lang">
+        <dt>{{ i18n "alsoIn" }}</dt>
+        <dd><a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}" lang="{{ .Language.LanguageCode }}" data-lang="{{ .Language.Lang }}">{{ .Language.LanguageName }} &rarr;</a></dd>
+      </div>
+      {{- end }}
       {{- with $depth }}
       {{- $d := . }}
       <div class="folio__level">

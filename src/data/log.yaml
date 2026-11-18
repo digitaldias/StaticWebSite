@@ -1,5 +1,9 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
+- date: 2026-11-18
+  tag: Site
+  text: "Every post exists in English and Norwegian, and the site says so now. The language switch reads English | Norsk with a globe, and each post's folio line links to its other language. The header also gets a [Listening](/listening/) link."
+  text_nb: "Alle innlegg finnes på norsk og engelsk, og nå står det der. Språkvelgeren viser English | Norsk med en globus, og hvert innlegg har en lenke til det andre språket i folio-linjen. Toppen har også fått en lenke til [Hører på](/nb/listening/)."
 - date: 2026-11-16
   tag: Fixed
   text: "The [Listening](/listening/) pick from 2 November, SOHO Blues Band, turned out to be AI-generated, not a real band. Its note says so now."

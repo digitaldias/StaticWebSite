@@ -56,6 +56,7 @@ h1, h2, h3, h4 { margin: 0; }
 .lang-switch a:hover { color: var(--teal); }
 .lang-switch [aria-current] { color: var(--ink); font-weight: 500; }
 .lang-switch__off { opacity: .45; cursor: default; }
+.lang-switch__globe { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
 .theme-toggle, .search-toggle { flex: none; display: grid; place-items: center; width: 32px; height: 32px; margin-left: -6px; padding: 0; background: none; border: 1px solid var(--rule); border-radius: 50%; color: var(--ink); cursor: pointer; transition: border-color var(--transition); }
 .theme-toggle::before { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); transition: transform 300ms var(--ease-out); }
 .theme-toggle[data-current="dark"]::before { transform: rotate(180deg); }
@@ -69,14 +70,19 @@ h1, h2, h3, h4 { margin: 0; }
   .nav { gap: 10px; font-size: .76rem; }
   .theme-toggle, .search-toggle { width: 28px; height: 28px; margin-left: -2px; }
 }
-/* The wordmark, four links, EN | NO, search and the theme switch need about 446px in one row
-   on Norwegian pages (measured 2026-11-07), so up to 520px the links drop to a second row */
-@media (max-width: 520px) {
+/* The wordmark, five links, English | Norsk, search and the theme switch need about 590px in one row
+   on Norwegian pages (measured 2026-11-18), so up to 600px the links drop to a second row */
+@media (max-width: 600px) {
   html { scroll-padding-top: 96px; }
   .mast .wrap { flex-wrap: wrap; height: auto; padding-block: 10px; row-gap: 6px; }
   .nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; }
   .lang-switch { margin-left: auto; }
   .theme-toggle { margin-left: 0; }
+}
+@media (max-width: 400px) {
+  .mast .wrap { gap: 8px; }
+  .lang-switch { gap: 4px; }
+  .lang-switch__globe { display: none; }
 }
 
 /* Search: a slip that drops from the masthead over the page (initSearch in main.js).

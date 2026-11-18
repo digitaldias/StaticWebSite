@@ -1,6 +1,7 @@
 {{- $page := . -}}
 {{- if gt (len site.Languages) 1 }}
-<div class="lang-switch m" role="group" aria-label="{{ i18n "language" }}">
+<div class="lang-switch m" role="group" aria-label="{{ i18n "languageNote" }}" title="{{ i18n "languageNote" }}">
+  <svg class="lang-switch__globe" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.25"/><ellipse cx="8" cy="8" rx="2.75" ry="6.25"/><path d="M1.75 8h12.5"/></svg>
   {{- range $i, $l := site.Languages }}
   {{- if $i }}<span aria-hidden="true">|</span>{{ end }}
   {{- if eq $l.Lang $page.Language.Lang }}

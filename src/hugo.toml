@@ -186,11 +186,11 @@ defaultContentLanguage = 'en'
 [languages]
   [languages.en]
     languageCode = 'en-us'
-    languageName = 'EN'
+    languageName = 'English'
     weight = 1
   [languages.nb]
     languageCode = 'nb-NO'
-    languageName = 'NO'
+    languageName = 'Norsk'
     weight = 2
     [languages.nb.outputs]
       home = ['HTML', 'RSS', 'JSON', 'search']
