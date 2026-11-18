@@ -12,6 +12,8 @@ import json
 import pathlib
 import re
 import subprocess
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -125,11 +127,25 @@ def hacker_news():
     return [f"{i['score']}p {i['comments']}c {i['title']}" for i in hacker_news_items()]
 
 
+def devto_get(url):
+    """Forem allows an anonymous IP 2 API reads a second and 25 a minute (config/initializers/rack_attack.rb),
+    so a 429 waits for its Retry-After and tries once more."""
+    try:
+        return request(url, headers={"User-Agent": "site-stats"})
+    except urllib.error.HTTPError as error:
+        if error.code != 429:
+            raise
+        time.sleep(min(int(error.headers.get("Retry-After", 5)), 60))
+        return request(url, headers={"User-Agent": "site-stats"})
+
+
 def devto_items():
     seen = {}
-    for tag in DEVTO_TAGS:
+    for i, tag in enumerate(DEVTO_TAGS):
+        if i:
+            time.sleep(0.6)
         query = urllib.parse.urlencode({"tag": tag, "top": 7, "per_page": 6})
-        for a in request(f"https://dev.to/api/articles?{query}", headers={"User-Agent": "site-stats"}):
+        for a in devto_get(f"https://dev.to/api/articles?{query}"):
             seen[a["id"]] = {"score": a["positive_reactions_count"], "comments": a["comments_count"], "title": a["title"], "url": a["url"]}
     return sorted(seen.values(), key=lambda i: (i["score"], i["comments"], i["title"]), reverse=True)[:12]
 
