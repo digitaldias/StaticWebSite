@@ -79,5 +79,23 @@
     "basis": "Search Console 19.10.–15.11.: /blog/2026-11-02-local-llm-on-a-plane/ har 36 visninger (to rader, 19 og 17), plass 4,4–4,6, null klikk.",
     "why": "Siden ligger høyt, men ingen klikker; søkeren vil trolig ha et konkret modellvalg, ikke en reisefortelling. Et kort, datert svar med modellnavn, størrelse og maskinkrav treffer søket og lenker tilbake til flyinnlegget.",
     "about": "To–tre modeller du har kjørt offline, med filstørrelse, minnekrav, tokens per sekund på din maskin og hva de klarte og ikke klarte uten nett. Ett kommando-sett for å laste ned før avreise. Trenger dine egne målinger; ingen tall uten at du har kjørt dem."
+  },
+  {
+    "id": "makeimage-lokal-bildegenerering",
+    "title": "Slik bygde jeg makeImage, kommandoen som lager bilder med en lokal modell",
+    "added": "2026-11-18",
+    "status": "ny",
+    "basis": "Pedros eget forslag 2026-11-18. makeImage lager alle forsidebildene på sidene (Krea 2 Turbo på ComfyUI); ingen lesertall bak.",
+    "why": "Hvert innlegg her har et bilde laget av kommandoen, så leseren har allerede sett resultatet. Innlegget gir en oppskrift de kan bygge selv, med verktøyet som eksempel.",
+    "about": "Veien fra første forsøk til en kommando som tar en prompt og gir et ferdig optimalisert bilde med metadata: valg av modell og ComfyUI, hvordan prompten ble til, hva som gikk galt og hva som ble løsningen. Trenger din fortelling: hva du prøvde først, hva som feilet, hvor lang tid et bilde tar og hva maskinen er. Ingen tall eller hendelser uten at du har oppgitt dem."
+  },
+  {
+    "id": "administrere-bloggen-og-hente-statistikk",
+    "title": "Slik administrerer jeg bloggen og henter statistikk med Claude",
+    "added": "2026-11-18",
+    "status": "ny",
+    "basis": "Pedros eget forslag 2026-11-18. Oppsettet finnes i repoet: justfile med `just stats`, dd-desk-panelet, Cloudflare, Search Console og ideer-siden; ingen lesertall bak.",
+    "why": "Hele oppsettet kan beskrives som en oppskrift: én kommando som henter tall fra flere kilder, et panel ved siden av chatten og en liste med ideer som følger trafikken. Leseren kan bygge samme for sin egen blogg.",
+    "about": "Hvordan en vanlig arbeidsdag på bloggen ser ut: `just stats` med Cloudflare, Search Console, Hacker News og Dev.to, panelet med agenda og ideer, og hva tallene faktisk har endret i det du skriver. Trenger din fortelling: hva du gjorde før, hva du bruker tallene til og hva du har latt være å måle. Ingen tall eller hendelser uten at du har oppgitt dem."
   }
 ]
