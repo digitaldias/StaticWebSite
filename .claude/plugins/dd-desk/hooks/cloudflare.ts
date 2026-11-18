@@ -2,7 +2,7 @@ import type { EngineInterface } from 'claude-code'
 
 import type { BotCount, Day, Funnel, Move, PathCount, PostTraffic, Traffic } from '../types'
 
-import { unquote } from './content'
+import { inRepo, unquote } from './content'
 
 type Host = EngineInterface
 
@@ -114,6 +114,7 @@ export function brokenLinks(missing: { count: number; path: string }[]): PathCou
 }
 
 // The week's 404s include paths published since; keep only those that still answer 404. The Cache Rule never caches a 404.
+// These HEAD checks reach Cloudflare as 404s too, so the `missing` query leaves HEAD out, or a path would keep itself on the list.
 async function stillMissing($: Host, paths: PathCount[]): Promise<PathCount[]> {
   const answers = await Promise.all(
     paths.map(one =>
@@ -246,7 +247,7 @@ function graphql(fortnight: string, week: string, day: string, twoDays: string, 
       agentsBefore: httpRequestsAdaptiveGroups(limit: 1000, filter: {datetime_geq: "${twoDays}", datetime_lt: "${day}", requestSource: "eyeball"}) { count dimensions { userAgent } }
       served: httpRequestsAdaptiveGroups(limit: 5000, filter: {date_geq: "${week}", ${served}}) { count dimensions { userAgent } }
       postHits: httpRequestsAdaptiveGroups(limit: 5000, filter: {date_geq: "${week}", ${served}, clientRequestPath_in: ${list}}) { count dimensions { clientRequestPath userAgent } }
-      missing: httpRequestsAdaptiveGroups(limit: 2000, filter: {date_geq: "${week}", requestSource: "eyeball", edgeResponseStatus: 404}, orderBy: [count_DESC]) { count dimensions { clientRequestPath } }
+      missing: httpRequestsAdaptiveGroups(limit: 2000, filter: {date_geq: "${week}", requestSource: "eyeball", edgeResponseStatus: 404, clientRequestHTTPMethodName_neq: "HEAD"}, orderBy: [count_DESC]) { count dimensions { clientRequestPath } }
     }
     accounts(filter: {accountTag: "${accountId}"}) {
       readers: rumPageloadEventsAdaptiveGroups(limit: 10, filter: {date_geq: "${week}", requestHost_in: ${HOSTS}}) { count sum { visits } dimensions { date } }
@@ -262,7 +263,7 @@ function graphql(fortnight: string, week: string, day: string, twoDays: string, 
 // Seven days plus today for the chart and totals; the seven before them for the week-on-week change.
 // Web Analytics answers an empty list, not an error, for a window longer than eight days, so its weeks are asked apart.
 export async function traffic($: Host, bases: string[]): Promise<{ traffic: Traffic | null; note: string }> {
-  const token = envValue(await $.fs.read('.env').catch(() => ''), 'CLOUDFLARE_API_TOKEN')
+  const token = envValue(await $.fs.read(await inRepo($, '.env')).catch(() => ''), 'CLOUDFLARE_API_TOKEN')
   if (!token) {
     return { traffic: null, note: 'Ingen CLOUDFLARE_API_TOKEN i .env.' }
   }

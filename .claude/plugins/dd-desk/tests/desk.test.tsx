@@ -3,7 +3,7 @@ import { expect, test } from 'claude-code/testing'
 import { agenda, delta } from '../hooks/agenda'
 import { brokenLinks, countBots, dailyTraffic, envValue, funnel, moves, perPost, sources } from '../hooks/cloudflare'
 import { activeIdeas, shortPath, withStatus } from '../hooks/ideas'
-import { channelLine, draftChecks, frontMatter, isPromoted, nowBox, parsePromotion, recordChannel } from '../hooks/content'
+import { channelLine, draftChecks, frontMatter, isPromoted, needsYou, nowBox, parsePromotion, recordChannel, unquote } from '../hooks/content'
 import { barChartSvg, sparkline, thousands } from '../hooks/pane'
 import { postRows } from '../hooks/register'
 import type { Snapshot } from '../types'
@@ -322,6 +322,17 @@ test('front matter fields are read and unquoted', async () => {
   expect(fields.tldr).toBe('Let the agents in.')
 })
 
+test('a title with escaped quotes loses the backslashes', async () => {
+  expect(unquote('"\\"I\'ll just\\": a field guide"')).toBe('"I\'ll just": a field guide')
+})
+
+test('a post waits for Pedro until promoted, and again while a LinkedIn text is only drafted', async () => {
+  const post = { file: 'a.md', base: 'a', title: 'A', date: '2026-11-06', devto: null }
+  expect(needsYou({ ...post, promoted: {} })).toBe(true)
+  expect(needsYou({ ...post, promoted: { devto: '2026-11-06' } })).toBe(false)
+  expect(needsYou({ ...post, promoted: { devto: '2026-11-06', linkedin: 'drafted' } })).toBe(true)
+})
+
 test('draft checks count sections without the FAQ', async () => {
   const checks = draftChecks(POST, frontMatter(POST), { hasNb: false, hasCover: true, isScored: false })
   const done = checks.filter(one => one.isDone).map(one => one.label)
@@ -376,12 +387,14 @@ test('the pane draws the agenda, the funnel, the posts and the buttons', async (
     expect((await ui.find({ type: 'Text', text: /hentet live/ }))?.text).toBe('hentet live til et svar')
     expect((await ui.find({ type: 'Text', text: /Live: / }))?.text).toContain('ChatGPT-User 6')
     expect((await ui.find({ type: 'Text', text: /^Latest post$/ }))?.text).toBe('Latest post')
-    expect((await ui.find({ type: 'Text', text: /12 lesere/ }))?.text).toBe('1 d · ▁▁▁▁▁▄█ 12 lesere · 7 AI · 36 visn.')
+    expect((await ui.find({ type: 'Text', text: /12 lesere/ }))?.text).toBe('1 d · ▁▁▁▁▁▄█ 12 lesere · 7 AI · 36 Google-visn.')
     expect((await ui.find({ type: 'Text', text: /ikke LinkedIn/ }))?.text).toBe('ikke Dev.to · ikke LinkedIn · ikke Google')
     expect((await ui.find({ type: 'Text', text: /Mangler/ }))?.text).toBe('Mangler: Norsk')
     expect(await ui.find({ type: 'Text', text: /Sultans Of Swing/ })).toBe(undefined)
     expect(await ui.find({ type: 'Button', key: 'done-unpushed' })).toBe(undefined)
-    expect(await ui.find({ type: 'Button', key: 'posted-2026-11-06-y' })).not.toBe(undefined)
+    expect(await ui.find({ type: 'Button', key: 'promote-2026-11-06-y' })).not.toBe(undefined)
+    expect(await ui.find({ type: 'Button', key: 'posted-2026-11-06-y' })).toBe(undefined)
+    expect(await ui.find({ type: 'Button', key: 'stats-2026-11-06-y' })).not.toBe(undefined)
     expect((await ui.find({ type: 'Text', text: /^Kom fra/ }))?.text).toBe('Kom fra: linkedin.com 9')
     expect((await ui.find({ type: 'Text', text: /3d-print/ }))?.text).toContain('nb: 3d-print')
     expect((await ui.find({ type: 'Text', text: /^Hva betyr geek/ }))?.text).toBe('Hva betyr geek?')

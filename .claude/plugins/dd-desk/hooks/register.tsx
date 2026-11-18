@@ -6,7 +6,7 @@ import type { Idea, PostRow, Published, Search, Snapshot, Traffic } from '../typ
 import { agenda, delta } from './agenda'
 import { activeIdeas, IDEAS_FILE, shortPath, withStatus } from './ideas'
 import { traffic as cloudflareTraffic } from './cloudflare'
-import { channelLine, git, isPromoted, lastDeploy, nowBox, posts, PROMOTION_LOG, recordChannel } from './content'
+import { channelLine, git, inRepo, isPromoted, lastDeploy, needsYou, nowBox, posts, PROMOTION_LOG, recordChannel } from './content'
 import { searchStats } from './google'
 import { barChartSvg, botBarsSvg, clockTime, progressSvg, relativeTime, SEA, sparkline, thousands, trafficParts } from './pane'
 import { PROMPTS } from './prompts'
@@ -24,7 +24,7 @@ type Host = EngineInterface
 const snapshot = atom({ plugin: 'dd-desk', key: 'snapshot' } as const, null, { shape: 'snapshot-6' })
 const checkRun = atom({ plugin: 'dd-desk', key: 'check' } as const, null, { shape: 'check-1' })
 const busy = atom({ plugin: 'dd-desk', key: 'busy' } as const, false, { shape: 'busy-1' })
-const open = atom({ plugin: 'dd-desk', key: 'open' } as const, [], { shape: 'open-1' })
+const open = atom({ plugin: 'dd-desk', key: 'open' } as const, ['posts'], { shape: 'open-1' })
 // Agenda items Pedro marked as handled, by key and fingerprint; kept in $.store across sessions, mirrored here so a press redraws.
 const handled = atom({ plugin: 'dd-desk', key: 'handled' } as const, {}, { shape: 'handled-1' })
 const HANDLED_STORE = 'handled'
@@ -47,9 +47,9 @@ async function collect($: Host, previous: Snapshot | null, withNetwork: boolean)
     git($, ['rev-list', '--count', 'origin/main..main']),
     git($, ['status', '--porcelain']),
     lastDeploy($),
-    $.fs.read('src/hugo.toml').catch(() => ''),
-    $.fs.read('src/data/listening.yaml').catch(() => ''),
-    $.fs.read(IDEAS_FILE).catch(() => ''),
+    $.fs.read(await inRepo($, 'src/hugo.toml')).catch(() => ''),
+    $.fs.read(await inRepo($, 'src/data/listening.yaml')).catch(() => ''),
+    $.fs.read(await inRepo($, IDEAS_FILE)).catch(() => ''),
   ])
   const { drafts, published } = await posts($, previous, withNetwork)
   const cloudflare = withNetwork
@@ -117,7 +117,7 @@ async function runCheck($: Host): Promise<void> {
   }
   await update($, checkRun, () => ({ isRunning: true, exitCode: null, tail: '' }))
   const ran = await $.process
-    .run(['just', 'check'], { timeoutMs: 600_000 })
+    .run(['just', 'check'], { cwd: await inRepo($), timeoutMs: 600_000 })
     .catch((error: unknown) => ({ exitCode: -1, stdout: '', stderr: String(error) }))
   const tail = `${ran.stdout}\n${ran.stderr}`.trim().split(/\r?\n/).slice(-8).join('\n')
   await update($, checkRun, () => ({ isRunning: false, exitCode: ran.exitCode, tail }))
@@ -135,9 +135,10 @@ const POSTED = /^\d{4}-\d{2}-\d{2}$/
 function markPosted($: Host, base: string): () => void {
   return () => {
     void (async () => {
-      const log = await $.fs.read(PROMOTION_LOG).catch(() => '')
+      const path = await inRepo($, PROMOTION_LOG)
+      const log = await $.fs.read(path).catch(() => '')
       const today = new Date(await $.clock.now()).toISOString().slice(0, 10)
-      await $.fs.write(PROMOTION_LOG, recordChannel(log, base, 'linkedin', today))
+      await $.fs.write(path, recordChannel(log, base, 'linkedin', today))
       await refresh($, false)
     })()
   }
@@ -147,8 +148,9 @@ function markPosted($: Host, base: string): () => void {
 function setIdea($: Host, idea: Idea, status: Idea['status']): () => void {
   return () => {
     void (async () => {
-      const text = await $.fs.read(IDEAS_FILE)
-      await $.fs.write(IDEAS_FILE, withStatus(text, idea.id, status))
+      const path = await inRepo($, IDEAS_FILE)
+      const text = await $.fs.read(path)
+      await $.fs.write(path, withStatus(text, idea.id, status))
       await refresh($, false)
       if (status === 'skriver') {
         await $.prompt.submit({ text: PROMPTS.writeIdea(idea.title, idea.about) })
@@ -191,7 +193,7 @@ export const register: Register = on => {
 
   on('session.start', async ($, e, next) => {
     const started = await next(e)
-    const toml = await $.fs.read('src/hugo.toml').catch(() => '')
+    const toml = await $.fs.read(await inRepo($, 'src/hugo.toml')).catch(() => '')
     isHome = toml.includes('digitaldias')
     if (!isHome) {
       return started
@@ -206,6 +208,17 @@ export const register: Register = on => {
     void refresh($, true)
 
     return started
+  })
+
+  // The desktop app attaches after session.start has run, so the open above found no surface (`no-surface`).
+  // Open again when a surface joins; an open of an open pane only retitles it.
+  on('session.attach', async ($, e, next) => {
+    const attached = await next(e)
+    if (isHome) {
+      void $.ui.open({ id: PANE, title: TITLE })
+    }
+
+    return attached
   })
 
   on('command.run', { command: 'desk' }, async $ => {
@@ -247,6 +260,14 @@ export const register: Register = on => {
     const weekReaders = finished.reduce((sum, one) => sum + one.readers, 0)
     const bots = traffic?.bots.slice(0, 6) ?? []
 
+    const waiting = snap.posts.filter(needsYou)
+    const settled = snap.posts.filter(post => !needsYou(post))
+    const postStats = (post: PostRow) => (
+      <Text size="caption" mono dimColor wrap="truncate-end">
+        {age(post.date, nowMs)} · <Text size="caption" mono color={SEA.teal}>{sparkline(post.readerDays)} {post.readers} lesere</Text> · {post.ai} AI ·{' '}
+        {thousands(post.impressions)} Google-visn.
+      </Text>
+    )
     const kicker = (text: string) => (
       <Text size="caption" weight="semibold" color={SEA.teal}>
         {text.toUpperCase()}
@@ -503,28 +524,41 @@ export const register: Register = on => {
 
         {snap.posts.length > 0 && (
           <Box flexDirection="column" gap="xs">
-            {kicker('Innleggene')}
-            {snap.posts.map(post => (
-              <Box key={`post-${post.base}`} flexDirection="row" justifyContent="space-between" alignItems="center" gap="sm">
-                <Box flexDirection="column" flexShrink={1}>
-                  <Text size="footnote" weight="semibold" wrap="truncate-end">
-                    {post.title}
-                  </Text>
-                  <Text size="caption" mono dimColor wrap="truncate-end">
-                    {age(post.date, nowMs)} · <Text size="caption" mono color={SEA.teal}>{sparkline(post.readerDays)} {post.readers} lesere</Text> · {post.ai} AI ·{' '}
-                    {thousands(post.impressions)} visn.
-                  </Text>
-                  <Text size="caption" mono dimColor wrap="truncate-end">
-                    {channelLine(post)}
-                  </Text>
-                </Box>
-                <Box flexDirection="row" gap="xs" flexShrink={0}>
-                  {!POSTED.test(post.promoted.linkedin ?? '') && <Button key={`posted-${post.base}`} label="LinkedIn lagt ut" onPress={markPosted($, post.base)} />}
-                  {!isPromoted(post) && <Button key={`promote-${post.base}`} label="Promoter" onPress={ask($, PROMPTS.promote(post.file))} />}
-                  <Button key={`stats-${post.base}`} label="Statistikk" onPress={ask($, PROMPTS.stats(post.file))} />
-                </Box>
+            {waiting.length > 0 && (
+              <Box flexDirection="column" gap="xs">
+                {kicker(`Trenger deg · ${waiting.length}`)}
+                {waiting.map(post => (
+                  <Box key={`post-${post.base}`} flexDirection="column" gap="xs" paddingX="sm" paddingY="xs" borderStyle="round" borderColor={SEA.teal}>
+                    <Text size="footnote" weight="semibold" wrap="truncate-end">
+                      {post.title}
+                    </Text>
+                    {postStats(post)}
+                    <Text size="caption" mono dimColor wrap="truncate-end">
+                      {channelLine(post)}
+                    </Text>
+                    <Box flexDirection="row" flexWrap="wrap" gap="xs">
+                      {!isPromoted(post) && <Button key={`promote-${post.base}`} label="Promoter" variant="primary" onPress={ask($, PROMPTS.promote(post.file))} />}
+                      {post.promoted.linkedin === 'drafted' && <Button key={`posted-${post.base}`} label="LinkedIn lagt ut" onPress={markPosted($, post.base)} />}
+                      <Button key={`stats-${post.base}`} label="Statistikk" dimColor onPress={ask($, PROMPTS.stats(post.file))} />
+                    </Box>
+                  </Box>
+                ))}
               </Box>
-            ))}
+            )}
+            {settled.length > 0 && fold('posts', `Ferdig · ${settled.length}`)}
+            {settled.length > 0 &&
+              opened.includes('posts') &&
+              settled.map(post => (
+                <Box key={`post-${post.base}`} flexDirection="row" justifyContent="space-between" alignItems="center" gap="sm">
+                  <Box flexDirection="column" flexShrink={1}>
+                    <Text size="footnote" weight="semibold" wrap="truncate-end">
+                      {post.title}
+                    </Text>
+                    {postStats(post)}
+                  </Box>
+                  <Button key={`stats-${post.base}`} label="Statistikk" dimColor onPress={ask($, PROMPTS.stats(post.file))} />
+                </Box>
+              ))}
           </Box>
         )}
 

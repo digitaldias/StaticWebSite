@@ -2,8 +2,8 @@
 
 Serves the page and the Sea Glass tokens, and takes POST /status {"id", "status"} so a button on the
 page can mark an idea as avvist, skriver or skrevet. Rejected ideas stay in the file, so Claude
-does not suggest them again, but the page hides them. GET /trends returns the Hacker News and Dev.to
-lists from site-stats.py, cached for an hour. Binds to 127.0.0.1 only.
+does not suggest them again, and the page lists them at the bottom. GET /trends returns the Hacker News and Dev.to
+items (score, comments, title, url) from site-stats.py, cached for an hour. Binds to 127.0.0.1 only.
 """
 import importlib.util
 import json
@@ -29,7 +29,7 @@ def trends():
         spec = importlib.util.spec_from_file_location("site_stats", ROOT / "scripts" / "site-stats.py")
         stats = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(stats)
-        body = {"hacker_news": stats.safely(stats.hacker_news), "devto": stats.safely(stats.devto)}
+        body = {"hacker_news": stats.safely(stats.hacker_news_items), "devto": stats.safely(stats.devto_items)}
         trends_cache.update(at=time.time(), body=json.dumps(body, ensure_ascii=False).encode("utf-8"))
     return trends_cache["body"]
 

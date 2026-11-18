@@ -2,13 +2,15 @@ import type { EngineInterface } from 'claude-code'
 
 import type { Search } from '../types'
 
+import { inRepo } from './content'
+
 const SITE = 'sc-domain:digitaldias.com'
 const TOKEN_URL = 'https://oauth2.googleapis.com/token'
 const DAY_MS = 86_400_000
 
 // The hooks runtime has no RSA signing, so Node signs the JWT (scripts/gsc-assertion.mjs).
 async function accessToken($: EngineInterface): Promise<string> {
-  const signed = await $.process.run(['node', 'scripts/gsc-assertion.mjs', 'gsc-key.json'])
+  const signed = await $.process.run(['node', 'scripts/gsc-assertion.mjs', 'gsc-key.json'], { cwd: await inRepo($) })
   if (signed.exitCode !== 0) {
     const lastLine = signed.stderr.trim().split(/\r?\n/).at(-1) ?? String(signed.exitCode)
     throw new Error(`node scripts/gsc-assertion.mjs: ${lastLine}`)
@@ -52,7 +54,7 @@ function isoDate(ms: number): string {
 
 // Search Console's data lags two to three days, so the window ends three days ago.
 export async function searchStats($: EngineInterface): Promise<{ search: Search | null; note: string }> {
-  if (!(await $.fs.exists('gsc-key.json'))) {
+  if (!(await $.fs.exists(await inRepo($, 'gsc-key.json')))) {
     return { search: null, note: 'Ingen gsc-key.json i repoet.' }
   }
   try {

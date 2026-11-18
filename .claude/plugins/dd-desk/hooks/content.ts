@@ -10,9 +10,12 @@ const POSTS_SHOWN = 6
 
 export function unquote(value: string): string {
   const trimmed = value.trim()
-  const quoted = /^"(.*)"$/.exec(trimmed) ?? /^'(.*)'$/.exec(trimmed)
+  const double = /^"(.*)"$/.exec(trimmed)?.[1]
+  if (double !== undefined) {
+    return double.replace(/\\(["\\])/g, '$1')
+  }
 
-  return quoted?.[1] ?? trimmed
+  return /^'(.*)'$/.exec(trimmed)?.[1] ?? trimmed
 }
 
 export function frontMatter(text: string): Record<string, string> {
@@ -75,6 +78,11 @@ export function isPromoted(post: Published): boolean {
   const done = (channel: string): boolean => Boolean(post.promoted[channel]) && !['skipped', 'drafted'].includes(post.promoted[channel] ?? '')
 
   return Boolean(post.devto) || done('devto') || done('linkedin') || done('facebook')
+}
+
+// Waits for Pedro: not promoted yet, or a LinkedIn text drafted that he still has to post.
+export function needsYou(post: Published): boolean {
+  return !isPromoted(post) || post.promoted.linkedin === 'drafted'
 }
 
 function channel(name: string, live: string | null, recorded: string | undefined, sent: string): string {
@@ -150,15 +158,25 @@ export function nowBox(toml: string, listening: string): NowBox {
   }
 }
 
+// A path in the repo. Relative paths in $.fs and $.process follow the session's working directory,
+// which a shell `cd` moves; the session's root stays at the repo.
+export async function inRepo($: Host, path = ''): Promise<string> {
+  const root = await $.session.root()
+
+  return path ? `${root}/${path}` : root
+}
+
 export async function git($: Host, args: string[]): Promise<string> {
-  const ran = await $.process.run(['git', ...args]).catch(() => null)
+  const ran = await $.process.run(['git', ...args], { cwd: await inRepo($) }).catch(() => null)
 
   return ran?.exitCode === 0 ? ran.stdout.trim() : ''
 }
 
 export async function lastDeploy($: Host): Promise<Deploy | null> {
   const ran = await $.process
-    .run(['gh', 'run', 'list', '-L', '1', '-w', 'deploy-to-azure.yml', '--json', 'status,conclusion,displayTitle,createdAt'])
+    .run(['gh', 'run', 'list', '-L', '1', '-w', 'deploy-to-azure.yml', '--json', 'status,conclusion,displayTitle,createdAt'], {
+      cwd: await inRepo($),
+    })
     .catch(() => null)
   if (ran?.exitCode !== 0) {
     return null
@@ -199,24 +217,24 @@ async function devToArticles($: Host): Promise<Map<string, DevTo> | null> {
 }
 
 export async function posts($: Host, previous: Snapshot | null, withNetwork: boolean): Promise<{ drafts: Draft[]; published: Published[] }> {
-  const names = (await $.fs.list(BLOG)).map(entry => entry.name)
+  const names = (await $.fs.list(await inRepo($, BLOG))).map(entry => entry.name)
   const english = names
     .filter(name => /^\d{4}-\d{2}-\d{2}-.+\.md$/.test(name) && !name.endsWith('.nb.md'))
     .sort()
     .reverse()
-  const depth = await $.fs.read('src/data/depth.yaml').catch(() => '')
-  const promotion = parsePromotion(await $.fs.read(PROMOTION_LOG).catch(() => ''))
+  const depth = await $.fs.read(await inRepo($, 'src/data/depth.yaml')).catch(() => '')
+  const promotion = parsePromotion(await $.fs.read(await inRepo($, PROMOTION_LOG)).catch(() => ''))
   const devto = withNetwork ? await devToArticles($) : null
   const drafts: Draft[] = []
   const published: Published[] = []
   for (const file of english) {
-    const text = await $.fs.read(`${BLOG}/${file}`)
+    const text = await $.fs.read(await inRepo($, `${BLOG}/${file}`))
     const fields = frontMatter(text)
     const base = file.replace(/\.md$/, '')
     const title = fields.title ?? base
     if (fields.draft === 'true') {
       const hasCover =
-        Boolean(fields.featuredImage) || (await $.fs.exists(`src/static/images/blog/${base}/featured.jpg`))
+        Boolean(fields.featuredImage) || (await $.fs.exists(await inRepo($, `src/static/images/blog/${base}/featured.jpg`)))
       const checks = draftChecks(text, fields, {
         hasNb: names.includes(`${base}.nb.md`),
         hasCover,
