@@ -3,7 +3,7 @@
   <div class="wrap">
     <a class="wordmark" href="{{ "/" | relLangURL }}">digital<b>dias</b></a>
     <nav class="nav" aria-label="{{ i18n "mainNav" }}">
-      {{- range slice (dict "url" ("/blog/" | relLangURL) "name" (i18n "navWriting") "on" $inWriting) (dict "url" ("/log/" | relLangURL) "name" (i18n "navLog") "on" (eq .Section "log")) (dict "url" ("/listening/" | relLangURL) "name" (i18n "navListening") "on" (eq .Section "listening")) (dict "url" ("/photography/" | relLangURL) "name" (i18n "navPhotographs") "on" (eq .Section "photography")) (dict "url" ("/about/" | relLangURL) "name" (i18n "navAbout") "on" (eq .Section "about")) }}
+      {{- range slice (dict "url" ("/blog/" | relLangURL) "name" (i18n "navWriting") "on" $inWriting) (dict "url" ("/listening/" | relLangURL) "name" (i18n "navListening") "on" (eq .Section "listening")) (dict "url" ("/photography/" | relLangURL) "name" (i18n "navPhotographs") "on" (eq .Section "photography")) (dict "url" ("/log/" | relLangURL) "name" (i18n "navLog") "on" (eq .Section "log")) (dict "url" ("/about/" | relLangURL) "name" (i18n "navAbout") "on" (eq .Section "about")) }}
       <a href="{{ .url }}"{{ if eq $.RelPermalink .url }} aria-current="page"{{ else if .on }} aria-current="true"{{ end }}>{{ .name }}</a>
       {{- end }}
     </nav>
