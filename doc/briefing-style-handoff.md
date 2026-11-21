@@ -127,7 +127,7 @@ Set the page's `theme-color` to the light ground; `theme.js` switches it when th
 
 This stays inside the site's CSP: `style-src` allows `https://fonts.googleapis.com` and `font-src` allows `https://fonts.gstatic.com`. No weight beyond these is used; KPI numbers move to Schibsted Grotesk, so Geist Mono needs only 400 and 500.
 
-**Site header.** The publish layer inserts the site's header as the first element in `<body>`, above `.page`. It is identical to the site's `layouts/partials/header.html`, without a current item, because the briefing is unlisted:
+**Site header.** The publish layer inserts the site's header as the first element in `<body>`, above `.page`. It follows the site's `layouts/partials/header.html`, without a current item because the briefing is unlisted, and without the search button. Since 2026-11-21 `briefing_layer.py` writes it in the page's language (Norwegian pages link to `/nb/`) with the Listening link and the globe language switch; the markup below is the original English-only version:
 
 ```html
 <header class="mast" role="banner">

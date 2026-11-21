@@ -249,3 +249,6 @@ defaultContentLanguage = 'en'
   [[module.mounts]]
     source = "../briefing/index.html"
     target = "assets/briefing-today.html"
+  [[module.mounts]]
+    source = "../briefing/en/index.html"
+    target = "assets/briefing-today.en.html"

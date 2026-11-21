@@ -1,0 +1,5 @@
+{{- /* Where the briefing link goes: English readers land on the English edition, so a first visit
+       does not open the Norwegian page. Falls back to /briefing/ while no English edition exists. */ -}}
+{{- $url := "/briefing/" -}}
+{{- if and (eq site.Language.Lang "en") (resources.Get "briefing-today.en.html") }}{{ $url = "/briefing/en/" }}{{ end -}}
+{{- return $url -}}

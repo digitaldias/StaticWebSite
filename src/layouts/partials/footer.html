@@ -15,7 +15,7 @@
       <nav class="foot__col" aria-label="{{ i18n "footRead" }}">
         <h2 class="k">{{ i18n "footRead" }}</h2>
         <a href="{{ "/blog/" | relLangURL }}">{{ i18n "navWriting" }}</a>
-        <a href="/briefing/">{{ i18n "briefingName" }}</a>
+        <a href="{{ partial "briefing-url.html" . }}">{{ i18n "briefingName" }}</a>
         <a href="{{ "/listening/" | relLangURL }}">{{ i18n "navListening" }}</a>
         <a href="{{ "/photography/" | relLangURL }}">{{ i18n "navPhotographs" }}</a>
         <a href="{{ "/log/" | relLangURL }}">{{ i18n "navLog" }}</a>

@@ -233,8 +233,13 @@ html:has(.search[open]) { overflow: hidden; }
 }
 .edition__lead { margin: 16px 0 0; font: 400 1.05rem/1.45 var(--text); }
 .edition__lead span { font: 600 .8rem var(--display); color: var(--teal); }
-.edition__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; margin: 10px 0 0; font-size: .74rem; color: var(--muted); }
-.edition__foot a { font: 500 .74rem var(--mono); color: var(--teal); text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
+.edition__lead a { text-decoration: underline; text-decoration-color: var(--deep-3); text-underline-offset: 3px; }
+.edition__lead a:hover { color: var(--teal); }
+.edition__foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 18px; margin: 12px 0 0; font-size: .74rem; color: var(--muted); }
+/* The way into the briefing: a ruled teal button that fills on hover */
+.edition__read { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--teal); font: 600 .82rem/1 var(--display); letter-spacing: -.005em; color: var(--teal); text-decoration: none; transition: background-color var(--transition), color var(--transition); }
+.edition__read::after { content: "→"; }
+.edition__read:hover, .edition__read:focus-visible { background: var(--teal); color: var(--on-teal); }
 
 /* Supporters page: the latest coffee in the spotlight, one teal cup per coffee, a wall of
    earlier names that shrink with age, and their kind words. While there is nobody yet,
