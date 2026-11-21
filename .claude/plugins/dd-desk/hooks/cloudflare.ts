@@ -104,11 +104,13 @@ const CONTENT_PATH = /^\/(blog|nb|tags|categories|about|recipes|briefing|listeni
 const PROBE_PATH = /\.\.|%7B|\{|\.php|wp-|\.env/i
 // Feed readers guess these when they look for a feed; the site's feeds are /index.xml and /blog/index.xml.
 const FEED_GUESS = /\/(rss\.xml|atom\.xml|feed\.xml|feed\/?|rss\/?)$/i
+// Meta's crawlers (meta-externalagent, meta-webindexer) append "null" to any page they visit, the briefing too; no page links there.
+const CRAWLER_NULL = /\/null$/
 
-// 404s on paths that look like the site's own pages; scanners probing for secrets and WordPress, and feed guesses, are left out.
+// 404s on paths that look like the site's own pages; scanners probing for secrets and WordPress, feed guesses and Meta's /null are left out.
 export function brokenLinks(missing: { count: number; path: string }[]): PathCount[] {
   return missing
-    .filter(row => CONTENT_PATH.test(row.path) && !PROBE_PATH.test(row.path) && !FEED_GUESS.test(row.path))
+    .filter(row => CONTENT_PATH.test(row.path) && !PROBE_PATH.test(row.path) && !FEED_GUESS.test(row.path) && !CRAWLER_NULL.test(row.path))
     .sort((a, b) => b.count - a.count)
     .slice(0, 5)
 }

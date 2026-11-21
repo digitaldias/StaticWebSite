@@ -1,6 +1,10 @@
 # Ship's log: short dated notes, newest first. Published posts join automatically.
 # tag: Shipped (solid chip) or Site, Fixed, Building, Note (quiet chip). text is Markdown.
 - date: 2026-11-21
+  tag: Fixed
+  text: "Briefing editions from 22 September to 9 November answered 404, because an old cleanup kept only four days. They are back, and every edition now stays up for four months."
+  text_nb: "Briefingutgavene fra 22. september til 9. november svarte med 404, fordi en gammel opprydding bare beholdt fire dager. Nå er de tilbake, og hver utgave ligger ute i fire måneder."
+- date: 2026-11-21
   tag: Site
   text: "The morning briefing is easier to find on the front page: today's lead story is a link now, the link into the briefing is a button, and English readers land on the English edition. The briefing's own header matches the site's, with the Listening link and the English | Norsk switch."
   text_nb: "Morgenbriefingen er lettere å finne på forsiden: dagens sak er en lenke, veien inn til briefingen er en knapp, og engelske lesere havner på den engelske utgaven. Briefingens egen topp er den samme som nettstedets, med lenken til Hører på og språkvelgeren English | Norsk."
