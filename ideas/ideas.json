@@ -115,5 +115,14 @@
     "why": "Verifisering er det folk diskuterer om agenter nå, og du har en konkret regel i repoet: en rapport får ikke inneholde «ikke verifisert». Leseren kan lime regelen inn i sin egen CLAUDE.md.",
     "about": "Regelen fra CLAUDE.md, hva den fanget og hva den kostet, og en prompt leseren kan lime inn. Lenk til HN-diskusjonen som kontekst. Trenger din fortelling: et konkret tilfelle der Claude sa «ferdig» og det ikke stemte. Ingen hendelse uten at du har oppgitt den.",
     "status": "ny"
+  },
+  {
+    "id": "musikken-bak-listening",
+    "title": "Musikken jeg koder til, og hvorfor jeg sjekker at den ikke er AI",
+    "added": "2026-11-21",
+    "status": "ny",
+    "basis": "Cloudflare 7 dager: /nb/listening/ 9 sidevisninger, /nb/ -> /nb/listening/ 5 overganger, Soho Blues-innlegget -> /nb/listening/ 2. Search Console 28 dager: «soho blues band» 170 visninger på plass 6,6.",
+    "why": "Lesere går fra forsiden og fra Soho Blues-innlegget videre til Listening-siden. Musikk er det eneste temaet som gir søketrafikk nå.",
+    "about": "Et innlegg om hva Pedro hører på mens han jobber, knyttet til Listening-siden og hvordan han nå sjekker om nye artister er ekte. Trenger Pedros egne valg og historier; ingenting skal gjettes."
   }
 ]

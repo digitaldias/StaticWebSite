@@ -71,6 +71,20 @@ function allItems(snap: Snapshot, nowMs: number): AgendaItem[] {
       fingerprint: snap.traffic.broken.map(one => one.path).sort().join(' '),
     })
   }
+  const commented = [
+    ...snap.threads.filter(one => one.comments > 0).map(one => ({ where: one.path, count: one.comments })),
+    ...snap.posts.filter(post => post.devto?.comments).map(post => ({ where: `Dev.to ${post.base}`, count: post.devto?.comments ?? 0 })),
+  ]
+  if (commented.length) {
+    items.push({
+      key: 'comments',
+      text: `Kommentarer fra lesere: ${commented.map(one => `${one.where} (${one.count})`).join(', ')}.`,
+      isUrgent: false,
+      button: { label: 'Les og svar', prompt: PROMPTS.comments(commented.map(one => one.where)) },
+      // A new comment anywhere raises a count and brings the item back after Løst.
+      fingerprint: commented.map(one => `${one.where}:${one.count}`).sort().join(' '),
+    })
+  }
   const listeningAge = daysSince(snap.now.listeningDate, nowMs)
   if (snap.now.listeningDate && listeningAge > STALE_LISTENING_DAYS) {
     items.push({

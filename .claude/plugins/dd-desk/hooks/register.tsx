@@ -6,7 +6,7 @@ import type { Idea, PostRow, Published, Search, Snapshot, Traffic } from '../typ
 import { agenda, delta } from './agenda'
 import { activeIdeas, IDEAS_FILE, shortPath, withStatus } from './ideas'
 import { traffic as cloudflareTraffic } from './cloudflare'
-import { channelLine, git, inRepo, isPromoted, lastDeploy, needsYou, nowBox, posts, PROMOTION_LOG, recordChannel } from './content'
+import { channelLine, giscusThreads, git, inRepo, isPromoted, lastDeploy, needsYou, nowBox, posts, PROMOTION_LOG, recordChannel, responseLine } from './content'
 import { searchStats } from './google'
 import { barChartSvg, botBarsSvg, clockTime, progressSvg, relativeTime, SEA, sparkline, thousands, trafficParts } from './pane'
 import { PROMPTS } from './prompts'
@@ -52,6 +52,7 @@ async function collect($: Host, previous: Snapshot | null, withNetwork: boolean)
     $.fs.read(await inRepo($, IDEAS_FILE)).catch(() => ''),
   ])
   const { drafts, published } = await posts($, previous, withNetwork)
+  const threads = (withNetwork ? await giscusThreads($) : null) ?? previous?.threads ?? []
   const cloudflare = withNetwork
     ? await cloudflareTraffic($, published.map(post => post.base))
     : { traffic: previous?.traffic ?? null, note: previous?.trafficNote ?? '' }
@@ -73,6 +74,7 @@ async function collect($: Host, previous: Snapshot | null, withNetwork: boolean)
     posts: postRows(published, cloudflare.traffic, google.search),
     now: nowBox(toml, listening),
     ideas: activeIdeas(ideas),
+    threads,
   }
 }
 
@@ -536,6 +538,11 @@ export const register: Register = on => {
                     <Text size="caption" mono dimColor wrap="truncate-end">
                       {channelLine(post)}
                     </Text>
+                    {responseLine(post, snap.threads) && (
+                      <Text size="caption" mono color={SEA.teal} wrap="truncate-end">
+                        {responseLine(post, snap.threads)}
+                      </Text>
+                    )}
                     <Box flexDirection="row" flexWrap="wrap" gap="xs">
                       {!isPromoted(post) && <Button key={`promote-${post.base}`} label="Promoter" variant="primary" onPress={ask($, PROMPTS.promote(post.file))} />}
                       {post.promoted.linkedin === 'drafted' && <Button key={`posted-${post.base}`} label="LinkedIn lagt ut" onPress={markPosted($, post.base)} />}
@@ -555,6 +562,11 @@ export const register: Register = on => {
                       {post.title}
                     </Text>
                     {postStats(post)}
+                    {responseLine(post, snap.threads) && (
+                      <Text size="caption" mono color={SEA.teal} wrap="truncate-end">
+                        {responseLine(post, snap.threads)}
+                      </Text>
+                    )}
                   </Box>
                   <Button key={`stats-${post.base}`} label="Statistikk" dimColor onPress={ask($, PROMPTS.stats(post.file))} />
                 </Box>

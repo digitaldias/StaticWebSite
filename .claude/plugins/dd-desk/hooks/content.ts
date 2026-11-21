@@ -1,6 +1,6 @@
 import type { EngineInterface } from 'claude-code'
 
-import type { Check, Deploy, DevTo, Draft, NowBox, Promotion, Published, Snapshot } from '../types'
+import type { Check, Deploy, DevTo, Draft, NowBox, Promotion, Published, Snapshot, Thread } from '../types'
 
 type Host = EngineInterface
 
@@ -110,6 +110,27 @@ export function channelLine(post: Published): string {
   ].join(' · ')
 }
 
+function count(n: number, one: string, many: string): string {
+  return `${n} ${n === 1 ? one : many}`
+}
+
+// What readers said: Giscus comments and reactions on both language versions, and Dev.to comments.
+// Empty when nobody has said anything.
+export function responseLine(post: Published, threads: Thread[]): string {
+  const own = threads.filter(one => one.path === `blog/${post.base}/` || one.path === `nb/blog/${post.base}/`)
+  const comments = own.reduce((sum, one) => sum + one.comments, 0)
+  const reactions = own.reduce((sum, one) => sum + one.reactions, 0)
+  const parts: string[] = []
+  if (comments || reactions) {
+    parts.push(`Bloggen: ${count(comments, 'kommentar', 'kommentarer')}, ${count(reactions, 'reaksjon', 'reaksjoner')}`)
+  }
+  if (post.devto?.comments) {
+    parts.push(`Dev.to: ${count(post.devto.comments, 'kommentar', 'kommentarer')}`)
+  }
+
+  return parts.join(' · ')
+}
+
 // Sets one channel of one post in the promotion log's text and leaves the rest of the file as it was.
 export function recordChannel(text: string, base: string, channelName: string, value: string): string {
   const lines = text.split(/\r?\n/)
@@ -191,6 +212,24 @@ export async function lastDeploy($: Host): Promise<Deploy | null> {
   return run
     ? { title: run.displayTitle, status: run.status, conclusion: run.conclusion, createdAt: run.createdAt }
     : null
+}
+
+// The blog's Giscus threads from GitHub Discussions, through the gh CLI's own login.
+// Null when gh is missing or offline, so the pane keeps the last reading.
+export async function giscusThreads($: Host): Promise<Thread[] | null> {
+  const query =
+    '{repository(owner:"digitaldias",name:"StaticWebSite"){discussions(first:100){nodes{title comments{totalCount} reactions{totalCount}}}}}'
+  const ran = await $.process
+    .run(['gh', 'api', 'graphql', '-f', `query=${query}`, '--jq', '.data.repository.discussions.nodes'], { cwd: await inRepo($) })
+    .catch(() => null)
+  if (ran?.exitCode !== 0) {
+    return null
+  }
+  const nodes = JSON.parse(ran.stdout) as { title: string; comments: { totalCount: number }; reactions: { totalCount: number } }[]
+
+  return nodes
+    .filter(one => /^(nb\/)?blog\/[^/]+\/$/.test(one.title))
+    .map(one => ({ path: one.title, comments: one.comments.totalCount, reactions: one.reactions.totalCount }))
 }
 
 // Dev.to's public API: the account's articles with their canonical URL, reactions and comments.

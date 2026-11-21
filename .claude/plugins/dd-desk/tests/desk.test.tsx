@@ -3,7 +3,7 @@ import { expect, test } from 'claude-code/testing'
 import { agenda, delta } from '../hooks/agenda'
 import { brokenLinks, countBots, dailyTraffic, envValue, funnel, moves, perPost, sources } from '../hooks/cloudflare'
 import { activeIdeas, shortPath, withStatus } from '../hooks/ideas'
-import { channelLine, draftChecks, frontMatter, isPromoted, needsYou, nowBox, parsePromotion, recordChannel, unquote } from '../hooks/content'
+import { channelLine, draftChecks, responseLine, frontMatter, isPromoted, needsYou, nowBox, parsePromotion, recordChannel, unquote } from '../hooks/content'
 import { barChartSvg, sparkline, thousands } from '../hooks/pane'
 import { postRows } from '../hooks/register'
 import type { Snapshot } from '../types'
@@ -70,6 +70,7 @@ const SNAPSHOT: Snapshot = {
       impressions: 36,
     },
   ],
+  threads: [],
   now: { building: 'Mods', tinkering: 'A holder', annoyedBy: 'Routers', listening: 'Dire Straits: Sultans Of Swing', listeningDate: '2026-10-01' },
   traffic: {
     days: [
@@ -407,4 +408,24 @@ test('the pane draws the agenda, the funnel, the posts and the buttons', async (
   expect(prompts.length).toBe(2)
   expect(prompts[0]).toContain('src/content/blog/2026-11-07-x.md')
   expect(prompts[0]).toContain('mangler: Norsk')
+})
+
+test('comments show on the post and come back in the agenda when a new one arrives', async () => {
+  const latest0 = SNAPSHOT.posts[0]
+  if (!latest0) {
+    throw new Error('fixture')
+  }
+  const threads = [
+    { path: 'blog/2026-11-06-y/', comments: 1, reactions: 2 },
+    { path: 'nb/blog/2026-11-06-y/', comments: 1, reactions: 0 },
+  ]
+  const post = { ...latest0, devto: { reactions: 3, comments: 1, url: 'https://dev.to/x' } }
+  expect(responseLine(post, threads)).toBe('Bloggen: 2 kommentarer, 2 reaksjoner · Dev.to: 1 kommentar')
+  expect(responseLine(latest0, [])).toBe('')
+  const item = agenda({ ...SNAPSHOT, posts: [post], threads }, NOW_MS).find(one => one.key === 'comments')
+  expect(item?.text).toBe('Kommentarer fra lesere: blog/2026-11-06-y/ (1), nb/blog/2026-11-06-y/ (1), Dev.to 2026-11-06-y (1).')
+  const handled = { comments: item?.fingerprint ?? '' }
+  expect(agenda({ ...SNAPSHOT, posts: [post], threads }, NOW_MS, handled).some(one => one.key === 'comments')).toBe(false)
+  const more = [{ ...threads[0], comments: 2 }, threads[1]] as typeof threads
+  expect(agenda({ ...SNAPSHOT, posts: [post], threads: more }, NOW_MS, handled).some(one => one.key === 'comments')).toBe(true)
 })

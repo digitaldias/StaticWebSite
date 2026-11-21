@@ -11,6 +11,9 @@ export type Deploy = {
 
 export type DevTo = { reactions: number; comments: number; url: string }
 
+// A Giscus thread on the blog: one GitHub Discussion per page path (`blog/<post>/` or `nb/blog/<post>/`).
+export type Thread = { path: string; comments: number; reactions: number }
+
 // Where a post was promoted, from src/data/promotion.yaml: channel (devto, linkedin, gsc) to the date it
 // happened, or 'skipped' or 'drafted'.
 export type Promotion = Record<string, string>
@@ -117,6 +120,7 @@ export type Snapshot = {
   search: Search | null
   searchNote: string
   ideas: Idea[]
+  threads: Thread[]
 }
 
 export type CheckRun = {

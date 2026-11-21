@@ -18,6 +18,8 @@ export const PROMPTS = {
     'Kjør `just stats`, si kort hva som gikk bra og hva som ikke gikk bra, og legg inn ett til tre nye forslag i ideas/ideas.json etter «Post ideas» i CLAUDE.md.',
   writeIdea: (title: string, about: string) =>
     `Jeg vil skrive forslaget «${title}» fra ideas/ideas.json. Det skal handle om: ${about}\n\nStart steg 1 (Interview) under «Writing a new blog post» i CLAUDE.md med dette som utgangspunkt.`,
+  comments: (places: string[]) =>
+    `Lesere har kommentert her:\n\n${places.map(one => `- ${one}`).join('\n')}\n\nBloggens kommentarer er GitHub Discussions i digitaldias/StaticWebSite (Giscus, én tråd per sti). Les kommentarene, si kort hva hver sier, og foreslå et svar i min stemme. Ikke post noe før jeg sier ja.`,
   promote: (file: string) => `Kjør promote-post-skillen for ${BLOG}/${file}.`,
   stats: (file: string) => `Hent statistikken for ${BLOG}/${file} med promote-post-skillen.`,
   fixCheck: (tail: string) =>
