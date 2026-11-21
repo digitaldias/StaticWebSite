@@ -97,5 +97,23 @@
     "basis": "Pedros eget forslag 2026-11-18. Oppsettet finnes i repoet: justfile med `just stats`, dd-desk-panelet, Cloudflare, Search Console og ideer-siden; ingen lesertall bak.",
     "why": "Hele oppsettet kan beskrives som en oppskrift: én kommando som henter tall fra flere kilder, et panel ved siden av chatten og en liste med ideer som følger trafikken. Leseren kan bygge samme for sin egen blogg.",
     "about": "Hvordan en vanlig arbeidsdag på bloggen ser ut: `just stats` med Cloudflare, Search Console, Hacker News og Dev.to, panelet med agenda og ideer, og hva tallene faktisk har endret i det du skriver. Trenger din fortelling: hva du gjorde før, hva du bruker tallene til og hva du har latt være å måle. Ingen tall eller hendelser uten at du har oppgitt dem."
+  },
+  {
+    "id": "soho-blues-band-oppdatering",
+    "title": "SOHO Blues Band én uke etter: har Spotify merket dem nå?",
+    "added": "2026-11-21",
+    "basis": "Search Console 23.10.–19.11.: /blog/2026-11-16-soho-blues-band-ai/ har 15 klikk og 313 visninger, plass 3,7; søk som «soho blues band ai» (plass 1,3) og «is soho blues band ai» (1,4). Cloudflare 7 dager: innlegget er mest lest (32 engelsk, 20 norsk). Facebook ga 12 besøk, LinkedIn 5.",
+    "why": "Innlegget er det eneste som får klikk fra Google, og søkerne spør etter fasiten. En kort, datert oppdatering gir dem et nytt svar og en grunn til å lenke begge veier.",
+    "about": "Om Spotify har lagt «AI Persona»-merket på SOHO Blues Band siden 16.11., om «Game Plan» er ute, og om lyttertallene har flyttet seg fra 676 200. Trenger din sjekk: du åpner artistsiden og oppgir hva som står der i dag. Ingen tall uten at du har sett dem. Kan også gå som `updates`-notat på det eksisterende innlegget i stedet for et nytt.",
+    "status": "ny"
+  },
+  {
+    "id": "verifisere-claude-arbeid",
+    "title": "Slik får jeg Claude til å bevise det den sier den har gjort",
+    "added": "2026-11-21",
+    "basis": "Hacker News 7 dager: «How the Claude Code team thinks about verification» 296 poeng, 235 kommentarer; «Harvard researchers find AI coding agents shifted the bottleneck to code review» 327 poeng. Kun temaidé, ikke bevis om lesere.",
+    "why": "Verifisering er det folk diskuterer om agenter nå, og du har en konkret regel i repoet: en rapport får ikke inneholde «ikke verifisert». Leseren kan lime regelen inn i sin egen CLAUDE.md.",
+    "about": "Regelen fra CLAUDE.md, hva den fanget og hva den kostet, og en prompt leseren kan lime inn. Lenk til HN-diskusjonen som kontekst. Trenger din fortelling: et konkret tilfelle der Claude sa «ferdig» og det ikke stemte. Ingen hendelse uten at du har oppgitt den.",
+    "status": "ny"
   }
 ]
