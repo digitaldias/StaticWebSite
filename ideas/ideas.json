@@ -124,5 +124,23 @@
     "basis": "Cloudflare 7 dager: /nb/listening/ 9 sidevisninger, /nb/ -> /nb/listening/ 5 overganger, Soho Blues-innlegget -> /nb/listening/ 2. Search Console 28 dager: «soho blues band» 170 visninger på plass 6,6.",
     "why": "Lesere går fra forsiden og fra Soho Blues-innlegget videre til Listening-siden. Musikk er det eneste temaet som gir søketrafikk nå.",
     "about": "Et innlegg om hva Pedro hører på mens han jobber, knyttet til Listening-siden og hvordan han nå sjekker om nye artister er ekte. Trenger Pedros egne valg og historier; ingenting skal gjettes."
+  },
+  {
+    "id": "sjekk-om-artist-er-ai",
+    "title": "Slik sjekker du om en artist på Spotify er AI",
+    "added": "2026-11-21",
+    "status": "ny",
+    "basis": "Search Console 28 dager: «is soho blues band ai» 35 visninger på plass 1,5, «soho blues band is it ai» 5 på plass 1,4, «dusty strings singer ai» 4 på plass 7,2, «is it ai» 3. Soho Blues-innlegget har 451 visninger og 16 klikk, flest på hele nettstedet.",
+    "why": "Folk søker «is X ai» om flere artister enn SOHO Blues Band. En sjekkliste som virker på hvilken som helst artist fanger de søkene, mens Soho Blues-innlegget bare svarer for ett band.",
+    "about": "En praktisk sjekkliste: hva du ser etter i Spotify-profilen, utgivelsestakten, kreditter og bilder, med SOHO Blues Band som eksempel. Skiller seg fra «musikken-bak-listening», som handler om Pedros egen musikk. Trenger Pedros faktiske fremgangsmåte; ingenting skal gjettes."
+  },
+  {
+    "id": "beslutningsmodell-leseniva",
+    "title": "En lokal beslutningsmodell scorer lesenivået i hvert avsnitt",
+    "added": "2026-11-21",
+    "status": "ny",
+    "basis": "Search Console 28 dager: /blog/2026-11-02-local-llm-on-a-plane/ 59 visninger på plass rundt 4,7, det tredje mest viste innlegget. Dev.to 7 dager (bare som temasignal): «Stop Paying LLM Prices for an if Statement: A Field Guide to Decision Models» 25 reaksjoner.",
+    "why": "Lokale modeller er det temaet som gir søkevisninger etter musikk. Beslutningsmodeller er et tema utviklere leser om nå, og Pedro har et kjørende eksempel på nettstedet.",
+    "about": "Hvordan `just depth` lar d3:4b svare på to spørsmål per avsnitt (hva leseren må kunne, hva koden gjør) og hvordan poengene blir nivå 100-400 på Microsofts skala. Leseren får prompten og scriptet. Trenger Pedros erfaring med kalibreringen mot egne etiketter."
   }
 ]
