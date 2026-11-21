@@ -26,6 +26,7 @@ A Hugo dev server Pedro already has running is his. Reuse it; never start a seco
 - Fix the small defects you find along the way (stale notes, dead files, a fact duplicated in two places that can drift) in the same change instead of listing them.
 - Something only Pedro can do (the Cloudflare dashboard, an account, a decision) goes to him as one concrete action, with the exact place to click, as the closing question. Verify the result yourself once he says it is done.
 - Probing the live site with curl is fine, except right after a deploy (see the deploy race).
+- When Pedro asks to push, commit and push every pending change in the checkout, other sessions' leftovers included, and end on a clean `git status`; never report leftover files as a list (Pedro, 2026-11-21).
 
 ## Architecture
 
