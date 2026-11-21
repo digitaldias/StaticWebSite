@@ -329,18 +329,27 @@ body:has(#cat-other:target) .tile[href="#cat-other"]{border-color:var(--teal);bo
   .nav{font-size:.72rem;}
 }
 
-@media (max-width:339px){
+/* The wordmark, five links, English | Norsk and the theme switch need about 560px in one row, so up to
+   600px the links drop to a second row, as on the site */
+@media (max-width:600px){
   .mast .wrap{flex-wrap:wrap;height:auto;padding-block:10px;row-gap:6px;}
   .nav{order:3;width:100%;margin-left:0;justify-content:space-between;}
-  .theme-toggle{margin-left:auto;}
+  .lang-switch{margin-left:auto;}
+  .theme-toggle{margin-left:0;}
+}
+@media (max-width:400px){
+  .mast .wrap{gap:8px;}
+  .lang-switch{gap:4px;}
+  .lang-switch__globe{display:none;}
 }
 
-/* Language switch in the site header: EN | NO */
+/* Language switch in the site header: English | Norsk */
 .lang-switch{display:flex;flex:none;gap:6px;align-items:center;font:400 .78rem/1 var(--mono);color:var(--muted);}
 .lang-switch a{color:var(--muted);}
 .lang-switch a:hover{color:var(--teal);}
 .lang-switch [aria-current]{color:var(--ink);font-weight:500;}
 .lang-switch__off{opacity:.45;cursor:default;}
+.lang-switch__globe{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;}
 
 body:has(#cat-vulnerabilities:target) .catbar .cur-cat-vulnerabilities{display:inline;}
 body:has(#cat-vulnerabilities:target) .catbar-list a[href="#cat-vulnerabilities"]{color:var(--teal);}
@@ -369,15 +378,16 @@ body:has(#cat-other:target) .catbar-list a[href="#cat-other"]{color:var(--teal);
 <body class="hub">
 <header class="mast" role="banner">
   <div class="wrap">
-    <a class="wordmark" href="/">digital<b>dias</b></a>
-    <nav class="nav" aria-label="Main navigation">
-      <a href="/blog/">Writing</a>
-      <a href="/log/">Log</a>
-      <a href="/photography/">Photographs</a>
-      <a href="/about/">About</a>
+    <a class="wordmark" href="/nb/">digital<b>dias</b></a>
+    <nav class="nav" aria-label="Hovedmeny">
+      <a href="/nb/blog/">Skriving</a>
+      <a href="/nb/listening/">Hører på</a>
+      <a href="/nb/photography/">Fotografier</a>
+      <a href="/nb/log/">Logg</a>
+      <a href="/nb/about/">Om meg</a>
     </nav>
-    <div class="lang-switch" role="group" aria-label="Language"><a href="/briefing/en/2026-11-19.html" hreflang="en" lang="en" data-lang="en">EN</a><span aria-hidden="true">|</span><span aria-current="true" lang="nb">NO</span></div>
-    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
+    <div class="lang-switch" role="group" aria-label="Briefingen utgis på norsk og engelsk" title="Briefingen utgis på norsk og engelsk"><svg class="lang-switch__globe" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.25"/><ellipse cx="8" cy="8" rx="2.75" ry="6.25"/><path d="M1.75 8h12.5"/></svg><a href="/briefing/en/2026-11-19.html" hreflang="en" lang="en" data-lang="en">English</a><span aria-hidden="true">|</span><span aria-current="true" lang="nb">Norsk</span></div>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Bytt tema"></button>
   </div>
 </header>
 <div class="page">
