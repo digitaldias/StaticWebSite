@@ -1,6 +1,18 @@
 # History of the homepage "Listening" pick, newest first. The first entry shows in the Now box.
 # artist and song are required; guest, genres, spotify (artist URL), song_url and note_en / note_nb are optional.
 # Facts come from the Spotify API. It returns no genres, so none are listed.
+- date: 2026-11-21
+  artist: Richard Bona
+  spotify: https://open.spotify.com/artist/70wm2qxYZ4i2KqcyyH2GyT
+  song: Full Concert, Live at North Sea Jazz Festival 2006
+  song_url: https://www.youtube.com/watch?v=E3Bo_w13bgA
+  note_en: 'I saw Richard Bona in concert with the Alfredo Rodriguez Trio and discovered him there. What a performer, what a range, and what a bass player. This video is his full concert at the North Sea Jazz Festival in 2006, put on YouTube by North Sea Jazz Archive.'
+  note_nb: 'Jeg så Richard Bona på konsert med Alfredo Rodriguez Trio og oppdaget ham der. For en performer, for et register og for en bassist. Videoen er hele konserten hans på North Sea Jazz Festival i 2006, lagt ut på YouTube av North Sea Jazz Archive.'
+  image: /images/listening/richard-bona.jpg
+  image_alt_en: "Richard Bona on stage in a black T-shirt, a black headscarf and white glasses, smiling as he plays an electric bass, with a grand piano behind him."
+  image_alt_nb: "Richard Bona på scenen i svart T-skjorte, svart hodeskjerf og hvite briller, smilende mens han spiller elbass, med et flygel bak seg."
+  image_caption_en: "Richard Bona with the Alfredo Rodriguez Trio at the INNtöne Jazzfestival, 23 July 2022. Photo: Schorle, CC BY-SA 4.0."
+  image_caption_nb: "Richard Bona med Alfredo Rodriguez Trio på INNtöne Jazzfestival 23. juli 2022. Foto: Schorle, CC BY-SA 4.0."
 - date: 2026-11-16
   artist: Dusty Strings
   spotify: https://open.spotify.com/artist/4NX07TyRa1HVUtQ8VjxbOJ

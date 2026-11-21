@@ -71,6 +71,10 @@ defaultContentLanguage = 'en'
   # Positions held: refreshed with every new post (CLAUDE.md, "Writing a new blog post").
   # since = month the position was taken (YYYY-MM); post = path of the post that argues it.
   [[params.positions]]
+    text  = "Make your cover images locally. Keying gets you close to the hosted models."
+    since = "2026-11"
+    post  = "/blog/2026-11-21-local-ai-blog-cover-images/"
+  [[params.positions]]
     text  = "A good team needs a geek who starts and a nerd who finishes."
     since = "2026-11"
     post  = "/blog/2026-11-07-nerd-vs-geek/"
@@ -86,10 +90,6 @@ defaultContentLanguage = 'en'
     text  = "Let a local model do the first pass of your news. Keep the last pass yourself."
     since = "2026-11"
     post  = "/blog/2026-11-01-local-models-news-filter/"
-  [[params.positions]]
-    text  = "Photograph the part, measure three things, and let Claude model it."
-    since = "2026-11"
-    post  = "/blog/2026-11-08-3d-print-replacement-part-from-photos/"
 
   # Giscus comments configuration
   [params.giscus]
@@ -220,6 +220,10 @@ defaultContentLanguage = 'en'
         tinkering  = "Printer nyttige ting til badet, kroker og hyller"
         annoyed_by = "Claude Desktop mangler fortsatt en skikkelig innebygd modellruter"
       [[languages.nb.params.positions]]
+        text  = "Lag forsidebildene lokalt. Med nøkling kommer du nær de nettbaserte modellene."
+        since = "2026-11"
+        post  = "/blog/2026-11-21-local-ai-blog-cover-images/"
+      [[languages.nb.params.positions]]
         text  = "Et godt team trenger en geek som starter og en nerd som fullfører."
         since = "2026-11"
         post  = "/blog/2026-11-07-nerd-vs-geek/"
@@ -235,10 +239,6 @@ defaultContentLanguage = 'en'
         text  = "La en lokal modell sortere nyhetene dine først. Den siste gjennomgangen tar du selv."
         since = "2026-11"
         post  = "/blog/2026-11-01-local-models-news-filter/"
-      [[languages.nb.params.positions]]
-        text  = "Fotografer delen, mål tre ting og la Claude modellere den."
-        since = "2026-11"
-        post  = "/blog/2026-11-08-3d-print-replacement-part-from-photos/"
 
 # The nightly briefing lives at repo root (briefing/), outside src/. Mounting it into
 # assets lets the homepage read today's edition at build time; the publisher's push redeploys.

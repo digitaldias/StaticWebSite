@@ -8,8 +8,8 @@ Usage:
     python scripts/optimize-image.py <input> [type] [output]
 
 Types:
-    hero      1920x1080  JPEG q82  ~200-300 KB  (blog featured image, default)
-    inline    1200x800   JPEG q82  ~150-200 KB  (in-post images)
+    hero      1920x1080  JPEG q82  ~200-300 KB  (blog featured image, default; centre-cropped to fill)
+    inline    1200x800   JPEG q82  ~150-200 KB  (in-post images; fits within the box, keeps its aspect ratio)
     portrait  600x600    JPEG q85  ~50-80 KB    (about page / author photo)
 
 Examples:
@@ -37,7 +37,7 @@ PROFILES = {
     "portrait": {"size": (600, 600),   "quality": 85, "target_kb": (50, 80)},
 }
 
-PAD_COLOR = (240, 236, 225)  # #f0ece1 — site warm paper background
+PAD_COLOR = (240, 236, 225)  # #f0ece1, flattens transparent images
 
 
 def optimize(input_path: str, profile_name: str = "hero", output_path: str = None):
@@ -86,16 +86,13 @@ def optimize(input_path: str, profile_name: str = "hero", output_path: str = Non
     print(f"Profile: {profile_name} -> {target_w}x{target_h}px  q{quality}")
 
     if profile_name == "portrait":
-        # Square crop: fit then pad to square
         img = ImageOps.fit(img, (target_w, target_h), Image.LANCZOS, centering=(0.5, 0.35))
+    elif profile_name == "hero":
+        # Crop to fill 16:9: padding showed as cream bars beside the cover.
+        img = ImageOps.fit(img, (target_w, target_h), Image.LANCZOS, centering=(0.5, 0.5))
     else:
-        # Fit within target dimensions preserving aspect ratio, then pad
+        # Inline: keep the picture's own aspect ratio within the box, no padding.
         img.thumbnail((target_w, target_h), Image.LANCZOS)
-        if img.size != (target_w, target_h):
-            padded = Image.new("RGB", (target_w, target_h), PAD_COLOR)
-            offset = ((target_w - img.width) // 2, (target_h - img.height) // 2)
-            padded.paste(img, offset)
-            img = padded
 
     # Save
     img.save(out_file, "JPEG", quality=quality, optimize=True, progressive=True, **metadata)

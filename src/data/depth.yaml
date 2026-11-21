@@ -618,5 +618,37 @@
         "score": 134
       }
     ]
+  },
+  "2026-11-21-local-ai-blog-cover-images": {
+    "sections": [
+      {
+        "heading": "(opening)",
+        "score": 151
+      },
+      {
+        "heading": "Local AI image generation: good enough for blog covers",
+        "score": 172
+      },
+      {
+        "heading": "Hardware for a local image model: what runs it",
+        "score": 177
+      },
+      {
+        "heading": "Cover prompt recipe: one paragraph, six parts",
+        "score": 182
+      },
+      {
+        "heading": "Local image models: where they fall short",
+        "score": 228
+      },
+      {
+        "heading": "Local vs hosted image model: close to Nano Banana 2, without the cap",
+        "score": 181
+      },
+      {
+        "heading": "Setup prompt: let Claude install it",
+        "score": 263
+      }
+    ]
   }
 }
