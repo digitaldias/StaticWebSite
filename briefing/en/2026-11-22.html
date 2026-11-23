@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en" data-briefing-date="2026-11-22">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f6f4">
+<title>AI News Stream — 2026-11-22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&family=Geist+Mono:wght@400;500&display=swap">
+<style id="tokens">/* =============================================================================
+   Sea Glass design tokens: the single source for digitaldias.com and /briefing/.
+   The site bundles this file ahead of styles.css. The briefing publisher reads
+   it from this repo and inlines it. Change a value here, nowhere else.
+   ============================================================================= */
+
+:root {
+  color-scheme: light; /* Light by default; dark only when the reader picks it */
+
+  /* Colour: light value first, dark value second */
+  --ground:   light-dark(#f4f6f4, #0f1a1b);
+  --ground-2: light-dark(#e7eeec, #162527);
+  --ink:      light-dark(#14201f, #e3ebe9);
+  --muted:    light-dark(#4f5f5d, #9db1ae);
+  --rule:     light-dark(#cdd8d5, #2a3b3d);
+  --teal:     light-dark(#0b5d63, #5fc3c2);
+  --deep-1:   light-dark(#d7ebe8, #15343a);
+  --deep-2:   light-dark(#a9d3cf, #18454c);
+  --deep-3:   light-dark(#5aa5a3, #1c5860);
+  --on-teal:  light-dark(#f4f6f4, #0f1a1b);
+
+  /* Type */
+  --display: "Schibsted Grotesk", system-ui, sans-serif;
+  --text:    "Source Serif 4", Georgia, serif;
+  --mono:    "Geist Mono", ui-monospace, monospace;
+
+  /* Layout: the widest the page column gets on large screens */
+  --page: 1440px;
+
+  /* Motion */
+  --ease-out:   cubic-bezier(.16, 1, .3, 1);
+  --transition: 150ms ease;
+}
+
+/* The reader's stored choice (theme.js) */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+</style>
+<style>
+/* Briefing components: Sea Glass. Expects tokens.css inlined before this block. */
+*{box-sizing:border-box;}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 1rem/1.55 var(--text);}
+a{color:inherit;text-decoration:none;transition:color var(--transition);}
+a:hover{color:var(--teal);}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+::selection{background:var(--deep-2);color:var(--ink);}
+
+/* Site header, inserted by the publish layer: identical to the site's */
+.mast{position:sticky;top:0;z-index:40;background:var(--ground);border-bottom:1px solid var(--rule);}
+.mast .wrap{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px);display:flex;align-items:center;gap:28px;height:60px;}
+.mast .wordmark{font:800 1.45rem/1 var(--display);letter-spacing:-.04em;color:var(--ink);}
+.mast .wordmark b{font-weight:inherit;color:var(--teal);}
+.nav{display:flex;gap:22px;margin-left:auto;font:600 .85rem/1 var(--display);}
+.nav a{color:var(--muted);position:relative;padding:6px 0;}
+.nav a:hover{color:var(--ink);}
+.theme-toggle{flex:none;display:grid;place-items:center;width:32px;height:32px;margin-left:-6px;padding:0;background:none;border:1px solid var(--rule);border-radius:50%;color:var(--ink);cursor:pointer;transition:border-color var(--transition);}
+.theme-toggle::before{content:"";width:14px;height:14px;border-radius:50%;border:1.5px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%);transition:transform 300ms var(--ease-out);}
+.theme-toggle[data-current="dark"]::before{transform:rotate(180deg);}
+.theme-toggle:hover{border-color:var(--teal);}
+
+/* Page column: aligned with the header */
+.page{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px) 60px;}
+
+/* Meta row: the site's mono meta line */
+.meta-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0 12px;border-bottom:1px solid var(--rule);font:400 .76rem/1.4 var(--mono);letter-spacing:.02em;color:var(--muted);}
+.meta-row .center{font:italic 400 .92rem/1.4 var(--text);letter-spacing:0;}
+
+/* Date strip: chips like the site's category filter; today in teal */
+.datestrip{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;font:500 .76rem/1 var(--mono);}
+.datestrip a{padding:7px 10px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);transition:color var(--transition),border-color var(--transition);}
+.datestrip a:hover{color:var(--teal);border-color:var(--teal);}
+.datestrip a[aria-current="page"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+
+/* Masthead: the Log page's page head */
+.masthead{display:grid;gap:14px;padding:40px 0 22px;border-bottom:2px solid var(--ink);}
+.masthead .wordmark{font:750 clamp(2.6rem,7vw,5.6rem)/.98 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.masthead .wordmark em{font-style:normal;color:var(--teal);}
+.tagline{margin:0;max-width:46ch;font:400 1.05rem/1.5 var(--text);color:var(--muted);}
+.rule-thick{display:none;}
+
+/* Hero: the day's lead story. A full-width splash headline, then picture and story side by side
+   at one height: the picture is at least 16:9 and stretches to the story's height, cropped. */
+.hero{margin:0 0 32px;padding:28px 0 32px;border-bottom:1px solid var(--rule);}
+.hero-kicker{margin-bottom:12px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hero-title{margin:0 0 24px;max-width:28ch;font:750 clamp(2rem,4.4vw,3.6rem)/1.02 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.hero-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .2em no-repeat;transition:background-size 350ms var(--ease-out);}
+.hero-title a:hover{color:inherit;background-size:100% .2em;}
+.hero-row{display:grid;gap:18px;}
+.hero-media{position:relative;display:block;overflow:hidden;background:var(--deep-1);}
+.hero-media::before{content:"";display:block;padding-top:56.25%;}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 600ms var(--ease-out);}
+.hero-media:hover img{transform:scale(1.02);}
+.hero-body .article-summary{font-size:1.04rem;}
+.hero-credit{margin-top:10px;font:italic 400 .8rem/1.4 var(--text);color:var(--muted);}
+@media (min-width:900px){.hero-row{grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:32px;}}
+
+/* KPI row: the article folio strip, hanging from the masthead's ink rule */
+.kpi-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 32px;border-bottom:1px solid var(--rule);}
+.kpi{padding:16px 20px 16px 0;}
+.kpi + .kpi{padding-left:20px;border-left:1px solid var(--rule);}
+.kpi-label{margin-bottom:8px;font:600 .66rem/1.3 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.kpi-value{font:750 2.4rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;}
+.kpi-value span{font:400 .76rem var(--mono);letter-spacing:0;color:var(--muted);}
+.kpi.accent .kpi-value{color:var(--teal);}
+
+/* Panel and bar chart */
+.panel{margin:0 0 40px;padding-top:12px;border-top:2px solid var(--ink);}
+.panel-title{margin-bottom:14px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.bar-row{display:flex;align-items:center;gap:12px;padding:5px 0;}
+.bar-label{width:200px;flex-shrink:0;font:600 .88rem/1.3 var(--display);}
+.bar-track{flex:1;height:8px;background:var(--deep-1);overflow:hidden;}
+.bar-fill{height:100%;background:var(--teal);}
+.bar-count{width:28px;flex-shrink:0;text-align:right;font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Category columns: newspaper columns under an ink rule, no boxes */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 32px;align-items:start;}
+.cat-panel{display:flex;flex-direction:column;padding-top:12px;border-top:2px solid var(--ink);}
+.cat-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;}
+.cat-name{font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.cat-count{font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Spotlight items: the stream's headline treatment, summary at full ink */
+.spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+.article-title{margin-bottom:8px;font:700 1.18rem/1.2 var(--display);letter-spacing:-.02em;text-wrap:balance;}
+.article-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .26em no-repeat;transition:background-size 350ms var(--ease-out);}
+.article-title a:hover{color:inherit;background-size:100% .26em;}
+.translation-note{font:italic 400 .82rem var(--text);letter-spacing:0;color:var(--muted);}
+.article-summary{margin-bottom:8px;font:400 .98rem/1.55 var(--text);color:var(--ink);}
+.article-pillar{margin-bottom:8px;font:400 .9rem/1.5 var(--text);color:var(--muted);}
+.pillar-tag{margin-right:6px;padding:3px 6px;vertical-align:1px;background:var(--deep-1);font:600 .6rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.article-meta{font:400 .7rem/1.4 var(--mono);color:var(--muted);}
+.also-covered{margin-top:4px;font:400 .7rem/1.4 var(--mono);color:var(--muted);}.also-covered a{color:inherit;}
+
+/* The rest: quieter rows behind a mono toggle */
+.more{margin-top:16px;}
+.more > summary{list-style:none;cursor:pointer;font:500 .74rem var(--mono);color:var(--teal);}
+.more > summary::-webkit-details-marker{display:none;}
+.more > summary::before{content:"+ ";}
+.more[open] > summary::before{content:"\2212 ";}
+.rest-list{display:flex;flex-direction:column;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);}
+.rest-item-head{display:flex;justify-content:space-between;gap:10px;font:600 .92rem/1.35 var(--display);letter-spacing:-.01em;}
+.rest-item-head a:hover{text-decoration:underline;text-decoration-color:var(--teal);text-underline-offset:.2em;}
+.rest-source{flex-shrink:0;padding-top:2px;white-space:nowrap;font:400 .66rem/1.4 var(--mono);color:var(--muted);}
+.rest-summary{margin-top:3px;font:400 .88rem/1.5 var(--text);color:var(--muted);}
+
+/* Foot line: the site's footer rule */
+.footline{margin-top:56px;padding-top:22px;border-top:2px solid var(--ink);font:400 .76rem/1.5 var(--mono);color:var(--muted);}
+
+@media (min-width:900px){.masthead{grid-template-columns:1fr 1fr;align-items:end;}}
+@media (min-width:768px) and (max-width:1080px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s !important;}}
+
+/* Category tiles: the page's menu. Each tile springs its bar out in rank order and counts its
+   number up, then a glint sweeps the bar every few seconds. --i, --n and --p come from the tile. */
+@property --c{syntax:"<integer>";inherits:false;initial-value:0;}
+@keyframes tile-grow{from{transform:scaleX(0);}}
+@keyframes tile-count{from{--c:0;}}
+@keyframes tile-glint{0%{background-position:-100% 0;}18%,100%{background-position:200% 0;}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.tile{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto;gap:6px;min-height:118px;padding:14px 14px 16px;border:1px solid var(--rule);transition:border-color var(--transition),transform 200ms var(--ease-out);}
+.tile:hover{color:inherit;border-color:var(--teal);transform:translateY(-2px);}
+.tile-count{font:750 2rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--teal);}
+.tile-count::after{--c:var(--n,0);counter-reset:c var(--c);content:counter(c);animation:tile-count 1100ms var(--ease-out) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-name{padding-right:28px;font:650 .98rem/1.25 var(--display);hyphens:auto;overflow-wrap:anywhere;}
+.tile-track{position:relative;height:6px;background:var(--deep-1);overflow:hidden;}
+.tile-fill{position:absolute;inset:0 auto 0 0;background:var(--teal);transform-origin:left;animation:tile-grow 1100ms cubic-bezier(.34,1.56,.64,1) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,color-mix(in srgb,var(--ground) 65%,transparent) 50%,transparent 70%) no-repeat;background-size:50% 100%;background-position:-100% 0;animation:tile-glint 6s ease-in-out calc(1.6s + var(--i,0) * 120ms) infinite;}
+
+/* Rest of a category, always shown below its spotlights under a quiet label */
+.rest-label{margin-top:22px;font:600 .66rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.rest-label + .rest-list{margin-top:8px;}
+
+/* Category rail: the switcher while reading, sticky under the site header */
+.rail{display:none;position:sticky;top:60px;z-index:30;gap:8px;margin:0 calc(-1 * clamp(16px,4vw,44px)) 24px;padding:8px clamp(16px,4vw,44px);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;background:var(--ground);border-bottom:1px solid var(--rule);}
+.rail::-webkit-scrollbar{display:none;}
+.chip{flex:none;scroll-snap-align:start;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--rule);border-radius:22px;white-space:nowrap;font:600 .9rem/1 var(--display);transition:border-color var(--transition),background-color var(--transition);}
+.chip:hover{color:inherit;border-color:var(--teal);}
+.chip-count{font:500 .76rem var(--mono);color:var(--muted);}
+.chip.is-on{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.chip.is-on .chip-count{color:var(--on-teal);}
+
+/* Category hub: the tiles are the menu. Below the lead strip nothing shows until a
+   category, or "Alle kategorier", is the URL fragment; a chosen category runs full width. */
+.lead-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;}
+.lead-cat{display:inline-block;margin-bottom:8px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hub-hint{margin:-16px 0 40px;font:italic 400 .95rem/1.5 var(--text);color:var(--muted);}
+.hub-hint a{color:var(--teal);}
+.grid,.cat-panel{scroll-margin-top:136px;}
+.hub .grid:not(:target):not(:has(.cat-panel:target)){display:none;}
+.hub:has(.grid:target,.cat-panel:target) :is(.hero,.lead,.hub-hint){display:none;}
+.hub:has(.grid:target,.cat-panel:target) .rail{display:flex;}
+.hub:has(.grid:target) .chip.all{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.hub:has(.grid:target) .chip.all .chip-count{color:var(--on-teal);}
+.hub .grid:has(.cat-panel:target){grid-template-columns:minmax(0,1fr);}
+.hub .grid:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+.hub .cat-panel:target{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:32px;align-items:start;}
+.hub .cat-panel:target > :is(.cat-head,.rest-label,.rest-list){grid-column:1/-1;}
+.hub .cat-panel:target .rest-list{display:block;columns:3;column-gap:32px;}
+.hub .cat-panel:target .rest-item{break-inside:avoid;padding-bottom:14px;}
+.hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:0;padding-top:0;border-top:0;}
+@media (max-width:1080px){
+  .lead-list,.hub .cat-panel:target{grid-template-columns:minmax(0,1fr);}
+  .lead-list{gap:0;}
+  .lead-item + .lead-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .rest-list{columns:1;}
+}
+@media (max-width:767px){.rail{top:0;}}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));}.tile{min-height:104px;}.tile-count{font-size:1.7rem;}}
+
+/* Seen categories (seen.js): opened ones go quiet, the rest carry a "ny" mark */
+.seen-ready .tile:not(.is-seen)::after{content:"ny";position:absolute;top:14px;right:14px;padding:3px 5px;background:var(--deep-1);font:600 .58rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.tile.is-seen :is(.tile-count,.tile-name){color:var(--muted);}
+.tile.is-seen .tile-fill{opacity:.45;}
+.seen-ready .chip[href^="#cat-"]:not(.is-seen) .chip-name::after{content:"";display:inline-block;width:6px;height:6px;margin-left:6px;vertical-align:2px;border-radius:50%;background:var(--teal);}
+.chip.is-seen{color:var(--muted);}
+
+@media (prefers-reduced-motion:reduce){.tile-fill,.tile-fill::after,.tile-count::after{animation:none;}.tile:hover{transform:none;}}
+
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"] .chip-count{color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .tile[href="#cat-vulnerabilities"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-local-models:target) .chip[href="#cat-local-models"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-local-models:target) .chip[href="#cat-local-models"] .chip-count{color:var(--on-teal);}
+body:has(#cat-local-models:target) .tile[href="#cat-local-models"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"] .chip-count{color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .tile[href="#cat-frontier-labs"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"] .chip-count{color:var(--on-teal);}
+body:has(#cat-industry:target) .tile[href="#cat-industry"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"] .chip-count{color:var(--on-teal);}
+body:has(#cat-nordic:target) .tile[href="#cat-nordic"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"] .chip-count{color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .tile[href="#cat-governance-policy"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"] .chip-count{color:var(--on-teal);}
+body:has(#cat-china-asia:target) .tile[href="#cat-china-asia"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-media-production:target) .chip[href="#cat-media-production"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-media-production:target) .chip[href="#cat-media-production"] .chip-count{color:var(--on-teal);}
+body:has(#cat-media-production:target) .tile[href="#cat-media-production"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+.seen-ready .tile:not(.is-seen)::after{content:"new";}</style>
+<script src="theme.js"></script>
+<link rel="alternate" hreflang="nb" href="/briefing/2026-11-22.html">
+<script src="lang.js"></script>
+<script src="seen.js" defer></script>
+<style id="briefing-layer">
+.catbar{display:none;}
+
+@media (max-width:767px){
+  .mast{position:static;}
+  .mast .wrap{gap:10px;}
+  .mast .wordmark{font-size:1.2rem;}
+  .nav{gap:10px;font-size:.76rem;}
+  .theme-toggle{width:28px;height:28px;margin-left:-2px;}
+
+  .page{padding:0 16px 48px;}
+  .meta-row{padding-top:12px;font-size:.7rem;}
+  .meta-row .center{display:none;}
+  .datestrip{margin-top:12px;}
+  .datestrip a{display:flex;align-items:center;min-height:44px;padding:0 14px;}
+  .masthead{padding:24px 0 16px;}
+  .masthead .wordmark{font-size:2.6rem;}
+  .tagline{font-size:1rem;}
+
+  .kpi-row{margin-bottom:16px;}
+  .kpi{padding:12px 10px 12px 0;}
+  .kpi + .kpi{padding-left:10px;}
+  .kpi-label{font-size:.6rem;letter-spacing:.06em;}
+  .kpi-value{font-size:1.6rem;}
+  .kpi-value span{display:none;}
+  .panel:has(.bar-row){display:none;}
+
+  .catbar{display:block;position:sticky;top:0;z-index:10;margin:0 -16px 20px;background:var(--ground);border-bottom:2px solid var(--ink);}
+  .catbar > summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;cursor:pointer;font:700 1.05rem/1.2 var(--display);letter-spacing:-.01em;}
+  .catbar > summary::-webkit-details-marker{display:none;}
+  .catbar > summary::after{content:"\25BE";font-size:.9rem;color:var(--muted);}
+  .catbar[open] > summary::after{content:"\25B4";}
+  .catbar .cur{display:none;}
+  .catbar .cur-all{display:inline;}
+  body:has(.cat-panel:target) .catbar .cur-all{display:none;}
+  .catbar-list{position:absolute;left:0;right:0;top:100%;max-height:70vh;overflow-y:auto;display:flex;flex-direction:column;background:var(--ground-2);border-bottom:2px solid var(--ink);}
+  .catbar-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;border-top:1px solid var(--rule);font:600 1rem/1.2 var(--display);}
+  .catbar-list a span{font:400 .8rem var(--mono);color:var(--muted);}
+  .catbar-list a.all{color:var(--teal);}
+  body:has(.cat-panel:target) .catbar-list a.all{color:inherit;}
+  body:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+
+  .grid{grid-template-columns:minmax(0,1fr);gap:32px;}
+  .cat-panel{scroll-margin-top:60px;}
+  .cat-name,.cat-count{font-size:.74rem;}
+  .article-title{font-size:1.3rem;}
+  .translation-note{font-size:.86rem;}
+  .article-summary{font-size:1.05rem;line-height:1.6;}
+  .article-pillar{font-size:.96rem;}
+  .article-meta{font-size:.76rem;}
+  .spotlight-item + .spotlight-item{margin-top:22px;padding-top:22px;}
+  .more{margin-top:8px;}
+  .more > summary{padding:12px 0;font-size:.82rem;}
+  .rest-list{gap:18px;}
+  .rest-item-head{flex-direction:column;gap:2px;font-size:1.02rem;}
+  .rest-source{white-space:normal;font-size:.72rem;}
+  .rest-summary{font-size:.98rem;line-height:1.55;}
+  .footline{margin-top:40px;font-size:.72rem;}
+}
+
+@media (max-width:400px){
+  .mast .wordmark{font-size:1.1rem;}
+  .nav{font-size:.72rem;}
+}
+
+/* The wordmark, five links, English | Norsk and the theme switch need about 560px in one row, so up to
+   600px the links drop to a second row, as on the site */
+@media (max-width:600px){
+  .mast .wrap{flex-wrap:wrap;height:auto;padding-block:10px;row-gap:6px;}
+  .nav{order:3;width:100%;margin-left:0;justify-content:space-between;}
+  .lang-switch{margin-left:auto;}
+  .theme-toggle{margin-left:0;}
+}
+@media (max-width:400px){
+  .mast .wrap{gap:8px;}
+  .lang-switch{gap:4px;}
+  .lang-switch__globe{display:none;}
+}
+
+/* Language switch in the site header: English | Norsk */
+.lang-switch{display:flex;flex:none;gap:6px;align-items:center;font:400 .78rem/1 var(--mono);color:var(--muted);}
+.lang-switch a{color:var(--muted);}
+.lang-switch a:hover{color:var(--teal);}
+.lang-switch [aria-current]{color:var(--ink);font-weight:500;}
+.lang-switch__off{opacity:.45;cursor:default;}
+.lang-switch__globe{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;}
+
+body:has(#cat-vulnerabilities:target) .catbar .cur-cat-vulnerabilities{display:inline;}
+body:has(#cat-vulnerabilities:target) .catbar-list a[href="#cat-vulnerabilities"]{color:var(--teal);}
+body:has(#cat-local-models:target) .catbar .cur-cat-local-models{display:inline;}
+body:has(#cat-local-models:target) .catbar-list a[href="#cat-local-models"]{color:var(--teal);}
+body:has(#cat-frontier-labs:target) .catbar .cur-cat-frontier-labs{display:inline;}
+body:has(#cat-frontier-labs:target) .catbar-list a[href="#cat-frontier-labs"]{color:var(--teal);}
+body:has(#cat-industry:target) .catbar .cur-cat-industry{display:inline;}
+body:has(#cat-industry:target) .catbar-list a[href="#cat-industry"]{color:var(--teal);}
+body:has(#cat-nordic:target) .catbar .cur-cat-nordic{display:inline;}
+body:has(#cat-nordic:target) .catbar-list a[href="#cat-nordic"]{color:var(--teal);}
+body:has(#cat-governance-policy:target) .catbar .cur-cat-governance-policy{display:inline;}
+body:has(#cat-governance-policy:target) .catbar-list a[href="#cat-governance-policy"]{color:var(--teal);}
+body:has(#cat-china-asia:target) .catbar .cur-cat-china-asia{display:inline;}
+body:has(#cat-china-asia:target) .catbar-list a[href="#cat-china-asia"]{color:var(--teal);}
+body:has(#cat-media-production:target) .catbar .cur-cat-media-production{display:inline;}
+body:has(#cat-media-production:target) .catbar-list a[href="#cat-media-production"]{color:var(--teal);}
+</style>
+</head>
+<body class="hub">
+<header class="mast" role="banner">
+  <div class="wrap">
+    <a class="wordmark" href="/">digital<b>dias</b></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/blog/">Writing</a>
+      <a href="/listening/">Listening</a>
+      <a href="/photography/">Photographs</a>
+      <a href="/log/">Log</a>
+      <a href="/about/">About</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="The briefing is published in English and Norwegian" title="The briefing is published in English and Norwegian"><svg class="lang-switch__globe" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.25"/><ellipse cx="8" cy="8" rx="2.75" ry="6.25"/><path d="M1.75 8h12.5"/></svg><span aria-current="true" lang="en">English</span><span aria-hidden="true">|</span><a href="/briefing/2026-11-22.html" hreflang="nb" lang="nb" data-lang="nb">Norsk</a></div>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
+  </div>
+</header>
+<div class="page">
+
+  <div class="meta-row">
+    <span>DAILY BRIEFING</span>
+    <span class="center">The CAIO desk · Tradesolution</span>
+    <span>SUNDAY 22 NOVEMBER 2026</span>
+  </div>
+  <nav class="datestrip" aria-label="Days"><a href="/briefing/en/">Today</a><a href="/briefing/en/2026-11-22.html" aria-current="page">Yesterday</a><a href="/briefing/en/2026-11-21.html">21 Nov</a><a href="/briefing/en/2026-11-20.html">20 Nov</a><a href="/briefing/en/2026-11-19.html">19 Nov</a></nav>
+<div class="masthead">
+    <div class="wordmark">AI <em>News stream</em></div>
+    <div class="tagline">The frontier, the noise, and everything worth Pedro's five minutes</div>
+  </div>
+  <div class="rule-thick"></div>
+
+  <section class="hero" aria-label="Story of the day"><div class="hero-kicker">Story of the day · Frontier labs</div><h2 class="hero-title"><a href="https://the-decoder.com/bytedance-argues-most-ai-training-phases-are-unnecessary-and-backs-it-up-with-a-competitive-open-model/" target="_blank" rel="noopener noreferrer">Bytedance argues most AI training phases are unnecessary and backs it up with a competitive open model</a><span class="translation-note"></span></h2><div class="hero-row"><a class="hero-media" href="https://the-decoder.com/bytedance-argues-most-ai-training-phases-are-unnecessary-and-backs-it-up-with-a-competitive-open-model/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="https://the-decoder.com/wp-content/uploads/2026/11/bytedance-axio-training-pipeline-nano-banana-pro.jpg" alt="Bytedance argues most AI training phases are unnecessary and backs it up with a competitive open model" referrerpolicy="no-referrer"></a><div class="hero-body"><div class="article-summary">Bytedance and several US universities have introduced Axion 1.0, an AI agent that rivals top commercial models from OpenAI and Anthropic on benchmarks after just three training phases. The researchers attribute the performance gains to carefully curated training data rather than an increased number of training steps. The model, data, and code are freely available.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Evaluate Axion 1.0 against existing vendors to assess potential cost savings and performance gains in upcoming benchmarking rounds.</div><div class="article-meta">THE DECODER · 21 NOV, 09:17</div><div class="hero-credit">Image: The Decoder</div></div></div></section>
+
+  
+    <div class="kpi-row">
+      <div class="kpi accent">
+        <div class="kpi-label">Stories kept</div>
+        <div class="kpi-value">35 <span>/ 477 assessed</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Filtered out as not AI-related</div>
+        <div class="kpi-value">442</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Active sources</div>
+        <div class="kpi-value">99 <span>across 12 categories</span></div>
+      </div>
+    </div>
+    
+
+  <div class="panel">
+    <div class="panel-title">Stories by category</div>
+    <nav class="tiles" aria-label="Categories">
+    <a class="tile" href="#cat-vulnerabilities" style="--i:0;--n:1;--p:11" aria-label="Vulnerabilities, 1 stories"><span class="tile-count"></span><span class="tile-name">Vulnerabilities</span><span class="tile-track"><span class="tile-fill" style="width:11%"></span></span></a>
+<a class="tile" href="#cat-local-models" style="--i:1;--n:2;--p:22" aria-label="Local models, 2 stories"><span class="tile-count"></span><span class="tile-name">Local models</span><span class="tile-track"><span class="tile-fill" style="width:22%"></span></span></a>
+<a class="tile" href="#cat-frontier-labs" style="--i:2;--n:5;--p:56" aria-label="Frontier labs, 5 stories"><span class="tile-count"></span><span class="tile-name">Frontier labs</span><span class="tile-track"><span class="tile-fill" style="width:56%"></span></span></a>
+<a class="tile" href="#cat-industry" style="--i:3;--n:9;--p:100" aria-label="Industry news, 9 stories"><span class="tile-count"></span><span class="tile-name">Industry news</span><span class="tile-track"><span class="tile-fill" style="width:100%"></span></span></a>
+<a class="tile" href="#cat-nordic" style="--i:4;--n:3;--p:33" aria-label="Nordics, 3 stories"><span class="tile-count"></span><span class="tile-name">Nordics</span><span class="tile-track"><span class="tile-fill" style="width:33%"></span></span></a>
+<a class="tile" href="#cat-governance-policy" style="--i:5;--n:6;--p:67" aria-label="Governance and policy, 6 stories"><span class="tile-count"></span><span class="tile-name">Governance and policy</span><span class="tile-track"><span class="tile-fill" style="width:67%"></span></span></a>
+<a class="tile" href="#cat-china-asia" style="--i:6;--n:6;--p:67" aria-label="China and Asia, 6 stories"><span class="tile-count"></span><span class="tile-name">China and Asia</span><span class="tile-track"><span class="tile-fill" style="width:67%"></span></span></a>
+<a class="tile" href="#cat-media-production" style="--i:7;--n:3;--p:33" aria-label="Media and content production, 3 stories"><span class="tile-count"></span><span class="tile-name">Media and content production</span><span class="tile-track"><span class="tile-fill" style="width:33%"></span></span></a>
+    </nav>
+  </div>
+
+  <div class="panel lead">
+    <div class="panel-title">Top stories today</div>
+    <div class="lead-list">
+    <div class="lead-item"><a class="lead-cat" href="#cat-vulnerabilities">Vulnerabilities · 1</a><div class="article-title"><a href="https://www.bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data/" target="_blank" rel="noopener noreferrer">Microsoft Entra Connect Health flaw exploited to steal tenant data</a><span class="translation-note"></span></div><div class="article-summary">Microsoft is warning organizations that it suffered a data breach after attackers exploited a vulnerability in its Entra Connect Health service to gain unauthorized access to administrator email addresses and tenant configuration information. The vulnerability is actively exploited. Microsoft advises organizations to follow its security advisories to address the incident.</div><div class="article-meta">BLEEPINGCOMPUTER · 21 NOV, 18:01</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-local-models">Local models · 2</a><div class="article-title"><a href="https://www.golem.de/news/gebrauchte-hardware-ki-workstation-des-armen-mannes-schlaegt-framework-desktop-2611-215421.html" target="_blank" rel="noopener noreferrer">Used hardware: Budget DIY AI workstation beats Framework Desktop</a><span class="translation-note"> (translated from de)</span></div><div class="article-summary">Local AI is becoming increasingly interesting, but hardware costs are rising. We built a system for under 900 euros that can run models with up to 200 billion parameters.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 21 NOV, 06:30</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-frontier-labs">Frontier labs · 5</a><div class="article-title"><a href="https://the-decoder.com/nvidia-researchers-argue-huge-ai-context-windows-are-a-dead-end/" target="_blank" rel="noopener noreferrer">Nvidia researchers argue huge AI context windows are a dead end</a><span class="translation-note"></span></div><div class="article-summary">Nvidia researchers argue that large context windows are often unnecessary, slow, and expensive. They propose using periodic summaries and targeted keyword search, which match full-context performance at a fraction of the cost. The team also suggests a new class of models that operate on short notes rather than long context.</div><div class="article-meta">THE DECODER · 21 NOV, 16:23</div></div>
+    </div>
+  </div>
+  <p class="hub-hint">Pick a category to read the stories, or <a href="#kategorier">show all categories</a>.</p>
+
+  <nav class="rail" aria-label="Categories"><a class="chip" href="#"><span class="chip-name">← Overview</span></a><a class="chip all" href="#kategorier"><span class="chip-name">All</span><span class="chip-count">35</span></a><a class="chip" href="#cat-vulnerabilities"><span class="chip-name">Vulnerabilities</span><span class="chip-count">1</span></a><a class="chip" href="#cat-local-models"><span class="chip-name">Local models</span><span class="chip-count">2</span></a><a class="chip" href="#cat-frontier-labs"><span class="chip-name">Frontier labs</span><span class="chip-count">5</span></a><a class="chip" href="#cat-industry"><span class="chip-name">Industry news</span><span class="chip-count">9</span></a><a class="chip" href="#cat-nordic"><span class="chip-name">Nordics</span><span class="chip-count">3</span></a><a class="chip" href="#cat-governance-policy"><span class="chip-name">Governance and policy</span><span class="chip-count">6</span></a><a class="chip" href="#cat-china-asia"><span class="chip-name">China and Asia</span><span class="chip-count">6</span></a><a class="chip" href="#cat-media-production"><span class="chip-name">Media and content production</span><span class="chip-count">3</span></a></nav>
+  <div class="grid" id="kategorier">
+    <div class="cat-panel" id="cat-vulnerabilities"><div class="cat-head"><span class="cat-name">Vulnerabilities</span><span class="cat-count">1</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data/" target="_blank" rel="noopener noreferrer">Microsoft Entra Connect Health flaw exploited to steal tenant data</a><span class="translation-note"></span></div><div class="article-summary">Microsoft is warning organizations that it suffered a data breach after attackers exploited a vulnerability in its Entra Connect Health service to gain unauthorized access to administrator email addresses and tenant configuration information. The vulnerability is actively exploited. Microsoft advises organizations to follow its security advisories to address the incident.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Ensure the IT security team has immediately implemented Microsoft&#x27;s patches and safeguards for Entra Connect Health, and that the incident is logged in the risk register.</div><div class="article-meta">BLEEPINGCOMPUTER · 21 NOV, 18:01</div></div></div>
+<div class="cat-panel" id="cat-local-models"><div class="cat-head"><span class="cat-name">Local models</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.golem.de/news/gebrauchte-hardware-ki-workstation-des-armen-mannes-schlaegt-framework-desktop-2611-215421.html" target="_blank" rel="noopener noreferrer">Used hardware: Budget DIY AI workstation beats Framework Desktop</a><span class="translation-note"> (translated from de)</span></div><div class="article-summary">Local AI is becoming increasingly interesting, but hardware costs are rising. We built a system for under 900 euros that can run models with up to 200 billion parameters.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 21 NOV, 06:30</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://the-decoder.com/new-open-model-inkling-2-mini-thinks-in-loops-to-solve-problems-with-fewer-words-and-still-runs-on-a-laptop/" target="_blank" rel="noopener noreferrer">New open model Inkling 2 Mini thinks in loops to solve problems with fewer words and still runs on a laptop</a><span class="rest-source">THE DECODER</span></div><div class="rest-summary">Thinking Machines has released Inkling 2 Mini, an open looped transformer that runs 12 of its 24 layers three times per token. This allows the model to reason internally for longer without generating extra text. On Artificial Analysis&#x27;s Intelligence Index, it ties with Qwen3.8 27B at roughly six times lower cost.</div><div class="also-covered">Also covered by: <a href="https://github.com/ollama/ollama/releases/tag/v0.40.17" target="_blank" rel="noopener noreferrer">Ollama Releases</a></div></div></div></div>
+<div class="cat-panel" id="cat-frontier-labs"><div class="cat-head"><span class="cat-name">Frontier labs</span><span class="cat-count">5</span></div><div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/nvidia-researchers-argue-huge-ai-context-windows-are-a-dead-end/" target="_blank" rel="noopener noreferrer">Nvidia researchers argue huge AI context windows are a dead end</a><span class="translation-note"></span></div><div class="article-summary">Nvidia researchers argue that large context windows are often unnecessary, slow, and expensive. They propose using periodic summaries and targeted keyword search, which match full-context performance at a fraction of the cost. The team also suggests a new class of models that operate on short notes rather than long context.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Evaluate whether you can reduce token costs by replacing long context windows with summarization and targeted search in existing AI workflows.</div><div class="article-meta">THE DECODER · 21 NOV, 16:23</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217649" target="_blank" rel="noopener noreferrer">AI work capacity jumps from 16 to 40 hours in six months</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">A new report from METR indicates that advanced AI models can now perform tasks requiring approximately 40 hours of human expert work. This represents a significant increase from 16 hours just six months ago, highlighting rapid progress in the models&#x27; ability to handle long, complex processes. However, the report notes that these models still face limitations in their judgment.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Update internal benchmarking and capacity planning to reflect that AI now handles 40-hour level tasks, and adjust ROI and productivity expectations accordingly.</div><div class="article-meta">AI타임스 · 21 NOV, 09:20</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/bytedance-argues-most-ai-training-phases-are-unnecessary-and-backs-it-up-with-a-competitive-open-model/" target="_blank" rel="noopener noreferrer">Bytedance argues most AI training phases are unnecessary and backs it up with a competitive open model</a><span class="translation-note"></span></div><div class="article-summary">Bytedance and several US universities have introduced Axion 1.0, an AI agent that rivals top commercial models from OpenAI and Anthropic on benchmarks after just three training phases. The researchers attribute the performance gains to carefully curated training data rather than an increased number of training steps. The model, data, and code are freely available.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Evaluate Axion 1.0 against existing vendors to assess potential cost savings and performance gains in upcoming benchmarking rounds.</div><div class="article-meta">THE DECODER · 21 NOV, 09:17</div></div><div class="rest-label">Also today · 2</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.tu.no/it/historisk-matematisk-gate-skal-vaere-lost-med-hjelp-av-ki/7187220" target="_blank" rel="noopener noreferrer">Historic math puzzle claimed solved with AI help</a><span class="rest-source">TEKNISK UKEBLAD</span></div><div class="rest-summary">The Riemann hypothesis has remained an unsolved mystery since the 19th century. A mathematician at Anthropic now claims to have solved the problem using artificial intelligence.</div><div class="also-covered">Also covered by: <a href="https://the-decoder.com/hours-after-anthropic-claims-a-claude-proof-of-the-riemann-hypothesis-stanford-releases-an-all-human-competing-draft/" target="_blank" rel="noopener noreferrer">The Decoder</a>, <a href="https://www.hs.fi/maailma/art-2000012428288.html" target="_blank" rel="noopener noreferrer">Helsingin Sanomat - Tekoäly</a>, <a href="https://www.dn.se/varlden/annu-ett-historiskt-matteproblem-kan-ha-losts-med-ai/" target="_blank" rel="noopener noreferrer">Dagens Nyheter</a>, <a href="https://www.hs.fi/maailma/art-2000012428288.html" target="_blank" rel="noopener noreferrer">Helsingin Sanomat</a>, <a href="https://www.itmedia.co.jp/news/article/2611/22/2000003388/" target="_blank" rel="noopener noreferrer">ITmedia AI+</a>, <a href="https://www.japantimes.co.jp/news/2026/11/21/world/science-health/ai-anthropic-claude-riemann-hypothesis/" target="_blank" rel="noopener noreferrer">Japan Times</a>, <a href="https://www.theguardian.com/technology/2026/nov/21/anthropic-riemann-hypothesis-solved-claude-ai" target="_blank" rel="noopener noreferrer">The Guardian - Technology</a>, <a href="https://www.lemonde.fr/sciences/article/2026/11/21/la-probable-resolution-de-l-hypothese-de-riemann-par-une-intelligence-artificielle-marque-une-bascule-pour-les-mathematiques_6813962_1650684.html" target="_blank" rel="noopener noreferrer">Le Monde - Pixels</a></div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://techcommunity.microsoft.com/t5/microsoft-copilot-blog/available-today-openai-s-gpt-6-2-sol-and-gpt-6-2-astra-in/ba-p/4574229" target="_blank" rel="noopener noreferrer">Available today: OpenAI&#x27;s GPT-6.2 Sol and GPT-6.2 Astra in Microsoft Copilot</a><span class="rest-source">MICROSOFT COPILOT BLOG (TECHCOMMUNITY)</span></div><div class="rest-summary">OpenAI has made GPT-6.2 Sol and GPT-6.2 Astra available in Microsoft Copilot, providing users with more options for delegating complex tasks to AI. The models are supported by Work IQ, which grounds them in actual work data while respecting existing permissions. GPT-6.2 Sol is rolling out globally across several Copilot services, while GPT-6.2 Astra is available in Copilot Cowork and Copilot Studio.</div><div class="also-covered">Also covered by: <a href="https://the-decoder.com/openai-shares-new-prompting-tips-for-gpt-6-2-astra-and-sol-to-fix-brief-answers-and-unnecessary-questions/" target="_blank" rel="noopener noreferrer">The Decoder</a></div></div></div></div>
+<div class="cat-panel" id="cat-industry"><div class="cat-head"><span class="cat-name">Industry news</span><span class="cat-count">9</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.lemonde.fr/idees/article/2026/11/21/anthropic-ou-le-pari-de-plus-en-plus-vertigineux-de-l-ia_6813980_3232.html" target="_blank" rel="noopener noreferrer">Anthropic: The increasingly vertiginous bet on AI</a><span class="translation-note"> (translated from fr)</span></div><div class="article-summary">The high-profile IPO of the company behind the Claude assistant, followed by an immediate stock correction, highlights both the promises and doubts surrounding the AI business model. Given growing opposition to data center expansion, the deployment of AI will also depend on what populations are willing to accept.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Consider including social risk and trust factors in AI risk management to prepare for potential regulatory or societal challenges.</div><div class="article-meta">LE MONDE - PIXELS · 21 NOV, 10:30</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://kn.itmedia.co.jp/kn/article/2611/21/2000003385/" target="_blank" rel="noopener noreferrer">How companies are choosing AI: The landscape of ChatGPT, Copilot, and Gemini</a><span class="translation-note"> (translated from ja)</span></div><div class="article-summary">The way companies select AI services is shifting. Rather than just picking individual tools, many are increasingly integrating AI directly into their existing work environments.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Review existing license agreements to ensure they cover integrated AI features in the work environment, and adjust procurement strategy to avoid duplication.</div><div class="article-meta">ITMEDIA AI+ · 21 NOV, 05:22</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.itmedia.co.jp/enterprise/articles/2611/21/news003.html" target="_blank" rel="noopener noreferrer">IDC: Companies with high AI ROI plan to hire more staff</a><span class="translation-note"> (translated from ja)</span></div><div class="article-summary">IDC has released a study that challenges the common belief that widespread AI adoption leads to workforce reductions. The findings indicate that organizations achieving a high return on investment from AI are more likely to plan for increased headcount in the future.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Use the IDC data in tomorrow&#x27;s briefing to argue that high AI ROI correlates with increased headcount, emphasizing the importance of measuring and reporting adoption metrics that drive this growth.</div><div class="article-meta">ITMEDIA AI+ · 21 NOV, 00:00</div></div><div class="rest-label">Also today · 6</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217654" target="_blank" rel="noopener noreferrer">OpenAI and Anthropic revamp mobile apps to spotlight AI agents</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">OpenAI and Anthropic have both updated their ChatGPT and Claude mobile apps with a new design that highlights AI agents. The changes make it easier for users to delegate tasks such as coding and project management to the AI directly from their smartphones.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/business/2026/nov/21/debt-laden-cloud-computing-company-coreweave-ai-boom" target="_blank" rel="noopener noreferrer">‘Little room for error’: what a debt-laden cloud computing company says about the AI boom</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">CoreWeave, often described as the poster child of the AI bubble, highlights the growing risks associated with the massive buildout of datacenters. The company faces significant challenges due to its debt-heavy business model, while it remains unclear whether the artificial intelligence running in these facilities will ultimately generate profits for its backers.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://tweakers.net/nieuws/254798/datacenterbouw-kost-meta-zijn-klimaatdoel-voor-2030-tijdlijn-heroverwegen.html" target="_blank" rel="noopener noreferrer">Meta to reconsider 2030 climate goal due to AI growth</a><span class="rest-source">TWEAKERS</span></div><div class="rest-summary">Meta is likely to miss its own climate goals due to developments in the AI sector and plans to &quot;reconsider its timeline.&quot; The company originally aimed to be climate neutral by 2030, but this target is expected to be pushed to a later year. Competitors such as Google, Amazon, and Microsoft have similar goals that remain unchanged for now.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.koreaherald.com/article/10944733" target="_blank" rel="noopener noreferrer">Anthropic IPO success boosts hopes for OpenAI listing</a><span class="rest-source">KOREA HERALD - BUSINESS</span></div><div class="rest-summary">Anthropic&#x27;s record-breaking Nasdaq debut has fueled expectations for a potential IPO by rival OpenAI, despite concerns over AI valuations. Anthropic raised $81.34 billion after pricing its IPO at $83 per share, above its initial $70-$78 range, and expanding the offering to 980 million shares. Including a separate $26 billion private share sale, the total deal value reached $107.34 billion.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.japantimes.co.jp/business/2026/11/21/markets/anthropic-ai-stocks/" target="_blank" rel="noopener noreferrer">Anthropic’s post-debut stumble delivers reality check for AI trade</a><span class="rest-source">JAPAN TIMES</span></div><div class="rest-summary">A dramatic unraveling of the AI trade showed that even a blockbuster listing could not shake the gloom hanging over the sector. Anthropic has experienced a weak start following its debut, serving as a reality check for the market.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.scmp.com/tech/big-tech/article/3375287/nvidia-faces-further-blow-after-shock-us-export-permit-data-release-analysts" target="_blank" rel="noopener noreferrer">Nvidia faces further blow after shock US export permit data release: analysts</a><span class="rest-source">SOUTH CHINA MORNING POST - TECH</span></div><div class="rest-summary">US lawmakers have released confidential licensing records showing that Washington approved the sale of nearly 880,000 advanced AI chips to Chinese tech companies earlier this year. Analysts warn that the disclosures could prompt Chinese buyers to pivot from Nvidia to AMD in the short term and accelerate their transition to home-made chips over the long run.</div></div></div></div>
+<div class="cat-panel" id="cat-nordic"><div class="cat-head"><span class="cat-name">Nordics</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.dagbladet.no/meninger/har-valgt-big-tech-ved-ikke-a-velge/85451023" target="_blank" rel="noopener noreferrer">Chose big tech by choosing nothing</a><span class="translation-note"> (translated from no)</span></div><div class="article-summary">NFI has decided not to impose specific requirements for the use of artificial intelligence in state-funded storytelling. In practice, this means they have chosen to rely on large technology companies, or big tech, to provide the solutions.</div><div class="article-meta">DAGBLADET - KUNSTIG INTELLIGENS · 21 NOV, 11:59</div></div><div class="rest-label">Also today · 2</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.svd.se/a/qOLOlL/norge-stoppar-statligt-stod-till-bocker-skrivna-med-ai?utm_medium=rss" target="_blank" rel="noopener noreferrer">Norway halts state support for AI-generated literature</a><span class="rest-source">SVENSKA DAGBLADET</span></div><div class="rest-summary">Norway has decided to stop providing state funding for literature created with artificial intelligence. The move aims to protect human artistic creation, even though no stricter regulations on AI use are being introduced in Sweden.</div><div class="also-covered">Also covered by: <a href="https://www.svd.se/a/qOLOlL/norge-stoppar-statligt-stod-till-bocker-skrivna-med-ai" target="_blank" rel="noopener noreferrer">Svenska Dagbladet - AI</a></div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aftenposten.no/norge/politikk/i/d7Kwqq/stortinget-spoer-med-ki-og-statsraadene-svarer-med-ki" target="_blank" rel="noopener noreferrer">The Storting asks with AI. And the ministers answer with AI.</a><span class="rest-source">AFTENPOSTEN - KI</span></div><div class="rest-summary">According to an AI detector, responses from ministers to the Storting are 100 percent generated by artificial intelligence. The ministers themselves refuse to disclose how much AI they have actually used in their case handling.</div></div></div></div>
+<div class="cat-panel" id="cat-governance-policy"><div class="cat-head"><span class="cat-name">Governance and policy</span><span class="cat-count">6</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.svd.se/a/dJOP7B/mordarroboten-ar-har-kan-den-stoppas?utm_medium=rss" target="_blank" rel="noopener noreferrer">The &#x27;killer robot&#x27; is here: Can it be stopped?</a><span class="translation-note"> (translated from sv)</span></div><div class="article-summary">Autonomous weapons can now attack and kill without final human control. The debate over how to halt this development is intensifying.</div><div class="article-meta">SVENSKA DAGBLADET · 21 NOV, 20:34</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.digi.no/kunstig-intelligens/meta-om-norsk-ki-brille-forbud-ikke-spesielt-begeistret/7186349" target="_blank" rel="noopener noreferrer">Meta on Norwegian AI glasses ban: &#x27;Not particularly thrilled&#x27;</a><span class="translation-note"> (translated from no)</span></div><div class="article-summary">Meta&#x27;s product chief stated that the company is not particularly thrilled about the government&#x27;s proposal to ban AI glasses. He hopes, however, that authorities will consider the significant value that users derive from smart glasses.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Assess how a potential ban on AI glasses could impact the company&#x27;s strategic direction and risk exposure, and prepare a positioning for potential regulatory changes.</div><div class="article-meta">DIGI.NO · 21 NOV, 04:00</div></div><div class="rest-label">Also today · 4</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/technology/2026/nov/21/international-talks-control-ai-autonomous-weapons-collapse" target="_blank" rel="noopener noreferrer">International UN talks on controlling use of autonomous weapons collapse</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">Week-long efforts to establish a negotiating mandate for a legally binding international treaty to control the use of autonomous weapons collapsed after Russian objections blocked consensus. Despite an overwhelming majority of states at the UN’s Convention on Certain Conventional Weapons (CCW) in Geneva wanting to agree on a mandate, the requirement for consensus forced the conference to adopt a much weaker option.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.lemonde.fr/international/article/2026/11/21/a-geneve-la-communaute-internationale-echoue-a-interdire-les-robots-tueurs_6814012_3210.html" target="_blank" rel="noopener noreferrer">International community fails to ban killer robots</a><span class="rest-source">LE MONDE - PIXELS</span></div><div class="rest-summary">Russia, the US, and Israel have opposed opening negotiations for an international treaty on autonomous lethal weapon systems. This occurs as the threat from AI-assisted weapons becomes increasingly precise in combat zones.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217640" target="_blank" rel="noopener noreferrer">Trump and Xi agree on human control of military AI</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">US President Donald Trump and Chinese President Xi Jinping have agreed that humans must always be involved in military decisions made with artificial intelligence. The agreement also covers major military operations, expanding the scope of previous accords regarding nuclear weapons.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217642" target="_blank" rel="noopener noreferrer">Trump: &#x27;Tremendous tax&#x27; on US data centers built abroad</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">Donald Trump has announced that US companies will face a &#x27;tremendous tax&#x27; if they build data centers outside the country. The move aims to boost domestic AI infrastructure investment and could significantly impact the global strategies of major tech firms.</div></div></div></div>
+<div class="cat-panel" id="cat-china-asia"><div class="cat-head"><span class="cat-name">China and Asia</span><span class="cat-count">6</span></div><div class="spotlight-item"><div class="article-title"><a href="https://kn.itmedia.co.jp/kn/article/2611/22/2000003384/" target="_blank" rel="noopener noreferrer">AI in the enterprise: Knowledge or company-specific criteria?</a><span class="translation-note"> (translated from ja)</span></div><div class="article-summary">A survey of managers reveals that more than half have stopped using certain AI tools or use cases. The underlying issue is often that these tools fail to account for the company&#x27;s own specific decision-making criteria.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Evaluate whether current AI tools actually contribute to the company&#x27;s specific decision-making criteria, and consider replacing or adjusting tools that do not meet these requirements.</div><div class="article-meta">ITMEDIA AI+ · 21 NOV, 21:00</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217643" target="_blank" rel="noopener noreferrer">Cursor considers phasing out Chinese AI models</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">SpaceX-owned Cursor is considering gradually discontinuing the use of Chinese AI models due to geopolitical risks. This move aligns with increased pressure from the US Congress to reduce reliance on Chinese technology within the national ecosystem.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Assess if you have similar dependencies on foreign models and conduct a risk analysis to ensure compliance with potential new regulations.</div><div class="article-meta">AI타임스 · 21 NOV, 02:01</div></div><div class="rest-label">Also today · 4</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217651" target="_blank" rel="noopener noreferrer">LG U+ reorganizes to accelerate AI business results</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">LG U+ has implemented an organizational restructuring aimed at accelerating the creation of tangible results in its AI business and strengthening its core telecommunications competitiveness. The company reorganized its business units around AI infrastructure and platforms to enhance domain expertise and consolidate its distributed R&amp;D capabilities. The changes are designed to improve agility in the rapidly evolving AI market and increase execution efficiency.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/business/companies/japan-stamp-maker-stomps-into-ai-realm-by-authenticating-videos-on-x" target="_blank" rel="noopener noreferrer">Japan stamp maker stomps into AI realm by authenticating videos on X</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">A Japanese stamp manufacturer is entering the AI sector by launching a service to authenticate videos on the X platform. The company is leveraging artificial intelligence to verify the authenticity of content, marking a strategic move into digital verification.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.scmp.com/tech/big-tech/article/3375253/ai-agents-are-getting-wallets-hong-kong-ready-them" target="_blank" rel="noopener noreferrer">AI agents are getting wallets. Is Hong Kong ready for them?</a><span class="rest-source">SOUTH CHINA MORNING POST - TECH</span></div><div class="rest-summary">Animoca Brands is launching Minds, an agentic AI platform that allows autonomous agents to browse, compare options, and execute payments. The company is piloting live transactions on Visa&#x27;s network in Hong Kong, where local regulators have recently placed agentic commerce on the policy agenda.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217616" target="_blank" rel="noopener noreferrer">South Korea to exempt non-metropolitan AI data centers under 50 MW from grid impact assessments</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">The South Korean government is moving to exempt AI data centers outside the metropolitan area with a contracted power capacity of under 50 MW from grid impact assessments. This measure, part of a new special act to promote the AI data center industry, aims to streamline the approval process and accelerate the construction of such facilities.</div></div></div></div>
+<div class="cat-panel" id="cat-media-production"><div class="cat-head"><span class="cat-name">Media and content production</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217648" target="_blank" rel="noopener noreferrer">Google launches GIF generation in the Gemini app</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">Google has added a feature to the Gemini app that allows users to generate short GIF images using text prompts alone. The feature is powered by the Gemini Omni 1.2 Flash video model and produces approximately three-second looping animations. The launch comes two weeks after OpenAI introduced a similar capability in ChatGPT, intensifying competition in image and video generation.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Assess whether the Gemini feature is covered by existing agreements and evaluate the need to update licensing to access this specific capability.</div><div class="article-meta">AI타임스 · 21 NOV, 07:39</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.leiphone.com/category/yanxishe/zjw3hyGGqzhBaPj7.html" target="_blank" rel="noopener noreferrer">Kling Image 4.0 launched with 8K resolution and advanced text control</a><span class="translation-note"> (translated from zh)</span></div><div class="article-summary">Kling has released Kling Image 4.0, an image generation model supporting up to 8K resolution and 2,000 words per image. The model employs an autoregressive architecture that unifies image understanding and generation, enabling precise editing of existing text and controlled typography. This targets complex commercial design tasks such as poster production and e-commerce content.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate whether Kling Image 4.0 should be included in the license portfolio to cover the need for high-resolution commercial design production.</div><div class="article-meta">雷峰网 LEIPHONE · 21 NOV, 02:59</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://asia.nikkei.com/business/media-entertainment/ai-good-for-business-but-may-sap-joy-of-creation-game-creator-hideo-kojima" target="_blank" rel="noopener noreferrer">AI good for business but may sap joy of creation: game creator Hideo Kojima</a><span class="rest-source">NIKKEI ASIA</span></div><div class="rest-summary">Game creator Hideo Kojima believes that artificial intelligence offers significant business opportunities but warns that it may diminish the joy of the creative process. He argues that while AI can streamline production, human creativity remains essential for making meaningful games.</div></div></div></div>
+  </div>
+
+  <div class="footline">All 8 categories, every story today — nothing held back</div>
+</div>
+</body>
+</html>
