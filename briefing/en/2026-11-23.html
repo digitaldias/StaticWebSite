@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en" data-briefing-date="2026-11-23">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f6f4">
+<title>AI News Stream — 2026-11-23</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&family=Geist+Mono:wght@400;500&display=swap">
+<style id="tokens">/* =============================================================================
+   Sea Glass design tokens: the single source for digitaldias.com and /briefing/.
+   The site bundles this file ahead of styles.css. The briefing publisher reads
+   it from this repo and inlines it. Change a value here, nowhere else.
+   ============================================================================= */
+
+:root {
+  color-scheme: light; /* Light by default; dark only when the reader picks it */
+
+  /* Colour: light value first, dark value second */
+  --ground:   light-dark(#f4f6f4, #0f1a1b);
+  --ground-2: light-dark(#e7eeec, #162527);
+  --ink:      light-dark(#14201f, #e3ebe9);
+  --muted:    light-dark(#4f5f5d, #9db1ae);
+  --rule:     light-dark(#cdd8d5, #2a3b3d);
+  --teal:     light-dark(#0b5d63, #5fc3c2);
+  --deep-1:   light-dark(#d7ebe8, #15343a);
+  --deep-2:   light-dark(#a9d3cf, #18454c);
+  --deep-3:   light-dark(#5aa5a3, #1c5860);
+  --on-teal:  light-dark(#f4f6f4, #0f1a1b);
+
+  /* Type */
+  --display: "Schibsted Grotesk", system-ui, sans-serif;
+  --text:    "Source Serif 4", Georgia, serif;
+  --mono:    "Geist Mono", ui-monospace, monospace;
+
+  /* Layout: the widest the page column gets on large screens */
+  --page: 1440px;
+
+  /* Motion */
+  --ease-out:   cubic-bezier(.16, 1, .3, 1);
+  --transition: 150ms ease;
+}
+
+/* The reader's stored choice (theme.js) */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+</style>
+<style>
+/* Briefing components: Sea Glass. Expects tokens.css inlined before this block. */
+*{box-sizing:border-box;}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 1rem/1.55 var(--text);}
+a{color:inherit;text-decoration:none;transition:color var(--transition);}
+a:hover{color:var(--teal);}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+::selection{background:var(--deep-2);color:var(--ink);}
+
+/* Site header, inserted by the publish layer: identical to the site's */
+.mast{position:sticky;top:0;z-index:40;background:var(--ground);border-bottom:1px solid var(--rule);}
+.mast .wrap{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px);display:flex;align-items:center;gap:28px;height:60px;}
+.mast .wordmark{font:800 1.45rem/1 var(--display);letter-spacing:-.04em;color:var(--ink);}
+.mast .wordmark b{font-weight:inherit;color:var(--teal);}
+.nav{display:flex;gap:22px;margin-left:auto;font:600 .85rem/1 var(--display);}
+.nav a{color:var(--muted);position:relative;padding:6px 0;}
+.nav a:hover{color:var(--ink);}
+.theme-toggle{flex:none;display:grid;place-items:center;width:32px;height:32px;margin-left:-6px;padding:0;background:none;border:1px solid var(--rule);border-radius:50%;color:var(--ink);cursor:pointer;transition:border-color var(--transition);}
+.theme-toggle::before{content:"";width:14px;height:14px;border-radius:50%;border:1.5px solid currentColor;background:linear-gradient(90deg,currentColor 50%,transparent 50%);transition:transform 300ms var(--ease-out);}
+.theme-toggle[data-current="dark"]::before{transform:rotate(180deg);}
+.theme-toggle:hover{border-color:var(--teal);}
+
+/* Page column: aligned with the header */
+.page{max-width:var(--page);margin:0 auto;padding:0 clamp(16px,4vw,44px) 60px;}
+
+/* Meta row: the site's mono meta line */
+.meta-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0 12px;border-bottom:1px solid var(--rule);font:400 .76rem/1.4 var(--mono);letter-spacing:.02em;color:var(--muted);}
+.meta-row .center{font:italic 400 .92rem/1.4 var(--text);letter-spacing:0;}
+
+/* Date strip: chips like the site's category filter; today in teal */
+.datestrip{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;font:500 .76rem/1 var(--mono);}
+.datestrip a{padding:7px 10px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);transition:color var(--transition),border-color var(--transition);}
+.datestrip a:hover{color:var(--teal);border-color:var(--teal);}
+.datestrip a[aria-current="page"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+
+/* Masthead: the Log page's page head */
+.masthead{display:grid;gap:14px;padding:40px 0 22px;border-bottom:2px solid var(--ink);}
+.masthead .wordmark{font:750 clamp(2.6rem,7vw,5.6rem)/.98 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.masthead .wordmark em{font-style:normal;color:var(--teal);}
+.tagline{margin:0;max-width:46ch;font:400 1.05rem/1.5 var(--text);color:var(--muted);}
+.rule-thick{display:none;}
+
+/* Hero: the day's lead story. A full-width splash headline, then picture and story side by side
+   at one height: the picture is at least 16:9 and stretches to the story's height, cropped. */
+.hero{margin:0 0 32px;padding:28px 0 32px;border-bottom:1px solid var(--rule);}
+.hero-kicker{margin-bottom:12px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hero-title{margin:0 0 24px;max-width:28ch;font:750 clamp(2rem,4.4vw,3.6rem)/1.02 var(--display);letter-spacing:-.035em;text-wrap:balance;}
+.hero-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .2em no-repeat;transition:background-size 350ms var(--ease-out);}
+.hero-title a:hover{color:inherit;background-size:100% .2em;}
+.hero-row{display:grid;gap:18px;}
+.hero-media{position:relative;display:block;overflow:hidden;background:var(--deep-1);}
+.hero-media::before{content:"";display:block;padding-top:56.25%;}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 600ms var(--ease-out);}
+.hero-media:hover img{transform:scale(1.02);}
+.hero-body .article-summary{font-size:1.04rem;}
+.hero-credit{margin-top:10px;font:italic 400 .8rem/1.4 var(--text);color:var(--muted);}
+@media (min-width:900px){.hero-row{grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:32px;}}
+
+/* KPI row: the article folio strip, hanging from the masthead's ink rule */
+.kpi-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 32px;border-bottom:1px solid var(--rule);}
+.kpi{padding:16px 20px 16px 0;}
+.kpi + .kpi{padding-left:20px;border-left:1px solid var(--rule);}
+.kpi-label{margin-bottom:8px;font:600 .66rem/1.3 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.kpi-value{font:750 2.4rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;}
+.kpi-value span{font:400 .76rem var(--mono);letter-spacing:0;color:var(--muted);}
+.kpi.accent .kpi-value{color:var(--teal);}
+
+/* Panel and bar chart */
+.panel{margin:0 0 40px;padding-top:12px;border-top:2px solid var(--ink);}
+.panel-title{margin-bottom:14px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.bar-row{display:flex;align-items:center;gap:12px;padding:5px 0;}
+.bar-label{width:200px;flex-shrink:0;font:600 .88rem/1.3 var(--display);}
+.bar-track{flex:1;height:8px;background:var(--deep-1);overflow:hidden;}
+.bar-fill{height:100%;background:var(--teal);}
+.bar-count{width:28px;flex-shrink:0;text-align:right;font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Category columns: newspaper columns under an ink rule, no boxes */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 32px;align-items:start;}
+.cat-panel{display:flex;flex-direction:column;padding-top:12px;border-top:2px solid var(--ink);}
+.cat-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;}
+.cat-name{font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.cat-count{font:500 .76rem var(--mono);color:var(--muted);}
+
+/* Spotlight items: the stream's headline treatment, summary at full ink */
+.spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+.article-title{margin-bottom:8px;font:700 1.18rem/1.2 var(--display);letter-spacing:-.02em;text-wrap:balance;}
+.article-title a{background:linear-gradient(var(--deep-2),var(--deep-2)) 0 92%/0 .26em no-repeat;transition:background-size 350ms var(--ease-out);}
+.article-title a:hover{color:inherit;background-size:100% .26em;}
+.translation-note{font:italic 400 .82rem var(--text);letter-spacing:0;color:var(--muted);}
+.article-summary{margin-bottom:8px;font:400 .98rem/1.55 var(--text);color:var(--ink);}
+.article-pillar{margin-bottom:8px;font:400 .9rem/1.5 var(--text);color:var(--muted);}
+.pillar-tag{margin-right:6px;padding:3px 6px;vertical-align:1px;background:var(--deep-1);font:600 .6rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.article-meta{font:400 .7rem/1.4 var(--mono);color:var(--muted);}
+.also-covered{margin-top:4px;font:400 .7rem/1.4 var(--mono);color:var(--muted);}.also-covered a{color:inherit;}
+
+/* The rest: quieter rows behind a mono toggle */
+.more{margin-top:16px;}
+.more > summary{list-style:none;cursor:pointer;font:500 .74rem var(--mono);color:var(--teal);}
+.more > summary::-webkit-details-marker{display:none;}
+.more > summary::before{content:"+ ";}
+.more[open] > summary::before{content:"\2212 ";}
+.rest-list{display:flex;flex-direction:column;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);}
+.rest-item-head{display:flex;justify-content:space-between;gap:10px;font:600 .92rem/1.35 var(--display);letter-spacing:-.01em;}
+.rest-item-head a:hover{text-decoration:underline;text-decoration-color:var(--teal);text-underline-offset:.2em;}
+.rest-source{flex-shrink:0;padding-top:2px;white-space:nowrap;font:400 .66rem/1.4 var(--mono);color:var(--muted);}
+.rest-summary{margin-top:3px;font:400 .88rem/1.5 var(--text);color:var(--muted);}
+
+/* Foot line: the site's footer rule */
+.footline{margin-top:56px;padding-top:22px;border-top:2px solid var(--ink);font:400 .76rem/1.5 var(--mono);color:var(--muted);}
+
+@media (min-width:900px){.masthead{grid-template-columns:1fr 1fr;align-items:end;}}
+@media (min-width:768px) and (max-width:1080px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s !important;}}
+
+/* Category tiles: the page's menu. Each tile springs its bar out in rank order and counts its
+   number up, then a glint sweeps the bar every few seconds. --i, --n and --p come from the tile. */
+@property --c{syntax:"<integer>";inherits:false;initial-value:0;}
+@keyframes tile-grow{from{transform:scaleX(0);}}
+@keyframes tile-count{from{--c:0;}}
+@keyframes tile-glint{0%{background-position:-100% 0;}18%,100%{background-position:200% 0;}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.tile{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto;gap:6px;min-height:118px;padding:14px 14px 16px;border:1px solid var(--rule);transition:border-color var(--transition),transform 200ms var(--ease-out);}
+.tile:hover{color:inherit;border-color:var(--teal);transform:translateY(-2px);}
+.tile-count{font:750 2rem/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--teal);}
+.tile-count::after{--c:var(--n,0);counter-reset:c var(--c);content:counter(c);animation:tile-count 1100ms var(--ease-out) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-name{padding-right:28px;font:650 .98rem/1.25 var(--display);hyphens:auto;overflow-wrap:anywhere;}
+.tile-track{position:relative;height:6px;background:var(--deep-1);overflow:hidden;}
+.tile-fill{position:absolute;inset:0 auto 0 0;background:var(--teal);transform-origin:left;animation:tile-grow 1100ms cubic-bezier(.34,1.56,.64,1) calc(150ms + var(--i,0) * 80ms) both;}
+.tile-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,color-mix(in srgb,var(--ground) 65%,transparent) 50%,transparent 70%) no-repeat;background-size:50% 100%;background-position:-100% 0;animation:tile-glint 6s ease-in-out calc(1.6s + var(--i,0) * 120ms) infinite;}
+
+/* Rest of a category, always shown below its spotlights under a quiet label */
+.rest-label{margin-top:22px;font:600 .66rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.rest-label + .rest-list{margin-top:8px;}
+
+/* Category rail: the switcher while reading, sticky under the site header */
+.rail{display:none;position:sticky;top:60px;z-index:30;gap:8px;margin:0 calc(-1 * clamp(16px,4vw,44px)) 24px;padding:8px clamp(16px,4vw,44px);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;background:var(--ground);border-bottom:1px solid var(--rule);}
+.rail::-webkit-scrollbar{display:none;}
+.chip{flex:none;scroll-snap-align:start;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--rule);border-radius:22px;white-space:nowrap;font:600 .9rem/1 var(--display);transition:border-color var(--transition),background-color var(--transition);}
+.chip:hover{color:inherit;border-color:var(--teal);}
+.chip-count{font:500 .76rem var(--mono);color:var(--muted);}
+.chip.is-on{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.chip.is-on .chip-count{color:var(--on-teal);}
+
+/* Category hub: the tiles are the menu. Below the lead strip nothing shows until a
+   category, or "Alle kategorier", is the URL fragment; a chosen category runs full width. */
+.lead-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;}
+.lead-cat{display:inline-block;margin-bottom:8px;font:600 .7rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.hub-hint{margin:-16px 0 40px;font:italic 400 .95rem/1.5 var(--text);color:var(--muted);}
+.hub-hint a{color:var(--teal);}
+.grid,.cat-panel{scroll-margin-top:136px;}
+.hub .grid:not(:target):not(:has(.cat-panel:target)){display:none;}
+.hub:has(.grid:target,.cat-panel:target) :is(.hero,.lead,.hub-hint){display:none;}
+.hub:has(.grid:target,.cat-panel:target) .rail{display:flex;}
+.hub:has(.grid:target) .chip.all{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+.hub:has(.grid:target) .chip.all .chip-count{color:var(--on-teal);}
+.hub .grid:has(.cat-panel:target){grid-template-columns:minmax(0,1fr);}
+.hub .grid:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+.hub .cat-panel:target{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:32px;align-items:start;}
+.hub .cat-panel:target > :is(.cat-head,.rest-label,.rest-list){grid-column:1/-1;}
+.hub .cat-panel:target .rest-list{display:block;columns:3;column-gap:32px;}
+.hub .cat-panel:target .rest-item{break-inside:avoid;padding-bottom:14px;}
+.hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:0;padding-top:0;border-top:0;}
+@media (max-width:1080px){
+  .lead-list,.hub .cat-panel:target{grid-template-columns:minmax(0,1fr);}
+  .lead-list{gap:0;}
+  .lead-item + .lead-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .spotlight-item + .spotlight-item{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+  .hub .cat-panel:target .rest-list{columns:1;}
+}
+@media (max-width:767px){.rail{top:0;}}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));}.tile{min-height:104px;}.tile-count{font-size:1.7rem;}}
+
+/* Seen categories (seen.js): opened ones go quiet, the rest carry a "ny" mark */
+.seen-ready .tile:not(.is-seen)::after{content:"ny";position:absolute;top:14px;right:14px;padding:3px 5px;background:var(--deep-1);font:600 .58rem/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);}
+.tile.is-seen :is(.tile-count,.tile-name){color:var(--muted);}
+.tile.is-seen .tile-fill{opacity:.45;}
+.seen-ready .chip[href^="#cat-"]:not(.is-seen) .chip-name::after{content:"";display:inline-block;width:6px;height:6px;margin-left:6px;vertical-align:2px;border-radius:50%;background:var(--teal);}
+.chip.is-seen{color:var(--muted);}
+
+@media (prefers-reduced-motion:reduce){.tile-fill,.tile-fill::after,.tile-count::after{animation:none;}.tile:hover{transform:none;}}
+
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .chip[href="#cat-vulnerabilities"] .chip-count{color:var(--on-teal);}
+body:has(#cat-vulnerabilities:target) .tile[href="#cat-vulnerabilities"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-dev-tooling:target) .chip[href="#cat-dev-tooling"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-dev-tooling:target) .chip[href="#cat-dev-tooling"] .chip-count{color:var(--on-teal);}
+body:has(#cat-dev-tooling:target) .tile[href="#cat-dev-tooling"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-local-models:target) .chip[href="#cat-local-models"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-local-models:target) .chip[href="#cat-local-models"] .chip-count{color:var(--on-teal);}
+body:has(#cat-local-models:target) .tile[href="#cat-local-models"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .chip[href="#cat-frontier-labs"] .chip-count{color:var(--on-teal);}
+body:has(#cat-frontier-labs:target) .tile[href="#cat-frontier-labs"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-industry:target) .chip[href="#cat-industry"] .chip-count{color:var(--on-teal);}
+body:has(#cat-industry:target) .tile[href="#cat-industry"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-nordic:target) .chip[href="#cat-nordic"] .chip-count{color:var(--on-teal);}
+body:has(#cat-nordic:target) .tile[href="#cat-nordic"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .chip[href="#cat-governance-policy"] .chip-count{color:var(--on-teal);}
+body:has(#cat-governance-policy:target) .tile[href="#cat-governance-policy"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-china-asia:target) .chip[href="#cat-china-asia"] .chip-count{color:var(--on-teal);}
+body:has(#cat-china-asia:target) .tile[href="#cat-china-asia"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+body:has(#cat-media-production:target) .chip[href="#cat-media-production"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal);}
+body:has(#cat-media-production:target) .chip[href="#cat-media-production"] .chip-count{color:var(--on-teal);}
+body:has(#cat-media-production:target) .tile[href="#cat-media-production"]{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);}
+.seen-ready .tile:not(.is-seen)::after{content:"new";}</style>
+<script src="theme.js"></script>
+<link rel="alternate" hreflang="nb" href="/briefing/2026-11-23.html">
+<script src="lang.js"></script>
+<script src="seen.js" defer></script>
+<style id="briefing-layer">
+.catbar{display:none;}
+
+@media (max-width:767px){
+  .mast{position:static;}
+  .mast .wrap{gap:10px;}
+  .mast .wordmark{font-size:1.2rem;}
+  .nav{gap:10px;font-size:.76rem;}
+  .theme-toggle{width:28px;height:28px;margin-left:-2px;}
+
+  .page{padding:0 16px 48px;}
+  .meta-row{padding-top:12px;font-size:.7rem;}
+  .meta-row .center{display:none;}
+  .datestrip{margin-top:12px;}
+  .datestrip a{display:flex;align-items:center;min-height:44px;padding:0 14px;}
+  .masthead{padding:24px 0 16px;}
+  .masthead .wordmark{font-size:2.6rem;}
+  .tagline{font-size:1rem;}
+
+  .kpi-row{margin-bottom:16px;}
+  .kpi{padding:12px 10px 12px 0;}
+  .kpi + .kpi{padding-left:10px;}
+  .kpi-label{font-size:.6rem;letter-spacing:.06em;}
+  .kpi-value{font-size:1.6rem;}
+  .kpi-value span{display:none;}
+  .panel:has(.bar-row){display:none;}
+
+  .catbar{display:block;position:sticky;top:0;z-index:10;margin:0 -16px 20px;background:var(--ground);border-bottom:2px solid var(--ink);}
+  .catbar > summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;cursor:pointer;font:700 1.05rem/1.2 var(--display);letter-spacing:-.01em;}
+  .catbar > summary::-webkit-details-marker{display:none;}
+  .catbar > summary::after{content:"\25BE";font-size:.9rem;color:var(--muted);}
+  .catbar[open] > summary::after{content:"\25B4";}
+  .catbar .cur{display:none;}
+  .catbar .cur-all{display:inline;}
+  body:has(.cat-panel:target) .catbar .cur-all{display:none;}
+  .catbar-list{position:absolute;left:0;right:0;top:100%;max-height:70vh;overflow-y:auto;display:flex;flex-direction:column;background:var(--ground-2);border-bottom:2px solid var(--ink);}
+  .catbar-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 16px;border-top:1px solid var(--rule);font:600 1rem/1.2 var(--display);}
+  .catbar-list a span{font:400 .8rem var(--mono);color:var(--muted);}
+  .catbar-list a.all{color:var(--teal);}
+  body:has(.cat-panel:target) .catbar-list a.all{color:inherit;}
+  body:has(.cat-panel:target) .cat-panel:not(:target){display:none;}
+
+  .grid{grid-template-columns:minmax(0,1fr);gap:32px;}
+  .cat-panel{scroll-margin-top:60px;}
+  .cat-name,.cat-count{font-size:.74rem;}
+  .article-title{font-size:1.3rem;}
+  .translation-note{font-size:.86rem;}
+  .article-summary{font-size:1.05rem;line-height:1.6;}
+  .article-pillar{font-size:.96rem;}
+  .article-meta{font-size:.76rem;}
+  .spotlight-item + .spotlight-item{margin-top:22px;padding-top:22px;}
+  .more{margin-top:8px;}
+  .more > summary{padding:12px 0;font-size:.82rem;}
+  .rest-list{gap:18px;}
+  .rest-item-head{flex-direction:column;gap:2px;font-size:1.02rem;}
+  .rest-source{white-space:normal;font-size:.72rem;}
+  .rest-summary{font-size:.98rem;line-height:1.55;}
+  .footline{margin-top:40px;font-size:.72rem;}
+}
+
+@media (max-width:400px){
+  .mast .wordmark{font-size:1.1rem;}
+  .nav{font-size:.72rem;}
+}
+
+/* The wordmark, five links, English | Norsk and the theme switch need about 560px in one row, so up to
+   600px the links drop to a second row, as on the site */
+@media (max-width:600px){
+  .mast .wrap{flex-wrap:wrap;height:auto;padding-block:10px;row-gap:6px;}
+  .nav{order:3;width:100%;margin-left:0;justify-content:space-between;}
+  .lang-switch{margin-left:auto;}
+  .theme-toggle{margin-left:0;}
+}
+@media (max-width:400px){
+  .mast .wrap{gap:8px;}
+  .lang-switch{gap:4px;}
+  .lang-switch__globe{display:none;}
+}
+
+/* Language switch in the site header: English | Norsk */
+.lang-switch{display:flex;flex:none;gap:6px;align-items:center;font:400 .78rem/1 var(--mono);color:var(--muted);}
+.lang-switch a{color:var(--muted);}
+.lang-switch a:hover{color:var(--teal);}
+.lang-switch [aria-current]{color:var(--ink);font-weight:500;}
+.lang-switch__off{opacity:.45;cursor:default;}
+.lang-switch__globe{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;}
+
+body:has(#cat-vulnerabilities:target) .catbar .cur-cat-vulnerabilities{display:inline;}
+body:has(#cat-vulnerabilities:target) .catbar-list a[href="#cat-vulnerabilities"]{color:var(--teal);}
+body:has(#cat-dev-tooling:target) .catbar .cur-cat-dev-tooling{display:inline;}
+body:has(#cat-dev-tooling:target) .catbar-list a[href="#cat-dev-tooling"]{color:var(--teal);}
+body:has(#cat-local-models:target) .catbar .cur-cat-local-models{display:inline;}
+body:has(#cat-local-models:target) .catbar-list a[href="#cat-local-models"]{color:var(--teal);}
+body:has(#cat-frontier-labs:target) .catbar .cur-cat-frontier-labs{display:inline;}
+body:has(#cat-frontier-labs:target) .catbar-list a[href="#cat-frontier-labs"]{color:var(--teal);}
+body:has(#cat-industry:target) .catbar .cur-cat-industry{display:inline;}
+body:has(#cat-industry:target) .catbar-list a[href="#cat-industry"]{color:var(--teal);}
+body:has(#cat-nordic:target) .catbar .cur-cat-nordic{display:inline;}
+body:has(#cat-nordic:target) .catbar-list a[href="#cat-nordic"]{color:var(--teal);}
+body:has(#cat-governance-policy:target) .catbar .cur-cat-governance-policy{display:inline;}
+body:has(#cat-governance-policy:target) .catbar-list a[href="#cat-governance-policy"]{color:var(--teal);}
+body:has(#cat-china-asia:target) .catbar .cur-cat-china-asia{display:inline;}
+body:has(#cat-china-asia:target) .catbar-list a[href="#cat-china-asia"]{color:var(--teal);}
+body:has(#cat-media-production:target) .catbar .cur-cat-media-production{display:inline;}
+body:has(#cat-media-production:target) .catbar-list a[href="#cat-media-production"]{color:var(--teal);}
+</style>
+</head>
+<body class="hub">
+<header class="mast" role="banner">
+  <div class="wrap">
+    <a class="wordmark" href="/">digital<b>dias</b></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/blog/">Writing</a>
+      <a href="/listening/">Listening</a>
+      <a href="/photography/">Photographs</a>
+      <a href="/log/">Log</a>
+      <a href="/about/">About</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="The briefing is published in English and Norwegian" title="The briefing is published in English and Norwegian"><svg class="lang-switch__globe" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.25"/><ellipse cx="8" cy="8" rx="2.75" ry="6.25"/><path d="M1.75 8h12.5"/></svg><span aria-current="true" lang="en">English</span><span aria-hidden="true">|</span><a href="/briefing/2026-11-23.html" hreflang="nb" lang="nb" data-lang="nb">Norsk</a></div>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
+  </div>
+</header>
+<div class="page">
+
+  <div class="meta-row">
+    <span>DAILY BRIEFING</span>
+    <span class="center">The CAIO desk · Tradesolution</span>
+    <span>MONDAY 23 NOVEMBER 2026</span>
+  </div>
+  <nav class="datestrip" aria-label="Days"><a href="/briefing/en/">Today</a><a href="/briefing/en/2026-11-23.html" aria-current="page">Yesterday</a><a href="/briefing/en/2026-11-22.html">22 Nov</a><a href="/briefing/en/2026-11-21.html">21 Nov</a><a href="/briefing/en/2026-11-20.html">20 Nov</a></nav>
+<div class="masthead">
+    <div class="wordmark">AI <em>News stream</em></div>
+    <div class="tagline">The frontier, the noise, and everything worth Pedro's five minutes</div>
+  </div>
+  <div class="rule-thick"></div>
+
+  <section class="hero" aria-label="Story of the day"><div class="hero-kicker">Story of the day · Frontier labs</div><h2 class="hero-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217655" target="_blank" rel="noopener noreferrer">OpenAI releases GPT-Live-1.1 and cuts idle fees by 60%</a><span class="translation-note"> (translated from ko)</span></h2><div class="hero-row"><a class="hero-media" href="https://www.aitimes.com/news/articleView.html?idxno=217655" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="https://cdn.aitimes.com/news/photo/202611/217655_221974_3217.jpg" alt="OpenAI releases GPT-Live-1.1 and cuts idle fees by 60%" referrerpolicy="no-referrer"></a><div class="hero-body"><div class="article-summary">OpenAI has released its new real-time voice model, GPT-Live-1.1, via API for developers. The model features improved multilingual pronunciation, speech recognition, and instruction-following capabilities. Additionally, the cost for idle time has been reduced to $0.02 per minute, lowering operational costs for voice agents.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate whether GPT-Live-1.1 can replace existing voice APIs to reduce operational costs by 60%.</div><div class="article-meta">AI타임스 · 22 NOV, 03:01</div><div class="hero-credit">Image: AI타임스</div></div></div></section>
+
+  
+    <div class="kpi-row">
+      <div class="kpi accent">
+        <div class="kpi-label">Stories kept</div>
+        <div class="kpi-value">30 <span>/ 467 assessed</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Filtered out as not AI-related</div>
+        <div class="kpi-value">437</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Active sources</div>
+        <div class="kpi-value">99 <span>across 12 categories</span></div>
+      </div>
+    </div>
+    
+
+  <div class="panel">
+    <div class="panel-title">Stories by category</div>
+    <nav class="tiles" aria-label="Categories">
+    <a class="tile" href="#cat-vulnerabilities" style="--i:0;--n:3;--p:50" aria-label="Vulnerabilities, 3 stories"><span class="tile-count"></span><span class="tile-name">Vulnerabilities</span><span class="tile-track"><span class="tile-fill" style="width:50%"></span></span></a>
+<a class="tile" href="#cat-dev-tooling" style="--i:1;--n:6;--p:100" aria-label="Developer tools, 6 stories"><span class="tile-count"></span><span class="tile-name">Developer tools</span><span class="tile-track"><span class="tile-fill" style="width:100%"></span></span></a>
+<a class="tile" href="#cat-local-models" style="--i:2;--n:1;--p:17" aria-label="Local models, 1 stories"><span class="tile-count"></span><span class="tile-name">Local models</span><span class="tile-track"><span class="tile-fill" style="width:17%"></span></span></a>
+<a class="tile" href="#cat-frontier-labs" style="--i:3;--n:4;--p:67" aria-label="Frontier labs, 4 stories"><span class="tile-count"></span><span class="tile-name">Frontier labs</span><span class="tile-track"><span class="tile-fill" style="width:67%"></span></span></a>
+<a class="tile" href="#cat-industry" style="--i:4;--n:6;--p:100" aria-label="Industry news, 6 stories"><span class="tile-count"></span><span class="tile-name">Industry news</span><span class="tile-track"><span class="tile-fill" style="width:100%"></span></span></a>
+<a class="tile" href="#cat-nordic" style="--i:5;--n:2;--p:33" aria-label="Nordics, 2 stories"><span class="tile-count"></span><span class="tile-name">Nordics</span><span class="tile-track"><span class="tile-fill" style="width:33%"></span></span></a>
+<a class="tile" href="#cat-governance-policy" style="--i:6;--n:3;--p:50" aria-label="Governance and policy, 3 stories"><span class="tile-count"></span><span class="tile-name">Governance and policy</span><span class="tile-track"><span class="tile-fill" style="width:50%"></span></span></a>
+<a class="tile" href="#cat-china-asia" style="--i:7;--n:3;--p:50" aria-label="China and Asia, 3 stories"><span class="tile-count"></span><span class="tile-name">China and Asia</span><span class="tile-track"><span class="tile-fill" style="width:50%"></span></span></a>
+<a class="tile" href="#cat-media-production" style="--i:8;--n:2;--p:33" aria-label="Media and content production, 2 stories"><span class="tile-count"></span><span class="tile-name">Media and content production</span><span class="tile-track"><span class="tile-fill" style="width:33%"></span></span></a>
+    </nav>
+  </div>
+
+  <div class="panel lead">
+    <div class="panel-title">Top stories today</div>
+    <div class="lead-list">
+    <div class="lead-item"><a class="lead-cat" href="#cat-vulnerabilities">Vulnerabilities · 3</a><div class="article-title"><a href="https://the-decoder.com/security-researchers-show-how-cheap-ai-inference-providers-steal-keys-and-snoop-on-users/" target="_blank" rel="noopener noreferrer">Security researchers show how cheap AI inference providers steal keys and snoop on users</a><span class="translation-note"></span></div><div class="article-summary">Security researchers at Dragos used two million fake AI requests to uncover serious vulnerabilities in the AI supply chain, finding at least three compromised providers, hundreds of stolen AWS keys, and marketplace resellers who were simply reading customer requests. Exploitation is confirmed through active key theft and snooping. OpenRouter responded by removing three providers and 125 endpoints.</div><div class="article-meta">THE DECODER · 22 NOV, 12:07</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-dev-tooling">Developer tools · 6</a><div class="article-title"><a href="https://the-decoder.com/ai-coding-agents-ace-isolated-tests-but-complete-fewer-than-one-in-ten-tasks-in-a-simulated-workplace/" target="_blank" rel="noopener noreferrer">AI coding agents ace isolated tests but complete fewer than one in ten tasks in a simulated workplace</a><span class="translation-note"></span></div><div class="article-summary">A new real-world test places AI coding agents in a simulated developer role involving colleagues, project boards, and incomplete handoffs. Even advanced models like Opus 5.5 and Astra complete fewer than one in ten tasks in this messy workflow, despite quickly solving clear, standalone assignments.</div><div class="article-meta">THE DECODER · 22 NOV, 15:15</div></div>
+<div class="lead-item"><a class="lead-cat" href="#cat-local-models">Local models · 1</a><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217656" target="_blank" rel="noopener noreferrer">Thinking Machines Lab releases Inkling 2 Mini: 26.4B parameter model that runs on a laptop</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">Thinking Machines Lab has released Inkling 2 Mini, an open-weight model with 26.4 billion parameters designed to run efficiently on a laptop. The model utilizes a new architecture that repeats intermediate layers, achieving top-tier coding performance among models with fewer than 100 billion parameters. The weights are now available via Hugging Face and the company&#x27;s own platform, Tinker.</div><div class="article-meta">AI타임스 · 22 NOV, 03:09</div></div>
+    </div>
+  </div>
+  <p class="hub-hint">Pick a category to read the stories, or <a href="#kategorier">show all categories</a>.</p>
+
+  <nav class="rail" aria-label="Categories"><a class="chip" href="#"><span class="chip-name">← Overview</span></a><a class="chip all" href="#kategorier"><span class="chip-name">All</span><span class="chip-count">30</span></a><a class="chip" href="#cat-vulnerabilities"><span class="chip-name">Vulnerabilities</span><span class="chip-count">3</span></a><a class="chip" href="#cat-dev-tooling"><span class="chip-name">Developer tools</span><span class="chip-count">6</span></a><a class="chip" href="#cat-local-models"><span class="chip-name">Local models</span><span class="chip-count">1</span></a><a class="chip" href="#cat-frontier-labs"><span class="chip-name">Frontier labs</span><span class="chip-count">4</span></a><a class="chip" href="#cat-industry"><span class="chip-name">Industry news</span><span class="chip-count">6</span></a><a class="chip" href="#cat-nordic"><span class="chip-name">Nordics</span><span class="chip-count">2</span></a><a class="chip" href="#cat-governance-policy"><span class="chip-name">Governance and policy</span><span class="chip-count">3</span></a><a class="chip" href="#cat-china-asia"><span class="chip-name">China and Asia</span><span class="chip-count">3</span></a><a class="chip" href="#cat-media-production"><span class="chip-name">Media and content production</span><span class="chip-count">2</span></a></nav>
+  <div class="grid" id="kategorier">
+    <div class="cat-panel" id="cat-vulnerabilities"><div class="cat-head"><span class="cat-name">Vulnerabilities</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/security-researchers-show-how-cheap-ai-inference-providers-steal-keys-and-snoop-on-users/" target="_blank" rel="noopener noreferrer">Security researchers show how cheap AI inference providers steal keys and snoop on users</a><span class="translation-note"></span></div><div class="article-summary">Security researchers at Dragos used two million fake AI requests to uncover serious vulnerabilities in the AI supply chain, finding at least three compromised providers, hundreds of stolen AWS keys, and marketplace resellers who were simply reading customer requests. Exploitation is confirmed through active key theft and snooping. OpenRouter responded by removing three providers and 125 endpoints.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Conduct an immediate risk assessment of all third-party AI inference providers and verify that no compromised keys or endpoints are in use.</div><div class="article-meta">THE DECODER · 22 NOV, 12:07</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.infoq.com/news/2026/11/claude-code-leaking-secrets/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering" target="_blank" rel="noopener noreferrer">Claude Code Has Been Leaking Secrets through its &quot;Don&#x27;t Ask Again&quot; Feature</a><span class="translation-note"></span></div><div class="article-summary">Claude Code is affected by a vulnerability that has exposed secrets in public repositories due to how it stores them in local files. Exploitation is confirmed, as 1,122 secrets were identified in local files and another 1,160 in git history and chat transcripts. No specific patched version is named, so users should follow the vendor&#x27;s security advisory.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Require immediate scanning of all local files and git history for exposed secrets, and update the AI security policy to handle vulnerabilities in vendor tools.</div><div class="article-meta">INFOQ AI, ML &amp; DATA ENGINEERING · 22 NOV, 11:00</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://kn.itmedia.co.jp/kn/article/2611/23/2000003393/" target="_blank" rel="noopener noreferrer">Mercari: Potential Data Leak in Notion AI</a><span class="rest-source">ITMEDIA AI+</span></div><div class="rest-summary">Mercari has disclosed that some chat records in Notion AI may have been leaked externally. It is not confirmed that the vulnerability is actively exploited, but two attacks were identified at the AI outsourcing vendor. Readers should follow the vendor&#x27;s security advisory for updates.</div></div></div></div>
+<div class="cat-panel" id="cat-dev-tooling"><div class="cat-head"><span class="cat-name">Developer tools</span><span class="cat-count">6</span></div><div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/ai-coding-agents-ace-isolated-tests-but-complete-fewer-than-one-in-ten-tasks-in-a-simulated-workplace/" target="_blank" rel="noopener noreferrer">AI coding agents ace isolated tests but complete fewer than one in ten tasks in a simulated workplace</a><span class="translation-note"></span></div><div class="article-summary">A new real-world test places AI coding agents in a simulated developer role involving colleagues, project boards, and incomplete handoffs. Even advanced models like Opus 5.5 and Astra complete fewer than one in ten tasks in this messy workflow, despite quickly solving clear, standalone assignments.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Update the internal benchmarking framework to include realistic, unstructured work tasks rather than just isolated tests, to get a more accurate picture of actual productivity.</div><div class="article-meta">THE DECODER · 22 NOV, 15:15</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.golem.de/news/agenten-und-sql-mit-strengem-datenbankdesign-zu-besseren-ki-ergebnissen-2611-215226.html" target="_blank" rel="noopener noreferrer">Agents and SQL: How strict database design leads to better AI results</a><span class="translation-note"> (translated from de)</span></div><div class="article-summary">AI agents can hallucinate when generating database queries. The article argues that clear structures and strict rules in database design help avoid errors. It serves as a plea for careful database design, particularly with PostgreSQL.</div><div class="article-meta">GOLEM.DE - KUENSTLICHE INTELLIGENZ · 22 NOV, 09:00</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.infoq.com/news/2026/11/aws-lambda-gpu-managed-instances/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering" target="_blank" rel="noopener noreferrer">AWS Lambda Now Runs GPU Inference with 48 Concurrent Invocations Sharing One Model per GPU</a><span class="translation-note"></span></div><div class="article-summary">AWS Lambda now supports GPU inference on EC2 G-series instances via Lambda Managed Instances, allowing up to 48 concurrent invocations to share a single model per GPU. The service provides base images for vLLM and SGLang that require no handler code, along with asynchronous timeouts of up to 90 minutes. Billing is based on the instance price plus a 9.75 percent fee.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate if AWS Lambda GPU inference can replace existing infrastructure to reduce costs and simplify AI model licensing.</div><div class="article-meta">INFOQ AI, ML &amp; DATA ENGINEERING · 22 NOV, 06:27</div></div><div class="rest-label">Also today · 3</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://the-decoder.com/perplexitys-new-monitor-api-turns-web-search-from-a-one-off-query-into-a-nonstop-watchdog/" target="_blank" rel="noopener noreferrer">Perplexity&#x27;s new Monitor API turns web search from a one-off query into a nonstop watchdog</a><span class="rest-source">THE DECODER</span></div><div class="rest-summary">Perplexity is launching a Monitor API that searches the web on a schedule and alerts agents via webhook only when relevant changes occur. Its own decision model filters out unimportant results. For Perplexity, the API is part of a broader strategy to stand out from an increasingly interchangeable chatbot business through developer tools.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.infoq.com/news/2026/11/google-agent-compute-engine/?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=AI%2C+ML+%26+Data+Engineering" target="_blank" rel="noopener noreferrer">Google Announces Agent Compute Engine for Secure AI Agent Execution</a><span class="rest-source">INFOQ AI, ML &amp; DATA ENGINEERING</span></div><div class="rest-summary">Google has announced Agent Compute Engine, a managed service that runs AI agents in isolated microVMs with checkpointing capabilities. The design keeps credentials, API keys, and OAuth refresh tokens outside the agent sandbox, using an external Agent Gateway to authenticate requests and inject the required secrets.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://openai.com/index/perplexity-and-intelligence" target="_blank" rel="noopener noreferrer">Perplexity and Intelligence</a><span class="rest-source">OPENAI BLOG</span></div><div class="rest-summary">The article explains how perplexity measures progress in AI models. It argues that the metric can help developers establish a shared approach to evaluating emerging capabilities.</div></div></div></div>
+<div class="cat-panel" id="cat-local-models"><div class="cat-head"><span class="cat-name">Local models</span><span class="cat-count">1</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217656" target="_blank" rel="noopener noreferrer">Thinking Machines Lab releases Inkling 2 Mini: 26.4B parameter model that runs on a laptop</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">Thinking Machines Lab has released Inkling 2 Mini, an open-weight model with 26.4 billion parameters designed to run efficiently on a laptop. The model utilizes a new architecture that repeats intermediate layers, achieving top-tier coding performance among models with fewer than 100 billion parameters. The weights are now available via Hugging Face and the company&#x27;s own platform, Tinker.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate whether Inkling 2 Mini can replace or supplement existing local models to reduce reliance on expensive API licenses, and review the license terms for commercial use.</div><div class="article-meta">AI타임스 · 22 NOV, 03:09</div></div></div>
+<div class="cat-panel" id="cat-frontier-labs"><div class="cat-head"><span class="cat-name">Frontier labs</span><span class="cat-count">4</span></div><div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/gpt-6-2-astra-and-sol-get-to-the-point-faster-but-score-lower-on-transparency-than-claude/" target="_blank" rel="noopener noreferrer">GPT-6.2 Astra and Sol get to the point faster but score lower on transparency than Claude</a><span class="translation-note"></span></div><div class="article-summary">OpenAI&#x27;s GPT-6.2 Astra and Sol provide much shorter, more direct answers than their predecessors, but they are less willing to admit uncertainty. Anthropic&#x27;s Claude models score significantly higher on transparency.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Evaluate whether GPT-6.2 models should be replaced by Claude in processes where transparency and uncertainty acknowledgment are critical, based on the new benchmark results.</div><div class="article-meta">THE DECODER · 22 NOV, 09:41</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217657" target="_blank" rel="noopener noreferrer">OpenAI: AI agents now complete 46% of research tasks</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">OpenAI has published a report showing that its AI agents now complete 46% of research tasks that previously took humans two to four hours. This represents a doubling of the success rate in just seven months. The report emphasizes, however, that humans remain essential for generating new ideas and making critical decisions.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Use OpenAI&#x27;s report as a benchmark to evaluate the share of repetitive research and analysis tasks in your organization that can be automated, and set specific adoption targets.</div><div class="article-meta">AI타임스 · 22 NOV, 08:25</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217655" target="_blank" rel="noopener noreferrer">OpenAI releases GPT-Live-1.1 and cuts idle fees by 60%</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">OpenAI has released its new real-time voice model, GPT-Live-1.1, via API for developers. The model features improved multilingual pronunciation, speech recognition, and instruction-following capabilities. Additionally, the cost for idle time has been reduced to $0.02 per minute, lowering operational costs for voice agents.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate whether GPT-Live-1.1 can replace existing voice APIs to reduce operational costs by 60%.</div><div class="article-meta">AI타임스 · 22 NOV, 03:01</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.itmedia.co.jp/news/article/2611/23/2000003394/" target="_blank" rel="noopener noreferrer">OpenAI chief scientist proposes industry-wide &#x27;cap&#x27; for AI development</a><span class="rest-source">ITMEDIA AI+</span></div><div class="rest-summary">OpenAI&#x27;s chief scientist has published an essay proposing that the industry adopt perplexity as a common metric to establish a cap on AI development. He warns that pre-training could accelerate rapidly as early as 2027 and argues for a brake on progress until monitoring technologies catch up.</div><div class="also-covered">Also covered by: <a href="https://www.aitimes.com/news/articleView.html?idxno=217665" target="_blank" rel="noopener noreferrer">AI타임스</a></div></div></div></div>
+<div class="cat-panel" id="cat-industry"><div class="cat-head"><span class="cat-name">Industry news</span><span class="cat-count">6</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.digi.no/kunstig-intelligens/analysebyra-sa-mange-nye-jobber-vil-kunstig-intelligens-skape/7184884" target="_blank" rel="noopener noreferrer">How many new jobs artificial intelligence will create</a><span class="translation-note"> (translated from no)</span></div><div class="article-summary">Gartner concludes that the much-feared &#x27;job apocalypse&#x27; will not materialize. The report indicates that artificial intelligence will create a significant number of new positions rather than eliminating existing ones.</div><div class="article-meta">DIGI.NO · 22 NOV, 07:18</div></div><div class="rest-label">Also today · 5</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.bbc.co.uk/news/articles/cqe9k09j9jv4o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener noreferrer">San Francisco is enjoying an AI boom, but worries about a crash are growing</a><span class="rest-source">BBC - TECHNOLOGY</span></div><div class="rest-summary">AI employees in the industry&#x27;s epicentre, San Francisco, worry that the sector is overheated. Fears of a crash are growing even as the city continues to benefit from the ongoing AI boom.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.svd.se/a/GPGK66/faktorn-som-kan-falla-anthropic?utm_medium=rss" target="_blank" rel="noopener noreferrer">The factor that could trip up Anthropic</a><span class="rest-source">SVENSKA DAGBLADET</span></div><div class="rest-summary">Anthropic has completed its IPO and now joins the ranks of the world&#x27;s largest companies. The article highlights a specific factor that could pose a challenge for the company going forward.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217664" target="_blank" rel="noopener noreferrer">Meta CAIO uses AI deepfake of Sam Altman in Muse ad</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">Meta&#x27;s Chief AI Officer, Alexander Wang, posted an AI-generated video on Instagram featuring OpenAI CEO Sam Altman in a humorous context. The video was created to promote Meta&#x27;s new consumer AI agent, Muse. Meta stated that the content does not violate its policies because it is clearly labeled as AI-generated.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217661" target="_blank" rel="noopener noreferrer">Oracle confirms full funding secured for OpenAI data center deal</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">Oracle has confirmed that it has secured all necessary funding to build AI infrastructure for OpenAI. The company stated this was done to reassure investors concerned about the significant capital commitment and risk exposure associated with the contract.</div></div>
+<div class="rest-item"><div class="rest-item-head"><a href="https://www.aitimes.com/news/articleView.html?idxno=217659" target="_blank" rel="noopener noreferrer">OpenAI expands Dots to ChatGPT Plus subscribers</a><span class="rest-source">AI타임스</span></div><div class="rest-summary">OpenAI has started testing its autonomous AI agent, Dots, with a subset of ChatGPT Plus subscribers. Previously, the feature was primarily available to users of higher-tier plans, such as Pro. The company aims to gather user feedback to improve the agent&#x27;s proactive capabilities.</div></div></div></div>
+<div class="cat-panel" id="cat-nordic"><div class="cat-head"><span class="cat-name">Nordics</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.aftenposten.no/norge/i/w3wj71/taarer-og-oppkast-ki-sender-sjokkboelger-gjennom-mattverdenen?utm_medium=rss" target="_blank" rel="noopener noreferrer">The world has a new and major math problem: – Like a lightning strike</a><span class="translation-note"> (translated from no)</span></div><div class="article-summary">Mathematicians were shaken by a new AI development that has created a significant theoretical challenge. They describe the experience as a lightning strike and explain why this represents an existential issue for their field.</div><div class="article-meta">AFTENPOSTEN · 22 NOV, 20:55</div><div class="also-covered">Also covered by: <a href="https://www.aftenposten.no/norge/i/w3wj71/taarer-og-oppkast-ki-sender-sjokkboelger-gjennom-mattverdenen" target="_blank" rel="noopener noreferrer">Aftenposten - Kunstig intelligens</a>, <a href="https://politiken.dk/viden/art11069935/Ansat-hos-Anthropic-h%C3%A6vder-at-have-bevist-en-af-matematikkens-st%C3%B8rste-g%C3%A5der-Riemann-hypotesen" target="_blank" rel="noopener noreferrer">Politiken</a></div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.nettavisen.no/black-friday/chatgpt/kunstig-intelligens/black-friday-advarsel-svindlere-forgifter-chatgpt/s/80-95-271409" target="_blank" rel="noopener noreferrer">New Black Friday trap: Deceiving ChatGPT</a><span class="rest-source">NETTAVISEN - KUNSTIG INTELLIGENS</span></div><div class="rest-summary">Artificial intelligence makes it easier than ever to copy well-known online stores down to the smallest detail. Experts now warn that scammers are also manipulating ChatGPT to recommend fake Black Friday deals.</div></div></div></div>
+<div class="cat-panel" id="cat-governance-policy"><div class="cat-head"><span class="cat-name">Governance and policy</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://techcrunch.com/2026/11/22/openais-chief-scientist-has-thoughts-on-how-to-limit-ai-development/" target="_blank" rel="noopener noreferrer">OpenAI’s chief scientist has thoughts on how to limit AI development</a><span class="translation-note"></span></div><div class="article-summary">OpenAI&#x27;s chief scientist argues that establishing a speed limit for AI development requires first agreeing on how to measure that speed. Without a shared standard for defining and tracking development pace, it is impossible to set effective safety constraints or limits on future models.</div><div class="article-pillar"><span class="pillar-tag">Measurement</span> Evaluate how Pedro can implement internal metrics to measure AI adoption and efficiency, in line with the global discussion on standardizing measurement methods.</div><div class="article-meta">TECHCRUNCH AI · 22 NOV, 21:14</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://the-decoder.com/ai-is-getting-better-faster-than-experts-can-reliably-test-whether-new-systems-are-safe-metr-warns/" target="_blank" rel="noopener noreferrer">AI is getting better faster than experts can reliably test whether new systems are safe, METR warns</a><span class="translation-note"></span></div><div class="article-summary">METR reports that leading AI models like Opus 5.5 and GPT-6 Astra are improving rapidly at research tasks but getting harder to measure. The organization warns that current data cannot rule out a dangerous acceleration in AI development, although it notes that common tests may overestimate what the models can actually do.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Review the risk management framework to include metrics for &#x27;capability acceleration&#x27; and testing uncertainty, as standard evaluations may underestimate the risk.</div><div class="article-meta">THE DECODER · 22 NOV, 13:00</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/us-news/2026/nov/22/howard-lutnick-nvidia-china" target="_blank" rel="noopener noreferrer">Howard Lutnick has been Trump’s ally for decades. His ties to Nvidia may spell his downfall</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">US Commerce Secretary Howard Lutnick faces growing political pressure after a scandal at Nvidia revealed his role in selling microchips to China. He is resisting calls to resign, but has become a primary target for Democrats as they prepare to take control of Congress in January.</div></div></div></div>
+<div class="cat-panel" id="cat-china-asia"><div class="cat-head"><span class="cat-name">China and Asia</span><span class="cat-count">3</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.scmp.com/tech/tech-trends/article/3375374/tencent-touts-latest-ai-model-hy4s-performance-independent-safety-assessment" target="_blank" rel="noopener noreferrer">Tencent touts latest AI model Hy4’s performance on independent safety assessments</a><span class="translation-note"></span></div><div class="article-summary">Tencent Holdings has partnered with an international group of AI safety organizations to assess the risk level of its latest open-weight model, Hy4. This marks the first time a leading Chinese tech company has disclosed using independent third-party evaluators for a new model before release, amid growing concerns over AI-assisted cyberattacks and biological misuse.</div><div class="article-pillar"><span class="pillar-tag">Governance</span> Evaluate implementing independent third-party risk assessments for new AI models prior to launch to strengthen risk management.</div><div class="article-meta">SOUTH CHINA MORNING POST - TECH · 22 NOV, 13:30</div></div>
+<div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217660" target="_blank" rel="noopener noreferrer">Chinese AI firms hit by US chip regulations</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">Tightened US export controls on advanced AI chips have caused development delays and business disruptions for major Chinese AI companies. Firms such as Moonshot AI, Tencent, and Alibaba have canceled contracts or warned of impacts on next-generation models, indicating a withdrawal effect for an industry that has relied on Nvidia GPUs.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Assess the risk of vendor dependency when purchasing AI hardware and models, and consider alternative suppliers to avoid export control issues.</div><div class="article-meta">AI타임스 · 22 NOV, 02:15</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theguardian.com/world/2026/nov/22/south-korea-education-minister-resigns-after-ai-cheating-scandal-engulfs-university-exams" target="_blank" rel="noopener noreferrer">South Korean minister quits after AI cheating scandal engulfs university exams</a><span class="rest-source">THE GUARDIAN - TECHNOLOGY</span></div><div class="rest-summary">South Korea&#x27;s education minister has resigned following an AI-assisted cheating scandal that erupted ahead of the country&#x27;s crucial university entrance exams. The incident was triggered when the top scorer in a national tax accountancy exam confessed to using a miniature camera and smartphone to achieve a near-perfect score.</div><div class="also-covered">Also covered by: <a href="https://www.japantimes.co.jp/news/2026/11/22/asia-pacific/politics/south-korea-education-minister-resigns/" target="_blank" rel="noopener noreferrer">Japan Times</a></div></div></div></div>
+<div class="cat-panel" id="cat-media-production"><div class="cat-head"><span class="cat-name">Media and content production</span><span class="cat-count">2</span></div><div class="spotlight-item"><div class="article-title"><a href="https://www.aitimes.com/news/articleView.html?idxno=217427" target="_blank" rel="noopener noreferrer">Ludyte bets on unlimited AI video generation to cut costs</a><span class="translation-note"> (translated from ko)</span></div><div class="article-summary">Nation A has launched the platform Ludyte to address the high costs associated with AI video generation. Instead of credit-based billing, the company offers unlimited generation for a flat monthly fee by running open-weight models on its own GPU infrastructure.</div><div class="article-pillar"><span class="pillar-tag">Licences</span> Evaluate whether Ludyte&#x27;s flat monthly fee for unlimited AI video generation can replace credit-based vendors to reduce costs and simplify licensing.</div><div class="article-meta">AI타임스 · 22 NOV, 07:00</div></div><div class="rest-label">Also today · 1</div><div class="rest-list"><div class="rest-item"><div class="rest-item-head"><a href="https://www.theverge.com/games/1039770/binding-of-isaac-ai-music" target="_blank" rel="noopener noreferrer">Binding of Isaac developer removes AI music from Repentance Plus</a><span class="rest-source">THE VERGE AI</span></div><div class="rest-summary">Binding of Isaac: Repentance Plus has faced significant backlash on Steam after it was discovered that a specific section of the game used AI-generated music. The developer has since removed the tracks, which contained Suno metadata, following reports from users on Reddit.</div></div></div></div>
+  </div>
+
+  <div class="footline">All 9 categories, every story today — nothing held back</div>
+</div>
+</body>
+</html>
